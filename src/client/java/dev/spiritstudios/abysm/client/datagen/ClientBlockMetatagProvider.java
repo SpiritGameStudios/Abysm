@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.datagen;
+package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.specter.api.registry.metatag.datagen.MetatagProvider;

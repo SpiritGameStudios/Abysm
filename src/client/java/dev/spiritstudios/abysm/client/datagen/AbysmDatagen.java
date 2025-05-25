@@ -1,9 +1,9 @@
 package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.datagen.AutomaticDynamicRegistryProvider;
 import dev.spiritstudios.abysm.datagen.AbysmLootTableProvider;
 import dev.spiritstudios.abysm.datagen.AbysmTagProviders;
+import dev.spiritstudios.abysm.datagen.AutomaticDynamicRegistryProvider;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -17,6 +17,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 
 		pack.addProvider(AbysmModelProvider::new);
 
+		pack.addProvider(ClientBlockMetatagProvider::new);
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.BIOME, Abysm.MODID));
 		pack.addProvider(AbysmLootTableProvider::new);
 		AbysmTagProviders.addAll(pack);
