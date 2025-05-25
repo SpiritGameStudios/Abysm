@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.datagen;
+package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
@@ -20,7 +20,7 @@ import net.minecraft.util.math.Direction;
 
 import java.util.Optional;
 
-public class ModelProvider extends FabricModelProvider {
+public class AbysmModelProvider extends FabricModelProvider {
 	// Note - by default, the spore blossom model(used for scabiosa) is upside, which is why this is flipped
 	private static final BlockStateVariantMap<ModelVariantOperator> UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS = BlockStateVariantMap.operations(Properties.FACING)
 		.register(Direction.DOWN, BlockStateModelGenerator.NO_OP)
@@ -44,7 +44,7 @@ public class ModelProvider extends FabricModelProvider {
 		)
 	);
 
-	public ModelProvider(FabricDataOutput output) {
+	public AbysmModelProvider(FabricDataOutput output) {
 		super(output);
 	}
 

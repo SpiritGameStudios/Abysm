@@ -8,9 +8,10 @@ yarn = "1.21.5+build.1"
 fabric_loader = "0.16.14"
 fabric_api = "0.124.2+1.21.5"
 
-specter = "1.1.4"
+specter = "1.1.5"
 
 geckolib = "5.0.1"
+biolith = "3.3.0-beta.1"
 
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }
@@ -35,6 +36,7 @@ specter_render = { group = "dev.spiritstudios.specter", name = "specter-render",
 specter_debug = { group = "dev.spiritstudios.specter", name = "specter-debug", version.ref = "specter" }
 
 geckolib = { group = "software.bernie.geckolib", name = "geckolib-fabric-1.21.5", version.ref = "geckolib" }
+biolith = { group = "com.terraformersmc", name = "biolith-fabric", version.ref = "biolith" }
 
 [bundles]
 specter = [

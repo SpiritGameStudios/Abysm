@@ -18,9 +18,9 @@ group = mod.group
 base.archivesName = mod.id
 
 fabricApi {
-    configureDataGeneration {
-        client = true
-    }
+	configureDataGeneration {
+		client = true
+	}
 }
 
 loom {
@@ -36,6 +36,7 @@ repositories {
 	mavenCentral()
 	maven("https://maven.spiritstudios.dev/releases/")
 	maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
+	maven("https://maven.terraformersmc.com/")
 }
 
 dependencies {
@@ -45,10 +46,13 @@ dependencies {
 
 	include(libs.bundles.specter)
 	modImplementation(libs.bundles.specter)
+	modRuntimeOnly(libs.specter.debug)
 
 	modImplementation(libs.geckolib)
 
-	modRuntimeOnly(libs.specter.debug)
+	include(libs.biolith)
+	modImplementation(libs.biolith)
+
 
 	modImplementation(libs.fabric.api)
 }

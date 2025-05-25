@@ -14,13 +14,13 @@
 	"environment": "*",
 	"entrypoints": {
 		"client": [
-			"dev.spiritstudios.abysm.AbysmClient"
+			"dev.spiritstudios.abysm.client.AbysmClient"
 		],
 		"main": [
 			"dev.spiritstudios.abysm.Abysm"
 		],
 		"fabric-datagen": [
-			"dev.spiritstudios.abysm.datagen.AbysmDatagen"
+			"dev.spiritstudios.abysm.client.datagen.AbysmDatagen"
 		]
 	},
 	"mixins": [

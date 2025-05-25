@@ -9,13 +9,12 @@ import net.minecraft.registry.tag.BlockTags;
 
 import java.util.concurrent.CompletableFuture;
 
-public class TagProviders {
+public class AbysmTagProviders {
 	public static void addAll(FabricDataGenerator.Pack pack) {
-		pack.addProvider(TagProviders.BlockTagProvider::new);
+		pack.addProvider(AbysmTagProviders.BlockTagProvider::new);
 	}
 
 	private static class  BlockTagProvider extends FabricTagProvider.BlockTagProvider {
-
 		public BlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
 			super(output, registriesFuture);
 		}
