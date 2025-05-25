@@ -12,7 +12,7 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import java.util.List;
 
 public final class AbysmBiomes {
-	public static final RegistryKey<Biome> FLORAL_REEF = of("floral_reef");
+	public static final RegistryKey<Biome> FLORAL_REEF = ofKey("floral_reef");
 
 	public static final List<AbysmBiome> BIOMES = List.of(
 		new FloralReefBiome()
@@ -25,7 +25,7 @@ public final class AbysmBiomes {
 		for (AbysmBiome biome : BIOMES) biome.bootstrap(registerable, featureLookup, carverLookup);
 	}
 
-	private static RegistryKey<Biome> of(String path) {
+	private static RegistryKey<Biome> ofKey(String path) {
 		return RegistryKey.of(RegistryKeys.BIOME, Abysm.id(path));
 	}
 

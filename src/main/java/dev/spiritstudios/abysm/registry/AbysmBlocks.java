@@ -18,7 +18,7 @@ import net.minecraft.util.DyeColor;
 
 import java.util.function.Function;
 
-public class AbysmBlocks {
+public final class AbysmBlocks {
 	public static final Block FLOROPUMICE = register(
 		"floropumice",
 		Block::new,

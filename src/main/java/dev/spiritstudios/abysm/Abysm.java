@@ -1,9 +1,13 @@
 package dev.spiritstudios.abysm;
 
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.registry.AbysmTrunkPlacerTypes;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
+import dev.spiritstudios.specter.api.registry.RegistryHelper;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.gen.trunk.TrunkPlacerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +18,12 @@ public class Abysm implements ModInitializer {
     @Override
     public void onInitialize() {
 		AbysmBlocks.init();
+
+		RegistryHelper.registerFields(
+			Registries.TRUNK_PLACER_TYPE, RegistryHelper.fixGenerics(TrunkPlacerType.class),
+			AbysmTrunkPlacerTypes.class,
+			MODID
+		);
 
 		AbysmBiomes.addAllToGenerator();
     }
