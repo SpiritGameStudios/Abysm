@@ -16,5 +16,6 @@ public class LootTableProvider extends FabricBlockLootTableProvider {
 	@Override
 	public void generate() {
 		this.addDrop(AbysmBlocks.FLOROPUMICE);
+		this.addDrop(AbysmBlocks.PURPLE_SCABIOSA);
 	}
 }

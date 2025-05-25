@@ -9,6 +9,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
 		pack.addProvider(ModelProvider::new);
+		pack.addProvider(ClientBlockMetatagProvider::new);
 
 		pack.addProvider(LootTableProvider::new);
 
