@@ -22,6 +22,9 @@ public class ClientBlockMetatagProvider extends MetatagProvider<Block> {
 	protected void configure(Consumer<MetatagBuilder<Block, ?>> consumer, RegistryWrapper.WrapperLookup wrapperLookup) {
 		MetatagBuilder<Block, BlockRenderLayer> renderLayer = create(RenderMetatags.RENDER_LAYER);
 
+		renderLayer.put(AbysmBlocks.WHITE_SCABIOSA, BlockRenderLayer.CUTOUT);
+		renderLayer.put(AbysmBlocks.ORANGE_SCABIOSA, BlockRenderLayer.CUTOUT);
+		renderLayer.put(AbysmBlocks.PINK_SCABIOSA, BlockRenderLayer.CUTOUT);
 		renderLayer.put(AbysmBlocks.PURPLE_SCABIOSA, BlockRenderLayer.CUTOUT);
 
 		consumer.accept(renderLayer);

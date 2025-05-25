@@ -2,7 +2,13 @@ package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.ScabiosaBlock;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.PillarBlock;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -168,15 +174,34 @@ public final class AbysmBlocks {
 		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
 	);
 
-	public static final Block PURPLE_SCABIOSA = register(
-		"purple_scabiosa",
+	public static final Block WHITE_SCABIOSA = register(
+		"white_scabiosa",
 		ScabiosaBlock::new,
 		AbstractBlock.Settings.create()
-			.mapColor(MapColor.PURPLE)
+			.mapColor(MapColor.TERRACOTTA_WHITE)
+			.solid()
 			.breakInstantly()
 			.noCollision()
 			.sounds(BlockSoundGroup.SPORE_BLOSSOM)
 			.pistonBehavior(PistonBehavior.DESTROY)
+	);
+
+	public static final Block ORANGE_SCABIOSA = register(
+		"orange_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.ORANGE)
+	);
+
+	public static final Block PINK_SCABIOSA = register(
+		"pink_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.PINK)
+	);
+
+	public static final Block PURPLE_SCABIOSA = register(
+		"purple_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.PURPLE)
 	);
 
 	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, boolean item) {
