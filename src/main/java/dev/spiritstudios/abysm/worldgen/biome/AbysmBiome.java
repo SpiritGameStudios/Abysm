@@ -1,8 +1,11 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
+import com.terraformersmc.biolith.api.surface.SurfaceGeneration;
+import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
@@ -10,6 +13,14 @@ import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
+import net.minecraft.world.gen.surfacebuilder.MaterialRules;
+
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.biome;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.block;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.condition;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.not;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.water;
 
 public abstract class AbysmBiome {
 	protected final RegistryKey<Biome> key;
@@ -51,10 +62,22 @@ public abstract class AbysmBiome {
 	}
 
 	public abstract BiomeEffects.Builder createEffects();
+
 	public abstract GenerationSettings.Builder createGenerationSettings(RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup);
+
 	public abstract SpawnSettings.Builder createSpawnSettings();
 
 	public abstract void addToGenerator();
+
+	public void addSurfaceRules(MaterialRules.MaterialRule... rules) {
+		SurfaceGeneration.addOverworldSurfaceRules(
+			Identifier.ofVanilla("rules/overworld"),
+			condition(
+				biome(key),
+				rules.length == 1 ? rules[0] : sequence(rules)
+			)
+		);
+	}
 
 	// This is private in OverworldBiomeCreator for some reason?
 	protected static void addBasicFeatures(GenerationSettings.LookupBackedBuilder generationSettings) {

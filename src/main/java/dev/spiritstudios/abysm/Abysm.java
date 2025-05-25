@@ -14,6 +14,7 @@ public class Abysm implements ModInitializer {
     @Override
     public void onInitialize() {
 		AbysmBlocks.init();
+
 		AbysmBiomes.addAllToGenerator();
     }
 

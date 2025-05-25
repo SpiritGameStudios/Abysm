@@ -9,7 +9,7 @@
     "fog_color": 12638463,
     "music_volume": 1.0,
     "sky_color": 8103167,
-    "water_color": 4445678,
+    "water_color": 3383237,
     "water_fog_color": 270131
   },
   "features": [
@@ -72,7 +72,8 @@
       "minecraft:red_mushroom_normal",
       "minecraft:patch_pumpkin",
       "minecraft:patch_sugar_cane",
-      "minecraft:patch_firefly_bush_near_water"
+      "minecraft:patch_firefly_bush_near_water",
+      "minecraft:sea_pickle"
     ],
     [
       "minecraft:freeze_top_layer"
