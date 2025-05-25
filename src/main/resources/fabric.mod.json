@@ -18,6 +18,9 @@
 		],
 		"main": [
 			"dev.spiritstudios.abysm.Abysm"
+		],
+		"fabric-datagen": [
+			"dev.spiritstudios.abysm.datagen.AbysmDatagen"
 		]
 	},
 	"mixins": [

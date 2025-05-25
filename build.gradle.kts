@@ -17,6 +17,12 @@ group = mod.group
 
 base.archivesName = mod.id
 
+fabricApi {
+    configureDataGeneration {
+        client = true
+    }
+}
+
 loom {
 	splitEnvironmentSourceSets()
 
