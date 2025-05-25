@@ -9,5 +9,7 @@
 	"block.abysm.polished_smooth_floropumice": "Polished Smooth Floropumice",
 	"block.abysm.smooth_floropumice": "Smooth Floropumice",
 	"block.abysm.smooth_floropumice_bricks": "Smooth Floropumice Bricks",
-	"block.abysm.smooth_floropumice_pillar": "Smooth Floropumice Pillar"
+	"block.abysm.smooth_floropumice_pillar": "Smooth Floropumice Pillar",
+
+	"item_group.abysm.abysm": "Abysm"
 }

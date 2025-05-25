@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm;
 
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.registry.AbysmItemGroups;
 import dev.spiritstudios.abysm.registry.AbysmTrunkPlacerTypes;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.specter.api.registry.RegistryHelper;
@@ -18,6 +19,7 @@ public class Abysm implements ModInitializer {
     @Override
     public void onInitialize() {
 		AbysmBlocks.init();
+		AbysmItemGroups.init();
 
 		RegistryHelper.registerFields(
 			Registries.TRUNK_PLACER_TYPE, RegistryHelper.fixGenerics(TrunkPlacerType.class),

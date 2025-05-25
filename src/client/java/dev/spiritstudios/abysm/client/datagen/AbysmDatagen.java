@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.datagen.AbysmItemGroupGenerator;
 import dev.spiritstudios.abysm.datagen.AbysmLootTableProvider;
 import dev.spiritstudios.abysm.datagen.AbysmTagProviders;
 import dev.spiritstudios.abysm.datagen.AutomaticDynamicRegistryProvider;
@@ -16,10 +17,14 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = dataGenerator.createPack();
 
 		pack.addProvider(AbysmModelProvider::new);
-
 		pack.addProvider(ClientBlockMetatagProvider::new);
-		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.BIOME, Abysm.MODID));
+
+		// note: disabled because the generated file doesn't seem to actually work
+		//pack.addProvider(AbysmItemGroupGenerator::new);
+
 		pack.addProvider(AbysmLootTableProvider::new);
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.BIOME, Abysm.MODID));
+
 		AbysmTagProviders.addAll(pack);
 	}
 
