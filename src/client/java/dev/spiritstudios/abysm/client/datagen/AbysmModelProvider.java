@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
@@ -53,7 +54,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.registerSimpleCubeAll(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS);
 		generator.registerSimpleCubeAll(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE);
 		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE);
-		generator.registerSimpleCubeAll(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR);
+		generator.registerAxisRotated(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, TexturedModel.END_FOR_TOP_CUBE_COLUMN, TexturedModel.END_FOR_TOP_CUBE_COLUMN_HORIZONTAL);
 
 		registerScabiosa(generator, AbysmBlocks.PURPLE_SCABIOSA);
 	}

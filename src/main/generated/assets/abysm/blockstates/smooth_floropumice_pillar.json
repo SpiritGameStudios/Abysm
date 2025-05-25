@@ -1,7 +1,16 @@
 {
   "variants": {
-    "": {
+    "axis=x": {
+      "model": "abysm:block/smooth_floropumice_pillar_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
       "model": "abysm:block/smooth_floropumice_pillar"
+    },
+    "axis=z": {
+      "model": "abysm:block/smooth_floropumice_pillar_horizontal",
+      "x": 90
     }
   }
 }

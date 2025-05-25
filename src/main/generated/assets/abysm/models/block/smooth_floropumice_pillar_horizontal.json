@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
     "end": "abysm:block/smooth_floropumice_pillar_top",
     "side": "abysm:block/smooth_floropumice_pillar"
