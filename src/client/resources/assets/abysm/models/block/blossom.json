@@ -1,0 +1,6 @@
+{
+	"parent": "block/spore_blossom",
+	"textures": {
+		"particle": "#flower"
+	}
+}
