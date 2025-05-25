@@ -5,14 +5,7 @@ import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.BlockStateVariantMap;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Model;
-import net.minecraft.client.data.TextureKey;
-import net.minecraft.client.data.TextureMap;
-import net.minecraft.client.data.TexturedModel;
-import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
+import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.state.property.Properties;
@@ -51,6 +44,17 @@ public class AbysmModelProvider extends FabricModelProvider {
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator generator) {
 		generator.registerSimpleCubeAll(AbysmBlocks.FLOROPUMICE);
+		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_FLOROPUMICE);
+		generator.registerSimpleCubeAll(AbysmBlocks.FLOROPUMICE_BRICKS);
+		generator.registerSimpleCubeAll(AbysmBlocks.FLOROPUMICE_TILES);
+		generator.registerSimpleCubeAll(AbysmBlocks.CHISLED_FLOROPUMICE);
+		generator.registerSimpleCubeAll(AbysmBlocks.SMOOTH_FLOROPUMICE);
+		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
+		generator.registerSimpleCubeAll(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS);
+		generator.registerSimpleCubeAll(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE);
+		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE);
+		generator.registerSimpleCubeAll(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR);
+
 		registerScabiosa(generator, AbysmBlocks.PURPLE_SCABIOSA);
 	}
 

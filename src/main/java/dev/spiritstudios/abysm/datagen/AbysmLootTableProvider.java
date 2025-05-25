@@ -15,6 +15,17 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 	@Override
 	public void generate() {
 		this.addDrop(AbysmBlocks.FLOROPUMICE);
+		this.addDrop(AbysmBlocks.POLISHED_FLOROPUMICE);
+		this.addDrop(AbysmBlocks.FLOROPUMICE_BRICKS);
+		this.addDrop(AbysmBlocks.FLOROPUMICE_TILES);
+		this.addDrop(AbysmBlocks.CHISLED_FLOROPUMICE);
+		this.addDrop(AbysmBlocks.SMOOTH_FLOROPUMICE);
+		this.addDrop(AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
+		this.addDrop(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS);
+		this.addDrop(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE);
+		this.addDrop(AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE);
+		this.addDrop(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR);
+
 		this.addDrop(AbysmBlocks.PURPLE_SCABIOSA);
 	}
 }

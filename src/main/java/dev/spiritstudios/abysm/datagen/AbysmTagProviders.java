@@ -5,7 +5,6 @@ import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BiomeTags;
@@ -28,7 +27,19 @@ public class AbysmTagProviders {
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 			getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
-				.add(AbysmBlocks.FLOROPUMICE);
+				.add(
+					AbysmBlocks.FLOROPUMICE,
+					AbysmBlocks.POLISHED_FLOROPUMICE,
+					AbysmBlocks.FLOROPUMICE_BRICKS,
+					AbysmBlocks.FLOROPUMICE_TILES,
+					AbysmBlocks.CHISLED_FLOROPUMICE,
+					AbysmBlocks.SMOOTH_FLOROPUMICE,
+					AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE,
+					AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS,
+					AbysmBlocks.CUT_SMOOTH_FLOROPUMICE,
+					AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE,
+					AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR
+				);
 		}
 	}
 

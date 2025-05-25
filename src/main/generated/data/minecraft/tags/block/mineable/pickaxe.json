@@ -1,5 +1,15 @@
 {
   "values": [
-    "abysm:floropumice"
+    "abysm:floropumice",
+    "abysm:polished_floropumice",
+    "abysm:floropumice_bricks",
+    "abysm:floropumice_tiles",
+    "abysm:chiseled_floropumice",
+    "abysm:smooth_floropumice",
+    "abysm:polished_smooth_floropumice",
+    "abysm:smooth_floropumice_bricks",
+    "abysm:cut_smooth_floropumice",
+    "abysm:chiseled_smooth_floropumice",
+    "abysm:smooth_floropumice_pillar"
   ]
 }
