@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.datagen;
+package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
@@ -6,9 +6,9 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.BlockStateModelGenerator;
 import net.minecraft.client.data.ItemModelGenerator;
 
-public class ModelProvider extends FabricModelProvider {
+public class AbysmModelProvider extends FabricModelProvider {
 
-	public ModelProvider(FabricDataOutput output) {
+	public AbysmModelProvider(FabricDataOutput output) {
 		super(output);
 	}
 

@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm;
 
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ public class Abysm implements ModInitializer {
     @Override
     public void onInitialize() {
 		AbysmBlocks.init();
+		AbysmBiomes.addAllToGenerator();
     }
 
 	public static Identifier id(String path) {

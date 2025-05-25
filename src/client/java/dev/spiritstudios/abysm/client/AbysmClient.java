@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm;
+package dev.spiritstudios.abysm.client;
 
 import net.fabricmc.api.ClientModInitializer;
 
