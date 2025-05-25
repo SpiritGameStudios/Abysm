@@ -29,12 +29,20 @@ loom {
 repositories {
 	mavenCentral()
 	maven("https://maven.spiritstudios.dev/releases/")
+	maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
 }
 
 dependencies {
 	minecraft(libs.minecraft)
 	mappings(variantOf(libs.yarn) { classifier("v2") })
 	modImplementation(libs.fabric.loader)
+
+	include(libs.bundles.specter)
+	modImplementation(libs.bundles.specter)
+
+	modImplementation(libs.geckolib)
+
+	modRuntimeOnly(libs.specter.debug)
 
 	modImplementation(libs.fabric.api)
 }
@@ -77,5 +85,6 @@ modrinth {
 	syncBodyFrom.set(rootProject.file("README.md").readText())
 	dependencies {
 		required.version("fabric-api", libs.versions.fabric.api.get())
+		required.version("geckolib", libs.versions.geckolib.get())
 	}
 }

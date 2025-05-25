@@ -1,7 +1,7 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.spiritstudios.template.mixin",
+  "package": "dev.spiritstudios.abysm.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
   ],
