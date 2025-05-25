@@ -1,0 +1,125 @@
+{
+  "icon": {
+    "count": 1,
+    "id": "abysm:floropumice"
+  },
+  "items": [
+    {
+      "count": 1,
+      "id": "abysm:floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_stairs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_slab"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_wall"
+    },
+    {
+      "count": 1,
+      "id": "abysm:polished_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_bricks"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_brick_stairs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_brick_slab"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_brick_wall"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_tiles"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_tile_stairs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_tile_slab"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floropumice_tile_wall"
+    },
+    {
+      "count": 1,
+      "id": "abysm:chiseled_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:smooth_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:smooth_floropumice_stairs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:smooth_floropumice_slab"
+    },
+    {
+      "count": 1,
+      "id": "abysm:smooth_floropumice_wall"
+    },
+    {
+      "count": 1,
+      "id": "abysm:polished_smooth_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:cut_smooth_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:cut_smooth_floropumice_stairs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:cut_smooth_floropumice_slab"
+    },
+    {
+      "count": 1,
+      "id": "abysm:smooth_floropumice_bricks"
+    },
+    {
+      "count": 1,
+      "id": "abysm:smooth_floropumice_brick_stairs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:smooth_floropumice_brick_slab"
+    },
+    {
+      "count": 1,
+      "id": "abysm:smooth_floropumice_brick_wall"
+    },
+    {
+      "count": 1,
+      "id": "abysm:chiseled_smooth_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:smooth_floropumice_pillar"
+    },
+    {
+      "count": 1,
+      "id": "abysm:purple_scabiosa"
+    }
+  ],
+  "translate": "item_group.abysm.abysm"
+}

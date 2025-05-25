@@ -1,0 +1,9 @@
+{
+  "values": [
+    "abysm:floropumice_wall",
+    "abysm:floropumice_brick_wall",
+    "abysm:floropumice_tile_wall",
+    "abysm:smooth_floropumice_wall",
+    "abysm:smooth_floropumice_brick_wall"
+  ]
+}

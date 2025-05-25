@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "abysm:block/smooth_floropumice_bricks",
+    "side": "abysm:block/smooth_floropumice_bricks",
+    "top": "abysm:block/smooth_floropumice_bricks"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "abysm:block/floropumice_tile_slab"
+    },
+    "type=double": {
+      "model": "abysm:block/floropumice_tiles"
+    },
+    "type=top": {
+      "model": "abysm:block/floropumice_tile_slab_top"
+    }
+  }
+}

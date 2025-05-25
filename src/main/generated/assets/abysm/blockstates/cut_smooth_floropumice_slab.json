@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "abysm:block/cut_smooth_floropumice_slab"
+    },
+    "type=double": {
+      "model": "abysm:block/cut_smooth_floropumice"
+    },
+    "type=top": {
+      "model": "abysm:block/cut_smooth_floropumice_slab_top"
+    }
+  }
+}

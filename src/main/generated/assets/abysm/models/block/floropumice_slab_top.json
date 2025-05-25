@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "abysm:block/floropumice",
+    "side": "abysm:block/floropumice",
+    "top": "abysm:block/floropumice"
+  }
+}

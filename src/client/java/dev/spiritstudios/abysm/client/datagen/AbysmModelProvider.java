@@ -1,14 +1,15 @@
 package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
+import net.minecraft.data.family.BlockFamily;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.Direction;
 
@@ -44,15 +45,14 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator generator) {
-		generator.registerSimpleCubeAll(AbysmBlocks.FLOROPUMICE);
+		AbysmBlockFamilies
+			.getAllAbysmBlockFamilies()
+			.filter(BlockFamily::shouldGenerateModels)
+			.forEach(blockFamily -> generator.registerCubeAllModelTexturePool(blockFamily.getBaseBlock()).family(blockFamily));
+
 		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_FLOROPUMICE);
-		generator.registerSimpleCubeAll(AbysmBlocks.FLOROPUMICE_BRICKS);
-		generator.registerSimpleCubeAll(AbysmBlocks.FLOROPUMICE_TILES);
 		generator.registerSimpleCubeAll(AbysmBlocks.CHISLED_FLOROPUMICE);
-		generator.registerSimpleCubeAll(AbysmBlocks.SMOOTH_FLOROPUMICE);
 		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
-		generator.registerSimpleCubeAll(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS);
-		generator.registerSimpleCubeAll(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE);
 		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE);
 		generator.registerAxisRotated(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, TexturedModel.END_FOR_TOP_CUBE_COLUMN, TexturedModel.END_FOR_TOP_CUBE_COLUMN_HORIZONTAL);
 
