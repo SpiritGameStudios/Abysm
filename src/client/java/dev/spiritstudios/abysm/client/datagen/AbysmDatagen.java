@@ -6,6 +6,8 @@ import dev.spiritstudios.abysm.datagen.AbysmLootTableProvider;
 import dev.spiritstudios.abysm.datagen.AbysmTagProviders;
 import dev.spiritstudios.abysm.datagen.AutomaticDynamicRegistryProvider;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
+import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
+import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.registry.RegistryBuilder;
@@ -20,10 +22,13 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		pack.addProvider(ClientBlockMetatagProvider::new);
 
 		// note: disabled because the generated file doesn't seem to actually work
-		//pack.addProvider(AbysmItemGroupGenerator::new);
+		pack.addProvider(AbysmItemGroupGenerator::new);
+
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.BIOME, Abysm.MODID));
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.CONFIGURED_FEATURE, Abysm.MODID));
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.PLACED_FEATURE, Abysm.MODID));
 
 		pack.addProvider(AbysmLootTableProvider::new);
-		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.BIOME, Abysm.MODID));
 
 		AbysmTagProviders.addAll(pack);
 	}
@@ -31,6 +36,8 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 	@Override
 	public void buildRegistry(RegistryBuilder registryBuilder) {
 		registryBuilder
-			.addRegistry(RegistryKeys.BIOME, AbysmBiomes::bootstrap);
+			.addRegistry(RegistryKeys.BIOME, AbysmBiomes::bootstrap)
+			.addRegistry(RegistryKeys.CONFIGURED_FEATURE, AbysmConfiguredFeatures::bootstrap)
+			.addRegistry(RegistryKeys.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap);
 	}
 }

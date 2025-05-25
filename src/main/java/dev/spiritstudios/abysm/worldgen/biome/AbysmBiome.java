@@ -46,7 +46,6 @@ public abstract class AbysmBiome {
 	}
 
 	public void bootstrap(Registerable<Biome> registerable, RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
-
 		registerable.register(
 			AbysmBiomes.FLORAL_REEF,
 			new Biome.Builder()
