@@ -1,14 +1,11 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.block.BloomedFloropumiceBlock;
+import dev.spiritstudios.abysm.block.FloropumiceBlock;
 import dev.spiritstudios.abysm.block.ScabiosaBlock;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.PillarBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import dev.spiritstudios.abysm.block.WaterloggableTranslucentBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -24,9 +21,10 @@ import java.util.function.Function;
 
 public final class AbysmBlocks {
 
+	// region floropumice blocks
 	public static final Block FLOROPUMICE = register(
 		"floropumice",
-		Block::new,
+		FloropumiceBlock::new,
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.LIGHT_BLUE)
 			.instrument(NoteBlockInstrument.BASEDRUM)
@@ -173,7 +171,51 @@ public final class AbysmBlocks {
 		PillarBlock::new,
 		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
 	);
+	// endregion floropumice
 
+	// region bloomshroom blocks
+	public static final Block ROSEBLOOMED_FLOROPUMICE = register(
+		"rosebloomed_floropumice",
+		BloomedFloropumiceBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.instrument(NoteBlockInstrument.BASS)
+			.strength(1.2F, 4.5F)
+			.requiresTool()
+			.ticksRandomly()
+	);
+	public static final Block ROSY_BLOOMSHROOM_STEM = register(
+		"rosy_bloomshroom_stem",
+		PillarBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.instrument(NoteBlockInstrument.BASS)
+			.sounds(BlockSoundGroup.WOOD)
+			.strength(1.1F, 1.5F)
+	);
+	public static final Block ROSY_BLOOMSHROOM_CAP = register(
+		"rosy_bloomshroom_cap",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.instrument(NoteBlockInstrument.BASS)
+			.sounds(BlockSoundGroup.WOOD)
+			.strength(0.7F, 0.9F)
+	);
+	public static final Block BLOOMSHROOM_GOOP = register(
+		"bloomshroom_goop",
+		WaterloggableTranslucentBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.PINK)
+			.instrument(NoteBlockInstrument.BASS)
+			.sounds(BlockSoundGroup.HONEY)
+			.strength(0.7F, 1.1F)
+			.luminance(state -> 11)
+			.nonOpaque()
+	);
+	// endregion bloomshroom
+
+	// region scabiosas
 	public static final Block WHITE_SCABIOSA = register(
 		"white_scabiosa",
 		ScabiosaBlock::new,
@@ -203,6 +245,7 @@ public final class AbysmBlocks {
 		ScabiosaBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.PURPLE)
 	);
+	// endregion scabiosas
 
 	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, boolean item) {
 		T block = factory.apply(settings.registryKey(key));

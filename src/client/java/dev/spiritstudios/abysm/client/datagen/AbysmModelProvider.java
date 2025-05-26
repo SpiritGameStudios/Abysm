@@ -6,18 +6,12 @@ import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.BlockStateVariantMap;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Model;
-import net.minecraft.client.data.TextureKey;
-import net.minecraft.client.data.TextureMap;
-import net.minecraft.client.data.TexturedModel;
-import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
+import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 import java.util.Optional;
@@ -63,6 +57,11 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE);
 		generator.registerAxisRotated(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, TexturedModel.END_FOR_TOP_CUBE_COLUMN, TexturedModel.END_FOR_TOP_CUBE_COLUMN_HORIZONTAL);
 
+		registerGrassLike(generator, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
+		generator.registerAxisRotated(AbysmBlocks.ROSY_BLOOMSHROOM_STEM, TexturedModel.END_FOR_TOP_CUBE_COLUMN, TexturedModel.END_FOR_TOP_CUBE_COLUMN_HORIZONTAL);
+		generator.registerSimpleCubeAll(AbysmBlocks.ROSY_BLOOMSHROOM_CAP);
+		generator.registerSimpleCubeAll(AbysmBlocks.BLOOMSHROOM_GOOP);
+
 		registerScabiosa(generator, AbysmBlocks.WHITE_SCABIOSA);
 		registerScabiosa(generator, AbysmBlocks.ORANGE_SCABIOSA);
 		registerScabiosa(generator, AbysmBlocks.PINK_SCABIOSA);
@@ -77,5 +76,14 @@ public class AbysmModelProvider extends FabricModelProvider {
 	public final void registerScabiosa(BlockStateModelGenerator generator, Block block) {
 		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(BLOSSOM_FACTORY.upload(block, generator.modelCollector));
 		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS));
+	}
+
+	private static void registerGrassLike(BlockStateModelGenerator generator, Block block, Block baseBlock) {
+		TextureMap textureMapping = new TextureMap()
+			.put(TextureKey.BOTTOM, TextureMap.getId(baseBlock))
+			.put(TextureKey.TOP, TextureMap.getId(block))
+			.put(TextureKey.SIDE, TextureMap.getSubId(block, "_side"));
+		Identifier model = Models.CUBE_BOTTOM_TOP.upload(block, textureMapping, generator.modelCollector);
+		generator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(block, BlockStateModelGenerator.modelWithYRotation(BlockStateModelGenerator.createModelVariant(model))));
 	}
 }

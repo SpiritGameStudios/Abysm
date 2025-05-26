@@ -56,9 +56,28 @@ public class AbysmTagProviders {
 				.add(
 					AbysmBlocks.POLISHED_FLOROPUMICE,
 					AbysmBlocks.CHISLED_FLOROPUMICE,
+					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE,
 					AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE,
 					AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE,
 					AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR
+				);
+
+			getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
+					AbysmBlocks.ROSY_BLOOMSHROOM_CAP
+				);
+
+			getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE)
+				.add(
+					AbysmBlocks.BLOOMSHROOM_GOOP
+				);
+
+			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
+					AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
+					AbysmBlocks.BLOOMSHROOM_GOOP
 				);
 		}
 

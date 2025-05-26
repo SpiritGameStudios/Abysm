@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "abysm:block/rosy_bloomshroom_stem_top",
+    "side": "abysm:block/rosy_bloomshroom_stem"
+  }
+}

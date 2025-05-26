@@ -26,11 +26,17 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlockFamilies.CUT_SMOOTH_FLOROPUMICE
 		);
 
-		this.addDrop(AbysmBlocks.POLISHED_FLOROPUMICE);
-		this.addDrop(AbysmBlocks.CHISLED_FLOROPUMICE);
-		this.addDrop(AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
-		this.addDrop(AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE);
-		this.addDrop(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR);
+		dropSelf(
+			AbysmBlocks.POLISHED_FLOROPUMICE,
+			AbysmBlocks.CHISLED_FLOROPUMICE,
+			AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE,
+			AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE,
+			AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR,
+			AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
+			AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
+			AbysmBlocks.BLOOMSHROOM_GOOP
+		);
+		this.addDrop(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));
 
 		this.addDrop(AbysmBlocks.PURPLE_SCABIOSA);
 	}
@@ -43,7 +49,7 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 
 	private void dropWhenSilkTouch(Block... blocks) {
 		for(Block block : blocks) {
-			dropWhenSilkTouch(block);
+			this.addDropWithSilkTouch(block);
 		}
 	}
 

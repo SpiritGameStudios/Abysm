@@ -1,4 +1,5 @@
 {
+	"block.abysm.bloomshroom_goop": "Bloomshroom Goop",
 	"block.abysm.chiseled_floropumice": "Chiseled Floropumice",
 	"block.abysm.chiseled_smooth_floropumice": "Chiseled Smooth Floropumice",
 	"block.abysm.cut_smooth_floropumice": "Cut Smooth Floropumice",
@@ -21,6 +22,9 @@
 	"block.abysm.polished_floropumice": "Polished Floropumice",
 	"block.abysm.polished_smooth_floropumice": "Polished Smooth Floropumice",
 	"block.abysm.purple_scabiosa": "Purple Scabiosa",
+	"block.abysm.rosebloomed_floropumice": "Rosebloomed Floropumice",
+	"block.abysm.rosy_bloomshroom_cap": "Rosy Bloomshroom Cap",
+	"block.abysm.rosy_bloomshroom_stem": "Rosy Bloomshroom Stem",
 	"block.abysm.smooth_floropumice": "Smooth Floropumice",
 	"block.abysm.smooth_floropumice_brick_slab": "Smooth Floropumice Brick Slab",
 	"block.abysm.smooth_floropumice_brick_stairs": "Smooth Floropumice Brick Stairs",
