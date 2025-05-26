@@ -54,9 +54,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 			.forEach(blockFamily -> generator.registerCubeAllModelTexturePool(blockFamily.getBaseBlock()).family(blockFamily));
 
 		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_FLOROPUMICE);
-		generator.registerSimpleCubeAll(AbysmBlocks.CHISLED_FLOROPUMICE);
 		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
-		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE);
 		generator.registerAxisRotated(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, TexturedModel.END_FOR_TOP_CUBE_COLUMN, TexturedModel.END_FOR_TOP_CUBE_COLUMN_HORIZONTAL);
 
 		registerGrassLike(generator, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);

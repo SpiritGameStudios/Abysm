@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_polished_smooth_floropumice": {
+      "conditions": {
+        "items": [
+          {
+            "items": "abysm:polished_smooth_floropumice"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:cut_smooth_floropumice_stairs_from_polished_smooth_floropumice_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_polished_smooth_floropumice"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:cut_smooth_floropumice_stairs_from_polished_smooth_floropumice_stonecutting"
+    ]
+  }
+}

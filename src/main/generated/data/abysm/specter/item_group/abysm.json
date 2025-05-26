@@ -82,18 +82,6 @@
     },
     {
       "count": 1,
-      "id": "abysm:cut_smooth_floropumice"
-    },
-    {
-      "count": 1,
-      "id": "abysm:cut_smooth_floropumice_stairs"
-    },
-    {
-      "count": 1,
-      "id": "abysm:cut_smooth_floropumice_slab"
-    },
-    {
-      "count": 1,
       "id": "abysm:smooth_floropumice_bricks"
     },
     {
@@ -107,6 +95,18 @@
     {
       "count": 1,
       "id": "abysm:smooth_floropumice_brick_wall"
+    },
+    {
+      "count": 1,
+      "id": "abysm:cut_smooth_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:cut_smooth_floropumice_stairs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:cut_smooth_floropumice_slab"
     },
     {
       "count": 1,

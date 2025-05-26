@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_floropumice_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": "abysm:floropumice_slab"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "abysm:chiseled_floropumice"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_floropumice_slab"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "abysm:chiseled_floropumice"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "abysm:floropumice_bricks",
+  "result": {
+    "count": 1,
+    "id": "abysm:floropumice_brick_stairs"
+  }
+}

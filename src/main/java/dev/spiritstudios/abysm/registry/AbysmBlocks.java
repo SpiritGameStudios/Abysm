@@ -128,20 +128,6 @@ public final class AbysmBlocks {
 			.strength(1.5F, 6.0F)
 	);
 
-	public static final Block CUT_SMOOTH_FLOROPUMICE = register(
-		"cut_smooth_floropumice",
-		Block::new,
-		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
-	);
-	public static final Block CUT_SMOOTH_FLOROPUMICE_STAIRS = registerStairsOf(
-		"cut_smooth_floropumice_stairs",
-		CUT_SMOOTH_FLOROPUMICE
-	);
-	public static final Block CUT_SMOOTH_FLOROPUMICE_SLAB = registerSlabOf(
-		"cut_smooth_floropumice_slab",
-		CUT_SMOOTH_FLOROPUMICE
-	);
-
 	public static final Block SMOOTH_FLOROPUMICE_BRICKS = register(
 		"smooth_floropumice_bricks",
 		Block::new,
@@ -158,6 +144,20 @@ public final class AbysmBlocks {
 	public static final Block SMOOTH_FLOROPUMICE_BRICK_WALL = registerWallOf(
 		"smooth_floropumice_brick_wall",
 		SMOOTH_FLOROPUMICE_BRICKS
+	);
+
+	public static final Block CUT_SMOOTH_FLOROPUMICE = register(
+		"cut_smooth_floropumice",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
+	);
+	public static final Block CUT_SMOOTH_FLOROPUMICE_STAIRS = registerStairsOf(
+		"cut_smooth_floropumice_stairs",
+		CUT_SMOOTH_FLOROPUMICE
+	);
+	public static final Block CUT_SMOOTH_FLOROPUMICE_SLAB = registerSlabOf(
+		"cut_smooth_floropumice_slab",
+		CUT_SMOOTH_FLOROPUMICE
 	);
 
 	public static final Block CHISELED_SMOOTH_FLOROPUMICE = register(

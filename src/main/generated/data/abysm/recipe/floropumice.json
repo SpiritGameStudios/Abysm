@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "minecraft:prismarine_crystals",
+    "minecraft:sandstone",
+    "minecraft:sandstone",
+    "minecraft:sandstone",
+    "minecraft:sandstone",
+    "minecraft:basalt",
+    "minecraft:basalt",
+    "minecraft:basalt",
+    "minecraft:basalt"
+  ],
+  "result": {
+    "count": 8,
+    "id": "abysm:floropumice"
+  }
+}
