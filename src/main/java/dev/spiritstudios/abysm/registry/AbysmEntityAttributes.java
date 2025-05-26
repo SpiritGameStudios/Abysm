@@ -11,7 +11,7 @@ public final class AbysmEntityAttributes {
 	public static final RegistryEntry<EntityAttribute> SWIMMING_SPEED = register(
 		"swimming_speed",
 		new ClampedEntityAttribute(
-			"attribute.name.swimming_speed",
+			"attribute.name.abysm.swimming_speed",
 			0.9, 0.0, 1.0
 		).setTracked(true)
 	);

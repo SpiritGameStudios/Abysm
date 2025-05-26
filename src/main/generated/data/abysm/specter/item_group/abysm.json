@@ -147,6 +147,10 @@
     {
       "count": 1,
       "id": "abysm:purple_scabiosa"
+    },
+    {
+      "count": 1,
+      "id": "abysm:flippers"
     }
   ],
   "translate": "item_group.abysm.abysm"

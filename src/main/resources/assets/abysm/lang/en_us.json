@@ -1,4 +1,6 @@
 {
+	"attribute.name.abysm.swimming_speed": "Swimming Speed",
+
 	"block.abysm.bloomshroom_goop": "Bloomshroom Goop",
 	"block.abysm.chiseled_floropumice": "Chiseled Floropumice",
 	"block.abysm.chiseled_smooth_floropumice": "Chiseled Smooth Floropumice",
@@ -35,6 +37,8 @@
 	"block.abysm.smooth_floropumice_stairs": "Smooth Floropumice Stairs",
 	"block.abysm.smooth_floropumice_wall": "Smooth Floropumice Wall",
 	"block.abysm.white_scabiosa": "White Scabiosa",
+
+	"item.abysm.flippers": "Flippers",
 
 	"item_group.abysm.abysm": "Abysm"
 }

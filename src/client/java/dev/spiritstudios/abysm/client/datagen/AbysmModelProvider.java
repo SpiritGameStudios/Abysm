@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.client.datagen;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.registry.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
@@ -10,6 +11,7 @@ import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.data.family.BlockFamily;
+import net.minecraft.item.Item;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -68,11 +70,6 @@ public class AbysmModelProvider extends FabricModelProvider {
 		registerScabiosa(generator, AbysmBlocks.PURPLE_SCABIOSA);
 	}
 
-	@Override
-	public void generateItemModels(ItemModelGenerator generator) {
-
-	}
-
 	public final void registerScabiosa(BlockStateModelGenerator generator, Block block) {
 		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(BLOSSOM_FACTORY.upload(block, generator.modelCollector));
 		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS));
@@ -85,5 +82,22 @@ public class AbysmModelProvider extends FabricModelProvider {
 			.put(TextureKey.SIDE, TextureMap.getSubId(block, "_side"));
 		Identifier model = Models.CUBE_BOTTOM_TOP.upload(block, textureMapping, generator.modelCollector);
 		generator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(block, BlockStateModelGenerator.modelWithYRotation(BlockStateModelGenerator.createModelVariant(model))));
+	}
+
+	@Override
+	public void generateItemModels(ItemModelGenerator generator) {
+		registerGenerated(generator,
+			AbysmItems.FLIPPERS
+		);
+	}
+
+	private static void registerGenerated(ItemModelGenerator generator, Item... items) {
+		for(Item item : items) {
+			registerGenerated(generator, items);
+		}
+	}
+
+	private static void registerGenerated(ItemModelGenerator generator, Item item) {
+		generator.register(item, Models.GENERATED);
 	}
 }
