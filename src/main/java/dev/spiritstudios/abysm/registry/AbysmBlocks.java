@@ -276,14 +276,17 @@ public final class AbysmBlocks {
 		return RegistryKey.of(RegistryKeys.BLOCK, Abysm.id(id));
 	}
 
+	@SuppressWarnings("deprecation")
 	private static Block registerStairsOf(String id, Block block) {
 		return register(id, settings -> new StairsBlock(block.getDefaultState(), settings), AbstractBlock.Settings.copyShallow(block));
 	}
 
+	@SuppressWarnings("deprecation")
 	private static Block registerSlabOf(String id, Block block) {
 		return register(id, SlabBlock::new, AbstractBlock.Settings.copyShallow(block));
 	}
 
+	@SuppressWarnings("deprecation")
 	private static Block registerWallOf(String id, Block block) {
 		return register(id, WallBlock::new, AbstractBlock.Settings.copyShallow(block).solid());
 	}

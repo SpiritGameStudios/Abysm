@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.registry.AbysmItems;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -13,6 +14,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
@@ -21,8 +23,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class AbysmTagProviders {
 	public static void addAll(FabricDataGenerator.Pack pack) {
-		pack.addProvider(AbysmTagProviders.BlockTagProvider::new);
-		pack.addProvider(AbysmTagProviders.BiomeTagProvider::new);
+		pack.addProvider(BlockTagProvider::new);
+		pack.addProvider(ItemTagProvider::new);
+		pack.addProvider(BiomeTagProvider::new);
 	}
 
 	private static class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
@@ -32,7 +35,7 @@ public class AbysmTagProviders {
 
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-			// family tags
+			// region Family tags
 			addTagsForFamilies(false, true,
 				AbysmBlockFamilies.FLOROPUMICE,
 				AbysmBlockFamilies.FLOROPUMICE_BRICKS,
@@ -50,8 +53,9 @@ public class AbysmTagProviders {
 				AbysmBlockFamilies.SMOOTH_FLOROPUMICE_BRICKS,
 				AbysmBlockFamilies.CUT_SMOOTH_FLOROPUMICE
 			);
+			// endregion
 
-			// block tags
+			// region Block tags
 			getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
 				.add(
 					AbysmBlocks.POLISHED_FLOROPUMICE,
@@ -61,6 +65,7 @@ public class AbysmTagProviders {
 					AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE,
 					AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR
 				);
+			// endregion
 
 			getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
 				.add(
@@ -152,6 +157,18 @@ public class AbysmTagProviders {
 					getOrCreateTagBuilder(stoneTag).add(block);
 				}
 			}
+		}
+	}
+
+	private static class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
+		public ItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+			super(output, completableFuture);
+		}
+
+		@Override
+		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+			getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
+				.add(AbysmItems.FLIPPERS);
 		}
 	}
 

@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
 import com.terraformersmc.biolith.api.surface.SurfaceGeneration;
-import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
@@ -16,11 +15,8 @@ import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.surfacebuilder.MaterialRules;
 
 import static net.minecraft.world.gen.surfacebuilder.MaterialRules.biome;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.block;
 import static net.minecraft.world.gen.surfacebuilder.MaterialRules.condition;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.not;
 import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.water;
 
 public abstract class AbysmBiome {
 	protected final RegistryKey<Biome> key;
@@ -47,7 +43,7 @@ public abstract class AbysmBiome {
 
 	public void bootstrap(Registerable<Biome> registerable, RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
 		registerable.register(
-			AbysmBiomes.FLORAL_REEF,
+			key,
 			new Biome.Builder()
 				.precipitation(precipitation)
 				.temperature(temperature)

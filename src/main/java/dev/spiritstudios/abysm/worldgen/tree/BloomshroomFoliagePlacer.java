@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.registry.AbysmFoliagePlacerTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.util.math.random.Random;
@@ -35,7 +36,7 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 		for (BlockPos offsetPos : BlockPos.iterate(centerPos.add(-radius, y, -radius), centerPos.add(radius, y, radius))) {
 			int xDistance = offsetPos.getX() - centerPos.getX();
 			int zDistance = offsetPos.getZ() - centerPos.getZ();
-			if (xDistance * xDistance + zDistance * zDistance <= radius * radius) {
+			if (xDistance * xDistance + zDistance * zDistance < radius * radius) {
 				placeFoliageBlock(world, placer, random, config, offsetPos);
 			}
 		}

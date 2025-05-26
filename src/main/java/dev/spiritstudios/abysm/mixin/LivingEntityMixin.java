@@ -1,0 +1,37 @@
+package dev.spiritstudios.abysm.mixin;
+
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import dev.spiritstudios.abysm.registry.AbysmEntityAttributes;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
+
+@Mixin(LivingEntity.class)
+public abstract class LivingEntityMixin extends Entity {
+	@Shadow
+	public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+
+	public LivingEntityMixin(EntityType<?> type, World world) {
+		super(type, world);
+	}
+
+	@ModifyConstant(method = "travelInFluid", constant = @Constant(floatValue = 0.9F))
+	private float applyFluidMovingSpeed(float constant) {
+		if (this.isSprinting()) return (float) getAttributeValue(AbysmEntityAttributes.SWIMMING_SPEED);
+		return constant;
+	}
+
+	@ModifyReturnValue(method = "createLivingAttributes", at = @At("RETURN"))
+	private static DefaultAttributeContainer.Builder createLivingAttributes(DefaultAttributeContainer.Builder original) {
+		return original.add(AbysmEntityAttributes.SWIMMING_SPEED, 0.9F);
+	}
+}
