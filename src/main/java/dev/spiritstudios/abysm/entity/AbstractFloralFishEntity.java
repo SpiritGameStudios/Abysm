@@ -13,6 +13,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.DyeColor;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -24,8 +25,16 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
+
 public abstract class AbstractFloralFishEntity extends SchoolingFishEntity implements GeoEntity, Patternable {
 	public static final String ANIM_CONTROLLER_STRING = "default";
+	public static final List<Integer> PATTERN_COLORS = List.of(
+		DyeColor.WHITE.getEntityColor(), DyeColor.BLACK.getEntityColor(),
+		DyeColor.BLUE.getEntityColor(), DyeColor.LIGHT_BLUE.getEntityColor(), DyeColor.CYAN.getEntityColor(),
+		DyeColor.PINK.getEntityColor(), DyeColor.PURPLE.getEntityColor(), DyeColor.MAGENTA.getEntityColor(),
+		DyeColor.RED.getEntityColor(), DyeColor.YELLOW.getEntityColor(), DyeColor.LIME.getEntityColor()
+	);
 
 	public static final TrackedData<EntityPattern> ENTITY_PATTERN = DataTracker.registerData(AbstractFloralFishEntity.class, EntityPattern.ENTITY_PATTERN_DATA_HANDLER);
 
@@ -86,6 +95,16 @@ public abstract class AbstractFloralFishEntity extends SchoolingFishEntity imple
 	@Override
 	public ItemStack getBucketItem() {
 		return new ItemStack(Items.TROPICAL_FISH_BUCKET);
+	}
+
+	@Override
+	public List<Integer> getBaseColors() {
+		return PATTERN_COLORS;
+	}
+
+	@Override
+	public List<Integer> getPatternColors() {
+		return PATTERN_COLORS;
 	}
 
 	@Override
