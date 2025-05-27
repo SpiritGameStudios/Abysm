@@ -4,13 +4,13 @@
   "key": {
     "#": "abysm:floropumice_bricks"
   },
+  "result": {
+    "count": 4,
+    "id": "abysm:floropumice_brick_stairs"
+  },
   "pattern": [
     "#  ",
     "## ",
     "###"
-  ],
-  "result": {
-    "count": 4,
-    "id": "abysm:floropumice_brick_stairs"
-  }
+  ]
 }

@@ -4,12 +4,12 @@
   "key": {
     "#": "abysm:floropumice_slab"
   },
-  "pattern": [
-    "#",
-    "#"
-  ],
   "result": {
     "count": 1,
     "id": "abysm:chiseled_floropumice"
-  }
+  },
+  "pattern": [
+    "#",
+    "#"
+  ]
 }

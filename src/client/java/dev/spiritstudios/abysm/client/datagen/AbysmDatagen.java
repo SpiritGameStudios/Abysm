@@ -2,7 +2,10 @@ package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.datagen.AbysmEntityPatternVariantProvider;
+import dev.spiritstudios.abysm.datagen.AbysmItemGroupProvider;
+import dev.spiritstudios.abysm.datagen.AbysmItemMetatagProvider;
 import dev.spiritstudios.abysm.datagen.AbysmLootTableProvider;
+import dev.spiritstudios.abysm.datagen.AbysmRecipeProvider;
 import dev.spiritstudios.abysm.datagen.AbysmTagProviders;
 import dev.spiritstudios.abysm.datagen.AutomaticDynamicRegistryProvider;
 import dev.spiritstudios.abysm.registry.AbysmEntityPatternVariants;

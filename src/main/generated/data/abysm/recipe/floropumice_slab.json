@@ -4,11 +4,11 @@
   "key": {
     "#": "abysm:floropumice"
   },
-  "pattern": [
-    "###"
-  ],
   "result": {
     "count": 6,
     "id": "abysm:floropumice_slab"
-  }
+  },
+  "pattern": [
+    "###"
+  ]
 }

@@ -4,12 +4,12 @@
   "key": {
     "#": "abysm:floropumice_bricks"
   },
-  "pattern": [
-    "###",
-    "###"
-  ],
   "result": {
     "count": 6,
     "id": "abysm:floropumice_brick_wall"
-  }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ]
 }
