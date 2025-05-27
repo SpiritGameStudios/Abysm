@@ -84,8 +84,24 @@ public class AbysmTagProviders {
 					AbysmBlocks.BLOOMSHROOM_GOOP
 				);
 
+			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_TREES)
+				.add(
+					AbysmBlocks.ROSY_SPRIGS
+				);
+
+			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_MUSHROOMS)
+				.add(
+					AbysmBlocks.ROSY_SPRIGS
+				);
+
+			getOrCreateTagBuilder(BlockTags.COMBINATION_STEP_SOUND_BLOCKS)
+				.add(
+					AbysmBlocks.ROSY_SPRIGS
+				);
+
 			getOrCreateTagBuilder(BlockTags.ENDERMAN_HOLDABLE)
 				.add(
+					AbysmBlocks.ROSY_SPRIGS,
 					AbysmBlocks.ROSY_BLOOMSHROOM
 				);
 
@@ -101,6 +117,7 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(BlockTags.FLOWER_POTS)
 				.add(
+					AbysmBlocks.POTTED_ROSY_SPRIGS,
 					AbysmBlocks.POTTED_ROSY_BLOOMSHROOM
 				);
 

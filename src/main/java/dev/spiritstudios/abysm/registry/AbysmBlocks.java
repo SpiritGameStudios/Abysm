@@ -182,9 +182,9 @@ public final class AbysmBlocks {
 			.requiresTool()
 			.ticksRandomly()
 	);
-	public static final Block ROSY_BLOOMSHROOM = register(
-		"rosy_bloomshroom",
-		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.BLOOMSHROOM, settings),
+	public static final Block ROSY_SPRIGS = register(
+		"rosy_sprigs",
+		BloomshroomSprigsBlock::new,
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.RED)
 			.sounds(BlockSoundGroup.GRASS)
@@ -193,13 +193,36 @@ public final class AbysmBlocks {
 			.luminance(state -> 5)
 			.breakInstantly()
 			.noCollision()
+			.replaceable()
+	);
+	public static final Block POTTED_ROSY_SPRIGS = register(
+		"potted_rosy_sprigs",
+		settings -> new FlowerPotBlock(ROSY_SPRIGS, settings),
+		AbstractBlock.Settings.create()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 5)
+			.breakInstantly()
+			.nonOpaque(),
+		false
+	);
+	public static final Block ROSY_BLOOMSHROOM = register(
+		"rosy_bloomshroom",
+		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.BLOOMSHROOM, settings),
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.sounds(BlockSoundGroup.GRASS)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
+			.luminance(state -> 8)
+			.breakInstantly()
+			.noCollision()
 	);
 	public static final Block POTTED_ROSY_BLOOMSHROOM = register(
 		"potted_rosy_bloomshroom",
 		settings -> new FlowerPotBlock(ROSY_BLOOMSHROOM, settings),
 		AbstractBlock.Settings.create()
 			.pistonBehavior(PistonBehavior.DESTROY)
-			.luminance(state -> 5)
+			.luminance(state -> 8)
 			.breakInstantly()
 			.nonOpaque(),
 		false

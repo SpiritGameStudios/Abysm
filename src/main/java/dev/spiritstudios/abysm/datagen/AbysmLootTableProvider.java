@@ -32,11 +32,13 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE,
 			AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE,
 			AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR,
+			AbysmBlocks.ROSY_SPRIGS,
 			AbysmBlocks.ROSY_BLOOMSHROOM,
 			AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
 			AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 			AbysmBlocks.BLOOMSHROOM_GOOP
 		);
+		this.addPottedPlantDrops(AbysmBlocks.POTTED_ROSY_SPRIGS);
 		this.addPottedPlantDrops(AbysmBlocks.POTTED_ROSY_BLOOMSHROOM);
 		this.addDrop(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));
 
