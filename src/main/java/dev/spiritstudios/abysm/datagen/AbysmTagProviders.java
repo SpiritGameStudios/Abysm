@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.registry.RegistryKeys;
@@ -23,8 +24,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class AbysmTagProviders {
 	public static void addAll(FabricDataGenerator.Pack pack) {
-		pack.addProvider(BlockTagProvider::new);
-		pack.addProvider(ItemTagProvider::new);
+		BlockTagProvider blockTagProvider = pack.addProvider(BlockTagProvider::new);
+		pack.addProvider(((output, registriesFuture) -> new ItemTagProvider(output, registriesFuture, blockTagProvider)));
 		pack.addProvider(BiomeTagProvider::new);
 	}
 
@@ -208,14 +209,42 @@ public class AbysmTagProviders {
 	}
 
 	private static class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
-		public ItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
-			super(output, completableFuture);
+		public ItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture, @Nullable FabricTagProvider.BlockTagProvider blockTagProvider) {
+			super(output, completableFuture, blockTagProvider);
 		}
 
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 			getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
 				.add(AbysmItems.FLIPPERS);
+
+			// region copy block tags
+			this.copy(BlockTags.BUTTONS, ItemTags.BUTTONS);
+			this.copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
+			this.copy(BlockTags.STONE_BUTTONS, ItemTags.STONE_BUTTONS);
+			this.copy(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
+			this.copy(BlockTags.STAIRS, ItemTags.STAIRS);
+			this.copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
+			this.copy(BlockTags.SLABS, ItemTags.SLABS);
+			this.copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
+			this.copy(BlockTags.FENCES, ItemTags.FENCES);
+			this.copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
+			this.copy(BlockTags.DOORS, ItemTags.DOORS);
+			this.copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
+			this.copy(BlockTags.TRAPDOORS, ItemTags.TRAPDOORS);
+			this.copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
+			this.copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES);
+			this.copy(BlockTags.WALLS, ItemTags.WALLS);
+
+			this.copy(BlockTags.FLOWERS, ItemTags.FLOWERS);
+			this.copy(BlockTags.SMALL_FLOWERS, ItemTags.SMALL_FLOWERS);
+
+			this.copy(ConventionalBlockTags.WOODEN_FENCES, ConventionalItemTags.WOODEN_FENCES);
+			this.copy(ConventionalBlockTags.WOODEN_FENCE_GATES, ConventionalItemTags.WOODEN_FENCE_GATES);
+
+			this.copy(ConventionalBlockTags.FLOWERS, ConventionalItemTags.FLOWERS);
+			this.copy(ConventionalBlockTags.SMALL_FLOWERS, ConventionalItemTags.SMALL_FLOWERS);
+			// endregion
 		}
 	}
 
