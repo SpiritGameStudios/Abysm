@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
+import dev.spiritstudios.abysm.block.AbysmBlockTags;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmItems;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
@@ -10,6 +11,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
@@ -131,6 +133,10 @@ public class AbysmTagProviders {
 				.add(
 					AbysmBlocks.ROSY_BLOOMSHROOM
 				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON)
+				.add(AbysmBlocks.FLOROPUMICE, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE)
+				.add(Blocks.SAND);
 			// endregion
 		}
 

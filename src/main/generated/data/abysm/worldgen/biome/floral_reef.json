@@ -73,6 +73,9 @@
       "minecraft:patch_pumpkin",
       "minecraft:patch_sugar_cane",
       "minecraft:patch_firefly_bush_near_water",
+      "abysm:patch_sprigs",
+      "abysm:floropumice_stalagmites",
+      "abysm:trees_bloomshroom",
       "minecraft:sea_pickle"
     ],
     [

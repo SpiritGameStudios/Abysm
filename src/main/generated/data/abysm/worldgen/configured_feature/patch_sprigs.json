@@ -1,0 +1,14 @@
+{
+  "type": "abysm:sprigs",
+  "config": {
+    "stateProvider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "abysm:rosy_sprigs",
+        "Properties": {
+          "waterlogged": "false"
+        }
+      }
+    }
+  }
+}

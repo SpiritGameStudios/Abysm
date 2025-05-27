@@ -12,8 +12,8 @@ import net.minecraft.registry.RegistryWrapper;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class ItemMetatagProvider extends MetatagProvider<Item> {
-	public ItemMetatagProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
+	public AbysmItemMetatagProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
 		super(dataOutput, RegistryKeys.ITEM, registriesFuture, DataOutput.OutputType.DATA_PACK);
 	}
 

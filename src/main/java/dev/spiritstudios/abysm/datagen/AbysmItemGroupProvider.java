@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm.datagen;
 
+import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmItems;
 import dev.spiritstudios.specter.api.core.reflect.ReflectionHelper;
@@ -16,11 +17,8 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
-import static dev.spiritstudios.abysm.Abysm.MODID;
-
-public class AbysmItemGroupGenerator extends SpecterItemGroupProvider {
-
-	public AbysmItemGroupGenerator(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+public class AbysmItemGroupProvider extends SpecterItemGroupProvider {
+	public AbysmItemGroupProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
 		super(dataOutput, registriesFuture);
 	}
 
@@ -34,6 +32,7 @@ public class AbysmItemGroupGenerator extends SpecterItemGroupProvider {
 			ItemStack stack = new ItemStack(pair.value().asItem());
 			if (!stack.isEmpty()) items.add(stack);
 		});
+
 		ReflectionHelper.getStaticFields(
 			AbysmItems.class,
 			Item.class
@@ -43,9 +42,9 @@ public class AbysmItemGroupGenerator extends SpecterItemGroupProvider {
 		});
 
 		provider.accept(
-			Identifier.of(MODID, "abysm"),
+			Abysm.id("abysm"),
 			ItemGroupData.of(
-				Identifier.of(MODID, "abysm"),
+				Abysm.id("abysm"),
 				AbysmBlocks.FLOROPUMICE,
 				items
 			)

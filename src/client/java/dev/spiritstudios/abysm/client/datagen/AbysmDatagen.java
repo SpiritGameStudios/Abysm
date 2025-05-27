@@ -18,7 +18,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		pack.addProvider(AbysmModelProvider::new);
 		pack.addProvider(ClientBlockMetatagProvider::new);
 
-		pack.addProvider(AbysmItemGroupGenerator::new);
+		pack.addProvider(AbysmItemGroupProvider::new);
 
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.BIOME, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.CONFIGURED_FEATURE, Abysm.MODID));
@@ -27,7 +27,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		pack.addProvider(AbysmLootTableProvider::new);
 		pack.addProvider(AbysmRecipeProvider::new);
 
-		pack.addProvider(ItemMetatagProvider::new);
+		pack.addProvider(AbysmItemMetatagProvider::new);
 
 		AbysmTagProviders.addAll(pack);
 	}
