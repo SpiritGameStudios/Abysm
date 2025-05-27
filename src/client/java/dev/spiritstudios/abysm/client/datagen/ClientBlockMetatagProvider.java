@@ -20,15 +20,27 @@ public class ClientBlockMetatagProvider extends MetatagProvider<Block> {
 
 	@Override
 	protected void configure(Consumer<MetatagBuilder<Block, ?>> consumer, RegistryWrapper.WrapperLookup wrapperLookup) {
-		MetatagBuilder<Block, BlockRenderLayer> renderLayer = create(RenderMetatags.RENDER_LAYER);
+		MetatagBuilder<Block, BlockRenderLayer> builder = create(RenderMetatags.RENDER_LAYER);
 
-		renderLayer.put(AbysmBlocks.BLOOMSHROOM_GOOP, BlockRenderLayer.TRANSLUCENT);
+		addBlocksToLayer(builder, BlockRenderLayer.CUTOUT,
+			AbysmBlocks.ROSY_BLOOMSHROOM,
+			AbysmBlocks.POTTED_ROSY_BLOOMSHROOM,
+			AbysmBlocks.WHITE_SCABIOSA,
+			AbysmBlocks.ORANGE_SCABIOSA,
+			AbysmBlocks.PINK_SCABIOSA,
+			AbysmBlocks.PURPLE_SCABIOSA
+		);
 
-		renderLayer.put(AbysmBlocks.WHITE_SCABIOSA, BlockRenderLayer.CUTOUT);
-		renderLayer.put(AbysmBlocks.ORANGE_SCABIOSA, BlockRenderLayer.CUTOUT);
-		renderLayer.put(AbysmBlocks.PINK_SCABIOSA, BlockRenderLayer.CUTOUT);
-		renderLayer.put(AbysmBlocks.PURPLE_SCABIOSA, BlockRenderLayer.CUTOUT);
+		addBlocksToLayer(builder, BlockRenderLayer.TRANSLUCENT,
+			AbysmBlocks.BLOOMSHROOM_GOOP
+		);
 
-		consumer.accept(renderLayer);
+		consumer.accept(builder);
+	}
+
+	private void addBlocksToLayer(MetatagBuilder<Block, BlockRenderLayer> builder, BlockRenderLayer renderLayer, Block... blocks) {
+		for(Block block : blocks) {
+			builder.put(block, renderLayer);
+		}
 	}
 }

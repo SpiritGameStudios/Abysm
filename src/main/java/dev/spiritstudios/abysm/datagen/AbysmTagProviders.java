@@ -65,7 +65,6 @@ public class AbysmTagProviders {
 					AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE,
 					AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR
 				);
-			// endregion
 
 			getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
 				.add(
@@ -84,6 +83,37 @@ public class AbysmTagProviders {
 					AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 					AbysmBlocks.BLOOMSHROOM_GOOP
 				);
+
+			getOrCreateTagBuilder(BlockTags.ENDERMAN_HOLDABLE)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM
+				);
+
+			getOrCreateTagBuilder(BlockTags.FLOWERS)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM
+				);
+
+			getOrCreateTagBuilder(BlockTags.SMALL_FLOWERS)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM
+				);
+
+			getOrCreateTagBuilder(BlockTags.FLOWER_POTS)
+				.add(
+					AbysmBlocks.POTTED_ROSY_BLOOMSHROOM
+				);
+
+			getOrCreateTagBuilder(ConventionalBlockTags.FLOWERS)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM
+				);
+
+			getOrCreateTagBuilder(ConventionalBlockTags.SMALL_FLOWERS)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM
+				);
+			// endregion
 		}
 
 

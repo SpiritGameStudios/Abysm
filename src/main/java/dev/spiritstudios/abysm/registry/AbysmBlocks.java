@@ -1,10 +1,8 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.block.BloomedFloropumiceBlock;
-import dev.spiritstudios.abysm.block.FloropumiceBlock;
-import dev.spiritstudios.abysm.block.ScabiosaBlock;
-import dev.spiritstudios.abysm.block.WaterloggableTranslucentBlock;
+import dev.spiritstudios.abysm.block.*;
+import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
@@ -183,6 +181,28 @@ public final class AbysmBlocks {
 			.strength(1.2F, 4.5F)
 			.requiresTool()
 			.ticksRandomly()
+	);
+	public static final Block ROSY_BLOOMSHROOM = register(
+		"rosy_bloomshroom",
+		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.BLOOMSHROOM, settings),
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.sounds(BlockSoundGroup.GRASS)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
+			.luminance(state -> 5)
+			.breakInstantly()
+			.noCollision()
+	);
+	public static final Block POTTED_ROSY_BLOOMSHROOM = register(
+		"potted_rosy_bloomshroom",
+		settings -> new FlowerPotBlock(ROSY_BLOOMSHROOM, settings),
+		AbstractBlock.Settings.create()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 5)
+			.breakInstantly()
+			.nonOpaque(),
+		false
 	);
 	public static final Block ROSY_BLOOMSHROOM_STEM = register(
 		"rosy_bloomshroom_stem",
