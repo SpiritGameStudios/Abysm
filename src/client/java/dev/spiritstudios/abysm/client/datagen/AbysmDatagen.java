@@ -27,6 +27,8 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		pack.addProvider(AbysmLootTableProvider::new);
 		pack.addProvider(AbysmRecipeProvider::new);
 
+		pack.addProvider(ItemMetatagProvider::new);
+
 		AbysmTagProviders.addAll(pack);
 	}
 
