@@ -16,9 +16,6 @@ public class AbysmEntityPatternVariantProvider extends FabricDynamicRegistryProv
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup, Entries entries) {
 		entries.addAll(wrapperLookup.getOrThrow(EntityPatternVariantRegistry.ENTITY_PATTERN_VARIANT_KEY));
-//		for (RegistryKey<Registry<EntityPatternVariant>> key : EntityPatternVariantRegistry.KEYS) {
-//			entries.addAll(wrapperLookup.getOrThrow(key));
-//		}
 	}
 
 	@Override

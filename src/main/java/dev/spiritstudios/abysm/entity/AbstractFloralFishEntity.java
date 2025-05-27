@@ -10,6 +10,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.LocalDifficulty;
@@ -49,9 +50,22 @@ public abstract class AbstractFloralFishEntity extends SchoolingFishEntity imple
 
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
+		entityData = super.initialize(world, difficulty, spawnReason, entityData);
 		EntityPattern pattern = this.getPatternForInitialize(world, this, entityData);
 		this.setEntityPattern(pattern);
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return entityData;
+	}
+
+	@Override
+	public void writeCustomDataToNbt(NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		this.writeEntityPatternNbt(nbt);
+	}
+
+	@Override
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.readEntityPatternNbt(this, nbt);
 	}
 
 	@Override

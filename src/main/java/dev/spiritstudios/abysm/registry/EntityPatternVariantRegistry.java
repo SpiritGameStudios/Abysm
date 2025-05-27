@@ -7,6 +7,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 
 public class EntityPatternVariantRegistry {
+	// FIXME - Move all of this into EntityPattern?
 	public static final RegistryKey<Registry<EntityPatternVariant>> ENTITY_PATTERN_VARIANT_KEY = RegistryKey.ofRegistry(Abysm.id("entity_pattern"));
 
 	public static void init() {

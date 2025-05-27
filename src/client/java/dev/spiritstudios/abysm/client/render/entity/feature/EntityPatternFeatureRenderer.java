@@ -39,9 +39,6 @@ public class EntityPatternFeatureRenderer<T extends GeoAnimatable, O, R extends 
 		if(pattern != null) {
 			patternColor = pattern.patternColor();
 		}
-//		poseStack.push();
-//		poseStack.scale(1.05f, 1.05f, 1.05f);
 		super.render(renderState, poseStack, bakedModel, renderType, bufferSource, buffer, packedLight, packedOverlay, patternColor);
-//		poseStack.pop();
 	}
 }
