@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.registry.AbysmFoliagePlacerTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.floatprovider.FloatProvider;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.util.math.random.Random;

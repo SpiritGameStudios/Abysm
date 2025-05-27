@@ -82,18 +82,6 @@
     },
     {
       "count": 1,
-      "id": "abysm:cut_smooth_floropumice"
-    },
-    {
-      "count": 1,
-      "id": "abysm:cut_smooth_floropumice_stairs"
-    },
-    {
-      "count": 1,
-      "id": "abysm:cut_smooth_floropumice_slab"
-    },
-    {
-      "count": 1,
       "id": "abysm:smooth_floropumice_bricks"
     },
     {
@@ -110,11 +98,47 @@
     },
     {
       "count": 1,
+      "id": "abysm:cut_smooth_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:cut_smooth_floropumice_stairs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:cut_smooth_floropumice_slab"
+    },
+    {
+      "count": 1,
       "id": "abysm:chiseled_smooth_floropumice"
     },
     {
       "count": 1,
       "id": "abysm:smooth_floropumice_pillar"
+    },
+    {
+      "count": 1,
+      "id": "abysm:rosebloomed_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:rosy_sprigs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:rosy_bloomshroom"
+    },
+    {
+      "count": 1,
+      "id": "abysm:rosy_bloomshroom_stem"
+    },
+    {
+      "count": 1,
+      "id": "abysm:rosy_bloomshroom_cap"
+    },
+    {
+      "count": 1,
+      "id": "abysm:bloomshroom_goop"
     },
     {
       "count": 1,
@@ -131,6 +155,10 @@
     {
       "count": 1,
       "id": "abysm:purple_scabiosa"
+    },
+    {
+      "count": 1,
+      "id": "abysm:flippers"
     }
   ],
   "translate": "item_group.abysm.abysm"

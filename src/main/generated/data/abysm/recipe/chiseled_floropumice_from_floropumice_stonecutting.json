@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "abysm:floropumice",
+  "result": {
+    "count": 1,
+    "id": "abysm:chiseled_floropumice"
+  }
+}

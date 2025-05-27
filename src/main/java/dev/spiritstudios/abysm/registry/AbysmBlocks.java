@@ -1,14 +1,9 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.block.ScabiosaBlock;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.PillarBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import dev.spiritstudios.abysm.block.*;
+import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -24,9 +19,10 @@ import java.util.function.Function;
 
 public final class AbysmBlocks {
 
+	// region floropumice blocks
 	public static final Block FLOROPUMICE = register(
 		"floropumice",
-		Block::new,
+		FloropumiceBlock::new,
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.LIGHT_BLUE)
 			.instrument(NoteBlockInstrument.BASEDRUM)
@@ -130,20 +126,6 @@ public final class AbysmBlocks {
 			.strength(1.5F, 6.0F)
 	);
 
-	public static final Block CUT_SMOOTH_FLOROPUMICE = register(
-		"cut_smooth_floropumice",
-		Block::new,
-		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
-	);
-	public static final Block CUT_SMOOTH_FLOROPUMICE_STAIRS = registerStairsOf(
-		"cut_smooth_floropumice_stairs",
-		CUT_SMOOTH_FLOROPUMICE
-	);
-	public static final Block CUT_SMOOTH_FLOROPUMICE_SLAB = registerSlabOf(
-		"cut_smooth_floropumice_slab",
-		CUT_SMOOTH_FLOROPUMICE
-	);
-
 	public static final Block SMOOTH_FLOROPUMICE_BRICKS = register(
 		"smooth_floropumice_bricks",
 		Block::new,
@@ -162,6 +144,20 @@ public final class AbysmBlocks {
 		SMOOTH_FLOROPUMICE_BRICKS
 	);
 
+	public static final Block CUT_SMOOTH_FLOROPUMICE = register(
+		"cut_smooth_floropumice",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
+	);
+	public static final Block CUT_SMOOTH_FLOROPUMICE_STAIRS = registerStairsOf(
+		"cut_smooth_floropumice_stairs",
+		CUT_SMOOTH_FLOROPUMICE
+	);
+	public static final Block CUT_SMOOTH_FLOROPUMICE_SLAB = registerSlabOf(
+		"cut_smooth_floropumice_slab",
+		CUT_SMOOTH_FLOROPUMICE
+	);
+
 	public static final Block CHISELED_SMOOTH_FLOROPUMICE = register(
 		"chiseled_smooth_floropumice",
 		Block::new,
@@ -173,7 +169,96 @@ public final class AbysmBlocks {
 		PillarBlock::new,
 		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
 	);
+	// endregion floropumice
 
+	// region bloomshroom blocks
+	public static final Block ROSEBLOOMED_FLOROPUMICE = register(
+		"rosebloomed_floropumice",
+		BloomedFloropumiceBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.instrument(NoteBlockInstrument.BASS)
+			.strength(1.2F, 4.5F)
+			.requiresTool()
+			.ticksRandomly()
+	);
+	public static final Block ROSY_SPRIGS = register(
+		"rosy_sprigs",
+		BloomshroomSprigsBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.sounds(BlockSoundGroup.GRASS)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
+			.luminance(state -> 5)
+			.breakInstantly()
+			.noCollision()
+			.replaceable()
+	);
+	public static final Block POTTED_ROSY_SPRIGS = register(
+		"potted_rosy_sprigs",
+		settings -> new FlowerPotBlock(ROSY_SPRIGS, settings),
+		AbstractBlock.Settings.create()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 5)
+			.breakInstantly()
+			.nonOpaque(),
+		false
+	);
+	public static final Block ROSY_BLOOMSHROOM = register(
+		"rosy_bloomshroom",
+		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.BLOOMSHROOM, settings),
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.sounds(BlockSoundGroup.GRASS)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
+			.luminance(state -> 8)
+			.breakInstantly()
+			.noCollision()
+	);
+	public static final Block POTTED_ROSY_BLOOMSHROOM = register(
+		"potted_rosy_bloomshroom",
+		settings -> new FlowerPotBlock(ROSY_BLOOMSHROOM, settings),
+		AbstractBlock.Settings.create()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 8)
+			.breakInstantly()
+			.nonOpaque(),
+		false
+	);
+	public static final Block ROSY_BLOOMSHROOM_STEM = register(
+		"rosy_bloomshroom_stem",
+		PillarBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.instrument(NoteBlockInstrument.BASS)
+			.sounds(BlockSoundGroup.WOOD)
+			.strength(1.1F, 1.5F)
+	);
+	public static final Block ROSY_BLOOMSHROOM_CAP = register(
+		"rosy_bloomshroom_cap",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.instrument(NoteBlockInstrument.BASS)
+			.sounds(BlockSoundGroup.WOOD)
+			.strength(0.7F, 0.9F)
+	);
+	public static final Block BLOOMSHROOM_GOOP = register(
+		"bloomshroom_goop",
+		WaterloggableTranslucentBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.PINK)
+			.instrument(NoteBlockInstrument.BASS)
+			.sounds(BlockSoundGroup.HONEY)
+			.strength(0.7F, 1.1F)
+			.luminance(state -> 11)
+			.nonOpaque()
+	);
+	// endregion bloomshroom
+
+	// region scabiosas
 	public static final Block WHITE_SCABIOSA = register(
 		"white_scabiosa",
 		ScabiosaBlock::new,
@@ -203,6 +288,7 @@ public final class AbysmBlocks {
 		ScabiosaBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.PURPLE)
 	);
+	// endregion scabiosas
 
 	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, boolean item) {
 		T block = factory.apply(settings.registryKey(key));
@@ -233,14 +319,17 @@ public final class AbysmBlocks {
 		return RegistryKey.of(RegistryKeys.BLOCK, Abysm.id(id));
 	}
 
+	@SuppressWarnings("deprecation")
 	private static Block registerStairsOf(String id, Block block) {
 		return register(id, settings -> new StairsBlock(block.getDefaultState(), settings), AbstractBlock.Settings.copyShallow(block));
 	}
 
+	@SuppressWarnings("deprecation")
 	private static Block registerSlabOf(String id, Block block) {
 		return register(id, SlabBlock::new, AbstractBlock.Settings.copyShallow(block));
 	}
 
+	@SuppressWarnings("deprecation")
 	private static Block registerWallOf(String id, Block block) {
 		return register(id, WallBlock::new, AbstractBlock.Settings.copyShallow(block).solid());
 	}

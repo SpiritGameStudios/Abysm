@@ -1,0 +1,34 @@
+{
+  "type": "abysm:stalagmite",
+  "config": {
+    "bluntness": {
+      "type": "minecraft:uniform",
+      "max_exclusive": 1.0,
+      "min_inclusive": 0.4
+    },
+    "column_radius": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 19,
+      "min_inclusive": 3
+    },
+    "height_scale": {
+      "type": "minecraft:uniform",
+      "max_exclusive": 2.0,
+      "min_inclusive": 0.4
+    },
+    "max_column_radius_to_cave_height_ratio": 0.33,
+    "min_bluntness_for_wind": 0.6,
+    "min_radius_for_wind": 4,
+    "state": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "abysm:floropumice"
+      }
+    },
+    "wind_speed": {
+      "type": "minecraft:uniform",
+      "max_exclusive": 0.5,
+      "min_inclusive": 0.0
+    }
+  }
+}

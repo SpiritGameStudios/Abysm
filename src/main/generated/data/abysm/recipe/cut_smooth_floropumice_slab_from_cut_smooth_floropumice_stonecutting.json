@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "abysm:cut_smooth_floropumice",
+  "result": {
+    "count": 2,
+    "id": "abysm:cut_smooth_floropumice_slab"
+  }
+}

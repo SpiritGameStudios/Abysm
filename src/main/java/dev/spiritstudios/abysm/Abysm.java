@@ -3,7 +3,10 @@ package dev.spiritstudios.abysm;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
+import dev.spiritstudios.abysm.registry.AbysmEntityAttributes;
+import dev.spiritstudios.abysm.registry.AbysmFeatures;
 import dev.spiritstudios.abysm.registry.AbysmFoliagePlacerTypes;
+import dev.spiritstudios.abysm.registry.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmTrunkPlacerTypes;
 import dev.spiritstudios.abysm.registry.EntityPatternVariantRegistry;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
@@ -11,6 +14,7 @@ import dev.spiritstudios.specter.api.registry.RegistryHelper;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
 import net.minecraft.world.gen.trunk.TrunkPlacerType;
 import org.slf4j.Logger;
@@ -23,8 +27,10 @@ public class Abysm implements ModInitializer {
     @Override
     public void onInitialize() {
 		AbysmBlocks.init();
+		AbysmItems.init();
 
 		AbysmEntityTypes.init();
+		AbysmEntityAttributes.init();
 		EntityPatternVariantRegistry.init();
 		EntityPattern.init();
 
@@ -37,6 +43,12 @@ public class Abysm implements ModInitializer {
 		RegistryHelper.registerFields(
 			Registries.FOLIAGE_PLACER_TYPE, RegistryHelper.fixGenerics(FoliagePlacerType.class),
 			AbysmFoliagePlacerTypes.class,
+			MODID
+		);
+
+		RegistryHelper.registerFields(
+			Registries.FEATURE, RegistryHelper.fixGenerics(Feature.class),
+			AbysmFeatures.class,
 			MODID
 		);
 

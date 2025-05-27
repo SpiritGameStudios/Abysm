@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "abysm:block/rosebloomed_floropumice"
+      },
+      {
+        "model": "abysm:block/rosebloomed_floropumice",
+        "y": 90
+      },
+      {
+        "model": "abysm:block/rosebloomed_floropumice",
+        "y": 180
+      },
+      {
+        "model": "abysm:block/rosebloomed_floropumice",
+        "y": 270
+      }
+    ]
+  }
+}
