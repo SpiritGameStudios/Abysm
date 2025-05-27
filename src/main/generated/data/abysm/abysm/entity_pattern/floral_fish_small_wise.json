@@ -1,0 +1,6 @@
+{
+  "entity": "abysm:floral_fish_small",
+  "name": "Wise",
+  "pattern": "abysm:textures/entity/pattern/floral_fish_small/wise.png",
+  "colorable": true
+}

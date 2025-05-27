@@ -1,0 +1,6 @@
+{
+  "entity": "abysm:floral_fish_small",
+  "name": "Flowy",
+  "pattern": "abysm:textures/entity/pattern/floral_fish_small/flowy.png",
+  "colorable": true
+}

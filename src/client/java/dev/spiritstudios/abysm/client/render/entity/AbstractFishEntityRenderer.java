@@ -1,0 +1,39 @@
+package dev.spiritstudios.abysm.client.render.entity;
+
+import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.state.LivingEntityRenderState;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RotationAxis;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
+
+/**
+ * Basic GeckoLib Entity Renderer for fish entities. Handles things like body rotation while swimming, and rotating sideways while on land.
+ *
+ * @see AbstractFishEntityModel
+ * @see SmallFloralFishEntityRenderer
+ */
+public abstract class AbstractFishEntityRenderer<T extends Entity & GeoAnimatable, R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<T, R> {
+	public AbstractFishEntityRenderer(EntityRendererFactory.Context context, GeoModel<T> model) {
+		super(context, model);
+	}
+
+	@Override
+	public void adjustPositionForRender(R renderState, MatrixStack matrixStack, BakedGeoModel model, boolean isReRender) {
+		super.adjustPositionForRender(renderState, matrixStack, model, isReRender);
+		// SUPER IMPORTANT !!! Make sure the matrixStack is pushed here, otherwise the EntityPatternFeatureRenderer perishes
+		matrixStack.push();
+		float rotation = 4.3F * MathHelper.sin(0.6F * renderState.age);
+		matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
+		if(!renderState.touchingWater) {
+			matrixStack.translate(0.2F, 0.1F, 0.0F);
+			matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90.0F));
+		}
+		matrixStack.pop();
+	}
+}
