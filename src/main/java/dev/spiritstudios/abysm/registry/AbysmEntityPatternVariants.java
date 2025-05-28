@@ -66,7 +66,6 @@ public class AbysmEntityPatternVariants {
 	}
 
 	public static RegistryKey<EntityPatternVariant> of(String path) {
-		return RegistryKey.of(EntityPatternVariantRegistry.ENTITY_PATTERN_VARIANT_KEY, Abysm.id(path));
+		return RegistryKey.of(AbysmRegistries.ENTITY_PATTERN, Abysm.id(path));
 	}
-
 }

@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.data.pattern;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.registry.EntityPatternVariantRegistry;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.EntityType;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -55,7 +55,7 @@ public record EntityPatternVariant(EntityType<?> entityType, String name, Identi
 
 	public static Set<EntityPatternVariant> getVariantsForEntityType(ServerWorldAccess world, EntityType<?> entityType) {
 		DynamicRegistryManager registryManager = world.getRegistryManager();
-		Registry<EntityPatternVariant> registry = registryManager.getOrThrow(EntityPatternVariantRegistry.ENTITY_PATTERN_VARIANT_KEY);
+		Registry<EntityPatternVariant> registry = registryManager.getOrThrow(AbysmRegistries.ENTITY_PATTERN);
 		return registry.stream().filter(patternVariant -> patternVariant.entityType.equals(entityType)).collect(Collectors.toSet());
 	}
 

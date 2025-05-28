@@ -13,8 +13,8 @@ import net.minecraft.registry.RegistryWrapper;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class ClientBlockMetatagProvider extends MetatagProvider<Block> {
-	protected ClientBlockMetatagProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+public class AbysmClientBlockMetatagProvider extends MetatagProvider<Block> {
+	protected AbysmClientBlockMetatagProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
 		super(dataOutput, RegistryKeys.BLOCK, registriesFuture, DataOutput.OutputType.RESOURCE_PACK);
 	}
 

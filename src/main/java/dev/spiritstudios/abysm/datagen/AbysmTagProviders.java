@@ -8,6 +8,7 @@ import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
@@ -262,6 +263,10 @@ public class AbysmTagProviders {
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 			getOrCreateTagBuilder(BiomeTags.IS_OVERWORLD)
+				.add(AbysmBiomes.FLORAL_REEF);
+
+			// Using the conventional tag here since the vanilla one overrides the music
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_OCEAN)
 				.add(AbysmBiomes.FLORAL_REEF);
 		}
 	}

@@ -1,0 +1,11 @@
+{
+  "music.overworld.floral_reef": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "name": "abysm:music/game/cichlid"
+      }
+    ]
+  }
+}

@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.datagen.AbysmEntityPatternVariantProvider;
 import dev.spiritstudios.abysm.datagen.AbysmItemGroupProvider;
 import dev.spiritstudios.abysm.datagen.AbysmItemMetatagProvider;
 import dev.spiritstudios.abysm.datagen.AbysmLootTableProvider;
@@ -9,7 +8,7 @@ import dev.spiritstudios.abysm.datagen.AbysmRecipeProvider;
 import dev.spiritstudios.abysm.datagen.AbysmTagProviders;
 import dev.spiritstudios.abysm.datagen.AutomaticDynamicRegistryProvider;
 import dev.spiritstudios.abysm.registry.AbysmEntityPatternVariants;
-import dev.spiritstudios.abysm.registry.EntityPatternVariantRegistry;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
@@ -25,15 +24,15 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = dataGenerator.createPack();
 
 		pack.addProvider(AbysmModelProvider::new);
-		pack.addProvider(ClientBlockMetatagProvider::new);
+		pack.addProvider(AbysmSoundsProvider::new);
+		pack.addProvider(AbysmClientBlockMetatagProvider::new);
 
 		pack.addProvider(AbysmItemGroupProvider::new);
-
-		pack.addProvider(AbysmEntityPatternVariantProvider::new);
 
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.BIOME, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.CONFIGURED_FEATURE, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.PLACED_FEATURE, Abysm.MODID));
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.ENTITY_PATTERN, Abysm.MODID));
 
 		pack.addProvider(AbysmLootTableProvider::new);
 		pack.addProvider(AbysmRecipeProvider::new);
@@ -58,6 +57,6 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 			.addRegistry(RegistryKeys.BIOME, AbysmBiomes::bootstrap)
 			.addRegistry(RegistryKeys.CONFIGURED_FEATURE, AbysmConfiguredFeatures::bootstrap)
 			.addRegistry(RegistryKeys.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap)
-			.addRegistry(EntityPatternVariantRegistry.ENTITY_PATTERN_VARIANT_KEY, AbysmEntityPatternVariants::bootstrap);
+			.addRegistry(AbysmRegistries.ENTITY_PATTERN, AbysmEntityPatternVariants::bootstrap);
 	}
 }

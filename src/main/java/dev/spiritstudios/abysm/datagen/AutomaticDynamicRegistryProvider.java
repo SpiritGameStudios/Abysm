@@ -30,10 +30,10 @@ public abstract class AutomaticDynamicRegistryProvider<T> extends FabricDynamicR
 	}
 
 	public static <T> FabricDataGenerator.Pack.RegistryDependentFactory<AutomaticDynamicRegistryProvider<T>> factory(RegistryKey<Registry<T>> registryKey, String namespace) {
-		return (output, registriesFuture) -> new AutomaticDynamicRegistryProvider<T>(output, registriesFuture, registryKey, namespace) {
+		return (output, registriesFuture) -> new AutomaticDynamicRegistryProvider<>(output, registriesFuture, registryKey, namespace) {
 			@Override
 			public String getName() {
-				return registryKey.getValue().getPath();
+				return "Dynamic Registry Entries for " + registryKey.getValue();
 			}
 		};
 	}

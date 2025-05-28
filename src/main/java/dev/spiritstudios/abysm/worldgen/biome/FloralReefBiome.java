@@ -1,9 +1,11 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
 import com.terraformersmc.biolith.api.biome.BiomePlacement;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.sound.MusicType;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.biome.GenerationSettings;
@@ -12,7 +14,6 @@ import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
-import net.minecraft.world.gen.feature.OceanPlacedFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.surfacebuilder.MaterialRules;
 
@@ -35,7 +36,8 @@ public final class FloralReefBiome extends AbysmBiome {
 			.waterColor(0x0093C4)
 			.waterFogColor(0x08304C)
 			.fogColor(0xC0D8FF)
-			.skyColor(OverworldBiomeCreator.getSkyColor(temperature));
+			.skyColor(OverworldBiomeCreator.getSkyColor(temperature))
+			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_FLORAL_REEF));
 	}
 
 	@Override
@@ -55,8 +57,7 @@ public final class FloralReefBiome extends AbysmBiome {
 		builder
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SPRIGS)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.FLOROPUMICE_STALAGMITES)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_BLOOMSHROOM)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, OceanPlacedFeatures.SEA_PICKLE);
+			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_BLOOMSHROOM);
 
 		return builder;
 	}
