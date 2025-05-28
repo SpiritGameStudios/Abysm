@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
+import dev.spiritstudios.abysm.entity.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.SmallFloralFishEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registerable;
@@ -17,6 +18,14 @@ public class AbysmEntityPatternVariants {
 	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_SMALL_SPARKLE = ofFloralFishSmall("sparkle");
 	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_SMALL_COCO = ofFloralFishSmall("coco");
 
+	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_BIG_TERRA = ofFloralFishBig("terra");
+	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_BIG_LOOKOUT = ofFloralFishBig("lookout");
+	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_BIG_TABBY = ofFloralFishBig("tabby");
+	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_BIG_AXOLOTL = ofFloralFishBig("axolotl");
+	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_BIG_STRINGY = ofFloralFishBig("stringy");
+	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_BIG_STARRY = ofFloralFishBig("starry");
+	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_BIG_SIRFISHY = ofFloralFishBig("sirfishy");
+
 	public static void bootstrap(Registerable<EntityPatternVariant> registerable) {
 		register(registerable, FLORAL_FISH_SMALL_COLORFUL, SmallFloralFishEntity.DEFAULT_PATTERN_VARIANT);
 		register(registerable, FLORAL_FISH_SMALL_FLOWY, AbysmEntityTypes.SMALL_FLORAL_FISH, "Flowy");
@@ -25,6 +34,14 @@ public class AbysmEntityPatternVariants {
 		register(registerable, FLORAL_FISH_SMALL_WISE, AbysmEntityTypes.SMALL_FLORAL_FISH, "Wise");
 		register(registerable, FLORAL_FISH_SMALL_SPARKLE, AbysmEntityTypes.SMALL_FLORAL_FISH, "Sparkle");
 		register(registerable, FLORAL_FISH_SMALL_COCO, AbysmEntityTypes.SMALL_FLORAL_FISH, "Coco");
+
+		register(registerable, FLORAL_FISH_BIG_TERRA, BigFloralFishEntity.DEFAULT_PATTERN_VARIANT);
+		register(registerable, FLORAL_FISH_BIG_LOOKOUT, AbysmEntityTypes.BIG_FLORAL_FISH, "Lookout");
+		register(registerable, FLORAL_FISH_BIG_TABBY, AbysmEntityTypes.BIG_FLORAL_FISH, "Tabby");
+		register(registerable, FLORAL_FISH_BIG_AXOLOTL, AbysmEntityTypes.BIG_FLORAL_FISH, "Axolotl");
+		register(registerable, FLORAL_FISH_BIG_STRINGY, AbysmEntityTypes.BIG_FLORAL_FISH, "Stringy");
+		register(registerable, FLORAL_FISH_BIG_STARRY, AbysmEntityTypes.BIG_FLORAL_FISH, "Starry");
+		register(registerable, FLORAL_FISH_BIG_SIRFISHY, AbysmEntityTypes.BIG_FLORAL_FISH, "Coco");
 	}
 
 	// Unsure if names are going to need to be capitalized, or if I'll switch to translations,
@@ -42,6 +59,10 @@ public class AbysmEntityPatternVariants {
 
 	public static RegistryKey<EntityPatternVariant> ofFloralFishSmall(String path) {
 		return of("floral_fish_small/" + path);
+	}
+
+	public static RegistryKey<EntityPatternVariant> ofFloralFishBig(String path) {
+		return of("floral_fish_big/" + path);
 	}
 
 	public static RegistryKey<EntityPatternVariant> of(String path) {

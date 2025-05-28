@@ -1,0 +1,6 @@
+{
+  "entity": "abysm:floral_fish_big",
+  "name": "Coco",
+  "pattern": "abysm:textures/entity/pattern/floral_fish_big/sirfishy.png",
+  "colorable": true
+}

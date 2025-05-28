@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.entity.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.SmallFloralFishEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
@@ -21,7 +22,14 @@ public class AbysmEntityTypes {
 			.maxTrackingRange(4)
 	);
 
-
+	public static final EntityType<BigFloralFishEntity> BIG_FLORAL_FISH = register(
+		"floral_fish_big",
+		EntityType.Builder
+			.create(BigFloralFishEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(0.85f, 0.65f)
+			.eyeHeight(0.4f)
+			.maxTrackingRange(4)
+	);
 
 	private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
 		return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
@@ -37,6 +45,7 @@ public class AbysmEntityTypes {
 
 	public static void init() {
 		FabricDefaultAttributeRegistry.register(SMALL_FLORAL_FISH, SmallFloralFishEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(BIG_FLORAL_FISH, BigFloralFishEntity.createFishAttributes());
 	}
 
 }
