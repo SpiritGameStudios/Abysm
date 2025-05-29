@@ -1,9 +1,21 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.block.*;
+import dev.spiritstudios.abysm.block.BloomedFloropumiceBlock;
+import dev.spiritstudios.abysm.block.BloomshroomSprigsBlock;
+import dev.spiritstudios.abysm.block.FloropumiceBlock;
+import dev.spiritstudios.abysm.block.ScabiosaBlock;
+import dev.spiritstudios.abysm.block.SmallBloomshroomBlock;
+import dev.spiritstudios.abysm.block.WaterloggableTranslucentBlock;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.FlowerPotBlock;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.PillarBlock;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -277,16 +289,88 @@ public final class AbysmBlocks {
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.ORANGE)
 	);
 
+	public static final Block MAGENTA_SCABIOSA = register(
+		"magenta_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.MAGENTA)
+	);
+
+	public static final Block LIGHT_BLUE_SCABIOSA = register(
+		"light_blue_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.LIGHT_BLUE)
+	);
+
+	public static final Block YELLOW_SCABIOSA = register(
+		"yellow_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.YELLOW)
+	);
+
+	public static final Block LIME_SCABIOSA = register(
+		"lime_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.LIME)
+	);
+
 	public static final Block PINK_SCABIOSA = register(
 		"pink_scabiosa",
 		ScabiosaBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.PINK)
 	);
 
+	public static final Block GREY_SCABIOSA = register(
+		"grey_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.GRAY)
+	);
+
+	public static final Block LIGHT_GREY_SCABIOSA = register(
+		"light_grey_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.LIGHT_BLUE_GRAY)
+	);
+
+	public static final Block CYAN_SCABIOSA = register(
+		"cyan_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.CYAN)
+	);
+
 	public static final Block PURPLE_SCABIOSA = register(
 		"purple_scabiosa",
 		ScabiosaBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.PURPLE)
+	);
+
+	public static final Block BLUE_SCABIOSA = register(
+		"blue_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.LAPIS_BLUE)
+	);
+
+	public static final Block BROWN_SCABIOSA = register(
+		"brown_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.TERRACOTTA_BROWN)
+	);
+
+	public static final Block GREEN_SCABIOSA = register(
+		"green_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.TERRACOTTA_GREEN)
+	);
+
+	public static final Block RED_SCABIOSA = register(
+		"red_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.RED)
+	);
+
+	public static final Block BLACK_SCABIOSA = register(
+		"black_scabiosa",
+		ScabiosaBlock::new,
+		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.BLACK)
 	);
 	// endregion scabiosas
 

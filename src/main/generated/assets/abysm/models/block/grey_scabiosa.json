@@ -1,0 +1,7 @@
+{
+  "parent": "abysm:block/blossom",
+  "textures": {
+    "flower": "abysm:block/grey_scabiosa",
+    "base": "abysm:block/grey_scabiosa_base"
+  }
+}

@@ -7,7 +7,15 @@ import dev.spiritstudios.abysm.registry.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.client.data.*;
+import net.minecraft.client.data.BlockStateModelGenerator;
+import net.minecraft.client.data.BlockStateVariantMap;
+import net.minecraft.client.data.ItemModelGenerator;
+import net.minecraft.client.data.Model;
+import net.minecraft.client.data.Models;
+import net.minecraft.client.data.TextureKey;
+import net.minecraft.client.data.TextureMap;
+import net.minecraft.client.data.TexturedModel;
+import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.data.family.BlockFamily;
@@ -67,8 +75,20 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 		registerScabiosa(generator, AbysmBlocks.WHITE_SCABIOSA);
 		registerScabiosa(generator, AbysmBlocks.ORANGE_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.MAGENTA_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.LIGHT_BLUE_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.YELLOW_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.LIME_SCABIOSA);
 		registerScabiosa(generator, AbysmBlocks.PINK_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.GREY_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.LIGHT_GREY_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.CYAN_SCABIOSA);
 		registerScabiosa(generator, AbysmBlocks.PURPLE_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.BLUE_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.BROWN_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.GREEN_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.RED_SCABIOSA);
+		registerScabiosa(generator, AbysmBlocks.BLACK_SCABIOSA);
 	}
 
 	public final void registerScabiosa(BlockStateModelGenerator generator, Block block) {

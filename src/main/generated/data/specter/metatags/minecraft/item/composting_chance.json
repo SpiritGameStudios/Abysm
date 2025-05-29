@@ -1,12 +1,24 @@
 {
   "values": {
+    "abysm:black_scabiosa": 0.65,
+    "abysm:blue_scabiosa": 0.65,
+    "abysm:brown_scabiosa": 0.65,
+    "abysm:cyan_scabiosa": 0.65,
+    "abysm:green_scabiosa": 0.65,
+    "abysm:grey_scabiosa": 0.65,
+    "abysm:light_blue_scabiosa": 0.65,
+    "abysm:light_grey_scabiosa": 0.65,
+    "abysm:lime_scabiosa": 0.65,
+    "abysm:magenta_scabiosa": 0.65,
     "abysm:orange_scabiosa": 0.65,
     "abysm:pink_scabiosa": 0.65,
     "abysm:purple_scabiosa": 0.65,
+    "abysm:red_scabiosa": 0.65,
     "abysm:rosy_bloomshroom": 0.65,
     "abysm:rosy_bloomshroom_cap": 0.85,
     "abysm:rosy_bloomshroom_stem": 0.85,
     "abysm:rosy_sprigs": 0.65,
-    "abysm:white_scabiosa": 0.65
+    "abysm:white_scabiosa": 0.65,
+    "abysm:yellow_scabiosa": 0.65
   }
 }

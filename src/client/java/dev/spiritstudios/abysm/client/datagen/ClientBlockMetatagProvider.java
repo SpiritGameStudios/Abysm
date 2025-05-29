@@ -29,8 +29,20 @@ public class ClientBlockMetatagProvider extends MetatagProvider<Block> {
 			AbysmBlocks.POTTED_ROSY_BLOOMSHROOM,
 			AbysmBlocks.WHITE_SCABIOSA,
 			AbysmBlocks.ORANGE_SCABIOSA,
+			AbysmBlocks.MAGENTA_SCABIOSA,
+			AbysmBlocks.LIGHT_BLUE_SCABIOSA,
+			AbysmBlocks.YELLOW_SCABIOSA,
+			AbysmBlocks.LIME_SCABIOSA,
 			AbysmBlocks.PINK_SCABIOSA,
-			AbysmBlocks.PURPLE_SCABIOSA
+			AbysmBlocks.GREY_SCABIOSA,
+			AbysmBlocks.LIGHT_GREY_SCABIOSA,
+			AbysmBlocks.CYAN_SCABIOSA,
+			AbysmBlocks.PURPLE_SCABIOSA,
+			AbysmBlocks.BLUE_SCABIOSA,
+			AbysmBlocks.BROWN_SCABIOSA,
+			AbysmBlocks.GREEN_SCABIOSA,
+			AbysmBlocks.RED_SCABIOSA,
+			AbysmBlocks.BLACK_SCABIOSA
 		);
 
 		addBlocksToLayer(builder, BlockRenderLayer.TRANSLUCENT,

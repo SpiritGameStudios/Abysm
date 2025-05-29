@@ -28,8 +28,20 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 
 		builder.put(AbysmBlocks.WHITE_SCABIOSA.asItem(), 0.65F);
 		builder.put(AbysmBlocks.ORANGE_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.MAGENTA_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.LIGHT_BLUE_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.YELLOW_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.LIME_SCABIOSA.asItem(), 0.65F);
 		builder.put(AbysmBlocks.PINK_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.GREY_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.LIGHT_GREY_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.CYAN_SCABIOSA.asItem(), 0.65F);
 		builder.put(AbysmBlocks.PURPLE_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.BLUE_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.BROWN_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.GREEN_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.RED_SCABIOSA.asItem(), 0.65F);
+		builder.put(AbysmBlocks.BLACK_SCABIOSA.asItem(), 0.65F);
 
 		consumer.accept(builder);
 	}

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "abysm:block/magenta_scabiosa"
+    },
+    "facing=east": {
+      "model": "abysm:block/magenta_scabiosa",
+      "x": 90,
+      "y": 270
+    },
+    "facing=north": {
+      "model": "abysm:block/magenta_scabiosa",
+      "x": 90,
+      "y": 180
+    },
+    "facing=south": {
+      "model": "abysm:block/magenta_scabiosa",
+      "x": 90
+    },
+    "facing=up": {
+      "model": "abysm:block/magenta_scabiosa",
+      "x": 180
+    },
+    "facing=west": {
+      "model": "abysm:block/magenta_scabiosa",
+      "x": 90,
+      "y": 90
+    }
+  }
+}
