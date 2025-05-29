@@ -7,6 +7,17 @@
   "downfall": 0.5,
   "effects": {
     "fog_color": 12638463,
+    "music": [
+      {
+        "data": {
+          "max_delay": 24000,
+          "min_delay": 12000,
+          "replace_current_music": false,
+          "sound": "abysm:music.overworld.floral_reef"
+        },
+        "weight": 1
+      }
+    ],
     "music_volume": 1.0,
     "sky_color": 8103167,
     "water_color": 37828,
@@ -75,8 +86,7 @@
       "minecraft:patch_firefly_bush_near_water",
       "abysm:patch_sprigs",
       "abysm:floropumice_stalagmites",
-      "abysm:trees_bloomshroom",
-      "minecraft:sea_pickle"
+      "abysm:trees_bloomshroom"
     ],
     [
       "minecraft:freeze_top_layer"

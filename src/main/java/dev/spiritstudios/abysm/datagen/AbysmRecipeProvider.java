@@ -21,14 +21,13 @@ import net.minecraft.resource.featuretoggle.FeatureSet;
 import java.util.concurrent.CompletableFuture;
 
 public class AbysmRecipeProvider extends FabricRecipeProvider {
+	@Override
+	public String getName() {
+		return "Recipes";
+	}
 
 	public AbysmRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
 		super(output, registriesFuture);
-	}
-
-	@Override
-	public String getName() {
-		return "abysm_recipe_provider";
 	}
 
 	@Override

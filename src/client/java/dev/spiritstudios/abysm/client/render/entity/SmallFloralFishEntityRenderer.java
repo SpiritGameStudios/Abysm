@@ -19,7 +19,7 @@ public class SmallFloralFishEntityRenderer<R extends LivingEntityRenderState & G
 
 	@Override
 	public Identifier getTextureLocation(R renderState) {
-		EntityPattern pattern = renderState.getGeckolibData(EntityPatternFeatureRenderer.ENTITY_PATTERN_DATA_TICKET);
+		EntityPattern pattern = renderState.getGeckolibData(EntityPatternFeatureRenderer.DATA_TICKET);
 		if(pattern != null) {
 			EntityPatternVariant variant = pattern.variant();
 			if(variant != null) {
@@ -46,7 +46,7 @@ public class SmallFloralFishEntityRenderer<R extends LivingEntityRenderState & G
 		@Override
 		public void addAdditionalStateData(SmallFloralFishEntity animatable, GeoRenderState renderState) {
 			super.addAdditionalStateData(animatable, renderState);
-			renderState.addGeckolibData(EntityPatternFeatureRenderer.ENTITY_PATTERN_DATA_TICKET, animatable.getEntityPattern());
+			renderState.addGeckolibData(EntityPatternFeatureRenderer.DATA_TICKET, animatable.getEntityPattern());
 		}
 	}
 }

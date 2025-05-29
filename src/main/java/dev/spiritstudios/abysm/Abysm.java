@@ -7,8 +7,9 @@ import dev.spiritstudios.abysm.registry.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.registry.AbysmFeatures;
 import dev.spiritstudios.abysm.registry.AbysmFoliagePlacerTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.registry.AbysmTrunkPlacerTypes;
-import dev.spiritstudios.abysm.registry.EntityPatternVariantRegistry;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.specter.api.registry.RegistryHelper;
 import net.fabricmc.api.ModInitializer;
@@ -26,12 +27,13 @@ public class Abysm implements ModInitializer {
 
     @Override
     public void onInitialize() {
+		AbysmSoundEvents.init();
 		AbysmBlocks.init();
 		AbysmItems.init();
 
 		AbysmEntityTypes.init();
 		AbysmEntityAttributes.init();
-		EntityPatternVariantRegistry.init();
+		AbysmRegistries.init();
 		EntityPattern.init();
 
 		RegistryHelper.registerFields(
