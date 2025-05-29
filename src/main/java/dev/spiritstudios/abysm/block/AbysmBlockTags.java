@@ -7,6 +7,7 @@ import net.minecraft.registry.tag.TagKey;
 
 public final class AbysmBlockTags {
 	public static final TagKey<Block> BLOOMSHROOM_PLANTABLE_ON = of("bloomshroom_plantable_on");
+	public static final TagKey<Block> ROSY_BLOOMSHROOM_STEMS = of("rosy_bloomshroom_stems");
 	public static final TagKey<Block> SCABIOSAS = of("scabiosas");
 
 	private static TagKey<Block> of(String id) {

@@ -1,6 +1,9 @@
 {
   "values": [
-    "abysm:rosy_bloomshroom_stem",
-    "abysm:rosy_bloomshroom_cap"
+    "abysm:rosy_bloomshroom_cap",
+    {
+      "id": "#abysm:rosy_bloomshroom_stems",
+      "required": false
+    }
   ]
 }

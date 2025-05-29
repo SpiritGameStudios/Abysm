@@ -55,6 +55,8 @@ public class AbysmRecipeProvider extends FabricRecipeProvider {
 				offerBricklikeRecipe(AbysmBlocks.FLOROPUMICE_BRICKS, AbysmBlocks.POLISHED_FLOROPUMICE);
 				offerBricklikeRecipe(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS, AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
 				offerPillarRecipe(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, AbysmBlocks.SMOOTH_FLOROPUMICE);
+
+				offerBarkBlockRecipe(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE, AbysmBlocks.ROSY_BLOOMSHROOM_STEM);
 				// endregion crafting
 
 				// region smelting etc

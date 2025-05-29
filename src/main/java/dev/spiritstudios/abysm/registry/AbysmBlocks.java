@@ -236,6 +236,15 @@ public final class AbysmBlocks {
 			.sounds(BlockSoundGroup.WOOD)
 			.strength(1.1F, 1.5F)
 	);
+	public static final Block ROSY_BLOOMSHROOM_HYPHAE = register(
+		"rosy_bloomshroom_hyphae",
+		PillarBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.RED)
+			.instrument(NoteBlockInstrument.BASS)
+			.sounds(BlockSoundGroup.WOOD)
+			.strength(1.1F, 1.5F)
+	);
 	public static final Block ROSY_BLOOMSHROOM_CAP = register(
 		"rosy_bloomshroom_cap",
 		Block::new,

@@ -61,7 +61,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.registerFlowerPotPlantAndItem(AbysmBlocks.ROSY_BLOOMSHROOM, AbysmBlocks.POTTED_ROSY_BLOOMSHROOM, BlockStateModelGenerator.CrossType.NOT_TINTED);
 
 		registerGrassLike(generator, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
-		generator.registerAxisRotated(AbysmBlocks.ROSY_BLOOMSHROOM_STEM, TexturedModel.END_FOR_TOP_CUBE_COLUMN, TexturedModel.END_FOR_TOP_CUBE_COLUMN_HORIZONTAL);
+		generator.createLogTexturePool(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).stem(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).wood(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE);
 		generator.registerSimpleCubeAll(AbysmBlocks.ROSY_BLOOMSHROOM_CAP);
 		generator.registerSimpleCubeAll(AbysmBlocks.BLOOMSHROOM_GOOP);
 

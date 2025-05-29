@@ -36,6 +36,7 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.ROSY_SPRIGS,
 			AbysmBlocks.ROSY_BLOOMSHROOM,
 			AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
+			AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE,
 			AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 			AbysmBlocks.BLOOMSHROOM_GOOP,
 

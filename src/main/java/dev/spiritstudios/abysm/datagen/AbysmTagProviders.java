@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlockTags;
+import dev.spiritstudios.abysm.block.AbysmItemTags;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmItems;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
@@ -72,9 +73,9 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
 				.add(
-					AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
 					AbysmBlocks.ROSY_BLOOMSHROOM_CAP
-				);
+				)
+				.addOptionalTag(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS);
 
 			getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE)
 				.add(
@@ -83,10 +84,10 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
 				.add(
-					AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
 					AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 					AbysmBlocks.BLOOMSHROOM_GOOP
-				);
+				)
+				.addOptionalTag(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS);
 
 			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_TREES)
 				.add(
@@ -154,6 +155,12 @@ public class AbysmTagProviders {
 					AbysmBlocks.FLOROPUMICE,
 					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE,
 					Blocks.SAND
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
+					AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE
 				);
 
 			getOrCreateTagBuilder(AbysmBlockTags.SCABIOSAS)
@@ -288,6 +295,9 @@ public class AbysmTagProviders {
 
 			this.copy(ConventionalBlockTags.FLOWERS, ConventionalItemTags.FLOWERS);
 			this.copy(ConventionalBlockTags.SMALL_FLOWERS, ConventionalItemTags.SMALL_FLOWERS);
+
+			this.copy(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS, AbysmItemTags.ROSY_BLOOMSHROOM_STEMS);
+			this.copy(AbysmBlockTags.SCABIOSAS, AbysmItemTags.SCABIOSAS);
 			// endregion
 		}
 	}

@@ -1,7 +1,7 @@
 {
   "variants": {
     "axis=x": {
-      "model": "abysm:block/rosy_bloomshroom_stem_horizontal",
+      "model": "abysm:block/rosy_bloomshroom_stem",
       "x": 90,
       "y": 90
     },
@@ -9,7 +9,7 @@
       "model": "abysm:block/rosy_bloomshroom_stem"
     },
     "axis=z": {
-      "model": "abysm:block/rosy_bloomshroom_stem_horizontal",
+      "model": "abysm:block/rosy_bloomshroom_stem",
       "x": 90
     }
   }

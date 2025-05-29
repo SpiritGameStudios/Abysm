@@ -1,7 +1,10 @@
 {
   "values": [
-    "abysm:rosy_bloomshroom_stem",
     "abysm:rosy_bloomshroom_cap",
-    "abysm:bloomshroom_goop"
+    "abysm:bloomshroom_goop",
+    {
+      "id": "#abysm:rosy_bloomshroom_stems",
+      "required": false
+    }
   ]
 }
