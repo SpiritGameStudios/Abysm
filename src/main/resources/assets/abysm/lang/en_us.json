@@ -1,12 +1,15 @@
 {
 	"attribute.name.abysm.swimming_speed": "Swimming Speed",
-
+	"block.abysm.black_scabiosa": "Black Scabiosa",
 	"block.abysm.bloomshroom_goop": "Bloomshroom Goop",
+	"block.abysm.blue_scabiosa": "Blue Scabiosa",
+	"block.abysm.brown_scabiosa": "Brown Scabiosa",
 	"block.abysm.chiseled_floropumice": "Chiseled Floropumice",
 	"block.abysm.chiseled_smooth_floropumice": "Chiseled Smooth Floropumice",
 	"block.abysm.cut_smooth_floropumice": "Cut Smooth Floropumice",
 	"block.abysm.cut_smooth_floropumice_slab": "Cut Smooth Floropumice Slab",
 	"block.abysm.cut_smooth_floropumice_stairs": "Cut Smooth Floropumice Stairs",
+	"block.abysm.cyan_scabiosa": "Cyan Scabiosa",
 	"block.abysm.floropumice": "Floropumice",
 	"block.abysm.floropumice_brick_slab": "Floropumice Brick Slab",
 	"block.abysm.floropumice_brick_stairs": "Floropumice Brick Stairs",
@@ -19,6 +22,12 @@
 	"block.abysm.floropumice_tile_wall": "Floropumice Tile Wall",
 	"block.abysm.floropumice_tiles": "Floropumice Tiles",
 	"block.abysm.floropumice_wall": "Floropumice Wall",
+	"block.abysm.green_scabiosa": "Green Scabiosa",
+	"block.abysm.grey_scabiosa": "Gray Scabiosa",
+	"block.abysm.light_blue_scabiosa": "Light Blue Scabiosa",
+	"block.abysm.light_grey_scabiosa": "Light Gray Scabiosa",
+	"block.abysm.lime_scabiosa": "Lime Scabiosa",
+	"block.abysm.magenta_scabiosa": "Magenta Scabiosa",
 	"block.abysm.orange_scabiosa": "Orange Scabiosa",
 	"block.abysm.pink_scabiosa": "Pink Scabiosa",
 	"block.abysm.polished_floropumice": "Polished Floropumice",
@@ -26,6 +35,7 @@
 	"block.abysm.potted_rosy_bloomshroom": "Potted Rosy Bloomshroom",
 	"block.abysm.potted_rosy_sprigs": "Potted Rosy Sprigs",
 	"block.abysm.purple_scabiosa": "Purple Scabiosa",
+	"block.abysm.red_scabiosa": "Red Scabiosa",
 	"block.abysm.rosebloomed_floropumice": "Rosebloomed Floropumice",
 	"block.abysm.rosy_bloomshroom": "Rosy Bloomshroom",
 	"block.abysm.rosy_bloomshroom_cap": "Rosy Bloomshroom Cap",
@@ -41,8 +51,7 @@
 	"block.abysm.smooth_floropumice_stairs": "Smooth Floropumice Stairs",
 	"block.abysm.smooth_floropumice_wall": "Smooth Floropumice Wall",
 	"block.abysm.white_scabiosa": "White Scabiosa",
-
+	"block.abysm.yellow_scabiosa": "Yellow Scabiosa",
 	"item.abysm.flippers": "Flippers",
-
 	"item_group.abysm.abysm": "Abysm"
 }
