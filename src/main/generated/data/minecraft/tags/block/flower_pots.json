@@ -1,6 +1,10 @@
 {
   "values": [
     "abysm:potted_rosy_sprigs",
-    "abysm:potted_rosy_bloomshroom"
+    "abysm:potted_sunny_sprigs",
+    "abysm:potted_mauve_sprigs",
+    "abysm:potted_rosy_bloomshroom",
+    "abysm:potted_sunny_bloomshroom",
+    "abysm:potted_mauve_bloomshroom"
   ]
 }

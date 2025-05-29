@@ -34,10 +34,24 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR,
 
 			AbysmBlocks.ROSY_SPRIGS,
+			AbysmBlocks.SUNNY_SPRIGS,
+			AbysmBlocks.MAUVE_SPRIGS,
+
 			AbysmBlocks.ROSY_BLOOMSHROOM,
 			AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
 			AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE,
 			AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
+
+			AbysmBlocks.SUNNY_BLOOMSHROOM,
+			AbysmBlocks.SUNNY_BLOOMSHROOM_STEM,
+			AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE,
+			AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
+
+			AbysmBlocks.MAUVE_BLOOMSHROOM,
+			AbysmBlocks.MAUVE_BLOOMSHROOM_STEM,
+			AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE,
+			AbysmBlocks.MAUVE_BLOOMSHROOM_CAP,
+
 			AbysmBlocks.BLOOMSHROOM_GOOP,
 
 			AbysmBlocks.WHITE_SCABIOSA,
@@ -59,9 +73,16 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 		);
 
 		this.addPottedPlantDrops(AbysmBlocks.POTTED_ROSY_SPRIGS);
+		this.addPottedPlantDrops(AbysmBlocks.POTTED_SUNNY_SPRIGS);
+		this.addPottedPlantDrops(AbysmBlocks.POTTED_MAUVE_SPRIGS);
+
 		this.addPottedPlantDrops(AbysmBlocks.POTTED_ROSY_BLOOMSHROOM);
+		this.addPottedPlantDrops(AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM);
+		this.addPottedPlantDrops(AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM);
 
 		this.addDrop(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));
+		this.addDrop(AbysmBlocks.SUNBLOOMED_FLOROPUMICE, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));
+		this.addDrop(AbysmBlocks.MAUVE_BLOOMSHROOM, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));
 	}
 
 	private void dropSelf(Block... blocks) {

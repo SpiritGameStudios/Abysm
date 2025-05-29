@@ -122,7 +122,23 @@
     },
     {
       "count": 1,
+      "id": "abysm:sunbloomed_floropumice"
+    },
+    {
+      "count": 1,
+      "id": "abysm:mallowbloomed_floropumice"
+    },
+    {
+      "count": 1,
       "id": "abysm:rosy_sprigs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:sunny_sprigs"
+    },
+    {
+      "count": 1,
+      "id": "abysm:mauve_sprigs"
     },
     {
       "count": 1,
@@ -139,6 +155,38 @@
     {
       "count": 1,
       "id": "abysm:rosy_bloomshroom_cap"
+    },
+    {
+      "count": 1,
+      "id": "abysm:sunny_bloomshroom"
+    },
+    {
+      "count": 1,
+      "id": "abysm:sunny_bloomshroom_stem"
+    },
+    {
+      "count": 1,
+      "id": "abysm:sunny_bloomshroom_hyphae"
+    },
+    {
+      "count": 1,
+      "id": "abysm:sunny_bloomshroom_cap"
+    },
+    {
+      "count": 1,
+      "id": "abysm:mauve_bloomshroom"
+    },
+    {
+      "count": 1,
+      "id": "abysm:mauve_bloomshroom_stem"
+    },
+    {
+      "count": 1,
+      "id": "abysm:mauve_bloomshroom_hyphae"
+    },
+    {
+      "count": 1,
+      "id": "abysm:mauve_bloomshroom_cap"
     },
     {
       "count": 1,

@@ -24,7 +24,12 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 
 		putBlocks(builder, 0.65F,
 			AbysmBlocks.ROSY_SPRIGS,
+			AbysmBlocks.SUNNY_SPRIGS,
+			AbysmBlocks.MAUVE_SPRIGS,
+
 			AbysmBlocks.ROSY_BLOOMSHROOM,
+			AbysmBlocks.SUNNY_BLOOMSHROOM,
+			AbysmBlocks.MAUVE_BLOOMSHROOM,
 
 			AbysmBlocks.WHITE_SCABIOSA,
 			AbysmBlocks.ORANGE_SCABIOSA,
@@ -47,7 +52,15 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 		putBlocks(builder, 0.85F,
 			AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
 			AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE,
-			AbysmBlocks.ROSY_BLOOMSHROOM_CAP
+			AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
+
+			AbysmBlocks.SUNNY_BLOOMSHROOM_STEM,
+			AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE,
+			AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
+
+			AbysmBlocks.MAUVE_BLOOMSHROOM_STEM,
+			AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE,
+			AbysmBlocks.MAUVE_BLOOMSHROOM_CAP
 		);
 
 		consumer.accept(builder);

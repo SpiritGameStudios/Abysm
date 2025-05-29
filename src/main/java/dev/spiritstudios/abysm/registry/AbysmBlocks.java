@@ -174,7 +174,7 @@ public final class AbysmBlocks {
 	// region bloomshroom blocks
 	public static final Block ROSEBLOOMED_FLOROPUMICE = register(
 		"rosebloomed_floropumice",
-		BloomedFloropumiceBlock::new,
+		settings -> new BloomedFloropumiceBlock(AbysmConfiguredFeatures.ROSY_BLOOMSHROOM_VEGETATION_BONEMEAL, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.RED)
 			.instrument(NoteBlockInstrument.BASS)
@@ -182,6 +182,19 @@ public final class AbysmBlocks {
 			.requiresTool()
 			.ticksRandomly()
 	);
+	public static final Block SUNBLOOMED_FLOROPUMICE = register(
+		"sunbloomed_floropumice",
+		settings -> new BloomedFloropumiceBlock(AbysmConfiguredFeatures.SUNNY_BLOOMSHROOM_VEGETATION_BONEMEAL, settings),
+		AbstractBlock.Settings.copy(ROSEBLOOMED_FLOROPUMICE)
+			.mapColor(DyeColor.YELLOW)
+	);
+	public static final Block MALLOWBLOOMED_FLOROPUMICE = register(
+		"mallowbloomed_floropumice",
+		settings -> new BloomedFloropumiceBlock(AbysmConfiguredFeatures.MAUVE_BLOOMSHROOM_VEGETATION_BONEMEAL, settings),
+		AbstractBlock.Settings.copy(ROSEBLOOMED_FLOROPUMICE)
+			.mapColor(DyeColor.PURPLE)
+	);
+
 	public static final Block ROSY_SPRIGS = register(
 		"rosy_sprigs",
 		BloomshroomSprigsBlock::new,
@@ -205,9 +218,34 @@ public final class AbysmBlocks {
 			.nonOpaque(),
 		false
 	);
+	public static final Block SUNNY_SPRIGS = register(
+		"sunny_sprigs",
+		BloomshroomSprigsBlock::new,
+		AbstractBlock.Settings.copy(ROSY_SPRIGS)
+			.mapColor(DyeColor.YELLOW)
+	);
+	public static final Block POTTED_SUNNY_SPRIGS = register(
+		"potted_sunny_sprigs",
+		settings -> new FlowerPotBlock(SUNNY_SPRIGS, settings),
+		AbstractBlock.Settings.copy(POTTED_ROSY_SPRIGS),
+		false
+	);
+	public static final Block MAUVE_SPRIGS = register(
+		"mauve_sprigs",
+		BloomshroomSprigsBlock::new,
+		AbstractBlock.Settings.copy(ROSY_SPRIGS)
+			.mapColor(DyeColor.PURPLE)
+	);
+	public static final Block POTTED_MAUVE_SPRIGS = register(
+		"potted_mauve_sprigs",
+		settings -> new FlowerPotBlock(MAUVE_SPRIGS, settings),
+		AbstractBlock.Settings.copy(POTTED_ROSY_SPRIGS),
+		false
+	);
+
 	public static final Block ROSY_BLOOMSHROOM = register(
 		"rosy_bloomshroom",
-		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.BLOOMSHROOM, settings),
+		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.ROSY_BLOOMSHROOM, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.RED)
 			.sounds(BlockSoundGroup.GRASS)
@@ -254,6 +292,69 @@ public final class AbysmBlocks {
 			.sounds(BlockSoundGroup.WOOD)
 			.strength(0.7F, 0.9F)
 	);
+
+	public static final Block SUNNY_BLOOMSHROOM = register(
+		"sunny_bloomshroom",
+		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.SUNNY_BLOOMSHROOM, settings),
+		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM)
+			.mapColor(DyeColor.YELLOW)
+	);
+	public static final Block POTTED_SUNNY_BLOOMSHROOM = register(
+		"potted_sunny_bloomshroom",
+		settings -> new FlowerPotBlock(SUNNY_BLOOMSHROOM, settings),
+		AbstractBlock.Settings.copy(POTTED_ROSY_BLOOMSHROOM),
+		false
+	);
+	public static final Block SUNNY_BLOOMSHROOM_STEM = register(
+		"sunny_bloomshroom_stem",
+		PillarBlock::new,
+		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_STEM)
+			.mapColor(DyeColor.YELLOW)
+	);
+	public static final Block SUNNY_BLOOMSHROOM_HYPHAE = register(
+		"sunny_bloomshroom_hyphae",
+		PillarBlock::new,
+		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_HYPHAE)
+			.mapColor(DyeColor.YELLOW)
+	);
+	public static final Block SUNNY_BLOOMSHROOM_CAP = register(
+		"sunny_bloomshroom_cap",
+		Block::new,
+		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_CAP)
+			.mapColor(DyeColor.YELLOW)
+	);
+
+	public static final Block MAUVE_BLOOMSHROOM = register(
+		"mauve_bloomshroom",
+		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.MAUVE_BLOOMSHROOM, settings),
+		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM)
+			.mapColor(DyeColor.PURPLE)
+	);
+	public static final Block POTTED_MAUVE_BLOOMSHROOM = register(
+		"potted_mauve_bloomshroom",
+		settings -> new FlowerPotBlock(MAUVE_BLOOMSHROOM, settings),
+		AbstractBlock.Settings.copy(POTTED_ROSY_BLOOMSHROOM),
+		false
+	);
+	public static final Block MAUVE_BLOOMSHROOM_STEM = register(
+		"mauve_bloomshroom_stem",
+		PillarBlock::new,
+		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_STEM)
+			.mapColor(DyeColor.PURPLE)
+	);
+	public static final Block MAUVE_BLOOMSHROOM_HYPHAE = register(
+		"mauve_bloomshroom_hyphae",
+		PillarBlock::new,
+		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_HYPHAE)
+			.mapColor(DyeColor.PURPLE)
+	);
+	public static final Block MAUVE_BLOOMSHROOM_CAP = register(
+		"mauve_bloomshroom_cap",
+		Block::new,
+		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_CAP)
+			.mapColor(DyeColor.PURPLE)
+	);
+
 	public static final Block BLOOMSHROOM_GOOP = register(
 		"bloomshroom_goop",
 		WaterloggableTranslucentBlock::new,

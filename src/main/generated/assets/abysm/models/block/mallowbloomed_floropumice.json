@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "abysm:block/floropumice",
+    "side": "abysm:block/mallowbloomed_floropumice_side",
+    "top": "abysm:block/mallowbloomed_floropumice"
+  }
+}

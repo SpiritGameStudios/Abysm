@@ -13,16 +13,14 @@ import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.feature.PlacedFeatures;
-import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
-import net.minecraft.world.gen.placementmodifier.BlockFilterPlacementModifier;
-import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
-import net.minecraft.world.gen.placementmodifier.PlacementModifier;
-import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.*;
 
 import java.util.List;
 
 public class AbysmPlacedFeatures {
-	public static final RegistryKey<PlacedFeature> TREES_BLOOMSHROOM = ofKey("trees_bloomshroom");
+	public static final RegistryKey<PlacedFeature> TREES_ROSY_BLOOMSHROOM = ofKey("trees_rosy_bloomshroom");
+	public static final RegistryKey<PlacedFeature> TREES_SUNNY_BLOOMSHROOM = ofKey("trees_sunny_bloomshroom");
+	public static final RegistryKey<PlacedFeature> TREES_MAUVE_BLOOMSHROOM = ofKey("trees_mauve_bloomshroom");
 
 	public static final RegistryKey<PlacedFeature> PATCH_SPRIGS = ofKey("patch_sprigs");
 
@@ -34,13 +32,20 @@ public class AbysmPlacedFeatures {
 			registerable
 		);
 
-		helper.add(
-			TREES_BLOOMSHROOM, AbysmConfiguredFeatures.BLOOMSHROOM,
-			PlacedFeatures.createCountExtraModifier(1, 0.05F, 1),
-			SquarePlacementModifier.of(),
-			PlacedFeatures.OCEAN_FLOOR_WG_HEIGHTMAP,
-			wouldSurvive(AbysmBlocks.ROSY_BLOOMSHROOM),
-			BiomePlacementModifier.of()
+		addBloomshroomTree(helper,
+			TREES_ROSY_BLOOMSHROOM,
+			AbysmConfiguredFeatures.ROSY_BLOOMSHROOM,
+			AbysmBlocks.ROSY_BLOOMSHROOM
+		);
+		addBloomshroomTree(helper,
+			TREES_SUNNY_BLOOMSHROOM,
+			AbysmConfiguredFeatures.SUNNY_BLOOMSHROOM,
+			AbysmBlocks.SUNNY_BLOOMSHROOM
+		);
+		addBloomshroomTree(helper,
+			TREES_MAUVE_BLOOMSHROOM,
+			AbysmConfiguredFeatures.MAUVE_BLOOMSHROOM,
+			AbysmBlocks.MAUVE_BLOOMSHROOM
 		);
 
 		helper.add(
@@ -83,5 +88,16 @@ public class AbysmPlacedFeatures {
 				)
 			);
 		}
+	}
+
+	private static void addBloomshroomTree(PlacedFeatureHelper helper, RegistryKey<PlacedFeature> placeFeature, RegistryKey<ConfiguredFeature<?, ?>> configuredFeature, Block bloomShroom) {
+		helper.add(
+			placeFeature, configuredFeature,
+			PlacedFeatures.createCountExtraModifier(1, 0.05F, 1),
+			SquarePlacementModifier.of(),
+			PlacedFeatures.OCEAN_FLOOR_WG_HEIGHTMAP,
+			wouldSurvive(bloomShroom),
+			BiomePlacementModifier.of()
+		);
 	}
 }

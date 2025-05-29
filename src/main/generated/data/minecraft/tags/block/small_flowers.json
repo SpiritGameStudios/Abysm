@@ -1,5 +1,8 @@
 {
   "values": [
-    "abysm:rosy_bloomshroom"
+    {
+      "id": "#abysm:small_bloomshrooms",
+      "required": false
+    }
   ]
 }

@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#abysm:rosy_bloomshroom_stems",
+      "required": false
+    },
+    {
+      "id": "#abysm:sunny_bloomshroom_stems",
+      "required": false
+    },
+    {
+      "id": "#abysm:mauve_bloomshroom_stems",
+      "required": false
+    }
+  ]
+}

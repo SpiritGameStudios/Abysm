@@ -1,5 +1,5 @@
 {
-  "feature": "abysm:bloomshroom",
+  "feature": "abysm:mauve_bloomshroom",
   "placement": [
     {
       "type": "minecraft:count",
@@ -29,7 +29,7 @@
       "predicate": {
         "type": "minecraft:would_survive",
         "state": {
-          "Name": "abysm:rosy_bloomshroom",
+          "Name": "abysm:mauve_bloomshroom",
           "Properties": {
             "waterlogged": "false"
           }

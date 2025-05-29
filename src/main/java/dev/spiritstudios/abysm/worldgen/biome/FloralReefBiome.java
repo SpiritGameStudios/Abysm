@@ -8,22 +8,14 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.sound.MusicType;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.BiomeKeys;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.OverworldBiomeCreator;
-import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.surfacebuilder.MaterialRules;
 
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_CEILING;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.block;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.condition;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.surface;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.*;
 
 public final class FloralReefBiome extends AbysmBiome {
 	public static final MaterialRules.MaterialCondition CONDITION = MaterialRules.biome(AbysmBiomes.FLORAL_REEF);
@@ -60,7 +52,9 @@ public final class FloralReefBiome extends AbysmBiome {
 		builder
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SPRIGS)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.FLOROPUMICE_STALAGMITES)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_BLOOMSHROOM);
+			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_ROSY_BLOOMSHROOM)
+			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_SUNNY_BLOOMSHROOM)
+			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_MAUVE_BLOOMSHROOM);
 
 		return builder;
 	}

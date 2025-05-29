@@ -2,13 +2,36 @@
   "type": "abysm:sprigs",
   "config": {
     "stateProvider": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "abysm:rosy_sprigs",
-        "Properties": {
-          "waterlogged": "false"
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "abysm:rosy_sprigs",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 33
+        },
+        {
+          "data": {
+            "Name": "abysm:sunny_sprigs",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 33
+        },
+        {
+          "data": {
+            "Name": "abysm:mauve_sprigs",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 33
         }
-      }
+      ]
     }
   }
 }

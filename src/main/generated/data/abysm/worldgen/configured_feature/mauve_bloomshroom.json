@@ -1,0 +1,60 @@
+{
+  "type": "minecraft:tree",
+  "config": {
+    "decorators": [],
+    "dirt_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:dirt"
+      }
+    },
+    "foliage_placer": {
+      "type": "abysm:bloomshroom",
+      "offset": 0,
+      "radius": 4
+    },
+    "foliage_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "abysm:mauve_bloomshroom_cap"
+      }
+    },
+    "force_dirt": false,
+    "ignore_vines": false,
+    "minimum_size": {
+      "type": "minecraft:two_layers_feature_size",
+      "limit": 1,
+      "lower_size": 0,
+      "upper_size": 1
+    },
+    "trunk_placer": {
+      "type": "abysm:bloomshroom",
+      "base_height": 5,
+      "height_rand_a": 5,
+      "height_rand_b": 0,
+      "petal_offset": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 5,
+        "min_inclusive": 4
+      },
+      "petal_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "abysm:bloomshroom_goop",
+          "Properties": {
+            "waterlogged": "false"
+          }
+        }
+      }
+    },
+    "trunk_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "abysm:mauve_bloomshroom_stem",
+        "Properties": {
+          "axis": "y"
+        }
+      }
+    }
+  }
+}

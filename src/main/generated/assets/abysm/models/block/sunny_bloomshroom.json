@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "abysm:block/sunny_bloomshroom"
+  }
+}

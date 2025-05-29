@@ -25,9 +25,17 @@ public class AbysmClientBlockMetatagProvider extends MetatagProvider<Block> {
 		addBlocksToLayer(builder, BlockRenderLayer.CUTOUT,
 			AbysmBlocks.ROSY_SPRIGS,
 			AbysmBlocks.POTTED_ROSY_SPRIGS,
+			AbysmBlocks.SUNNY_SPRIGS,
+			AbysmBlocks.POTTED_SUNNY_SPRIGS,
+			AbysmBlocks.MAUVE_SPRIGS,
+			AbysmBlocks.POTTED_MAUVE_SPRIGS,
 
 			AbysmBlocks.ROSY_BLOOMSHROOM,
 			AbysmBlocks.POTTED_ROSY_BLOOMSHROOM,
+			AbysmBlocks.SUNNY_BLOOMSHROOM,
+			AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM,
+			AbysmBlocks.MAUVE_BLOOMSHROOM,
+			AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM,
 
 			AbysmBlocks.WHITE_SCABIOSA,
 			AbysmBlocks.ORANGE_SCABIOSA,

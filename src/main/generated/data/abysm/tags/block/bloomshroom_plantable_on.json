@@ -1,7 +1,10 @@
 {
   "values": [
     "abysm:floropumice",
-    "abysm:rosebloomed_floropumice",
-    "minecraft:sand"
+    "minecraft:sand",
+    {
+      "id": "#abysm:bloomed_floropumice",
+      "required": false
+    }
   ]
 }

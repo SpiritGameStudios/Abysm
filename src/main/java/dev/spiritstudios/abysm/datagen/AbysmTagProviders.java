@@ -65,17 +65,15 @@ public class AbysmTagProviders {
 				.add(
 					AbysmBlocks.POLISHED_FLOROPUMICE,
 					AbysmBlocks.CHISLED_FLOROPUMICE,
-					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE,
 					AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE,
 					AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE,
 					AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR
-				);
+				)
+				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
 
 			getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
-				.add(
-					AbysmBlocks.ROSY_BLOOMSHROOM_CAP
-				)
-				.addOptionalTag(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS);
+				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
+				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS);
 
 			getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE)
 				.add(
@@ -84,83 +82,117 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
 				.add(
-					AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 					AbysmBlocks.BLOOMSHROOM_GOOP
 				)
-				.addOptionalTag(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS);
+				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
+				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS);
 
 			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_TREES)
-				.add(
-					AbysmBlocks.ROSY_SPRIGS
-				);
+				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
 
 			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_MUSHROOMS)
-				.add(
-					AbysmBlocks.ROSY_SPRIGS
-				);
+				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
 
 			getOrCreateTagBuilder(BlockTags.COMBINATION_STEP_SOUND_BLOCKS)
-				.add(
-					AbysmBlocks.ROSY_SPRIGS
-				);
+				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
 
 			getOrCreateTagBuilder(BlockTags.ENDERMAN_HOLDABLE)
-				.add(
-					AbysmBlocks.ROSY_SPRIGS,
-					AbysmBlocks.ROSY_BLOOMSHROOM
-				);
+				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
+				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
 
 			getOrCreateTagBuilder(BlockTags.SCULK_REPLACEABLE)
 				.add(
-					AbysmBlocks.FLOROPUMICE,
-					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE
-				);
+					AbysmBlocks.FLOROPUMICE
+				)
+				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
 
 			getOrCreateTagBuilder(BlockTags.SCULK_REPLACEABLE_WORLD_GEN)
 				.add(
-					AbysmBlocks.FLOROPUMICE,
-					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE
-				);
+					AbysmBlocks.FLOROPUMICE
+				)
+				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
 
 			getOrCreateTagBuilder(BlockTags.FLOWERS)
-				.add(
-					AbysmBlocks.ROSY_BLOOMSHROOM
-				)
+				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
 
 			getOrCreateTagBuilder(BlockTags.SMALL_FLOWERS)
-				.add(
-					AbysmBlocks.ROSY_BLOOMSHROOM
-				);
+				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS);
 
 			getOrCreateTagBuilder(BlockTags.FLOWER_POTS)
 				.add(
 					AbysmBlocks.POTTED_ROSY_SPRIGS,
-					AbysmBlocks.POTTED_ROSY_BLOOMSHROOM
+					AbysmBlocks.POTTED_SUNNY_SPRIGS,
+					AbysmBlocks.POTTED_MAUVE_SPRIGS,
+
+					AbysmBlocks.POTTED_ROSY_BLOOMSHROOM,
+					AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM,
+					AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM
 				);
 
 			getOrCreateTagBuilder(ConventionalBlockTags.FLOWERS)
-				.add(
-					AbysmBlocks.ROSY_BLOOMSHROOM
-				)
+				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
 
 			getOrCreateTagBuilder(ConventionalBlockTags.SMALL_FLOWERS)
-				.add(
-					AbysmBlocks.ROSY_BLOOMSHROOM
-				);
+				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS);
 
 			getOrCreateTagBuilder(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON)
 				.add(
 					AbysmBlocks.FLOROPUMICE,
-					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE,
 					Blocks.SAND
+				)
+				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
+
+			getOrCreateTagBuilder(AbysmBlockTags.BLOOMED_FLOROPUMICE)
+				.add(
+					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE,
+					AbysmBlocks.SUNBLOOMED_FLOROPUMICE,
+					AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE
 				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.FLOWERY_SPRIGS)
+				.add(
+					AbysmBlocks.ROSY_SPRIGS,
+					AbysmBlocks.SUNNY_SPRIGS,
+					AbysmBlocks.MAUVE_SPRIGS
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.SMALL_BLOOMSHROOMS)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM,
+					AbysmBlocks.SUNNY_BLOOMSHROOM,
+					AbysmBlocks.MAUVE_BLOOMSHROOM
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.BLOOMSHROOM_STEMS)
+				.addOptionalTag(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS)
+				.addOptionalTag(AbysmBlockTags.SUNNY_BLOOMSHROOM_STEMS)
+				.addOptionalTag(AbysmBlockTags.MAUVE_BLOOMSHROOM_STEMS);
 
 			getOrCreateTagBuilder(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS)
 				.add(
 					AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
 					AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.SUNNY_BLOOMSHROOM_STEMS)
+				.add(
+					AbysmBlocks.SUNNY_BLOOMSHROOM_STEM,
+					AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.MAUVE_BLOOMSHROOM_STEMS)
+				.add(
+					AbysmBlocks.MAUVE_BLOOMSHROOM_STEM,
+					AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.BLOOMSHROOM_CAPS)
+				.add(
+					AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
+					AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
+					AbysmBlocks.MAUVE_BLOOMSHROOM_CAP
 				);
 
 			getOrCreateTagBuilder(AbysmBlockTags.SCABIOSAS)
@@ -296,7 +328,14 @@ public class AbysmTagProviders {
 			this.copy(ConventionalBlockTags.FLOWERS, ConventionalItemTags.FLOWERS);
 			this.copy(ConventionalBlockTags.SMALL_FLOWERS, ConventionalItemTags.SMALL_FLOWERS);
 
+			this.copy(AbysmBlockTags.BLOOMED_FLOROPUMICE, AbysmItemTags.BLOOMED_FLOROPUMICE);
+			this.copy(AbysmBlockTags.FLOWERY_SPRIGS, AbysmItemTags.FLOWERY_SPRIGS);
+			this.copy(AbysmBlockTags.SMALL_BLOOMSHROOMS, AbysmItemTags.SMALL_BLOOMSHROOMS);
+			this.copy(AbysmBlockTags.BLOOMSHROOM_STEMS, AbysmItemTags.BLOOMSHROOM_STEMS);
 			this.copy(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS, AbysmItemTags.ROSY_BLOOMSHROOM_STEMS);
+			this.copy(AbysmBlockTags.SUNNY_BLOOMSHROOM_STEMS, AbysmItemTags.SUNNY_BLOOMSHROOM_STEMS);
+			this.copy(AbysmBlockTags.MAUVE_BLOOMSHROOM_STEMS, AbysmItemTags.MAUVE_BLOOMSHROOM_STEMS);
+			this.copy(AbysmBlockTags.BLOOMSHROOM_CAPS, AbysmItemTags.BLOOMSHROOM_CAPS);
 			this.copy(AbysmBlockTags.SCABIOSAS, AbysmItemTags.SCABIOSAS);
 			// endregion
 		}

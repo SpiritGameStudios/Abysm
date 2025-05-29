@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "bark",
+  "key": {
+    "#": "abysm:sunny_bloomshroom_stem"
+  },
+  "result": {
+    "count": 3,
+    "id": "abysm:sunny_bloomshroom_hyphae"
+  },
+  "pattern": [
+    "##",
+    "##"
+  ]
+}

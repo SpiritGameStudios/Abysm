@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "abysm:block/sunbloomed_floropumice"
+      },
+      {
+        "model": "abysm:block/sunbloomed_floropumice",
+        "y": 90
+      },
+      {
+        "model": "abysm:block/sunbloomed_floropumice",
+        "y": 180
+      },
+      {
+        "model": "abysm:block/sunbloomed_floropumice",
+        "y": 270
+      }
+    ]
+  }
+}

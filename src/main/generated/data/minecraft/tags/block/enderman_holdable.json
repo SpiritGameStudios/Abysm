@@ -1,6 +1,12 @@
 {
   "values": [
-    "abysm:rosy_sprigs",
-    "abysm:rosy_bloomshroom"
+    {
+      "id": "#abysm:small_bloomshrooms",
+      "required": false
+    },
+    {
+      "id": "#abysm:flowery_sprigs",
+      "required": false
+    }
   ]
 }

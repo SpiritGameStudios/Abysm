@@ -1,15 +1,15 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
-import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -21,16 +21,27 @@ import net.minecraft.world.chunk.light.ChunkLightProvider;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 
+import java.util.Optional;
+
 public class BloomedFloropumiceBlock extends Block implements Fertilizable {
-	public static final MapCodec<BloomedFloropumiceBlock> CODEC = createCodec(BloomedFloropumiceBlock::new);
+	public static final MapCodec<BloomedFloropumiceBlock> CODEC = RecordCodecBuilder.mapCodec(
+		instance -> instance.group(
+				RegistryKey.createCodec(RegistryKeys.CONFIGURED_FEATURE).fieldOf("feature").forGetter(block -> block.featureKey),
+				createSettingsCodec()
+			)
+			.apply(instance, BloomedFloropumiceBlock::new)
+	);
+
+	private final RegistryKey<ConfiguredFeature<?, ?>> featureKey;
 
 	@Override
 	public MapCodec<BloomedFloropumiceBlock> getCodec() {
 		return CODEC;
 	}
 
-	public BloomedFloropumiceBlock(Settings settings) {
+	public BloomedFloropumiceBlock(RegistryKey<ConfiguredFeature<?, ?>> featureKey, Settings settings) {
 		super(settings);
+		this.featureKey = featureKey;
 	}
 
 	@Override
@@ -69,23 +80,15 @@ public class BloomedFloropumiceBlock extends Block implements Fertilizable {
 		return true;
 	}
 
-	@Override
-	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-		BlockPos blockPos = pos.up();
-		ChunkGenerator chunkGenerator = world.getChunkManager().getChunkGenerator();
-		Registry<ConfiguredFeature<?, ?>> registry = world.getRegistryManager().getOrThrow(RegistryKeys.CONFIGURED_FEATURE);
-
-		this.generate(registry, AbysmConfiguredFeatures.ROSY_BLOOMSHROOM_VEGETATION_BONEMEAL, world, chunkGenerator, random, blockPos);
+	private Optional<? extends RegistryEntry<ConfiguredFeature<?, ?>>> getFeatureEntry(WorldView world) {
+		return world.getRegistryManager().getOrThrow(RegistryKeys.CONFIGURED_FEATURE).getOptional(this.featureKey);
 	}
 
-	private void generate(
-		Registry<ConfiguredFeature<?, ?>> registry,
-		RegistryKey<ConfiguredFeature<?, ?>> key,
-		ServerWorld world,
-		ChunkGenerator chunkGenerator,
-		Random random,
-		BlockPos pos
-	) {
-		registry.getOptional(key).ifPresent(entry -> entry.value().generate(world, chunkGenerator, random, pos));
+	@Override
+	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
+		BlockPos upPos = pos.up();
+		ChunkGenerator chunkGenerator = world.getChunkManager().getChunkGenerator();
+		this.getFeatureEntry(world)
+			.ifPresent(featureEntry -> featureEntry.value().generate(world, chunkGenerator, random, upPos));
 	}
 }

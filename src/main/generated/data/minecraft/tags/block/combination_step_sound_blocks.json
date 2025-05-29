@@ -1,5 +1,8 @@
 {
   "values": [
-    "abysm:rosy_sprigs"
+    {
+      "id": "#abysm:flowery_sprigs",
+      "required": false
+    }
   ]
 }

@@ -1,0 +1,30 @@
+{
+  "type": "abysm:bloomshroom_vegetation",
+  "config": {
+    "spread_height": 4,
+    "spread_width": 8,
+    "state_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "abysm:mauve_sprigs",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 87
+        },
+        {
+          "data": {
+            "Name": "abysm:mauve_bloomshroom",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 11
+        }
+      ]
+    }
+  }
+}

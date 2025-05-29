@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "abysm:block/sunny_bloomshroom_hyphae",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "abysm:block/sunny_bloomshroom_hyphae"
+    },
+    "axis=z": {
+      "model": "abysm:block/sunny_bloomshroom_hyphae",
+      "x": 90
+    }
+  }
+}

@@ -1,6 +1,9 @@
 {
   "values": [
     "abysm:floropumice",
-    "abysm:rosebloomed_floropumice"
+    {
+      "id": "#abysm:bloomed_floropumice",
+      "required": false
+    }
   ]
 }

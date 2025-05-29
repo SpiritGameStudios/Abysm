@@ -86,7 +86,9 @@
       "minecraft:patch_firefly_bush_near_water",
       "abysm:patch_sprigs",
       "abysm:floropumice_stalagmites",
-      "abysm:trees_bloomshroom"
+      "abysm:trees_rosy_bloomshroom",
+      "abysm:trees_sunny_bloomshroom",
+      "abysm:trees_mauve_bloomshroom"
     ],
     [
       "minecraft:freeze_top_layer"
