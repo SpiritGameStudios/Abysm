@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Fertilizable;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -29,7 +30,9 @@ public class FloropumiceBlock extends Block implements Fertilizable {
 
 	@Override
 	public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
-		return world.getBlockState(pos.up()).isTransparent();
+		BlockPos upPos = pos.up();
+		BlockState upState = world.getBlockState(upPos);
+		return upState.isTransparent() || (!upState.isOpaque() && world.getFluidState(upPos).isIn(FluidTags.WATER));
 	}
 
 	@Override
@@ -40,5 +43,17 @@ public class FloropumiceBlock extends Block implements Fertilizable {
 	@Override
 	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
 		world.setBlockState(pos, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE.getDefaultState());
+		BlockPos.Mutable targetPos = new BlockPos.Mutable();
+		for(int i = 0; i < 20; i++) {
+			int dx = random.nextInt(5) - 2;
+			int dy = random.nextInt(3) - 1;
+			int dz = random.nextInt(5) - 2;
+			targetPos.set(pos, dx, dy, dz);
+
+			BlockState targetState = world.getBlockState(targetPos);
+			if(targetState.isOf(AbysmBlocks.FLOROPUMICE) && isFertilizable(world, targetPos, targetState)) {
+				world.setBlockState(targetPos, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE.getDefaultState());
+			}
+		}
 	}
 }
