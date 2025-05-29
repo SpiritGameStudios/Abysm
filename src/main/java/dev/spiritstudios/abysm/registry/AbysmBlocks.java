@@ -1,21 +1,9 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.block.BloomedFloropumiceBlock;
-import dev.spiritstudios.abysm.block.BloomshroomSprigsBlock;
-import dev.spiritstudios.abysm.block.FloropumiceBlock;
-import dev.spiritstudios.abysm.block.ScabiosaBlock;
-import dev.spiritstudios.abysm.block.SmallBloomshroomBlock;
-import dev.spiritstudios.abysm.block.WaterloggableTranslucentBlock;
+import dev.spiritstudios.abysm.block.*;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.PillarBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;

@@ -2,13 +2,7 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.Fertilizable;
-import net.minecraft.block.PlantBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.Waterloggable;
+import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
@@ -72,7 +66,8 @@ public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, W
 
 	@Override
 	protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-		return floor.isIn(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON);
+		// bloomshroom flowers can additionally be planted on grass, moss etc. for decoration, but can only be grown into a big bloomshroom when underwater (or on mycelium)
+		return floor.isIn(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON) || super.canPlantOnTop(floor, world, pos);
 	}
 
 	@Override

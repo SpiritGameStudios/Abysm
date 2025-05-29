@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -49,7 +48,7 @@ public class BloomshroomSprigsBlock extends PlantBlock {
 
 	@Override
 	protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-		return floor.isOf(AbysmBlocks.FLOROPUMICE) || floor.isOf(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE) || floor.isOf(Blocks.SAND) || super.canPlantOnTop(floor, world, pos);
+		return floor.isIn(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON) || super.canPlantOnTop(floor, world, pos);
 	}
 
 	@Override

@@ -7,15 +7,7 @@ import dev.spiritstudios.abysm.registry.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.BlockStateVariantMap;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Model;
-import net.minecraft.client.data.Models;
-import net.minecraft.client.data.TextureKey;
-import net.minecraft.client.data.TextureMap;
-import net.minecraft.client.data.TexturedModel;
-import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
+import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.data.family.BlockFamily;
@@ -73,25 +65,33 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.registerSimpleCubeAll(AbysmBlocks.ROSY_BLOOMSHROOM_CAP);
 		generator.registerSimpleCubeAll(AbysmBlocks.BLOOMSHROOM_GOOP);
 
-		registerScabiosa(generator, AbysmBlocks.WHITE_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.ORANGE_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.MAGENTA_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.LIGHT_BLUE_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.YELLOW_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.LIME_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.PINK_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.GREY_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.LIGHT_GREY_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.CYAN_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.PURPLE_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.BLUE_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.BROWN_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.GREEN_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.RED_SCABIOSA);
-		registerScabiosa(generator, AbysmBlocks.BLACK_SCABIOSA);
+		registerScabiosas(generator,
+			AbysmBlocks.WHITE_SCABIOSA,
+			AbysmBlocks.ORANGE_SCABIOSA,
+			AbysmBlocks.MAGENTA_SCABIOSA,
+			AbysmBlocks.LIGHT_BLUE_SCABIOSA,
+			AbysmBlocks.YELLOW_SCABIOSA,
+			AbysmBlocks.LIME_SCABIOSA,
+			AbysmBlocks.PINK_SCABIOSA,
+			AbysmBlocks.GREY_SCABIOSA,
+			AbysmBlocks.LIGHT_GREY_SCABIOSA,
+			AbysmBlocks.CYAN_SCABIOSA,
+			AbysmBlocks.PURPLE_SCABIOSA,
+			AbysmBlocks.BLUE_SCABIOSA,
+			AbysmBlocks.BROWN_SCABIOSA,
+			AbysmBlocks.GREEN_SCABIOSA,
+			AbysmBlocks.RED_SCABIOSA,
+			AbysmBlocks.BLACK_SCABIOSA
+		);
 	}
 
-	public final void registerScabiosa(BlockStateModelGenerator generator, Block block) {
+	private void registerScabiosas(BlockStateModelGenerator generator, Block... blocks) {
+		for(Block block : blocks) {
+			registerScabiosa(generator, block);
+		}
+	}
+
+	private void registerScabiosa(BlockStateModelGenerator generator, Block block) {
 		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(BLOSSOM_FACTORY.upload(block, generator.modelCollector));
 		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS));
 	}

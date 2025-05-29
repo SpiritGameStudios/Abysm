@@ -109,10 +109,23 @@ public class AbysmTagProviders {
 					AbysmBlocks.ROSY_BLOOMSHROOM
 				);
 
+			getOrCreateTagBuilder(BlockTags.SCULK_REPLACEABLE)
+				.add(
+					AbysmBlocks.FLOROPUMICE,
+					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE
+				);
+
+			getOrCreateTagBuilder(BlockTags.SCULK_REPLACEABLE_WORLD_GEN)
+				.add(
+					AbysmBlocks.FLOROPUMICE,
+					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE
+				);
+
 			getOrCreateTagBuilder(BlockTags.FLOWERS)
 				.add(
 					AbysmBlocks.ROSY_BLOOMSHROOM
-				);
+				)
+				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
 
 			getOrCreateTagBuilder(BlockTags.SMALL_FLOWERS)
 				.add(
@@ -128,7 +141,8 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(ConventionalBlockTags.FLOWERS)
 				.add(
 					AbysmBlocks.ROSY_BLOOMSHROOM
-				);
+				)
+				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
 
 			getOrCreateTagBuilder(ConventionalBlockTags.SMALL_FLOWERS)
 				.add(
@@ -136,8 +150,31 @@ public class AbysmTagProviders {
 				);
 
 			getOrCreateTagBuilder(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON)
-				.add(AbysmBlocks.FLOROPUMICE, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE)
-				.add(Blocks.SAND);
+				.add(
+					AbysmBlocks.FLOROPUMICE,
+					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE,
+					Blocks.SAND
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.SCABIOSAS)
+				.add(
+					AbysmBlocks.WHITE_SCABIOSA,
+					AbysmBlocks.ORANGE_SCABIOSA,
+					AbysmBlocks.MAGENTA_SCABIOSA,
+					AbysmBlocks.LIGHT_BLUE_SCABIOSA,
+					AbysmBlocks.YELLOW_SCABIOSA,
+					AbysmBlocks.LIME_SCABIOSA,
+					AbysmBlocks.PINK_SCABIOSA,
+					AbysmBlocks.GREY_SCABIOSA,
+					AbysmBlocks.LIGHT_GREY_SCABIOSA,
+					AbysmBlocks.CYAN_SCABIOSA,
+					AbysmBlocks.PURPLE_SCABIOSA,
+					AbysmBlocks.BLUE_SCABIOSA,
+					AbysmBlocks.BROWN_SCABIOSA,
+					AbysmBlocks.GREEN_SCABIOSA,
+					AbysmBlocks.RED_SCABIOSA,
+					AbysmBlocks.BLACK_SCABIOSA
+				);
 			// endregion
 		}
 
