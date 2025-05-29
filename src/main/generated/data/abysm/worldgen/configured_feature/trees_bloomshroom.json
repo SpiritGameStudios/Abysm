@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "abysm:rosy_bloomshroom",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.33333334,
+        "feature": {
+          "feature": "abysm:rosy_bloomshroom",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.33333334,
+        "feature": {
+          "feature": "abysm:sunny_bloomshroom",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.33333334,
+        "feature": {
+          "feature": "abysm:mauve_bloomshroom",
+          "placement": []
+        }
+      }
+    ]
+  }
+}

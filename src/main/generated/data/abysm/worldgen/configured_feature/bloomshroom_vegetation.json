@@ -1,0 +1,66 @@
+{
+  "type": "abysm:bloomshroom_vegetation",
+  "config": {
+    "spread_height": 4,
+    "spread_width": 8,
+    "state_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "data": {
+            "Name": "abysm:rosy_sprigs",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 29
+        },
+        {
+          "data": {
+            "Name": "abysm:sunny_sprigs",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 29
+        },
+        {
+          "data": {
+            "Name": "abysm:mauve_sprigs",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 29
+        },
+        {
+          "data": {
+            "Name": "abysm:rosy_bloomshroom",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "abysm:sunny_bloomshroom",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        },
+        {
+          "data": {
+            "Name": "abysm:mauve_bloomshroom",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          },
+          "weight": 3
+        }
+      ]
+    }
+  }
+}
