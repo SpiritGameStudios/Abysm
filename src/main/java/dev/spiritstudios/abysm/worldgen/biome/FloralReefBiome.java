@@ -1,9 +1,11 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
 import com.terraformersmc.biolith.api.biome.BiomePlacement;
+import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.sound.MusicType;
 import net.minecraft.world.biome.BiomeEffects;
@@ -17,10 +19,11 @@ import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.surfacebuilder.MaterialRules;
 
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_CEILING;
 import static net.minecraft.world.gen.surfacebuilder.MaterialRules.block;
 import static net.minecraft.world.gen.surfacebuilder.MaterialRules.condition;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.not;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.water;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.surface;
 
 public final class FloralReefBiome extends AbysmBiome {
 	public static final MaterialRules.MaterialCondition CONDITION = MaterialRules.biome(AbysmBiomes.FLORAL_REEF);
@@ -64,7 +67,20 @@ public final class FloralReefBiome extends AbysmBiome {
 
 	@Override
 	public SpawnSettings.Builder createSpawnSettings() {
-		return new SpawnSettings.Builder();
+		SpawnSettings.Builder builder = new SpawnSettings.Builder()
+			.spawn(
+				SpawnGroup.WATER_AMBIENT,
+				25,
+				new SpawnSettings.SpawnEntry(AbysmEntityTypes.BIG_FLORAL_FISH, 8, 8)
+			)
+			.spawn(
+				SpawnGroup.WATER_AMBIENT,
+				25,
+				new SpawnSettings.SpawnEntry(AbysmEntityTypes.SMALL_FLORAL_FISH, 8, 8)
+			);
+
+		DefaultBiomeFeatures.addBatsAndMonsters(builder);
+		return builder;
 	}
 
 	@Override
@@ -75,12 +91,19 @@ public final class FloralReefBiome extends AbysmBiome {
 			0.5F
 		);
 
-		addSurfaceRules(condition(
-			not(water(-1, 0)),
-			condition(
-				MaterialRules.STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH_RANGE_6,
-				block(Blocks.SAND.getDefaultState())
+		addSurfaceRules(
+			condition(surface(),
+				sequence(
+					sequence(condition(
+						STONE_DEPTH_CEILING,
+						block(Blocks.SANDSTONE.getDefaultState())
+					), block(Blocks.SAND.getDefaultState())),
+					sequence(condition(
+						STONE_DEPTH_CEILING,
+						block(Blocks.STONE.getDefaultState())
+					), block(Blocks.GRAVEL.getDefaultState()))
+				)
 			)
-		));
+		);
 	}
 }
