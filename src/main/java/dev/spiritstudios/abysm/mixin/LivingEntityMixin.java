@@ -41,8 +41,10 @@ public abstract class LivingEntityMixin extends Entity {
         return original.add(AbysmEntityAttributes.SWIMMING_SPEED, 0.9F);
     }
 
+	/*
     @WrapOperation(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;multiply(DDD)Lnet/minecraft/util/math/Vec3d;", ordinal = 0))
     private Vec3d pleaseIncreaseVerticalMovementSpeed(Vec3d instance, double x, double y, double z, Operation<Vec3d> original) {
         return original.call(instance, x, y * (1 + getAttributeValue(AbysmEntityAttributes.SWIMMING_SPEED) - AbysmEntityAttributes.SWIMMING_SPEED.value().getDefaultValue()), z);
     }
+	*/
 }
