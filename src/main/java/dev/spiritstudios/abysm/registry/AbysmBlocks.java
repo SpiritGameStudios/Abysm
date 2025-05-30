@@ -203,7 +203,7 @@ public final class AbysmBlocks {
 			.sounds(BlockSoundGroup.GRASS)
 			.pistonBehavior(PistonBehavior.DESTROY)
 			.offset(AbstractBlock.OffsetType.XZ)
-			.luminance(state -> 5)
+			.luminance(state -> 3)
 			.breakInstantly()
 			.noCollision()
 			.replaceable()
@@ -213,7 +213,7 @@ public final class AbysmBlocks {
 		settings -> new FlowerPotBlock(ROSY_SPRIGS, settings),
 		AbstractBlock.Settings.create()
 			.pistonBehavior(PistonBehavior.DESTROY)
-			.luminance(state -> 5)
+			.luminance(state -> 3)
 			.breakInstantly()
 			.nonOpaque(),
 		false
