@@ -5,6 +5,10 @@
       "required": false
     },
     {
+      "id": "#abysm:blooming_crowns",
+      "required": false
+    },
+    {
       "id": "#abysm:scabiosas",
       "required": false
     }

@@ -1,0 +1,10 @@
+{
+  "parent": "abysm:block/blooming_crown",
+  "textures": {
+    "bottom": "abysm:block/blooming_sodalite_crown_bottom",
+    "inner": "abysm:block/blooming_sodalite_crown_inner",
+    "petal": "abysm:block/blooming_sodalite_crown_petal",
+    "side": "abysm:block/blooming_sodalite_crown_side",
+    "top": "abysm:block/blooming_sodalite_crown_top"
+  }
+}

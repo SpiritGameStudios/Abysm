@@ -366,12 +366,36 @@ public final class AbysmBlocks {
 			.luminance(state -> 11)
 			.nonOpaque()
 	);
+
+	public static final Block BLOOMING_SODALITE_CROWN = register(
+		"blooming_sodalite_crown",
+		RotatableWaterloggableFlowerBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.LAPIS_BLUE)
+			.sounds(BlockSoundGroup.SPORE_BLOSSOM)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 9)
+			.breakInstantly()
+			.noCollision()
+	);
+	public static final Block BLOOMING_ANYOLITE_CROWN = register(
+		"blooming_anyolite_crown",
+		RotatableWaterloggableFlowerBlock::new,
+		AbstractBlock.Settings.copy(BLOOMING_SODALITE_CROWN)
+			.mapColor(MapColor.LIME)
+	);
+	public static final Block BLOOMING_MELILITE_CROWN = register(
+		"blooming_melilite_crown",
+		RotatableWaterloggableFlowerBlock::new,
+		AbstractBlock.Settings.copy(BLOOMING_SODALITE_CROWN)
+			.mapColor(MapColor.ORANGE)
+	);
 	// endregion bloomshroom
 
 	// region scabiosas
 	public static final Block WHITE_SCABIOSA = register(
 		"white_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.create()
 			.mapColor(MapColor.TERRACOTTA_WHITE)
 			.solid()
@@ -383,91 +407,91 @@ public final class AbysmBlocks {
 
 	public static final Block ORANGE_SCABIOSA = register(
 		"orange_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.ORANGE)
 	);
 
 	public static final Block MAGENTA_SCABIOSA = register(
 		"magenta_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.MAGENTA)
 	);
 
 	public static final Block LIGHT_BLUE_SCABIOSA = register(
 		"light_blue_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.LIGHT_BLUE)
 	);
 
 	public static final Block YELLOW_SCABIOSA = register(
 		"yellow_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.YELLOW)
 	);
 
 	public static final Block LIME_SCABIOSA = register(
 		"lime_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.LIME)
 	);
 
 	public static final Block PINK_SCABIOSA = register(
 		"pink_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.PINK)
 	);
 
 	public static final Block GREY_SCABIOSA = register(
 		"grey_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.GRAY)
 	);
 
 	public static final Block LIGHT_GREY_SCABIOSA = register(
 		"light_grey_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.LIGHT_BLUE_GRAY)
 	);
 
 	public static final Block CYAN_SCABIOSA = register(
 		"cyan_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.CYAN)
 	);
 
 	public static final Block PURPLE_SCABIOSA = register(
 		"purple_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.PURPLE)
 	);
 
 	public static final Block BLUE_SCABIOSA = register(
 		"blue_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.LAPIS_BLUE)
 	);
 
 	public static final Block BROWN_SCABIOSA = register(
 		"brown_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.TERRACOTTA_BROWN)
 	);
 
 	public static final Block GREEN_SCABIOSA = register(
 		"green_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.TERRACOTTA_GREEN)
 	);
 
 	public static final Block RED_SCABIOSA = register(
 		"red_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.RED)
 	);
 
 	public static final Block BLACK_SCABIOSA = register(
 		"black_scabiosa",
-		ScabiosaBlock::new,
+		RotatableWaterloggableFlowerBlock::new,
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.BLACK)
 	);
 	// endregion scabiosas

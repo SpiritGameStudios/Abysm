@@ -15,6 +15,7 @@ public final class AbysmBlockTags {
 	public static final TagKey<Block> SUNNY_BLOOMSHROOM_STEMS = of("sunny_bloomshroom_stems");
 	public static final TagKey<Block> MAUVE_BLOOMSHROOM_STEMS = of("mauve_bloomshroom_stems");
 	public static final TagKey<Block> BLOOMSHROOM_CAPS = of("bloomshroom_caps");
+	public static final TagKey<Block> BLOOMING_CROWNS = of("blooming_crowns");
 	public static final TagKey<Block> SCABIOSAS = of("scabiosas");
 
 	private static TagKey<Block> of(String id) {

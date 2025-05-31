@@ -63,6 +63,12 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 			AbysmBlocks.MAUVE_BLOOMSHROOM_CAP
 		);
 
+		putBlocks(builder, 1.0F,
+			AbysmBlocks.BLOOMING_SODALITE_CROWN,
+			AbysmBlocks.BLOOMING_ANYOLITE_CROWN,
+			AbysmBlocks.BLOOMING_MELILITE_CROWN
+		);
+
 		consumer.accept(builder);
 	}
 

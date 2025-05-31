@@ -27,13 +27,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class ScabiosaBlock extends Block {
-	public static final MapCodec<ScabiosaBlock> CODEC = createCodec(ScabiosaBlock::new);
+public class RotatableWaterloggableFlowerBlock extends Block {
+	public static final MapCodec<RotatableWaterloggableFlowerBlock> CODEC = createCodec(RotatableWaterloggableFlowerBlock::new);
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	public static final EnumProperty<Direction> FACING = Properties.FACING;
 	private final Map<Direction, VoxelShape> shapesByDirection = VoxelShapes.createFacingShapeMap(Block.createCuboidZShape(12f, 13f, 16f));
 
-	public ScabiosaBlock(Settings settings) {
+	public RotatableWaterloggableFlowerBlock(Settings settings) {
 		super(settings);
 		this.setDefaultState(this.getDefaultState().with(WATERLOGGED, false).with(FACING, Direction.UP));
 	}

@@ -61,7 +61,6 @@ public class BloomshroomTrunkPlacer extends TrunkPlacer {
 				.withIfExists(Properties.EAST, direction == Direction.WEST)
 				.withIfExists(Properties.WEST, direction == Direction.EAST)
 		);
-
 	}
 
 	@Override

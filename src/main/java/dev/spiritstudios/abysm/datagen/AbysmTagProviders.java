@@ -114,6 +114,7 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(BlockTags.FLOWERS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
+				.addOptionalTag(AbysmBlockTags.BLOOMING_CROWNS)
 				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
 
 			getOrCreateTagBuilder(BlockTags.SMALL_FLOWERS)
@@ -132,6 +133,7 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(ConventionalBlockTags.FLOWERS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
+				.addOptionalTag(AbysmBlockTags.BLOOMING_CROWNS)
 				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
 
 			getOrCreateTagBuilder(ConventionalBlockTags.SMALL_FLOWERS)
@@ -193,6 +195,13 @@ public class AbysmTagProviders {
 					AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 					AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
 					AbysmBlocks.MAUVE_BLOOMSHROOM_CAP
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.BLOOMING_CROWNS)
+				.add(
+					AbysmBlocks.BLOOMING_SODALITE_CROWN,
+					AbysmBlocks.BLOOMING_ANYOLITE_CROWN,
+					AbysmBlocks.BLOOMING_MELILITE_CROWN
 				);
 
 			getOrCreateTagBuilder(AbysmBlockTags.SCABIOSAS)
@@ -336,6 +345,7 @@ public class AbysmTagProviders {
 			this.copy(AbysmBlockTags.SUNNY_BLOOMSHROOM_STEMS, AbysmItemTags.SUNNY_BLOOMSHROOM_STEMS);
 			this.copy(AbysmBlockTags.MAUVE_BLOOMSHROOM_STEMS, AbysmItemTags.MAUVE_BLOOMSHROOM_STEMS);
 			this.copy(AbysmBlockTags.BLOOMSHROOM_CAPS, AbysmItemTags.BLOOMSHROOM_CAPS);
+			this.copy(AbysmBlockTags.BLOOMING_CROWNS, AbysmItemTags.BLOOMING_CROWNS);
 			this.copy(AbysmBlockTags.SCABIOSAS, AbysmItemTags.SCABIOSAS);
 			// endregion
 		}

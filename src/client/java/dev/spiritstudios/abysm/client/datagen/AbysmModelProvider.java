@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.client.datagen;
 
-import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmItems;
@@ -16,31 +15,27 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
-import java.util.Optional;
+import java.util.function.BiConsumer;
+
+import static net.minecraft.client.data.BlockStateModelGenerator.*;
 
 public class AbysmModelProvider extends FabricModelProvider {
 	// Note - by default, the spore blossom model(used for scabiosa) is upside, which is why this is flipped
 	private static final BlockStateVariantMap<ModelVariantOperator> UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS = BlockStateVariantMap.operations(Properties.FACING)
-		.register(Direction.DOWN, BlockStateModelGenerator.NO_OP)
-		.register(Direction.UP, BlockStateModelGenerator.ROTATE_X_180)
-		.register(Direction.NORTH, BlockStateModelGenerator.ROTATE_X_90.then(BlockStateModelGenerator.ROTATE_Y_180))
-		.register(Direction.SOUTH, BlockStateModelGenerator.ROTATE_X_90)
-		.register(Direction.WEST, BlockStateModelGenerator.ROTATE_X_90.then(BlockStateModelGenerator.ROTATE_Y_90))
-		.register(Direction.EAST, BlockStateModelGenerator.ROTATE_X_90.then(BlockStateModelGenerator.ROTATE_Y_270));
+		.register(Direction.DOWN, NO_OP)
+		.register(Direction.UP, ROTATE_X_180)
+		.register(Direction.NORTH, ROTATE_X_90.then(ROTATE_Y_180))
+		.register(Direction.SOUTH, ROTATE_X_90)
+		.register(Direction.WEST, ROTATE_X_90.then(ROTATE_Y_90))
+		.register(Direction.EAST, ROTATE_X_90.then(ROTATE_Y_270));
 
-	public static final TextureKey BLOSSOM_FLOWER_KEY = TextureKey.of("flower");
-	public static final TextureKey BLOSSOM_BASE_KEY = TextureKey.of("base");
-
-	public static final TexturedModel.Factory BLOSSOM_FACTORY = TexturedModel.makeFactory(
-		block -> new TextureMap()
-			.put(BLOSSOM_FLOWER_KEY, TextureMap.getId(block))
-			.put(BLOSSOM_BASE_KEY, TextureMap.getSubId(block, "_base")),
-		new Model(
-			Optional.of(Abysm.id("block/blossom")),
-			Optional.empty(),
-			BLOSSOM_FLOWER_KEY, BLOSSOM_BASE_KEY
-		)
-	);
+	private static final BlockStateVariantMap<ModelVariantOperator> UP_DEFAULT_ROTATION_OPERATIONS = BlockStateVariantMap.operations(Properties.FACING)
+		.register(Direction.DOWN, ROTATE_X_180)
+		.register(Direction.UP, NO_OP)
+		.register(Direction.NORTH, ROTATE_X_90)
+		.register(Direction.SOUTH, ROTATE_X_90.then(ROTATE_Y_180))
+		.register(Direction.WEST, ROTATE_X_90.then(ROTATE_Y_270))
+		.register(Direction.EAST, ROTATE_X_90.then(ROTATE_Y_90));
 
 	public AbysmModelProvider(FabricDataOutput output) {
 		super(output);
@@ -48,15 +43,20 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateBlockStateModels(BlockStateModelGenerator generator) {
+		// region block families
 		AbysmBlockFamilies
 			.getAllAbysmBlockFamilies()
 			.filter(BlockFamily::shouldGenerateModels)
 			.forEach(blockFamily -> generator.registerCubeAllModelTexturePool(blockFamily.getBaseBlock()).family(blockFamily));
+		// endregion
 
+		// region floropumice
 		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_FLOROPUMICE);
 		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
 		generator.registerAxisRotated(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, TexturedModel.END_FOR_TOP_CUBE_COLUMN, TexturedModel.END_FOR_TOP_CUBE_COLUMN_HORIZONTAL);
+		// endregion
 
+		// region bloomshrooms
 		generator.registerRoots(AbysmBlocks.ROSY_SPRIGS, AbysmBlocks.POTTED_ROSY_SPRIGS);
 		generator.registerRoots(AbysmBlocks.SUNNY_SPRIGS, AbysmBlocks.POTTED_SUNNY_SPRIGS);
 		generator.registerRoots(AbysmBlocks.MAUVE_SPRIGS, AbysmBlocks.POTTED_MAUVE_SPRIGS);
@@ -80,6 +80,14 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 		generator.registerSimpleCubeAll(AbysmBlocks.BLOOMSHROOM_GOOP);
 
+		registerBloomingCrowns(generator,
+			AbysmBlocks.BLOOMING_SODALITE_CROWN,
+			AbysmBlocks.BLOOMING_ANYOLITE_CROWN,
+			AbysmBlocks.BLOOMING_MELILITE_CROWN
+		);
+		// endregion
+
+		// region scabiosas
 		registerScabiosas(generator,
 			AbysmBlocks.WHITE_SCABIOSA,
 			AbysmBlocks.ORANGE_SCABIOSA,
@@ -98,17 +106,31 @@ public class AbysmModelProvider extends FabricModelProvider {
 			AbysmBlocks.RED_SCABIOSA,
 			AbysmBlocks.BLACK_SCABIOSA
 		);
+		// endregion
 	}
 
-	private void registerScabiosas(BlockStateModelGenerator generator, Block... blocks) {
+	private void doForMany(BiConsumer<BlockStateModelGenerator, Block> consumer, BlockStateModelGenerator generator, Block... blocks) {
 		for(Block block : blocks) {
-			registerScabiosa(generator, block);
+			consumer.accept(generator, block);
 		}
 	}
 
+	private void registerScabiosas(BlockStateModelGenerator generator, Block... blocks) {
+		doForMany(this::registerScabiosa, generator, blocks);
+	}
+
 	private void registerScabiosa(BlockStateModelGenerator generator, Block block) {
-		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(BLOSSOM_FACTORY.upload(block, generator.modelCollector));
+		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(AbysmTexturedModels.BLOSSOM.upload(block, generator.modelCollector));
 		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS));
+	}
+
+	private void registerBloomingCrowns(BlockStateModelGenerator generator, Block... blocks) {
+		doForMany(this::registerBloomCrown, generator, blocks);
+	}
+
+	private void registerBloomCrown(BlockStateModelGenerator generator, Block block) {
+		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(AbysmTexturedModels.BLOOMING_CROWN.upload(block, generator.modelCollector));
+		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_DEFAULT_ROTATION_OPERATIONS));
 	}
 
 	private static void registerGrassLike(BlockStateModelGenerator generator, Block block, Block baseBlock) {

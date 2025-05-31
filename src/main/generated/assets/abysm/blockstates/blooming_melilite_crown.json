@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "abysm:block/blooming_melilite_crown",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "abysm:block/blooming_melilite_crown",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "abysm:block/blooming_melilite_crown",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "abysm:block/blooming_melilite_crown",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "abysm:block/blooming_melilite_crown"
+    },
+    "facing=west": {
+      "model": "abysm:block/blooming_melilite_crown",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

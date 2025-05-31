@@ -10,6 +10,16 @@
     },
     "foliage_placer": {
       "type": "abysm:bloomshroom",
+      "crown_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "abysm:blooming_sodalite_crown",
+          "Properties": {
+            "facing": "up",
+            "waterlogged": "false"
+          }
+        }
+      },
       "offset": 0,
       "radius": 4
     },

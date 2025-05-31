@@ -3,26 +3,33 @@ package dev.spiritstudios.abysm.worldgen.tree;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.registry.AbysmFoliagePlacerTypes;
+import net.minecraft.block.BlockState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.floatprovider.FloatProvider;
-import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TestableWorld;
+import net.minecraft.world.gen.feature.TreeFeature;
 import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.foliage.FoliagePlacer;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
+import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 
 public class BloomshroomFoliagePlacer extends FoliagePlacer {
-	public static final MapCodec<BloomshroomFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(instance -> fillFoliagePlacerFields(instance)
-		.apply(instance, BloomshroomFoliagePlacer::new));
+	public static final MapCodec<BloomshroomFoliagePlacer> CODEC = RecordCodecBuilder.mapCodec(
+		instance -> fillFoliagePlacerFields(instance)
+			.and(
+				BlockStateProvider.TYPE_CODEC.fieldOf("crown_provider").forGetter(placer -> placer.crownProvider)
+			)
+			.apply(instance, BloomshroomFoliagePlacer::new)
+	);
 
-	public BloomshroomFoliagePlacer(IntProvider radius, IntProvider offset) {
+	private final BlockStateProvider crownProvider;
+
+	public BloomshroomFoliagePlacer(IntProvider radius, IntProvider offset, BlockStateProvider crownProvider) {
 		super(radius, offset);
-	}
-
-	public BloomshroomFoliagePlacer(int radius, int offset) {
-		super(ConstantIntProvider.create(radius), ConstantIntProvider.create(offset));
+		this.crownProvider = crownProvider;
 	}
 
 	@Override
@@ -42,6 +49,21 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 		}
 	}
 
+	protected boolean placeCrownBlock(TestableWorld world, FoliagePlacer.BlockPlacer placer, Random random, BlockPos pos) {
+		boolean bl = world.testBlockState(pos, state -> state.get(Properties.PERSISTENT, false));
+		if (!bl && TreeFeature.canReplace(world, pos)) {
+			BlockState blockState = crownProvider.get(random, pos);
+			if (blockState.contains(Properties.WATERLOGGED)) {
+				blockState = blockState.with(Properties.WATERLOGGED, world.testFluidState(pos, fluidState -> fluidState.isEqualAndStill(Fluids.WATER)));
+			}
+
+			placer.placeBlock(pos, blockState);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	@Override
 	protected void generate(TestableWorld world, BlockPlacer placer, Random random, TreeFeatureConfig config, int trunkHeight, TreeNode treeNode, int foliageHeight, int radius, int offset) {
 		BlockPos pos = treeNode.getCenter().up(offset);
@@ -55,6 +77,8 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 			world, placer, random, config,
 			pos, radius + treeNode.getFoliageRadius() - 1, -foliageHeight
 		);
+
+		placeCrownBlock(world, placer, random, pos.up(1 - foliageHeight));
 	}
 
 	@Override

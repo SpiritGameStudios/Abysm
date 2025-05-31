@@ -17,14 +17,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.FeatureConfig;
-import net.minecraft.world.gen.feature.NetherForestVegetationFeatureConfig;
-import net.minecraft.world.gen.feature.PlacedFeatures;
-import net.minecraft.world.gen.feature.RandomFeatureConfig;
-import net.minecraft.world.gen.feature.RandomFeatureEntry;
-import net.minecraft.world.gen.feature.TreeFeatureConfig;
+import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.placementmodifier.PlacementModifier;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
@@ -66,7 +59,11 @@ public class AbysmConfiguredFeatures {
 					BlockStateProvider.of(AbysmBlocks.BLOOMSHROOM_GOOP)
 				),
 				BlockStateProvider.of(AbysmBlocks.ROSY_BLOOMSHROOM_CAP),
-				new BloomshroomFoliagePlacer(ConstantIntProvider.create(4), ConstantIntProvider.create(0)),
+				new BloomshroomFoliagePlacer(
+					ConstantIntProvider.create(4),
+					ConstantIntProvider.create(0),
+					BlockStateProvider.of(AbysmBlocks.BLOOMING_SODALITE_CROWN)
+				),
 				new TwoLayersFeatureSize(1, 0, 1)
 			).build()
 		);
@@ -82,7 +79,11 @@ public class AbysmConfiguredFeatures {
 					BlockStateProvider.of(AbysmBlocks.BLOOMSHROOM_GOOP)
 				),
 				BlockStateProvider.of(AbysmBlocks.SUNNY_BLOOMSHROOM_CAP),
-				new BloomshroomFoliagePlacer(ConstantIntProvider.create(4), ConstantIntProvider.create(0)),
+				new BloomshroomFoliagePlacer(
+					ConstantIntProvider.create(4),
+					ConstantIntProvider.create(0),
+					BlockStateProvider.of(AbysmBlocks.BLOOMING_ANYOLITE_CROWN)
+				),
 				new TwoLayersFeatureSize(1, 0, 1)
 			).build()
 		);
@@ -98,7 +99,11 @@ public class AbysmConfiguredFeatures {
 					BlockStateProvider.of(AbysmBlocks.BLOOMSHROOM_GOOP)
 				),
 				BlockStateProvider.of(AbysmBlocks.MAUVE_BLOOMSHROOM_CAP),
-				new BloomshroomFoliagePlacer(ConstantIntProvider.create(4), ConstantIntProvider.create(0)),
+				new BloomshroomFoliagePlacer(
+					ConstantIntProvider.create(4),
+					ConstantIntProvider.create(0),
+					BlockStateProvider.of(AbysmBlocks.BLOOMING_MELILITE_CROWN)
+				),
 				new TwoLayersFeatureSize(1, 0, 1)
 			).build()
 		);
