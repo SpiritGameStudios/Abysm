@@ -73,7 +73,9 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.BROWN_SCABIOSA,
 			AbysmBlocks.GREEN_SCABIOSA,
 			AbysmBlocks.RED_SCABIOSA,
-			AbysmBlocks.BLACK_SCABIOSA
+			AbysmBlocks.BLACK_SCABIOSA,
+
+			AbysmBlocks.ANTENNAE_PLANT
 		);
 
 		this.addPottedPlantDrops(AbysmBlocks.POTTED_ROSY_SPRIGS);
@@ -83,6 +85,8 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 		this.addPottedPlantDrops(AbysmBlocks.POTTED_ROSY_BLOOMSHROOM);
 		this.addPottedPlantDrops(AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM);
 		this.addPottedPlantDrops(AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM);
+
+		this.addPottedPlantDrops(AbysmBlocks.POTTED_ANTENNAE_PLANT);
 
 		this.addDrop(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));
 		this.addDrop(AbysmBlocks.SUNBLOOMED_FLOROPUMICE, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));

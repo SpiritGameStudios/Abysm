@@ -56,7 +56,10 @@ public class AbysmClientBlockMetatagProvider extends MetatagProvider<Block> {
 			AbysmBlocks.BROWN_SCABIOSA,
 			AbysmBlocks.GREEN_SCABIOSA,
 			AbysmBlocks.RED_SCABIOSA,
-			AbysmBlocks.BLACK_SCABIOSA
+			AbysmBlocks.BLACK_SCABIOSA,
+
+			AbysmBlocks.ANTENNAE_PLANT,
+			AbysmBlocks.POTTED_ANTENNAE_PLANT
 		);
 
 		addBlocksToLayer(builder, BlockRenderLayer.TRANSLUCENT,

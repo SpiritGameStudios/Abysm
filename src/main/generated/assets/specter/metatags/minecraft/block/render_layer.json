@@ -1,5 +1,6 @@
 {
   "values": {
+    "abysm:antennae_plant": "cutout",
     "abysm:black_scabiosa": "cutout",
     "abysm:blooming_anyolite_crown": "cutout",
     "abysm:blooming_melilite_crown": "cutout",
@@ -18,6 +19,7 @@
     "abysm:mauve_sprigs": "cutout",
     "abysm:orange_scabiosa": "cutout",
     "abysm:pink_scabiosa": "cutout",
+    "abysm:potted_antennae_plant": "cutout",
     "abysm:potted_mauve_bloomshroom": "cutout",
     "abysm:potted_mauve_sprigs": "cutout",
     "abysm:potted_rosy_bloomshroom": "cutout",

@@ -1,9 +1,21 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.block.*;
+import dev.spiritstudios.abysm.block.BloomedFloropumiceBlock;
+import dev.spiritstudios.abysm.block.BloomshroomSprigsBlock;
+import dev.spiritstudios.abysm.block.FloropumiceBlock;
+import dev.spiritstudios.abysm.block.RotatableWaterloggableFlowerBlock;
+import dev.spiritstudios.abysm.block.SmallBloomshroomBlock;
+import dev.spiritstudios.abysm.block.WaterloggableTranslucentBlock;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.FlowerPotBlock;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.PillarBlock;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -495,6 +507,22 @@ public final class AbysmBlocks {
 		AbstractBlock.Settings.copy(WHITE_SCABIOSA).mapColor(MapColor.BLACK)
 	);
 	// endregion scabiosas
+
+	// region misc plants
+	public static final Block ANTENNAE_PLANT = register(
+		"antennae_plant",
+		BloomshroomSprigsBlock::new,
+		AbstractBlock.Settings.copy(ROSY_SPRIGS)
+			.luminance(state -> 7)
+			.mapColor(DyeColor.PINK)
+	);
+	public static final Block POTTED_ANTENNAE_PLANT = register(
+		"potted_antennae_plant",
+		settings -> new FlowerPotBlock(ANTENNAE_PLANT, settings),
+		AbstractBlock.Settings.copy(POTTED_ROSY_SPRIGS),
+		false
+	);
+	// endregion misc plants
 
 	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, boolean item) {
 		T block = factory.apply(settings.registryKey(key));

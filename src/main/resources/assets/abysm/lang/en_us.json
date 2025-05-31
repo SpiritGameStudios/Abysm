@@ -68,6 +68,8 @@
 	"block.abysm.smooth_floropumice_wall": "Smooth Floropumice Wall",
 	"block.abysm.white_scabiosa": "White Scabiosa",
 	"block.abysm.yellow_scabiosa": "Yellow Scabiosa",
+	"block.abysm.antennae_plant": "Antennae Plant",
+	"block.abysm.potted_antennae_plant": "Potted Antennae Plant",
 	"item.abysm.flippers": "Flippers",
 	"item_group.abysm.abysm": "Abysm"
 }

@@ -46,7 +46,9 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 			AbysmBlocks.BROWN_SCABIOSA,
 			AbysmBlocks.GREEN_SCABIOSA,
 			AbysmBlocks.RED_SCABIOSA,
-			AbysmBlocks.BLACK_SCABIOSA
+			AbysmBlocks.BLACK_SCABIOSA,
+
+			AbysmBlocks.ANTENNAE_PLANT
 		);
 
 		putBlocks(builder, 0.85F,
