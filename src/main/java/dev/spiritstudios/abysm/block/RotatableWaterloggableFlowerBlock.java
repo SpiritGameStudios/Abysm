@@ -4,10 +4,13 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.Fertilizable;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
@@ -20,6 +23,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.ScheduledTickView;
@@ -27,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class RotatableWaterloggableFlowerBlock extends Block {
+public class RotatableWaterloggableFlowerBlock extends Block implements Fertilizable {
 	public static final MapCodec<RotatableWaterloggableFlowerBlock> CODEC = createCodec(RotatableWaterloggableFlowerBlock::new);
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 	public static final EnumProperty<Direction> FACING = Properties.FACING;
@@ -98,6 +102,21 @@ public class RotatableWaterloggableFlowerBlock extends Block {
 	@Override
 	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
 		builder.add(WATERLOGGED, FACING);
+	}
+
+	@Override
+	public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
+		return true;
+	}
+
+	@Override
+	public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
+		return true;
+	}
+
+	@Override
+	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
+		dropStack(world, pos, new ItemStack(this));
 	}
 
 	@Override
