@@ -3,7 +3,6 @@ package dev.spiritstudios.abysm.worldgen.tree;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.registry.AbysmFoliagePlacerTypes;
-import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -50,18 +49,21 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 	}
 
 	protected boolean placeCrownBlock(TestableWorld world, FoliagePlacer.BlockPlacer placer, Random random, BlockPos pos) {
-		boolean bl = world.testBlockState(pos, state -> state.get(Properties.PERSISTENT, false));
-		if (!bl && TreeFeature.canReplace(world, pos)) {
-			BlockState blockState = crownProvider.get(random, pos);
-			if (blockState.contains(Properties.WATERLOGGED)) {
-				blockState = blockState.with(Properties.WATERLOGGED, world.testFluidState(pos, fluidState -> fluidState.isEqualAndStill(Fluids.WATER)));
-			}
-
-			placer.placeBlock(pos, blockState);
-			return true;
-		} else {
+		if (world.testBlockState(pos, state -> state.get(Properties.PERSISTENT, false)) ||
+			!TreeFeature.canReplace(world, pos)) {
 			return false;
 		}
+
+		placer.placeBlock(
+			pos,
+			crownProvider.get(random, pos)
+			.withIfExists(
+				Properties.WATERLOGGED,
+				world.testFluidState(pos, fluidState -> fluidState.isEqualAndStill(Fluids.WATER))
+			)
+		);
+
+		return true;
 	}
 
 	@Override
