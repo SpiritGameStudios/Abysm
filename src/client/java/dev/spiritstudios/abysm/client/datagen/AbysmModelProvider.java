@@ -6,14 +6,7 @@ import dev.spiritstudios.abysm.registry.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.BlockStateVariantMap;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.Models;
-import net.minecraft.client.data.TextureKey;
-import net.minecraft.client.data.TextureMap;
-import net.minecraft.client.data.TexturedModel;
-import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
+import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.data.family.BlockFamily;
@@ -63,18 +56,24 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.registerAxisRotated(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, TexturedModel.END_FOR_TOP_CUBE_COLUMN, TexturedModel.END_FOR_TOP_CUBE_COLUMN_HORIZONTAL);
 		// endregion
 
-		// region bloomshrooms
+		// region bloom-ish blocks
+		registerGrassLike(generator, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
+		registerGrassLike(generator, AbysmBlocks.SUNBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
+		registerGrassLike(generator, AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
+
 		generator.registerRoots(AbysmBlocks.ROSY_SPRIGS, AbysmBlocks.POTTED_ROSY_SPRIGS);
 		generator.registerRoots(AbysmBlocks.SUNNY_SPRIGS, AbysmBlocks.POTTED_SUNNY_SPRIGS);
 		generator.registerRoots(AbysmBlocks.MAUVE_SPRIGS, AbysmBlocks.POTTED_MAUVE_SPRIGS);
 
+		generator.registerLeafLitter(AbysmBlocks.ROSEBLOOM_PETALS);
+		generator.registerLeafLitter(AbysmBlocks.SUNBLOOM_PETALS);
+		generator.registerLeafLitter(AbysmBlocks.MALLOWBLOOM_PETALS);
+		// endregion
+
+		// region bloomshrooms
 		generator.registerFlowerPotPlantAndItem(AbysmBlocks.ROSY_BLOOMSHROOM, AbysmBlocks.POTTED_ROSY_BLOOMSHROOM, BlockStateModelGenerator.CrossType.NOT_TINTED);
 		generator.registerFlowerPotPlantAndItem(AbysmBlocks.SUNNY_BLOOMSHROOM, AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM, BlockStateModelGenerator.CrossType.NOT_TINTED);
 		generator.registerFlowerPotPlantAndItem(AbysmBlocks.MAUVE_BLOOMSHROOM, AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM, BlockStateModelGenerator.CrossType.NOT_TINTED);
-
-		registerGrassLike(generator, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
-		registerGrassLike(generator, AbysmBlocks.SUNBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
-		registerGrassLike(generator, AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
 
 		generator.createLogTexturePool(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).stem(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).wood(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE);
 		generator.registerSimpleCubeAll(AbysmBlocks.ROSY_BLOOMSHROOM_CAP);

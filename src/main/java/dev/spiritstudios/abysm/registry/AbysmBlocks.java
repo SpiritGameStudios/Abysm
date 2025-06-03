@@ -1,21 +1,10 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.block.BloomedFloropumiceBlock;
-import dev.spiritstudios.abysm.block.BloomshroomSprigsBlock;
-import dev.spiritstudios.abysm.block.FloropumiceBlock;
-import dev.spiritstudios.abysm.block.RotatableWaterloggableFlowerBlock;
-import dev.spiritstudios.abysm.block.SmallBloomshroomBlock;
-import dev.spiritstudios.abysm.block.WaterloggableTranslucentBlock;
+import dev.spiritstudios.abysm.block.*;
+import dev.spiritstudios.abysm.item.PlaceableOnWaterOrBlockItem;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.PillarBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -26,7 +15,9 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.DyeColor;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public final class AbysmBlocks {
@@ -253,6 +244,31 @@ public final class AbysmBlocks {
 		settings -> new FlowerPotBlock(MAUVE_SPRIGS, settings),
 		AbstractBlock.Settings.copy(POTTED_ROSY_SPRIGS),
 		false
+	);
+
+	public static final Block ROSEBLOOM_PETALS = register(
+		"rosebloom_petals",
+		BloomPetalsBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.RED)
+			.sounds(BlockSoundGroup.FLOWERBED)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.noCollision(),
+		PlaceableOnWaterOrBlockItem::new
+	);
+	public static final Block SUNBLOOM_PETALS = register(
+		"sunbloom_petals",
+		BloomPetalsBlock::new,
+		AbstractBlock.Settings.copy(ROSEBLOOM_PETALS)
+			.mapColor(MapColor.YELLOW),
+		PlaceableOnWaterOrBlockItem::new
+	);
+	public static final Block MALLOWBLOOM_PETALS = register(
+		"mallowbloom_petals",
+		BloomPetalsBlock::new,
+		AbstractBlock.Settings.copy(ROSEBLOOM_PETALS)
+			.mapColor(MapColor.PURPLE),
+		PlaceableOnWaterOrBlockItem::new
 	);
 
 	public static final Block ROSY_BLOOMSHROOM = register(
@@ -524,12 +540,13 @@ public final class AbysmBlocks {
 	);
 	// endregion misc plants
 
-	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, boolean item) {
+	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, @Nullable BiFunction<Block, Item.Settings, ? extends BlockItem> blockItemConstructor) {
 		T block = factory.apply(settings.registryKey(key));
 
-		if (item) {
+		if (blockItemConstructor != null) {
 			RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, key.getValue());
-			BlockItem blockItem = new BlockItem(block, new Item.Settings().registryKey(itemKey).useBlockPrefixedTranslationKey());
+			Item.Settings itemSettings = new Item.Settings().registryKey(itemKey).useBlockPrefixedTranslationKey();
+			BlockItem blockItem = blockItemConstructor.apply(block, itemSettings);
 			Registry.register(
 				Registries.ITEM,
 				itemKey,
@@ -541,16 +558,20 @@ public final class AbysmBlocks {
 		return Registry.register(Registries.BLOCK, key, block);
 	}
 
-	private static <T extends Block> T register(String id, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings) {
-		return register(keyOf(id), factory, settings, true);
+	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, boolean item) {
+		return register(key, factory, settings, item ? BlockItem::new : null);
 	}
 
 	private static <T extends Block> T register(String id, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, boolean item) {
 		return register(keyOf(id), factory, settings, item);
 	}
 
-	private static RegistryKey<Block> keyOf(String id) {
-		return RegistryKey.of(RegistryKeys.BLOCK, Abysm.id(id));
+	private static <T extends Block> T register(String id, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, @Nullable BiFunction<Block, Item.Settings, ? extends BlockItem> blockItemConstructor) {
+		return register(keyOf(id), factory, settings, blockItemConstructor);
+	}
+
+	private static <T extends Block> T register(String id, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings) {
+		return register(keyOf(id), factory, settings, true);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -566,6 +587,10 @@ public final class AbysmBlocks {
 	@SuppressWarnings("deprecation")
 	private static Block registerWallOf(String id, Block block) {
 		return register(id, WallBlock::new, AbstractBlock.Settings.copyShallow(block).solid());
+	}
+
+	private static RegistryKey<Block> keyOf(String id) {
+		return RegistryKey.of(RegistryKeys.BLOCK, Abysm.id(id));
 	}
 
 	public static void init() {

@@ -1,6 +1,10 @@
 {
   "values": [
     {
+      "id": "#abysm:bloom_petals",
+      "required": false
+    },
+    {
       "id": "#abysm:small_bloomshrooms",
       "required": false
     },

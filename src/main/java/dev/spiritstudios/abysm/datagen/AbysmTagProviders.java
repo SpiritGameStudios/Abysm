@@ -95,6 +95,9 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(BlockTags.COMBINATION_STEP_SOUND_BLOCKS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
 
+			getOrCreateTagBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
+				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS);
+
 			getOrCreateTagBuilder(BlockTags.ENDERMAN_HOLDABLE)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
@@ -112,6 +115,7 @@ public class AbysmTagProviders {
 				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
 
 			getOrCreateTagBuilder(BlockTags.FLOWERS)
+				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMING_CROWNS)
 				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
@@ -157,6 +161,13 @@ public class AbysmTagProviders {
 					AbysmBlocks.ROSY_SPRIGS,
 					AbysmBlocks.SUNNY_SPRIGS,
 					AbysmBlocks.MAUVE_SPRIGS
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.BLOOM_PETALS)
+				.add(
+					AbysmBlocks.ROSEBLOOM_PETALS,
+					AbysmBlocks.SUNBLOOM_PETALS,
+					AbysmBlocks.MALLOWBLOOM_PETALS
 				);
 
 			getOrCreateTagBuilder(AbysmBlockTags.SMALL_BLOOMSHROOMS)
@@ -338,6 +349,7 @@ public class AbysmTagProviders {
 
 			this.copy(AbysmBlockTags.BLOOMED_FLOROPUMICE, AbysmItemTags.BLOOMED_FLOROPUMICE);
 			this.copy(AbysmBlockTags.FLOWERY_SPRIGS, AbysmItemTags.FLOWERY_SPRIGS);
+			this.copy(AbysmBlockTags.BLOOM_PETALS, AbysmItemTags.BLOOM_PETALS);
 			this.copy(AbysmBlockTags.SMALL_BLOOMSHROOMS, AbysmItemTags.SMALL_BLOOMSHROOMS);
 			this.copy(AbysmBlockTags.BLOOMSHROOM_STEMS, AbysmItemTags.BLOOMSHROOM_STEMS);
 			this.copy(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS, AbysmItemTags.ROSY_BLOOMSHROOM_STEMS);

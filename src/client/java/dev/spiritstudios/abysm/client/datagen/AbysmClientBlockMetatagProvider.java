@@ -30,6 +30,10 @@ public class AbysmClientBlockMetatagProvider extends MetatagProvider<Block> {
 			AbysmBlocks.MAUVE_SPRIGS,
 			AbysmBlocks.POTTED_MAUVE_SPRIGS,
 
+			AbysmBlocks.ROSEBLOOM_PETALS,
+			AbysmBlocks.SUNBLOOM_PETALS,
+			AbysmBlocks.MALLOWBLOOM_PETALS,
+
 			AbysmBlocks.ROSY_BLOOMSHROOM,
 			AbysmBlocks.POTTED_ROSY_BLOOMSHROOM,
 			AbysmBlocks.SUNNY_BLOOMSHROOM,

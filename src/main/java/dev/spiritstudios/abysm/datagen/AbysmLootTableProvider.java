@@ -9,6 +9,7 @@ import net.minecraft.data.family.BlockFamily;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 	public AbysmLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
@@ -78,31 +79,45 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.ANTENNAE_PLANT
 		);
 
-		this.addPottedPlantDrops(AbysmBlocks.POTTED_ROSY_SPRIGS);
-		this.addPottedPlantDrops(AbysmBlocks.POTTED_SUNNY_SPRIGS);
-		this.addPottedPlantDrops(AbysmBlocks.POTTED_MAUVE_SPRIGS);
+		forEach(this::addPottedPlantDrops,
+			AbysmBlocks.POTTED_ROSY_SPRIGS,
+			AbysmBlocks.POTTED_SUNNY_SPRIGS,
+			AbysmBlocks.POTTED_MAUVE_SPRIGS,
 
-		this.addPottedPlantDrops(AbysmBlocks.POTTED_ROSY_BLOOMSHROOM);
-		this.addPottedPlantDrops(AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM);
-		this.addPottedPlantDrops(AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM);
+			AbysmBlocks.POTTED_ROSY_BLOOMSHROOM,
+			AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM,
+			AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM,
 
-		this.addPottedPlantDrops(AbysmBlocks.POTTED_ANTENNAE_PLANT);
+			AbysmBlocks.POTTED_ANTENNAE_PLANT
+		);
 
-		this.addDrop(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));
-		this.addDrop(AbysmBlocks.SUNBLOOMED_FLOROPUMICE, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));
-		this.addDrop(AbysmBlocks.MAUVE_BLOOMSHROOM, block -> this.drops(block, AbysmBlocks.FLOROPUMICE));
+		this.addSilkTouchOrElseDrop(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
+		this.addSilkTouchOrElseDrop(AbysmBlocks.SUNBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
+		this.addSilkTouchOrElseDrop(AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
+		
+		forEach(this::addSegmentedDrop,
+			AbysmBlocks.ROSEBLOOM_PETALS,
+			AbysmBlocks.SUNBLOOM_PETALS,
+			AbysmBlocks.MALLOWBLOOM_PETALS
+		);
+	}
+
+	private void forEach(Consumer<Block> consumer, Block... blocks) {
+		for(Block block : blocks) {
+			consumer.accept(block);
+		}
 	}
 
 	private void dropSelf(Block... blocks) {
-		for(Block block : blocks) {
-			this.addDrop(block);
-		}
+		forEach(this::addDrop, blocks);
 	}
 
-	private void dropWhenSilkTouch(Block... blocks) {
-		for(Block block : blocks) {
-			this.addDropWithSilkTouch(block);
-		}
+	private void addSilkTouchOrElseDrop(Block block, Block noSilkTouch) {
+		this.addDrop(block, blck -> this.drops(blck, noSilkTouch));
+	}
+
+	private void addSegmentedDrop(Block block) {
+		this.addDrop(block, this.segmentedDrops(block));
 	}
 
 	private void addLootForFamilies(BlockFamily... families) {
