@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlockTags;
 import dev.spiritstudios.abysm.block.AbysmItemTags;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -17,10 +18,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.BiomeTags;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.tag.*;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +29,7 @@ public class AbysmTagProviders {
 		BlockTagProvider blockTagProvider = pack.addProvider(BlockTagProvider::new);
 		pack.addProvider(((output, registriesFuture) -> new ItemTagProvider(output, registriesFuture, blockTagProvider)));
 		pack.addProvider(BiomeTagProvider::new);
+		pack.addProvider(EntityTypeTagProvider::new);
 	}
 
 	private static class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
@@ -364,6 +363,39 @@ public class AbysmTagProviders {
 			// Using the conventional tag here since the vanilla one overrides the music
 			getOrCreateTagBuilder(ConventionalBiomeTags.IS_OCEAN)
 				.add(AbysmBiomes.FLORAL_REEF);
+		}
+	}
+
+	private static class EntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProvider {
+		public EntityTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+			super(output, completableFuture);
+		}
+
+		@Override
+		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+			getOrCreateTagBuilder(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
+				.add(
+					AbysmEntityTypes.SMALL_FLORAL_FISH,
+					AbysmEntityTypes.BIG_FLORAL_FISH
+				);
+
+			getOrCreateTagBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
+				.add(
+					AbysmEntityTypes.SMALL_FLORAL_FISH,
+					AbysmEntityTypes.BIG_FLORAL_FISH
+				);
+
+			getOrCreateTagBuilder(EntityTypeTags.AQUATIC)
+				.add(
+					AbysmEntityTypes.SMALL_FLORAL_FISH,
+					AbysmEntityTypes.BIG_FLORAL_FISH
+				);
+
+			getOrCreateTagBuilder(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH)
+				.add(
+					AbysmEntityTypes.SMALL_FLORAL_FISH,
+					AbysmEntityTypes.BIG_FLORAL_FISH
+				);
 		}
 	}
 }
