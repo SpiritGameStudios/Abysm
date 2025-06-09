@@ -61,9 +61,9 @@ public class AbysmModelProvider extends FabricModelProvider {
 		registerGrassLike(generator, AbysmBlocks.SUNBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
 		registerGrassLike(generator, AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
 
-		generator.registerRoots(AbysmBlocks.ROSY_SPRIGS, AbysmBlocks.POTTED_ROSY_SPRIGS);
-		generator.registerRoots(AbysmBlocks.SUNNY_SPRIGS, AbysmBlocks.POTTED_SUNNY_SPRIGS);
-		generator.registerRoots(AbysmBlocks.MAUVE_SPRIGS, AbysmBlocks.POTTED_MAUVE_SPRIGS);
+		registerSprigsWithPot(generator, AbysmBlocks.ROSY_SPRIGS, AbysmBlocks.POTTED_ROSY_SPRIGS);
+		registerSprigsWithPot(generator, AbysmBlocks.SUNNY_SPRIGS, AbysmBlocks.POTTED_SUNNY_SPRIGS);
+		registerSprigsWithPot(generator, AbysmBlocks.MAUVE_SPRIGS, AbysmBlocks.POTTED_MAUVE_SPRIGS);
 
 		generator.registerLeafLitter(AbysmBlocks.ROSEBLOOM_PETALS);
 		generator.registerLeafLitter(AbysmBlocks.SUNBLOOM_PETALS);
@@ -143,13 +143,46 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_DEFAULT_ROTATION_OPERATIONS));
 	}
 
-	private static void registerGrassLike(BlockStateModelGenerator generator, Block block, Block baseBlock) {
+	private void registerGrassLike(BlockStateModelGenerator generator, Block block, Block baseBlock) {
 		TextureMap textureMapping = new TextureMap()
 			.put(TextureKey.BOTTOM, TextureMap.getId(baseBlock))
 			.put(TextureKey.TOP, TextureMap.getId(block))
 			.put(TextureKey.SIDE, TextureMap.getSubId(block, "_side"));
 		Identifier model = Models.CUBE_BOTTOM_TOP.upload(block, textureMapping, generator.modelCollector);
 		generator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(block, BlockStateModelGenerator.modelWithYRotation(BlockStateModelGenerator.createModelVariant(model))));
+	}
+
+	private void registerSprigsWithPot(BlockStateModelGenerator generator, Block sprigs, Block pottedSprigs) {
+		registerSprigs(generator, sprigs);
+
+		TextureMap textureMap = TextureMap.plant(TextureMap.getSubId(sprigs, "_pot"));
+		WeightedVariant weightedVariant = createWeightedVariant(
+			BlockStateModelGenerator.CrossType.NOT_TINTED.getFlowerPotCrossModel().upload(pottedSprigs, textureMap, generator.modelCollector)
+		);
+		generator.blockStateCollector.accept(createSingletonBlockState(pottedSprigs, weightedVariant));
+	}
+
+	private void registerSprigs(BlockStateModelGenerator generator, Block block) {
+		generator.registerItemModel(block.asItem(), CrossType.NOT_TINTED.registerItemModel(generator, block));
+		registerSprigsBlockState(generator, block);
+	}
+
+	private void registerSprigsBlockState(BlockStateModelGenerator generator, Block block) {
+		TextureMap textureMap = TextureMap.cross(block);
+		TextureMap swayingTextureMap = TextureMap.of(TextureKey.CROSS, TextureMap.getSubId(block, "_swaying"));
+
+		Model crossModel = CrossType.NOT_TINTED.getCrossModel();
+
+		WeightedVariant surfaceVariant = createWeightedVariant(crossModel.upload(block, textureMap, generator.modelCollector));
+		WeightedVariant waterloggedVariant = createWeightedVariant(crossModel.upload(block, "_swaying", swayingTextureMap, generator.modelCollector));
+
+		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block)
+			.with(
+				BlockStateVariantMap.models(Properties.WATERLOGGED)
+					.register(false, surfaceVariant)
+					.register(true, waterloggedVariant)
+			)
+		);
 	}
 
 	@Override
@@ -159,13 +192,13 @@ public class AbysmModelProvider extends FabricModelProvider {
 		);
 	}
 
-	private static void registerGenerated(ItemModelGenerator generator, Item... items) {
+	private void registerGenerated(ItemModelGenerator generator, Item... items) {
 		for(Item item : items) {
-			registerGenerated(generator, items);
+			registerGenerated(generator, item);
 		}
 	}
 
-	private static void registerGenerated(ItemModelGenerator generator, Item item) {
+	private void registerGenerated(ItemModelGenerator generator, Item item) {
 		generator.register(item, Models.GENERATED);
 	}
 }

@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "waterlogged=false": {
       "model": "abysm:block/mauve_sprigs"
+    },
+    "waterlogged=true": {
+      "model": "abysm:block/mauve_sprigs_swaying"
     }
   }
 }

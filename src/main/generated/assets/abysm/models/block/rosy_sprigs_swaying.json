@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "abysm:block/rosy_sprigs_swaying"
+  }
+}
