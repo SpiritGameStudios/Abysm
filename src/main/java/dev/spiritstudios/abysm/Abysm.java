@@ -28,6 +28,8 @@ public class Abysm implements ModInitializer {
 		AbysmEntityAttributes.init();
 		AbysmSpawnRestrictions.init();
 
+		AbysmParticleTypes.init();
+
 		AbysmRegistries.init();
 		EntityPattern.init();
 

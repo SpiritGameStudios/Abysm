@@ -200,7 +200,7 @@ public final class AbysmBlocks {
 
 	public static final Block ROSY_SPRIGS = register(
 		"rosy_sprigs",
-		BloomshroomSprigsBlock::new,
+		settings -> new BloomshroomSprigsBlock(AbysmParticleTypes.ROSEBLOOM_GLIMMER, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.RED)
 			.sounds(BlockSoundGroup.GRASS)
@@ -223,7 +223,7 @@ public final class AbysmBlocks {
 	);
 	public static final Block SUNNY_SPRIGS = register(
 		"sunny_sprigs",
-		BloomshroomSprigsBlock::new,
+		settings -> new BloomshroomSprigsBlock(AbysmParticleTypes.SUNBLOOM_GLIMMER, settings),
 		AbstractBlock.Settings.copy(ROSY_SPRIGS)
 			.mapColor(DyeColor.YELLOW)
 	);
@@ -235,7 +235,7 @@ public final class AbysmBlocks {
 	);
 	public static final Block MAUVE_SPRIGS = register(
 		"mauve_sprigs",
-		BloomshroomSprigsBlock::new,
+		settings -> new BloomshroomSprigsBlock(AbysmParticleTypes.MALLOWBLOOM_GLIMMER, settings),
 		AbstractBlock.Settings.copy(ROSY_SPRIGS)
 			.mapColor(DyeColor.PURPLE)
 	);
@@ -273,7 +273,7 @@ public final class AbysmBlocks {
 
 	public static final Block ROSY_BLOOMSHROOM = register(
 		"rosy_bloomshroom",
-		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.ROSY_BLOOMSHROOM, settings),
+		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.ROSY_BLOOMSHROOM, AbysmParticleTypes.ROSEBLOOM_GLIMMER, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.RED)
 			.sounds(BlockSoundGroup.GRASS)
@@ -323,7 +323,7 @@ public final class AbysmBlocks {
 
 	public static final Block SUNNY_BLOOMSHROOM = register(
 		"sunny_bloomshroom",
-		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.SUNNY_BLOOMSHROOM, settings),
+		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.SUNNY_BLOOMSHROOM, AbysmParticleTypes.SUNBLOOM_GLIMMER, settings),
 		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM)
 			.mapColor(DyeColor.YELLOW)
 	);
@@ -354,7 +354,7 @@ public final class AbysmBlocks {
 
 	public static final Block MAUVE_BLOOMSHROOM = register(
 		"mauve_bloomshroom",
-		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.MAUVE_BLOOMSHROOM, settings),
+		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.MAUVE_BLOOMSHROOM, AbysmParticleTypes.MALLOWBLOOM_GLIMMER, settings),
 		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM)
 			.mapColor(DyeColor.PURPLE)
 	);
@@ -385,7 +385,7 @@ public final class AbysmBlocks {
 
 	public static final Block BLOOMSHROOM_GOOP = register(
 		"bloomshroom_goop",
-		WaterloggableTranslucentBlock::new,
+		BloomshroomGoopBlock::new,
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.PINK)
 			.instrument(NoteBlockInstrument.BASS)
@@ -527,7 +527,7 @@ public final class AbysmBlocks {
 	// region misc plants
 	public static final Block ANTENNAE_PLANT = register(
 		"antennae_plant",
-		BloomshroomSprigsBlock::new,
+		UnderwaterPlantBlock::new,
 		AbstractBlock.Settings.copy(ROSY_SPRIGS)
 			.luminance(state -> 7)
 			.mapColor(DyeColor.PINK)

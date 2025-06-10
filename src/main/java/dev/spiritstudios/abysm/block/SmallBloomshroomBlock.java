@@ -1,11 +1,14 @@
 package dev.spiritstudios.abysm.block;
 
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -15,6 +18,7 @@ import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -26,9 +30,19 @@ import net.minecraft.world.tick.ScheduledTickView;
 import java.util.Optional;
 
 public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, Waterloggable {
+	protected static final MapCodec<SimpleParticleType> PARTICLE_TYPE_CODEC = Registries.PARTICLE_TYPE
+		.getCodec()
+		.comapFlatMap(
+			particleType -> particleType instanceof SimpleParticleType simpleParticleType
+				? DataResult.success(simpleParticleType)
+				: DataResult.error(() -> "Not a SimpleParticleType: " + particleType),
+			particleType -> particleType
+		)
+		.fieldOf("particle_options");
 	public static final MapCodec<SmallBloomshroomBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
 				RegistryKey.createCodec(RegistryKeys.CONFIGURED_FEATURE).fieldOf("feature").forGetter(block -> block.featureKey),
+				PARTICLE_TYPE_CODEC.forGetter(block -> block.particle),
 				createSettingsCodec()
 			)
 			.apply(instance, SmallBloomshroomBlock::new)
@@ -37,15 +51,17 @@ public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, W
 	private static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
 	private final RegistryKey<ConfiguredFeature<?, ?>> featureKey;
+	public final SimpleParticleType particle;
 
 	@Override
 	protected MapCodec<? extends SmallBloomshroomBlock> getCodec() {
 		return CODEC;
 	}
 
-	public SmallBloomshroomBlock(RegistryKey<ConfiguredFeature<?, ?>> featureKey, Settings settings) {
+	public SmallBloomshroomBlock(RegistryKey<ConfiguredFeature<?, ?>> featureKey, SimpleParticleType particle, Settings settings) {
 		super(settings);
 		this.featureKey = featureKey;
+		this.particle = particle;
 		this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false));
 	}
 
@@ -115,5 +131,25 @@ public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, W
 	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
 		this.getFeatureEntry(world)
 			.ifPresent(featureEntry -> featureEntry.value().generate(world, world.getChunkManager().getChunkGenerator(), random, pos));
+	}
+
+	@Override
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+		super.randomDisplayTick(state, world, pos, random);
+
+		boolean waterlogged = state.get(WATERLOGGED, false);
+
+		if(random.nextInt(waterlogged ? 1 : 4) == 0) {
+			Vec3d offset = state.getModelOffset(pos);
+			double x = pos.getX() + offset.x + 0.45 + 0.1 * random.nextFloat();
+			double y = pos.getY() + offset.y + 0.6 + 0.1 * random.nextFloat();
+			double z = pos.getZ() + offset.z + 0.45 + 0.1 * random.nextFloat();
+
+			double vx = random.nextGaussian() * (waterlogged ? 0.015 : 0.008);
+			double vy = (waterlogged ? 0.02 : 0.01) + random.nextFloat() * (waterlogged ? 0.08F : 0.04F);
+			double vz = random.nextGaussian() * (waterlogged ? 0.015 : 0.008);
+
+			world.addParticleClient(this.particle, x, y, z, vx, vy, vz);
+		}
 	}
 }
