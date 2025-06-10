@@ -287,6 +287,10 @@
     {
       "count": 1,
       "id": "abysm:flippers"
+    },
+    {
+      "count": 1,
+      "id": "abysm:harpoon"
     }
   ],
   "translate": "item_group.abysm.abysm"
