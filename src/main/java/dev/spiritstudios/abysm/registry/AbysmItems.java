@@ -33,6 +33,13 @@ public final class AbysmItems {
 					).build())
     );
 
+	public static final Item NOOPRAH = register( // you can change the field name lol
+		"harpoon",
+		HarpoonItem::new,
+		new Item.Settings()
+			.maxCount(1).rarity(Rarity.RARE)
+	);
+
     private static RegistryKey<Item> keyOf(String id) {
         return RegistryKey.of(RegistryKeys.ITEM, Abysm.id(id));
     }
