@@ -313,7 +313,7 @@ public final class AbysmBlocks {
 	);
 	public static final Block ROSY_BLOOMSHROOM_CAP = register(
 		"rosy_bloomshroom_cap",
-		Block::new,
+		settings -> new BloomshroomCapBlock(AbysmParticleTypes.ROSEBLOOM_PETALS, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.RED)
 			.instrument(NoteBlockInstrument.BASS)
@@ -347,7 +347,7 @@ public final class AbysmBlocks {
 	);
 	public static final Block SUNNY_BLOOMSHROOM_CAP = register(
 		"sunny_bloomshroom_cap",
-		Block::new,
+		settings -> new BloomshroomCapBlock(AbysmParticleTypes.SUNBLOOM_PETALS, settings),
 		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_CAP)
 			.mapColor(DyeColor.YELLOW)
 	);
@@ -378,7 +378,7 @@ public final class AbysmBlocks {
 	);
 	public static final Block MAUVE_BLOOMSHROOM_CAP = register(
 		"mauve_bloomshroom_cap",
-		Block::new,
+		settings -> new BloomshroomCapBlock(AbysmParticleTypes.MALLOWBLOOM_PETALS, settings),
 		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_CAP)
 			.mapColor(DyeColor.PURPLE)
 	);

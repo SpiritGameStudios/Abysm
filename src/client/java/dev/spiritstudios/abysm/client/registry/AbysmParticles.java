@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.client.registry;
 
 import dev.spiritstudios.abysm.client.particle.BloomGlimmerParticle;
+import dev.spiritstudios.abysm.client.particle.BloomPetalParticle;
 import dev.spiritstudios.abysm.registry.AbysmParticleTypes;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.particle.ParticleFactory;
@@ -15,6 +16,10 @@ public class AbysmParticles {
 		register(AbysmParticleTypes.ROSEBLOOM_GLIMMER, BloomGlimmerParticle.RosyFactory::new);
 		register(AbysmParticleTypes.SUNBLOOM_GLIMMER, BloomGlimmerParticle.SunnyFactory::new);
 		register(AbysmParticleTypes.MALLOWBLOOM_GLIMMER, BloomGlimmerParticle.MauveFactory::new);
+
+		register(AbysmParticleTypes.ROSEBLOOM_PETALS, BloomPetalParticle.RosyFactory::new);
+		register(AbysmParticleTypes.SUNBLOOM_PETALS, BloomPetalParticle.SunnyFactory::new);
+		register(AbysmParticleTypes.MALLOWBLOOM_PETALS, BloomPetalParticle.MauveFactory::new);
 	}
 
 	public static <T extends ParticleEffect> void register(ParticleType<T> type, ParticleFactory<T> provider) {

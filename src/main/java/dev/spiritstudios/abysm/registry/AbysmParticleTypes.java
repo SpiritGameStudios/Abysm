@@ -20,6 +20,10 @@ public class AbysmParticleTypes {
 	public static final SimpleParticleType SUNBLOOM_GLIMMER = registerSimple("sunbloom_glimmer", false);
 	public static final SimpleParticleType MALLOWBLOOM_GLIMMER = registerSimple("mallowbloom_glimmer", false);
 
+	public static final SimpleParticleType ROSEBLOOM_PETALS = registerSimple("rosebloom_petals", false);
+	public static final SimpleParticleType SUNBLOOM_PETALS = registerSimple("sunbloom_petals", false);
+	public static final SimpleParticleType MALLOWBLOOM_PETALS = registerSimple("mallowbloom_petals", false);
+
 	public static void init() {
 		// NO-OP
 	}
