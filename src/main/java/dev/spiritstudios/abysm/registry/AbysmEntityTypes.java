@@ -44,7 +44,7 @@ public class AbysmEntityTypes {
 	public static final EntityType<HarpoonEntity> FLYING_HARPOON = register(
 		"harpoon",
 		EntityType.Builder
-			.create(HarpoonEntity::new, SpawnGroup.MISC)
+			.<HarpoonEntity>create(HarpoonEntity::new, SpawnGroup.MISC)
 			.dimensions(1.5f, 0.5f)
 			.dimensions(0.25F, 0.25F)
 			.maxTrackingRange(4)

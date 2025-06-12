@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.client;
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
 import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import net.fabricmc.api.ClientModInitializer;
