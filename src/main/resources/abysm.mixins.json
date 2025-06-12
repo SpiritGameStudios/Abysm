@@ -1,12 +1,13 @@
 {
-	"required": true,
-	"minVersion": "0.8",
-	"package": "dev.spiritstudios.abysm.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"mixins": [
-		"LivingEntityMixin"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.spiritstudios.abysm.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "LivingEntityMixin",
+	  "ProjectileEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

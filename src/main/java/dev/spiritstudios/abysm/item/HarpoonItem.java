@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.item;
 
 import dev.spiritstudios.abysm.component.BlessedComponent;
+import dev.spiritstudios.abysm.entity.HarpoonEntity;
 import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -9,7 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.ClickType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -17,6 +20,14 @@ public class HarpoonItem extends Item {
 
 	public HarpoonItem(Settings settings) {
 		super(settings);
+	}
+
+	@Override
+	public ActionResult use(World world, PlayerEntity user, Hand hand) {
+		if (!world.isClient()) {
+			world.spawnEntity(new HarpoonEntity(world, user));
+		}
+		return ActionResult.SUCCESS;
 	}
 
 	@Override

@@ -47,7 +47,7 @@ public class AbysmEntityTypes {
 			.<HarpoonEntity>create(HarpoonEntity::new, SpawnGroup.MISC)
 			.dimensions(1.5f, 0.5f)
 			.dimensions(0.25F, 0.25F)
-			.maxTrackingRange(4)
+			.maxTrackingRange(16)
 			.trackingTickInterval(5)
 	);
 
