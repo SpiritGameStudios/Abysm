@@ -8,27 +8,23 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.passive.SchoolingFishEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public abstract class AbstractFloralFishEntity extends SchoolingFishEntity implements GeoEntity, Patternable {
-	public static final String ANIM_CONTROLLER_STRING = "default";
+// TODO - Dropped fish item & bucket item
+// TODO - Spawn egg item
+// TODO - Something something component magic to allow for commands to spawn specific pattern variant combos (see TropicalFishEntity)
+public abstract class AbstractFloralFishEntity extends AbstractSchoolingFishEntity implements GeoEntity, Patternable {
 	public static final List<Integer> PATTERN_COLORS = List.of(
 		DyeColor.WHITE.getEntityColor(), DyeColor.BLACK.getEntityColor(),
 		DyeColor.BLUE.getEntityColor(), DyeColor.LIGHT_BLUE.getEntityColor(), DyeColor.CYAN.getEntityColor(),
@@ -37,8 +33,6 @@ public abstract class AbstractFloralFishEntity extends SchoolingFishEntity imple
 	);
 
 	public static final TrackedData<EntityPattern> ENTITY_PATTERN = DataTracker.registerData(AbstractFloralFishEntity.class, EntityPattern.ENTITY_PATTERN_DATA_HANDLER);
-
-	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
 	public AbstractFloralFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
@@ -88,16 +82,6 @@ public abstract class AbstractFloralFishEntity extends SchoolingFishEntity imple
 	}
 
 	@Override
-	protected SoundEvent getFlopSound() {
-		return SoundEvents.ENTITY_TROPICAL_FISH_FLOP;
-	}
-
-	@Override
-	public ItemStack getBucketItem() {
-		return new ItemStack(Items.TROPICAL_FISH_BUCKET);
-	}
-
-	@Override
 	public List<Integer> getBaseColors() {
 		return PATTERN_COLORS;
 	}
@@ -105,10 +89,5 @@ public abstract class AbstractFloralFishEntity extends SchoolingFishEntity imple
 	@Override
 	public List<Integer> getPatternColors() {
 		return PATTERN_COLORS;
-	}
-
-	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache() {
-		return this.geoCache;
 	}
 }

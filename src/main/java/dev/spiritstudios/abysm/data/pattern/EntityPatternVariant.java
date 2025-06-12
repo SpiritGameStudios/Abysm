@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
  * @param colorable If the pattern is meant to be colored with code(default), or has pre-defined colors - if empty, defaults to true
  */
 public record EntityPatternVariant(EntityType<?> entityType, String name, Identifier patternPath, Optional<Identifier> baseTexture, Optional<Boolean> colorable) {
+	// TODO - replace "name" codec entry from String to Text
+	// TODO (unimportant) - Actually impl. base texture & colorable codec entries in required places
 	public static final Codec<EntityPatternVariant> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
 			EntityType.CODEC.fieldOf("entity").forGetter(pattern -> pattern.entityType),

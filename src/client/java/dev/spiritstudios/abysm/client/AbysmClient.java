@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.client;
 
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
 import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import net.fabricmc.api.ClientModInitializer;
@@ -13,6 +14,7 @@ public class AbysmClient implements ClientModInitializer {
     public void onInitializeClient() {
 		EntityRendererRegistry.register(AbysmEntityTypes.SMALL_FLORAL_FISH, SmallFloralFishEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.BIG_FLORAL_FISH, BigFloralFishEntityRenderer::new);
+		EntityRendererRegistry.register(AbysmEntityTypes.BLOOMRAY, BloomrayEntityRenderer::new);
 
 		AbysmParticles.init();
     }
