@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.registry;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.BloomrayEntity;
+import dev.spiritstudios.abysm.entity.HarpoonEntity;
 import dev.spiritstudios.abysm.entity.SmallFloralFishEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
@@ -38,6 +39,16 @@ public class AbysmEntityTypes {
 			.create(BloomrayEntity::new, SpawnGroup.WATER_AMBIENT)
 			.dimensions(1.5f, 0.5f)
 			.maxTrackingRange(4)
+	);
+
+	public static final EntityType<HarpoonEntity> FLYING_HARPOON = register(
+		"harpoon",
+		EntityType.Builder
+			.create(HarpoonEntity::new, SpawnGroup.MISC)
+			.dimensions(1.5f, 0.5f)
+			.dimensions(0.25F, 0.25F)
+			.maxTrackingRange(4)
+			.trackingTickInterval(5)
 	);
 
 	private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {

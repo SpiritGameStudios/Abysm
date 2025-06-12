@@ -22,6 +22,7 @@ public class Abysm implements ModInitializer {
     public void onInitialize() {
 		AbysmSoundEvents.init();
 		AbysmBlocks.init();
+		AbysmDataComponentTypes.init();
 		AbysmItems.init();
 
 		AbysmEntityTypes.init();

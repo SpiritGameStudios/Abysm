@@ -190,6 +190,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 		registerGenerated(generator,
 			AbysmItems.FLIPPERS
 		);
+		generator.register(AbysmItems.NOOPRAH);
 	}
 
 	private void registerGenerated(ItemModelGenerator generator, Item... items) {

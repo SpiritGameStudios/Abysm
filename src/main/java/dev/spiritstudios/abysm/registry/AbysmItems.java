@@ -17,7 +17,7 @@ import net.minecraft.util.Rarity;
 
 import java.util.function.Function;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "SameParameterValue"})
 public final class AbysmItems {
     public static final Item FLIPPERS = register(
             "flippers",
