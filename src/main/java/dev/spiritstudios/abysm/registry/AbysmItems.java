@@ -39,7 +39,7 @@ public final class AbysmItems {
 		"harpoon",
 		HarpoonItem::new,
 		new Item.Settings()
-			.maxCount(1).rarity(Rarity.RARE)
+			.maxCount(1).rarity(Rarity.RARE).attributeModifiers(HarpoonItem.createAttributes(2.2f, 2.2f))
 	);
 
     private static RegistryKey<Item> keyOf(String id) {

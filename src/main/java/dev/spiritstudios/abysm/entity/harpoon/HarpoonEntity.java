@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.mixin.PersistentProjectileEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -154,6 +155,14 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		byte pierceLevel = this.getPierceLevel();
 		if (pierceLevel > 0) {
 			((PersistentProjectileEntityAccessor) this).abysm$invokeSetPierceLevel((byte) (pierceLevel - 1));
+			IntOpenHashSet intOpenHashSet = ((PersistentProjectileEntityAccessor) this).abysm$getPiercedEntities();
+			if (intOpenHashSet == null) {
+				intOpenHashSet = new IntOpenHashSet(5);
+				intOpenHashSet.add(entity.getId());
+				((PersistentProjectileEntityAccessor) this).abysm$setPiercedEntities(intOpenHashSet);
+			} else {
+				intOpenHashSet.add(entity.getId());
+			}
 		} else {
 			this.beginReturn();
 			this.deflect(ProjectileDeflection.SIMPLE, entity, this.getOwner(), false);
