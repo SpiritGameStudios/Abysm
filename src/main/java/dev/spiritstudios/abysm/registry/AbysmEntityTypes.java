@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.registry;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.BloomrayEntity;
-import dev.spiritstudios.abysm.entity.HarpoonEntity;
+import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.entity.SmallFloralFishEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;

@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.client.render.entity;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.state.HarpoonEntityRenderState;
-import dev.spiritstudios.abysm.entity.HarpoonEntity;
+import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.item.HarpoonItem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Frustum;
@@ -38,10 +38,16 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 	@Override
 	public void render(HarpoonEntityRenderState state, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
 		// lashing potato go
+		/*
+		if (!MinecraftClient.getInstance().world.getTickManager().isFrozen()) {
+			MinecraftClient.getInstance().world.addParticleClient(ParticleTypes.END_ROD, vec3d2.x, vec3d2.y, vec3d2.z, 0, 0, 0);
+		}
+
+		 */
 		if (state.player != null) {
-			final float tickProgress = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(false);
 			matrixStack.push();
-			Vec3d pleaseGoToTheCorrectEnd = Vec3d.fromPolar(-state.pitch, state.yaw);
+			final float tickProgress = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(false);
+			Vec3d pleaseGoToTheCorrectEnd = Vec3d.fromPolar(state.pitch, 180 - state.yaw);
 			matrixStack.translate(pleaseGoToTheCorrectEnd.x, pleaseGoToTheCorrectEnd.y, pleaseGoToTheCorrectEnd.z);
 			Vec3d vec3d2 = new Vec3d(
 				MathHelper.lerp(tickProgress, state.prevX, state.x),
@@ -51,7 +57,7 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 			float h = state.age + tickProgress;
 			float j = h * 0.15F % 1.0F;
 			Vec3d vec3d3 = state.handPos.subtract(vec3d2);
-			float k = (float)(vec3d3.length() + 0.1);
+			float k = (float)(vec3d3.length() + 0.1 + 0.5);
 			vec3d3 = vec3d3.normalize();
 			float l = (float)Math.acos(vec3d3.y);
 			float m = (float)Math.atan2(vec3d3.z, vec3d3.x);
