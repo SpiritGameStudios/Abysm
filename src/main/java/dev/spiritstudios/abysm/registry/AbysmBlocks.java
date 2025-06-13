@@ -397,7 +397,7 @@ public final class AbysmBlocks {
 
 	public static final Block BLOOMING_SODALITE_CROWN = register(
 		"blooming_sodalite_crown",
-		RotatableWaterloggableFlowerBlock::new,
+		settings -> new BloomshroomCrownBlock(AbysmParticleTypes.ROSEBLOOM_GLIMMER, AbysmParticleTypes.SODALITE_THORNS, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(MapColor.LAPIS_BLUE)
 			.sounds(BlockSoundGroup.SPORE_BLOSSOM)
@@ -408,13 +408,13 @@ public final class AbysmBlocks {
 	);
 	public static final Block BLOOMING_ANYOLITE_CROWN = register(
 		"blooming_anyolite_crown",
-		RotatableWaterloggableFlowerBlock::new,
+		settings -> new BloomshroomCrownBlock(AbysmParticleTypes.SUNBLOOM_GLIMMER, AbysmParticleTypes.ANYOLITE_THORNS, settings),
 		AbstractBlock.Settings.copy(BLOOMING_SODALITE_CROWN)
 			.mapColor(MapColor.LIME)
 	);
 	public static final Block BLOOMING_MELILITE_CROWN = register(
 		"blooming_melilite_crown",
-		RotatableWaterloggableFlowerBlock::new,
+		settings -> new BloomshroomCrownBlock(AbysmParticleTypes.MALLOWBLOOM_GLIMMER, AbysmParticleTypes.MELILITE_THORNS, settings),
 		AbstractBlock.Settings.copy(BLOOMING_SODALITE_CROWN)
 			.mapColor(MapColor.ORANGE)
 	);

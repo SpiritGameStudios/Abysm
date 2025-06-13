@@ -1,30 +1,20 @@
 package dev.spiritstudios.abysm.block;
 
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.spiritstudios.abysm.util.Codecs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SideShapeType;
 import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class BloomshroomCapBlock extends Block {
-	protected static final MapCodec<SimpleParticleType> PARTICLE_TYPE_CODEC = Registries.PARTICLE_TYPE
-		.getCodec()
-		.comapFlatMap(
-			particleType -> particleType instanceof SimpleParticleType simpleParticleType
-				? DataResult.success(simpleParticleType)
-				: DataResult.error(() -> "Not a SimpleParticleType: " + particleType),
-			particleType -> particleType
-		)
-		.fieldOf("particle_options");
 	public static final MapCodec<BloomshroomCapBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(PARTICLE_TYPE_CODEC.forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomshroomCapBlock::new)
+		instance -> instance.group(Codecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomshroomCapBlock::new)
 	);
 
 	public final SimpleParticleType particle;

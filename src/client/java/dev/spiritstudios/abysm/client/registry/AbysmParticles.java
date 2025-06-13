@@ -20,6 +20,10 @@ public class AbysmParticles {
 		register(AbysmParticleTypes.ROSEBLOOM_PETALS, BloomPetalParticle.RosyFactory::new);
 		register(AbysmParticleTypes.SUNBLOOM_PETALS, BloomPetalParticle.SunnyFactory::new);
 		register(AbysmParticleTypes.MALLOWBLOOM_PETALS, BloomPetalParticle.MauveFactory::new);
+
+		register(AbysmParticleTypes.SODALITE_THORNS, BloomGlimmerParticle.ThornFactory::new);
+		register(AbysmParticleTypes.ANYOLITE_THORNS, BloomGlimmerParticle.ThornFactory::new);
+		register(AbysmParticleTypes.MELILITE_THORNS, BloomGlimmerParticle.ThornFactory::new);
 	}
 
 	public static <T extends ParticleEffect> void register(ParticleType<T> type, ParticleFactory<T> provider) {

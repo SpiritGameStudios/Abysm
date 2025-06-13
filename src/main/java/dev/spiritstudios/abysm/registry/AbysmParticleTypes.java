@@ -24,6 +24,10 @@ public class AbysmParticleTypes {
 	public static final SimpleParticleType SUNBLOOM_PETALS = registerSimple("sunbloom_petals", false);
 	public static final SimpleParticleType MALLOWBLOOM_PETALS = registerSimple("mallowbloom_petals", false);
 
+	public static final SimpleParticleType SODALITE_THORNS = registerSimple("sodalite_thorns", false);
+	public static final SimpleParticleType ANYOLITE_THORNS = registerSimple("anyolite_thorns", false);
+	public static final SimpleParticleType MELILITE_THORNS = registerSimple("melilite_thorns", false);
+
 	public static void init() {
 		// NO-OP
 	}
