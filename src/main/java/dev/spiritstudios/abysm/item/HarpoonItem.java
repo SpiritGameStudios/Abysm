@@ -28,6 +28,8 @@ import java.util.Objects;
 
 public class HarpoonItem extends Item {
 
+	public static final Identifier PIERCING = Identifier.ofVanilla("piercing");
+
 	public HarpoonItem(Settings settings) {
 		super(settings);
 	}
@@ -116,6 +118,6 @@ public class HarpoonItem extends Item {
 
 	@Override
 	public boolean canBeEnchantedWith(ItemStack stack, RegistryEntry<Enchantment> enchantment, EnchantingContext context) {
-		return super.canBeEnchantedWith(stack, enchantment, context) || enchantment.matchesId(Identifier.ofVanilla("piercing"));
+		return super.canBeEnchantedWith(stack, enchantment, context) || enchantment.matchesId(PIERCING);
 	}
 }
