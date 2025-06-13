@@ -1,0 +1,7 @@
+{
+  "name": {
+    "translate": "abysm.entity.bloomray.sunny"
+  },
+  "texture": "abysm:textures/entity/sunny_bloomray.png",
+  "crown": "sodalite"
+}

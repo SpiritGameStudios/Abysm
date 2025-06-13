@@ -44,8 +44,7 @@ public class AbysmEntityPatternVariants {
 		register(registerable, FLORAL_FISH_BIG_SIRFISHY, AbysmEntityTypes.BIG_FLORAL_FISH, "Coco");
 	}
 
-	// Unsure if names are going to need to be capitalized, or if I'll switch to translations,
-	// so that param in the register method may get removed
+	// TODO - replace name with text
 	private static void register(Registerable<EntityPatternVariant> registry, RegistryKey<EntityPatternVariant> key, EntityType<?> entityType, String name) {
 		Identifier patternPath = Abysm.id("textures/entity/pattern/" + key.getValue().getPath() + ".png");
 		EntityPatternVariant variant = new EntityPatternVariant(entityType, name, patternPath);
