@@ -11,8 +11,9 @@ import net.minecraft.registry.RegistryWrapper;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
-	public AbysmLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
+
+	public AbysmBlockLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
 		super(dataOutput, registryLookup);
 	}
 
@@ -94,7 +95,7 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 		this.addSilkTouchOrElseDrop(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
 		this.addSilkTouchOrElseDrop(AbysmBlocks.SUNBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
 		this.addSilkTouchOrElseDrop(AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
-		
+
 		forEach(this::addSegmentedDrop,
 			AbysmBlocks.ROSEBLOOM_PETALS,
 			AbysmBlocks.SUNBLOOM_PETALS,

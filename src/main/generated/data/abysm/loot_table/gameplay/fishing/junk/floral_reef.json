@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:fishing",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "name": "abysm:antennae_plant"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "abysm:rosy_bloomshroom"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "abysm:sunny_bloomshroom"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "abysm:mauve_bloomshroom"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "abysm:rosebloom_petals"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "abysm:sunbloom_petals"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 15,
+          "name": "abysm:mallowbloom_petals"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}
