@@ -527,7 +527,7 @@ public final class AbysmBlocks {
 	// region misc plants
 	public static final Block ANTENNAE_PLANT = register(
 		"antennae_plant",
-		UnderwaterPlantBlock::new,
+		AntennaePlantBlock::new,
 		AbstractBlock.Settings.copy(ROSY_SPRIGS)
 			.luminance(state -> 7)
 			.mapColor(DyeColor.PINK)

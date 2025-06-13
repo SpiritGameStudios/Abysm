@@ -1,7 +1,9 @@
 package dev.spiritstudios.abysm.block;
 
-import com.mojang.serialization.MapCodec;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.PlantBlock;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
@@ -11,20 +13,12 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.tick.ScheduledTickView;
 
-public class UnderwaterPlantBlock extends PlantBlock {
-	public static final MapCodec<UnderwaterPlantBlock> CODEC = createCodec(UnderwaterPlantBlock::new);
-	private static final VoxelShape SHAPE = Block.createColumnShape(12.0, 0.0, 3.0);
+public abstract class UnderwaterPlantBlock extends PlantBlock {
 	private static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
-
-	@Override
-	public MapCodec<? extends UnderwaterPlantBlock> getCodec() {
-		return CODEC;
-	}
 
 	public UnderwaterPlantBlock(AbstractBlock.Settings settings) {
 		super(settings);
@@ -39,11 +33,6 @@ public class UnderwaterPlantBlock extends PlantBlock {
 	@Override
 	protected FluidState getFluidState(BlockState state) {
 		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
-	}
-
-	@Override
-	protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return SHAPE.offset(state.getModelOffset(pos));
 	}
 
 	@Override
