@@ -78,5 +78,16 @@
 	"entity.abysm.bloomray": "Bloomray",
 	"item.abysm.flippers": "Flippers",
 	"item.abysm.harpoon": "Harpoon",
-	"item_group.abysm.abysm": "Abysm"
+	"item_group.abysm.abysm": "Abysm",
+	"tag.item.abysm.bloomed_floropumice": "Bloomed Floropumice",
+	"tag.item.abysm.flowery_sprigs": "Flowery Sprigs",
+	"tag.item.abysm.bloom_petals": "Bloom Petals",
+	"tag.item.abysm.small_bloomshrooms": "Small Bloomshrooms",
+	"tag.item.abysm.bloomshroom_stems": "Bloomshroom Stems",
+	"tag.item.abysm.rosy_bloomshroom_stems": "Rosy Bloomshroom Stems",
+	"tag.item.abysm.sunny_bloomshroom_stems": "Sunny Bloomshroom Stems",
+	"tag.item.abysm.mauve_bloomshroom_stems": "Mauve Bloomshroom Stems",
+	"tag.item.abysm.bloomshroom_caps": "Bloomshroom Caps",
+	"tag.item.abysm.blooming_crowns": "Blooming Crowns",
+	"tag.item.abysm.scabiosas": "Scabiosas"
 }
