@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm;
 
-import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
+import dev.spiritstudios.abysm.registry.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
 import dev.spiritstudios.abysm.registry.*;

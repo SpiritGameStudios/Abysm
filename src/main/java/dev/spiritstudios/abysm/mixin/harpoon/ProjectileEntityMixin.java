@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.mixin;
+package dev.spiritstudios.abysm.mixin.harpoon;
 
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import net.minecraft.entity.Entity;

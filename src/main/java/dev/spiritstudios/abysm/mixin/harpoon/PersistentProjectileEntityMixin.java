@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.mixin;
+package dev.spiritstudios.abysm.mixin.harpoon;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;

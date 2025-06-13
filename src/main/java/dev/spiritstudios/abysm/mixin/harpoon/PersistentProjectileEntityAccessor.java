@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.mixin;
+package dev.spiritstudios.abysm.mixin.harpoon;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;

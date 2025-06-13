@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.entity.harpoon;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.component.BlessedComponent;
-import dev.spiritstudios.abysm.mixin.PersistentProjectileEntityAccessor;
+import dev.spiritstudios.abysm.mixin.harpoon.PersistentProjectileEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
