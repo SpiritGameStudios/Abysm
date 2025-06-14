@@ -9,11 +9,7 @@
 		"LootPoolBuilderAccessor",
 		"harpoon.PersistentProjectileEntityAccessor",
 		"harpoon.PersistentProjectileEntityMixin",
-		"harpoon.ProjectileEntityMixin",
-		"leviathan.PlayerEntityMixin",
-		"leviathan.ServerChunkLoadingManagerMixin",
-		"leviathan.ServerWorldMixin",
-		"leviathan.ServerWorldMixin$ServerEntityHandlerMixin"
+		"harpoon.ProjectileEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

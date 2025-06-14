@@ -36,10 +36,5 @@
 		"fabric-api": "*",
 		"specter-core": "*",
 		"java": ">=21"
-	},
-	"custom": {
-		"loom:injected_interfaces": {
-			"net/minecraft/class_3218": ["dev/spiritstudios/abysm/entity/leviathan/ServerWorldLeviathan"]
-		}
 	}
 }
