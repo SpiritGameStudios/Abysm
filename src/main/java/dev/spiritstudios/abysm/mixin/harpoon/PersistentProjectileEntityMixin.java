@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.mixin.harpoon;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.serialization.Codec;
@@ -49,13 +48,13 @@ public class PersistentProjectileEntityMixin {
 		return original.call(instance, stack);
 	}
 
-	@WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;setPitch(F)V"))
-	private boolean letMeUpdateMyPitch(PersistentProjectileEntity instance, float v) {
-		return !((PersistentProjectileEntity) (Object) this instanceof HarpoonEntity);
-	}
-
-	@WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;setYaw(F)V"))
-	private boolean letMeUpdateMyYaw(PersistentProjectileEntity instance, float v) {
-		return !((PersistentProjectileEntity) (Object) this instanceof HarpoonEntity);
+	@WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;updateRotation(FF)F", ordinal = 0))
+	private float updateRotationCorrectlyWhenReturning(float lastPitch, float newPitch, Operation<Float> original) {
+		if ((PersistentProjectileEntity) (Object) this instanceof HarpoonEntity harpoon) {
+			if (harpoon.isReturning()) {
+				newPitch = 180 - newPitch;
+			}
+		}
+		return original.call(lastPitch, newPitch);
 	}
 }

@@ -50,7 +50,7 @@ public class HarpoonItem extends Item {
 				user.getItemCooldownManager().set(stack, 10);
 			}
 		}
-		return ActionResult.SUCCESS;
+		return ActionResult.CONSUME;
 	}
 
 	@Override

@@ -8,8 +8,7 @@
 		"LivingEntityMixin",
 		"LootPoolBuilderAccessor",
 		"harpoon.PersistentProjectileEntityAccessor",
-		"harpoon.PersistentProjectileEntityMixin",
-		"harpoon.ProjectileEntityMixin"
+		"harpoon.PersistentProjectileEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -26,6 +26,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,9 +49,16 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	public HarpoonEntity(World world, PlayerEntity owner, int slot, ItemStack weapon) {
 		this(AbysmEntityTypes.FLYING_HARPOON, owner.getX(), owner.getEyeY() - 0.1, owner.getZ(), world, ItemStack.EMPTY, weapon);
 		this.setOwner(owner);
-		this.setVelocity(owner.getRotationVec(1.0F).multiply(VELOCITY_POWER));
+		Vec3d vec3d = owner.getRotationVec(1.0F).multiply(VELOCITY_POWER);
+		this.setVelocity(vec3d);
 		this.setNoGravity(true);
 		this.slot = slot;
+
+		double d = vec3d.horizontalLength();
+		this.setYaw((float)(MathHelper.atan2(vec3d.x, vec3d.z) * 180.0F / (float)Math.PI));
+		this.setPitch((float)(MathHelper.atan2(vec3d.y, d) * 180.0F / (float)Math.PI));
+		this.lastYaw = this.getYaw();
+		this.lastPitch = this.getPitch();
 	}
 
 	@Override
@@ -87,7 +95,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				Abysm.LOGGER.debug("An error occurred while ticking a harpoon!", indexOutOfBoundsException);
 				this.discard();
 			}
-			if (this.inGroundTime > 2 || this.ticksAlive > 60 || this.squaredDistanceTo(owner) > 65536) {
+			if (this.inGroundTime > 4 || (this.ticksAlive > 60 && this.inGroundTime < 1) || this.squaredDistanceTo(owner) > 65536) {
 				this.beginReturn();
 			}
 		}
@@ -172,11 +180,6 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	protected void onBlockHit(BlockHitResult blockHitResult) {
-		super.onBlockHit(blockHitResult);
-	}
-
-	@Override
 	public boolean canUsePortals(boolean allowVehicles) {
 		return false;
 	}
@@ -184,27 +187,6 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	@Override
 	protected SoundEvent getHitSound() {
 		return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
-	}
-
-	@SuppressWarnings("unused")
-	public static float updateHarpoonRotation(float lastRot, float newRot, boolean snap, boolean returning) {
-		/*if (returning) {
-			lastRot = 180 - lastRot;
-			newRot = 180 - newRot;
-		}
-		 */
-		if (snap) {
-			return newRot;
-		}
-		while (newRot - lastRot < -180.0F) {
-			lastRot -= 360.0F;
-		}
-
-		while (newRot - lastRot >= 180.0F) {
-			lastRot += 360.0F;
-		}
-
-		return MathHelper.lerp(0.8F, lastRot, newRot);
 	}
 
 	@Override
@@ -216,6 +198,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		return this.slot;
 	}
 
+	@SuppressWarnings("unused")
 	public int getTicksAlive() {
 		return this.ticksAlive;
 	}
