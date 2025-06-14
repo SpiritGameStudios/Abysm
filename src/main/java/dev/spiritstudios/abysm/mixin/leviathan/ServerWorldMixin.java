@@ -41,6 +41,8 @@ public class ServerWorldMixin implements ServerWorldLeviathan {
 		@Final
 		ServerWorld field_26936; // synthetic outer class variable
 
+		// TODO: reenable, disabled because of crash on world load
+		/*
 		@WrapOperation(method = "startTracking(Lnet/minecraft/entity/Entity;)V", constant = @Constant(classValue = EnderDragonEntity.class))
 		private boolean startTrackingLeviathanParts(Object entity, Operation<Boolean> original) {
 			if (original.call(entity)) {
@@ -54,7 +56,10 @@ public class ServerWorldMixin implements ServerWorldLeviathan {
 			}
 			return false;
 		}
+		*/
 
+		// TODO: reenable, disabled because of crash on world load
+		/*
 		@WrapOperation(method = "stopTracking(Lnet/minecraft/entity/Entity;)V", constant = @Constant(classValue = EnderDragonEntity.class))
 		private boolean stopTrackingLeviathanParts(Object entity, Operation<Boolean> original) {
 			if (original.call(entity)) {
@@ -68,5 +73,6 @@ public class ServerWorldMixin implements ServerWorldLeviathan {
 			}
 			return false;
 		}
+		*/
 	}
 }

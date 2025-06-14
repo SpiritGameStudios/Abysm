@@ -13,9 +13,12 @@ import org.spongepowered.asm.mixin.injection.Slice;
 @Mixin(PlayerEntity.class)
 public class PlayerEntityMixin {
 
+	// TODO: reenable, disabled because of crash on startup
+	/*
 	@SuppressWarnings("ModifyVariableMayBeArgsOnly")
 	@ModifyVariable(method = "attack", slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;onAttacking(Lnet/minecraft/entity/Entity;)V")), at = @At("STORE"), index = 1)
 	private Entity accountForLeviathanPartsToo(Entity original) {
 		return original instanceof LeviathanPart leviathanPart ? leviathanPart.owner : original;
 	}
+	*/
 }
