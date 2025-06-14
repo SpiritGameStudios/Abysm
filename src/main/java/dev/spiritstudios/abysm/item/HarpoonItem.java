@@ -55,6 +55,12 @@ public class HarpoonItem extends Item {
 
 	@Override
 	public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
+		if (entity instanceof PlayerEntity player) {
+			int invSlot = player.getInventory().getSlotWithStack(stack);
+			if (invSlot == -1) {
+				return;
+			}
+		}
 		BlessedComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
 		int ticksSinceLastShot = component.getTicksSinceShot();
 		if (ticksSinceLastShot >= 0 && ticksSinceLastShot < 200) {

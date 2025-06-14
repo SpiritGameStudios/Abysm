@@ -64,23 +64,37 @@ public class BlessedComponent implements TooltipAppender {
 
 	@Override
 	public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
+		MutableText loaded;
 		if (this.isLoaded()) {
-			textConsumer.accept(Text.literal("Loaded").formatted(Formatting.LIGHT_PURPLE).formatted(Formatting.UNDERLINE));
+			loaded = Text.translatable("item.abysm.harpoon.loaded");
 		} else {
-			textConsumer.accept(Text.literal("Unloaded").formatted(Formatting.LIGHT_PURPLE).formatted(Formatting.UNDERLINE));
+			loaded = Text.translatable("item.abysm.harpoon.not_loaded");
 		}
+		textConsumer.accept(loaded.formatted(Formatting.YELLOW, Formatting.UNDERLINE));
+
 		if (!this.getStack().isEmpty()) {
-			long time = Util.getMeasuringTimeMs();
-			MutableText text = Text.literal("B").withColor(ColorHelper.lerp(((time) % SEVEN_HUNDRED) * RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK));
-			text.append(Text.literal("l").withColor(ColorHelper.lerp(((time + 100) % SEVEN_HUNDRED) * RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK)));
-			text.append(Text.literal("e").withColor(ColorHelper.lerp(((time + 200) % SEVEN_HUNDRED) * RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK)));
-			text.append(Text.literal("s").withColor(ColorHelper.lerp(((time + 300) % SEVEN_HUNDRED) * RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK)));
-			text.append(Text.literal("s").withColor(ColorHelper.lerp(((time + 400) % SEVEN_HUNDRED) * RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK)));
-			text.append(Text.literal("e").withColor(ColorHelper.lerp(((time + 500) % SEVEN_HUNDRED) * RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK)));
-			text.append(Text.literal("d").withColor(ColorHelper.lerp(((time + 600) % SEVEN_HUNDRED) * RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK)));
-			textConsumer.accept(text);
+			textConsumer.accept(scrollingGradient(Text.translatable("item.abysm.harpoon.blessed"), SEVEN_HUNDRED, RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK, false));
 		}
 	}
+
+	public static MutableText scrollingGradient(Text original, int wrap, float reciprocalWrap, int startColor, int endColor, boolean forward) {
+		String blessed = original.getString();
+		int length = blessed.length();
+		long time = Util.getMeasuringTimeMs();
+		MutableText text = Text.literal(blessed.substring(0, 1)).withColor(ColorHelper.lerp(((time) % wrap) * reciprocalWrap, startColor, endColor));
+		float incr = (float) wrap / length;
+		for (int i = 1; i < length; i++) {
+			float deltaHalfCalculated;
+			if (forward) {
+				deltaHalfCalculated = time - (int) (incr * i);
+			} else {
+				deltaHalfCalculated = time + (int) (incr * i);
+			}
+			text.append(Text.literal(blessed.substring(i, i + 1)).withColor(ColorHelper.lerp((deltaHalfCalculated % wrap) * reciprocalWrap, startColor, endColor)));
+		}
+		return text;
+	}
+
 
 	public ItemStack getStack() {
 		return this.heart.orElse(ItemStack.EMPTY);

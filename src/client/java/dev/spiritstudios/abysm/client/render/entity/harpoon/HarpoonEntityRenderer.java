@@ -36,7 +36,7 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 
 	@Override
 	public void render(HarpoonEntityRenderState state, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light) {
-		// lashing potato go
+		// lashing potato go (okay maybe it was too much mojank, thanks Echo)
 
 		if (state.player == null) {
 			super.render(state, matrixStack, vertexConsumerProvider, light);
@@ -46,13 +46,14 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		matrixStack.push();
 		final float tickProgress = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(false);
 
-		Vec3d facing = Vec3d.fromPolar(state.pitch, 180 - state.yaw);
+		Vec3d anchorAtEnd = Vec3d.fromPolar(state.pitch, 180 - state.yaw);
+		matrixStack.translate(anchorAtEnd.x, anchorAtEnd.y, anchorAtEnd.z);
 
 		Vec3d vec3d2 = new Vec3d(
 			MathHelper.lerp(tickProgress, state.prevX, state.x),
 			MathHelper.lerp(tickProgress, state.prevY, state.y) + state.standingEyeHeight,
 			MathHelper.lerp(tickProgress, state.prevZ, state.z)
-		).add(facing);
+		).add(anchorAtEnd);
 
 		float age = state.age + tickProgress;
 		float j = age * 0.15F % 1.0F;

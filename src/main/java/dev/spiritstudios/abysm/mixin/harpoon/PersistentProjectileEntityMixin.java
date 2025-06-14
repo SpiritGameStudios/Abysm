@@ -9,6 +9,7 @@ import dev.spiritstudios.abysm.component.BlessedComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -27,8 +28,8 @@ public class PersistentProjectileEntityMixin {
 	}
 
 	@WrapOperation(method = "tryPickup", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerInventory;insertStack(Lnet/minecraft/item/ItemStack;)Z"))
-	private boolean reloadHarpoon(PlayerInventory instance, ItemStack stack, Operation<Boolean> original) {
-		if ((PersistentProjectileEntity) (Object) this instanceof HarpoonEntity harpoon) {
+	private boolean reloadHarpoon(PlayerInventory instance, ItemStack stack, Operation<Boolean> original, PlayerEntity player) {
+		if ((PersistentProjectileEntity) (Object) this instanceof HarpoonEntity harpoon && player.equals(harpoon.getOwner())) {
 			try {
 				ItemStack invStack = instance.getStack(harpoon.getSlot());
 				if (!invStack.isOf(AbysmItems.NOOPRAH)) {
@@ -46,15 +47,5 @@ public class PersistentProjectileEntityMixin {
 			}
 		}
 		return original.call(instance, stack);
-	}
-
-	@WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/PersistentProjectileEntity;updateRotation(FF)F", ordinal = 0))
-	private float updateRotationCorrectlyWhenReturning(float lastPitch, float newPitch, Operation<Float> original) {
-		if ((PersistentProjectileEntity) (Object) this instanceof HarpoonEntity harpoon) {
-			if (harpoon.isReturning()) {
-				newPitch = 180 - newPitch;
-			}
-		}
-		return original.call(lastPitch, newPitch);
 	}
 }

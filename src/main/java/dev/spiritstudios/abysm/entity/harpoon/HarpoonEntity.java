@@ -103,7 +103,6 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			boolean closeEnough = this.squaredDistanceTo(owner) < 10;
 			this.setVelocity(owner.getEyePos().subtract(this.getPos()).normalize().multiply(closeEnough ? 1 : VELOCITY_POWER));
 		}
-		this.updateRotation();
 		super.tick();
 	}
 
