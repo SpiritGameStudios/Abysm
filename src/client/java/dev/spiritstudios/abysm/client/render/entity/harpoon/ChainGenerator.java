@@ -18,9 +18,6 @@ public class ChainGenerator implements SimpleSynchronousResourceReloadListener {
 
 	public static final ChainGenerator INSTANCE = new ChainGenerator();
 
-	private static final int HEIGHT = 32;
-	private static final int WIDTH = 32;
-
 	@Override
 	public Identifier getFabricId() {
 		return ID;
@@ -33,18 +30,18 @@ public class ChainGenerator implements SimpleSynchronousResourceReloadListener {
 		try {
 			original = TextureContents.load(manager, VANILLA_CHAIN).image();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			Abysm.LOGGER.debug("An error occurred when generating the chain texture!", e);
+			return;
 		}
 		if (original == null) {
 			return;
 		}
-		if (original.getHeight() != 16 || original.getWidth() != 16) {
-			return;
-		}
-		NativeImage chains = new NativeImage(WIDTH, HEIGHT, false);
-		for (int height = 0; height < HEIGHT; height++) {
-			for (int width = 0; width < WIDTH; width++) {
-				chains.setColorArgb(height, width, original.getColorArgb(height % 16, width % 16));
+		int originalHeight = original.getHeight();
+		int originalWidth = original.getWidth();
+		NativeImage chains = new NativeImage(originalWidth * 2, originalHeight * 2, false);
+		for (int height = 0; height < originalHeight * 2; height++) {
+			for (int width = 0; width < originalWidth * 2; width++) {
+				chains.setColorArgb(height, width, original.getColorArgb(height % originalHeight, width % originalWidth));
 			}
 		}
 		MinecraftClient.getInstance().getTextureManager().registerTexture(HarpoonEntityRenderer.CHAINS, new NativeImageBackedTexture(HarpoonEntityRenderer.CHAINS::toString, chains));
