@@ -66,6 +66,12 @@ public class AbysmClientBlockMetatagProvider extends MetatagProvider<Block> {
 			AbysmBlocks.POTTED_ANTENNAE_PLANT
 		);
 
+		addBlocksToLayer(builder, BlockRenderLayer.CUTOUT_MIPPED,
+			AbysmBlocks.ROSEBLOOM_PETALEAVES,
+			AbysmBlocks.SUNBLOOM_PETALEAVES,
+			AbysmBlocks.MALLOWBLOOM_PETALEAVES
+		);
+
 		addBlocksToLayer(builder, BlockRenderLayer.TRANSLUCENT,
 			AbysmBlocks.BLOOMSHROOM_GOOP
 		);

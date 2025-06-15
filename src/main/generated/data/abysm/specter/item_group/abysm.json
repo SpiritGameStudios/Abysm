@@ -142,18 +142,6 @@
     },
     {
       "count": 1,
-      "id": "abysm:rosebloom_petals"
-    },
-    {
-      "count": 1,
-      "id": "abysm:sunbloom_petals"
-    },
-    {
-      "count": 1,
-      "id": "abysm:mallowbloom_petals"
-    },
-    {
-      "count": 1,
       "id": "abysm:rosy_bloomshroom"
     },
     {
@@ -167,6 +155,14 @@
     {
       "count": 1,
       "id": "abysm:rosy_bloomshroom_cap"
+    },
+    {
+      "count": 1,
+      "id": "abysm:rosebloom_petaleaves"
+    },
+    {
+      "count": 1,
+      "id": "abysm:rosebloom_petals"
     },
     {
       "count": 1,
@@ -186,6 +182,14 @@
     },
     {
       "count": 1,
+      "id": "abysm:sunbloom_petaleaves"
+    },
+    {
+      "count": 1,
+      "id": "abysm:sunbloom_petals"
+    },
+    {
+      "count": 1,
       "id": "abysm:mauve_bloomshroom"
     },
     {
@@ -199,6 +203,14 @@
     {
       "count": 1,
       "id": "abysm:mauve_bloomshroom_cap"
+    },
+    {
+      "count": 1,
+      "id": "abysm:mallowbloom_petaleaves"
+    },
+    {
+      "count": 1,
+      "id": "abysm:mallowbloom_petals"
     },
     {
       "count": 1,

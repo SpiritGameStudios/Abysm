@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.util.Codecs;
+import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.BlockState;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.state.property.EnumProperty;
@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 public class BloomshroomCrownBlock extends RotatableWaterloggableFlowerBlock {
 	public static final MapCodec<BloomshroomCrownBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
-			Codecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.glimmerParticle),
-			Codecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.glimmerParticle),
+			AbysmCodecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.glimmerParticle),
+			AbysmCodecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.glimmerParticle),
 			createSettingsCodec()
 		).apply(instance, BloomshroomCrownBlock::new)
 	);

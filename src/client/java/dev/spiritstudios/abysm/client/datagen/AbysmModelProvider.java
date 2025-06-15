@@ -76,15 +76,20 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.registerFlowerPotPlantAndItem(AbysmBlocks.MAUVE_BLOOMSHROOM, AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM, BlockStateModelGenerator.CrossType.NOT_TINTED);
 
 		generator.createLogTexturePool(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).stem(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).wood(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE);
-		generator.registerSimpleCubeAll(AbysmBlocks.ROSY_BLOOMSHROOM_CAP);
-
 		generator.createLogTexturePool(AbysmBlocks.SUNNY_BLOOMSHROOM_STEM).stem(AbysmBlocks.SUNNY_BLOOMSHROOM_STEM).wood(AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE);
-		generator.registerSimpleCubeAll(AbysmBlocks.SUNNY_BLOOMSHROOM_CAP);
-
 		generator.createLogTexturePool(AbysmBlocks.MAUVE_BLOOMSHROOM_STEM).stem(AbysmBlocks.MAUVE_BLOOMSHROOM_STEM).wood(AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE);
-		generator.registerSimpleCubeAll(AbysmBlocks.MAUVE_BLOOMSHROOM_CAP);
 
-		generator.registerSimpleCubeAll(AbysmBlocks.BLOOMSHROOM_GOOP);
+		doForMany(BlockStateModelGenerator::registerSimpleCubeAll, generator,
+			AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
+			AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
+			AbysmBlocks.MAUVE_BLOOMSHROOM_CAP,
+
+			AbysmBlocks.ROSEBLOOM_PETALEAVES,
+			AbysmBlocks.SUNBLOOM_PETALEAVES,
+			AbysmBlocks.MALLOWBLOOM_PETALEAVES,
+
+			AbysmBlocks.BLOOMSHROOM_GOOP
+		);
 
 		registerBloomingCrowns(generator,
 			AbysmBlocks.BLOOMING_SODALITE_CROWN,

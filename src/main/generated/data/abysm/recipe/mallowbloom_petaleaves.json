@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "abysm:mallowbloom_petals"
+  },
+  "result": {
+    "count": 1,
+    "id": "abysm:mallowbloom_petaleaves"
+  },
+  "pattern": [
+    "##",
+    "##"
+  ]
+}

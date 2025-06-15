@@ -5,7 +5,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 
-public class Codecs {
+public class AbysmCodecs {
 	public static final MapCodec<SimpleParticleType> PARTICLE_TYPE_CODEC = Registries.PARTICLE_TYPE
 		.getCodec()
 		.comapFlatMap(

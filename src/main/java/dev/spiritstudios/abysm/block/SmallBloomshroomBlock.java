@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.util.Codecs;
+import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -32,7 +32,7 @@ public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, W
 	public static final MapCodec<SmallBloomshroomBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
 				RegistryKey.createCodec(RegistryKeys.CONFIGURED_FEATURE).fieldOf("feature").forGetter(block -> block.featureKey),
-				Codecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle),
+				AbysmCodecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle),
 				createSettingsCodec()
 			)
 			.apply(instance, SmallBloomshroomBlock::new)

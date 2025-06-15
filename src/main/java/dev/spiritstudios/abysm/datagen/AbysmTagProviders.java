@@ -114,6 +114,13 @@ public class AbysmTagProviders {
 				)
 				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
 
+			getOrCreateTagBuilder(BlockTags.LEAVES)
+				.add(
+					AbysmBlocks.ROSEBLOOM_PETALEAVES,
+					AbysmBlocks.SUNBLOOM_PETALEAVES,
+					AbysmBlocks.MALLOWBLOOM_PETALEAVES
+				);
+
 			getOrCreateTagBuilder(BlockTags.FLOWERS)
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
@@ -134,6 +141,7 @@ public class AbysmTagProviders {
 					AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM
 				);
 
+			// conventional tags
 			getOrCreateTagBuilder(ConventionalBlockTags.FLOWERS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMING_CROWNS)
@@ -142,12 +150,18 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(ConventionalBlockTags.SMALL_FLOWERS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS);
 
+			// abysm tags
 			getOrCreateTagBuilder(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON)
 				.add(
 					AbysmBlocks.FLOROPUMICE,
 					Blocks.SAND
 				)
 				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
+
+			getOrCreateTagBuilder(AbysmBlockTags.ALSO_PRESERVES_LEAVES)
+				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
+				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
+				.add(AbysmBlocks.BLOOMSHROOM_GOOP);
 
 			getOrCreateTagBuilder(AbysmBlockTags.BLOOMED_FLOROPUMICE)
 				.add(
@@ -338,6 +352,7 @@ public class AbysmTagProviders {
 			this.copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES);
 			this.copy(BlockTags.WALLS, ItemTags.WALLS);
 
+			this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
 			this.copy(BlockTags.FLOWERS, ItemTags.FLOWERS);
 			this.copy(BlockTags.SMALL_FLOWERS, ItemTags.SMALL_FLOWERS);
 

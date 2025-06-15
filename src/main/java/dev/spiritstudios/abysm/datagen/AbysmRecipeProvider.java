@@ -59,6 +59,10 @@ public class AbysmRecipeProvider extends FabricRecipeProvider {
 				offerBarkBlockRecipe(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE, AbysmBlocks.ROSY_BLOOMSHROOM_STEM);
 				offerBarkBlockRecipe(AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE, AbysmBlocks.SUNNY_BLOOMSHROOM_STEM);
 				offerBarkBlockRecipe(AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE, AbysmBlocks.MAUVE_BLOOMSHROOM_STEM);
+
+				offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, AbysmBlocks.ROSEBLOOM_PETALEAVES, AbysmBlocks.ROSEBLOOM_PETALS);
+				offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, AbysmBlocks.SUNBLOOM_PETALEAVES, AbysmBlocks.SUNBLOOM_PETALS);
+				offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, AbysmBlocks.MALLOWBLOOM_PETALEAVES, AbysmBlocks.MALLOWBLOOM_PETALS);
 				// endregion crafting
 
 				// region smelting etc

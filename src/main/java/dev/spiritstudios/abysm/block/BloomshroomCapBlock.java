@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.util.Codecs;
+import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SideShapeType;
@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 public class BloomshroomCapBlock extends Block {
 	public static final MapCodec<BloomshroomCapBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(Codecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomshroomCapBlock::new)
+		instance -> instance.group(AbysmCodecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomshroomCapBlock::new)
 	);
 
 	public final SimpleParticleType particle;
