@@ -137,7 +137,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	@Override
 	protected void onEntityHit(EntityHitResult entityHitResult) {
 		Entity entity = entityHitResult.getEntity();
-		float f = entity.isTouchingWater() ? 8.0F : 3.5F;
+		float f = this.isSubmergedInWater() ? 8.0F : 3.5F;
 		Entity entity2 = this.getOwner();
 		DamageSource damageSource = this.getDamageSources().trident(this, entity2 == null ? this : entity2);
 		if (this.getWorld() instanceof ServerWorld serverWorld) {
