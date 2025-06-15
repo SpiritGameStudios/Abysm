@@ -20,6 +20,8 @@ import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
@@ -44,8 +46,10 @@ public class HarpoonItem extends Item {
 			ItemStack stack = user.getStackInHand(hand);
 			BlessedComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
 			if (component.isLoaded()) {
-				world.spawnEntity(new HarpoonEntity(world, user, user.getInventory().getSlotWithStack(stack), stack));
+				HarpoonEntity harpoon = new HarpoonEntity(world, user, user.getInventory().getSlotWithStack(stack), stack);
+				world.spawnEntity(harpoon);
 				stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().loaded(false).ticksSinceShot(0).build());
+				world.playSoundFromEntity(null, harpoon, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
 			} else {
 				user.getItemCooldownManager().set(stack, 10);
 			}

@@ -96,7 +96,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				this.discard();
 			}
 			if (this.inGroundTime > 4 || (this.ticksAlive > 60 && this.inGroundTime < 1) || this.squaredDistanceTo(owner) > 65536) {
-				this.beginReturn();
+				this.beginReturn(true);
 			}
 		}
 		if (this.isNoClip() && this.isReturning()) {
@@ -129,9 +129,13 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		return this.dataTracker.get(RETURNING);
 	}
 
-	protected void beginReturn() {
+	@SuppressWarnings("SameParameterValue")
+	protected void beginReturn(boolean playSound) {
 		this.setNoClip(true);
 		this.dataTracker.set(RETURNING, true);
+		if (playSound) {
+			this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
+		}
 	}
 
 	@Override
@@ -171,7 +175,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				intOpenHashSet.add(entity.getId());
 			}
 		} else {
-			this.beginReturn();
+			this.beginReturn(true);
 			this.deflect(ProjectileDeflection.SIMPLE, entity, this.getOwner(), false);
 			this.setVelocity(this.getVelocity().multiply(0.02, 0.2, 0.02));
 		}
