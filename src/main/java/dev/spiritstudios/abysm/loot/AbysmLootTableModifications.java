@@ -69,11 +69,11 @@ public class AbysmLootTableModifications {
 	}
 
 	public static boolean poolContainsItemAsDirectChild(LootPool.Builder pool, Identifier itemIdentifier) {
-		List<LootPoolEntry> currentEntries = ((LootPoolBuilderAccessor)pool).getEntries().build();
+		List<LootPoolEntry> currentEntries = ((LootPoolBuilderAccessor)pool).abysm$getEntries().build();
 
 		for(LootPoolEntry entry : currentEntries) {
 			if(entry instanceof ItemEntry itemEntry) {
-				RegistryEntry<Item> ire = ((ItemEntryAccessor)itemEntry).getItem();
+				RegistryEntry<Item> ire = ((ItemEntryAccessor)itemEntry).abysm$getItem();
 
 				if(ire.matchesId(itemIdentifier)) {
 					return true;
