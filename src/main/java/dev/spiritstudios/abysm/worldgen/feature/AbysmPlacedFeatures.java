@@ -13,11 +13,7 @@ import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.feature.PlacedFeatures;
-import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
-import net.minecraft.world.gen.placementmodifier.BlockFilterPlacementModifier;
-import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
-import net.minecraft.world.gen.placementmodifier.PlacementModifier;
-import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.*;
 
 import java.util.List;
 
@@ -29,6 +25,8 @@ public class AbysmPlacedFeatures {
 	public static final RegistryKey<PlacedFeature> MAUVE_BLOOMSHROOM = ofKey("mauve_bloomshroom");
 
 	public static final RegistryKey<PlacedFeature> PATCH_SPRIGS = ofKey("patch_sprigs");
+	public static final RegistryKey<PlacedFeature> PATCH_PETALS_UNDERWATER = ofKey("patch_petals_underwater");
+	public static final RegistryKey<PlacedFeature> PATCH_PETALS_SURFACE = ofKey("patch_petals_surface");
 
 	public static final RegistryKey<PlacedFeature> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
 
@@ -78,6 +76,22 @@ public class AbysmPlacedFeatures {
 			PATCH_SPRIGS, AbysmConfiguredFeatures.PATCH_SPRIGS,
 			CountPlacementModifier.of(30),
 			PlacedFeatures.OCEAN_FLOOR_WG_HEIGHTMAP,
+			BiomePlacementModifier.of(),
+			SquarePlacementModifier.of()
+		);
+
+		helper.add(
+			PATCH_PETALS_UNDERWATER, AbysmConfiguredFeatures.PATCH_PETALS_UNDERWATER,
+			CountPlacementModifier.of(7),
+			PlacedFeatures.OCEAN_FLOOR_WG_HEIGHTMAP,
+			BiomePlacementModifier.of(),
+			SquarePlacementModifier.of()
+		);
+
+		helper.add(
+			PATCH_PETALS_SURFACE, AbysmConfiguredFeatures.PATCH_PETALS_SURFACE,
+			CountPlacementModifier.of(7),
+			PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP,
 			BiomePlacementModifier.of(),
 			SquarePlacementModifier.of()
 		);

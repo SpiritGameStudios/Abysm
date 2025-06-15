@@ -1,0 +1,557 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:rosebloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:sunbloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "1",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "2",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "3",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "north",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "east",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "south",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              },
+              {
+                "data": {
+                  "Name": "abysm:mallowbloom_petals",
+                  "Properties": {
+                    "facing": "west",
+                    "segment_amount": "4",
+                    "waterlogged": "false"
+                  }
+                },
+                "weight": 1
+              }
+            ]
+          }
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:matching_blocks",
+            "blocks": "minecraft:air"
+          }
+        }
+      ]
+    },
+    "tries": 15,
+    "xz_spread": 5,
+    "y_spread": 1
+  }
+}

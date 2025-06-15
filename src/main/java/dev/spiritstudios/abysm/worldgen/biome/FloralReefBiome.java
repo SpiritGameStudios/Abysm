@@ -51,10 +51,12 @@ public final class FloralReefBiome extends AbysmBiome {
 		DefaultBiomeFeatures.addDefaultVegetation(builder, true);
 
 		builder
+			.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.FLOROPUMICE_STALAGMITES)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SPRIGS)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.FLOROPUMICE_STALAGMITES)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, OceanPlacedFeatures.SEAGRASS_WARM)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_BLOOMSHROOM);
+			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_PETALS_UNDERWATER)
+			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_BLOOMSHROOM)
+			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_PETALS_SURFACE);
 
 		return builder;
 	}
