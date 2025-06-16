@@ -1,7 +1,8 @@
 package dev.spiritstudios.abysm;
 
-import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
+import dev.spiritstudios.abysm.registry.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
+import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
 import dev.spiritstudios.abysm.registry.*;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.specter.api.registry.RegistryHelper;
@@ -53,6 +54,8 @@ public class Abysm implements ModInitializer {
 		);
 
 		AbysmBiomes.addAllToGenerator();
+
+		AbysmLootTableModifications.init();
     }
 
 	public static Identifier id(String path) {

@@ -4,7 +4,7 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.ElectricOoglyBooglyEntity;
-import dev.spiritstudios.abysm.entity.HarpoonEntity;
+import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.entity.SmallFloralFishEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
@@ -57,7 +57,7 @@ public class AbysmEntityTypes {
 			.<HarpoonEntity>create(HarpoonEntity::new, SpawnGroup.MISC)
 			.dimensions(1.5f, 0.5f)
 			.dimensions(0.25F, 0.25F)
-			.maxTrackingRange(4)
+			.maxTrackingRange(16)
 			.trackingTickInterval(5)
 	);
 

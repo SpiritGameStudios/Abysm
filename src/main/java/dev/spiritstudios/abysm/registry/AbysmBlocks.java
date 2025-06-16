@@ -246,31 +246,6 @@ public final class AbysmBlocks {
 		false
 	);
 
-	public static final Block ROSEBLOOM_PETALS = register(
-		"rosebloom_petals",
-		BloomPetalsBlock::new,
-		AbstractBlock.Settings.create()
-			.mapColor(MapColor.RED)
-			.sounds(BlockSoundGroup.FLOWERBED)
-			.pistonBehavior(PistonBehavior.DESTROY)
-			.noCollision(),
-		PlaceableOnWaterOrBlockItem::new
-	);
-	public static final Block SUNBLOOM_PETALS = register(
-		"sunbloom_petals",
-		BloomPetalsBlock::new,
-		AbstractBlock.Settings.copy(ROSEBLOOM_PETALS)
-			.mapColor(MapColor.YELLOW),
-		PlaceableOnWaterOrBlockItem::new
-	);
-	public static final Block MALLOWBLOOM_PETALS = register(
-		"mallowbloom_petals",
-		BloomPetalsBlock::new,
-		AbstractBlock.Settings.copy(ROSEBLOOM_PETALS)
-			.mapColor(MapColor.PURPLE),
-		PlaceableOnWaterOrBlockItem::new
-	);
-
 	public static final Block ROSY_BLOOMSHROOM = register(
 		"rosy_bloomshroom",
 		settings -> new SmallBloomshroomBlock(AbysmConfiguredFeatures.ROSY_BLOOMSHROOM, AbysmParticleTypes.ROSEBLOOM_GLIMMER, settings),
@@ -320,6 +295,31 @@ public final class AbysmBlocks {
 			.sounds(BlockSoundGroup.WOOD)
 			.strength(0.7F, 0.9F)
 	);
+	public static final	Block ROSEBLOOM_PETALEAVES = register(
+		"rosebloom_petaleaves",
+		settings -> new BloomPetaleavesBlock(AbysmParticleTypes.ROSEBLOOM_PETALS, 0.25F, settings),
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.RED)
+			.strength(0.2F)
+			.sounds(BlockSoundGroup.CHERRY_LEAVES)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.allowsSpawning(Blocks::never)
+			.suffocates(Blocks::never)
+			.blockVision(Blocks::never)
+			.solidBlock(Blocks::never)
+			.ticksRandomly()
+			.nonOpaque()
+	);
+	public static final Block ROSEBLOOM_PETALS = register(
+		"rosebloom_petals",
+		settings -> new BloomPetalsBlock(AbysmParticleTypes.ROSEBLOOM_PETALS, settings),
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.RED)
+			.sounds(BlockSoundGroup.FLOWERBED)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.noCollision(),
+		PlaceableOnWaterOrBlockItem::new
+	);
 
 	public static final Block SUNNY_BLOOMSHROOM = register(
 		"sunny_bloomshroom",
@@ -350,6 +350,19 @@ public final class AbysmBlocks {
 		settings -> new BloomshroomCapBlock(AbysmParticleTypes.SUNBLOOM_PETALS, settings),
 		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_CAP)
 			.mapColor(DyeColor.YELLOW)
+	);
+	public static final Block SUNBLOOM_PETALEAVES = register(
+		"sunbloom_petaleaves",
+		settings -> new BloomPetaleavesBlock(AbysmParticleTypes.SUNBLOOM_PETALS, 0.25F, settings),
+		AbstractBlock.Settings.copy(ROSEBLOOM_PETALEAVES)
+			.mapColor(MapColor.YELLOW)
+	);
+	public static final Block SUNBLOOM_PETALS = register(
+		"sunbloom_petals",
+		settings -> new BloomPetalsBlock(AbysmParticleTypes.SUNBLOOM_PETALS, settings),
+		AbstractBlock.Settings.copy(ROSEBLOOM_PETALS)
+			.mapColor(MapColor.YELLOW),
+		PlaceableOnWaterOrBlockItem::new
 	);
 
 	public static final Block MAUVE_BLOOMSHROOM = register(
@@ -382,6 +395,19 @@ public final class AbysmBlocks {
 		AbstractBlock.Settings.copy(ROSY_BLOOMSHROOM_CAP)
 			.mapColor(DyeColor.PURPLE)
 	);
+	public static final Block MALLOWBLOOM_PETALEAVES = register(
+		"mallowbloom_petaleaves",
+		settings -> new BloomPetaleavesBlock(AbysmParticleTypes.MALLOWBLOOM_PETALS, 0.25F, settings),
+		AbstractBlock.Settings.copy(ROSEBLOOM_PETALEAVES)
+			.mapColor(MapColor.PURPLE)
+	);
+	public static final Block MALLOWBLOOM_PETALS = register(
+		"mallowbloom_petals",
+		settings -> new BloomPetalsBlock(AbysmParticleTypes.MALLOWBLOOM_PETALS, settings),
+		AbstractBlock.Settings.copy(ROSEBLOOM_PETALS)
+			.mapColor(MapColor.PURPLE),
+		PlaceableOnWaterOrBlockItem::new
+	);
 
 	public static final Block BLOOMSHROOM_GOOP = register(
 		"bloomshroom_goop",
@@ -397,7 +423,7 @@ public final class AbysmBlocks {
 
 	public static final Block BLOOMING_SODALITE_CROWN = register(
 		"blooming_sodalite_crown",
-		RotatableWaterloggableFlowerBlock::new,
+		settings -> new BloomshroomCrownBlock(AbysmParticleTypes.ROSEBLOOM_GLIMMER, AbysmParticleTypes.SODALITE_THORNS, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(MapColor.LAPIS_BLUE)
 			.sounds(BlockSoundGroup.SPORE_BLOSSOM)
@@ -408,13 +434,13 @@ public final class AbysmBlocks {
 	);
 	public static final Block BLOOMING_ANYOLITE_CROWN = register(
 		"blooming_anyolite_crown",
-		RotatableWaterloggableFlowerBlock::new,
+		settings -> new BloomshroomCrownBlock(AbysmParticleTypes.SUNBLOOM_GLIMMER, AbysmParticleTypes.ANYOLITE_THORNS, settings),
 		AbstractBlock.Settings.copy(BLOOMING_SODALITE_CROWN)
 			.mapColor(MapColor.LIME)
 	);
 	public static final Block BLOOMING_MELILITE_CROWN = register(
 		"blooming_melilite_crown",
-		RotatableWaterloggableFlowerBlock::new,
+		settings -> new BloomshroomCrownBlock(AbysmParticleTypes.MALLOWBLOOM_GLIMMER, AbysmParticleTypes.MELILITE_THORNS, settings),
 		AbstractBlock.Settings.copy(BLOOMING_SODALITE_CROWN)
 			.mapColor(MapColor.ORANGE)
 	);
@@ -527,7 +553,7 @@ public final class AbysmBlocks {
 	// region misc plants
 	public static final Block ANTENNAE_PLANT = register(
 		"antennae_plant",
-		UnderwaterPlantBlock::new,
+		AntennaePlantBlock::new,
 		AbstractBlock.Settings.copy(ROSY_SPRIGS)
 			.luminance(state -> 7)
 			.mapColor(DyeColor.PINK)

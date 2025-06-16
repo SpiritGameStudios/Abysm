@@ -25,6 +25,10 @@ public class AbysmParticles {
 		register(AbysmParticleTypes.SUNBLOOM_PETALS, BloomPetalParticle.SunnyFactory::new);
 		register(AbysmParticleTypes.MALLOWBLOOM_PETALS, BloomPetalParticle.MauveFactory::new);
 
+		register(AbysmParticleTypes.SODALITE_THORNS, BloomGlimmerParticle.ThornFactory::new);
+		register(AbysmParticleTypes.ANYOLITE_THORNS, BloomGlimmerParticle.ThornFactory::new);
+		register(AbysmParticleTypes.MELILITE_THORNS, BloomGlimmerParticle.ThornFactory::new);
+
 		register(AbysmParticleTypes.OOGLY_BOOGLY_SPARKLE, OoglyBooglySparkleParticle.Factory::new);
 		register(AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY, OoglyBooglyElectricityParticle.Factory::new);
 		register(AbysmParticleTypes.OOGLY_BOOGLY_FUMES, OoglyBooglyFumesParticle.Factory::new);

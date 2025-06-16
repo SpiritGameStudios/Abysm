@@ -7,11 +7,14 @@ import dev.spiritstudios.abysm.worldgen.tree.BloomshroomFoliagePlacer;
 import dev.spiritstudios.abysm.worldgen.tree.BloomshroomTrunkPlacer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.LeafLitterBlock;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.state.property.EnumProperty;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
@@ -33,6 +36,8 @@ public class AbysmConfiguredFeatures {
 	public static final RegistryKey<ConfiguredFeature<?, ?>> MAUVE_BLOOMSHROOM = ofKey("mauve_bloomshroom");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_SPRIGS = ofKey("patch_sprigs");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_PETALS_UNDERWATER = ofKey("patch_petals_underwater");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_PETALS_SURFACE = ofKey("patch_petals_surface");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> BLOOMSHROOM_VEGETATION = ofKey("bloomshroom_vegetation");
 
@@ -124,6 +129,22 @@ public class AbysmConfiguredFeatures {
 			))
 		);
 
+		WeightedBlockStateProvider petalProvider = new WeightedBlockStateProvider(
+			addPoolToPool(addPoolToPool(petal(AbysmBlocks.ROSEBLOOM_PETALS, 1, 4), petal(AbysmBlocks.SUNBLOOM_PETALS, 1, 4)), petal(AbysmBlocks.MALLOWBLOOM_PETALS, 1, 4))
+		);
+
+		helper.add(
+			PATCH_PETALS_UNDERWATER, AbysmFeatures.BLOOMSHROOM_VEGETATION,
+			new NetherForestVegetationFeatureConfig(petalProvider, 3, 2)
+		);
+
+		helper.add(
+			PATCH_PETALS_SURFACE, Feature.RANDOM_PATCH,
+			new RandomPatchFeatureConfig(
+				15, 5, 1, PlacedFeatures.createEntry(Feature.SIMPLE_BLOCK, new SimpleBlockFeatureConfig(petalProvider))
+			)
+		);
+
 		WeightedBlockStateProvider bloomshroomVegetationProvider = new WeightedBlockStateProvider(
 			Pool.<BlockState>builder()
 				.add(AbysmBlocks.ROSY_SPRIGS.getDefaultState(), 29)
@@ -176,6 +197,27 @@ public class AbysmConfiguredFeatures {
 				new NetherForestVegetationFeatureConfig(blockStateProvider, 3, 1)
 			)
 		);
+	}
+
+	private static Pool.Builder<BlockState> addPoolToPool(Pool.Builder<BlockState> mainPool, Pool.Builder<BlockState> addedPool) {
+		addedPool.build().getEntries().forEach(blockStateWeighted -> mainPool.add(blockStateWeighted.value(), blockStateWeighted.weight()));
+		return mainPool;
+	}
+
+	public static Pool.Builder<BlockState> petal(Block petal, int min, int max) {
+		return segmentedBlock(petal, min, max, LeafLitterBlock.SEGMENT_AMOUNT, LeafLitterBlock.HORIZONTAL_FACING);
+	}
+
+	private static Pool.Builder<BlockState> segmentedBlock(Block block, int min, int max, IntProperty amountProperty, EnumProperty<Direction> facingProperty) {
+		Pool.Builder<BlockState> builder = Pool.builder();
+
+		for (int i = min; i <= max; i++) {
+			for (Direction direction : Direction.Type.HORIZONTAL) {
+				builder.add(block.getDefaultState().with(amountProperty, i).with(facingProperty, direction), 1);
+			}
+		}
+
+		return builder;
 	}
 
 	private record ConfiguredFeatureHelper(RegistryEntryLookup<ConfiguredFeature<?, ?>> lookup,

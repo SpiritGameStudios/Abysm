@@ -25,6 +25,10 @@ public class AbysmParticleTypes {
 	public static final SimpleParticleType SUNBLOOM_PETALS = registerSimple("sunbloom_petals", false);
 	public static final SimpleParticleType MALLOWBLOOM_PETALS = registerSimple("mallowbloom_petals", false);
 
+	public static final SimpleParticleType SODALITE_THORNS = registerSimple("sodalite_thorns", false);
+	public static final SimpleParticleType ANYOLITE_THORNS = registerSimple("anyolite_thorns", false);
+	public static final SimpleParticleType MELILITE_THORNS = registerSimple("melilite_thorns", false);
+
 	public static final SimpleParticleType OOGLY_BOOGLY_SPARKLE = registerSimple("oogly_boogly_sparkle", false);
 	public static final SimpleParticleType OOGLY_BOOGLY_ELECTRICITY = registerSimple("oogly_boogly_electricity", false);
 	public static final ParticleType<OoglyBooglyFumesParticleEffect> OOGLY_BOOGLY_FUMES = register("oogly_boogly_fumes", false, type -> OoglyBooglyFumesParticleEffect.CODEC, type -> OoglyBooglyFumesParticleEffect.PACKET_CODEC);

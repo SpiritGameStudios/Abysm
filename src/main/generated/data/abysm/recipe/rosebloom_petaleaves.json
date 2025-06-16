@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "abysm:rosebloom_petals"
+  },
+  "result": {
+    "count": 1,
+    "id": "abysm:rosebloom_petaleaves"
+  },
+  "pattern": [
+    "##",
+    "##"
+  ]
+}

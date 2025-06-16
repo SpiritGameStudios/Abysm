@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sunbloom_petals": {
+      "conditions": {
+        "items": [
+          {
+            "items": "abysm:sunbloom_petals"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "abysm:sunbloom_petaleaves"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sunbloom_petals"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "abysm:sunbloom_petaleaves"
+    ]
+  }
+}

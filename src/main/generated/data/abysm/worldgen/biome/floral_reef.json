@@ -30,7 +30,8 @@
       "minecraft:lake_lava_surface"
     ],
     [
-      "minecraft:amethyst_geode"
+      "minecraft:amethyst_geode",
+      "abysm:floropumice_stalagmites"
     ],
     [
       "minecraft:monster_room",
@@ -85,9 +86,10 @@
       "minecraft:patch_sugar_cane",
       "minecraft:patch_firefly_bush_near_water",
       "abysm:patch_sprigs",
-      "abysm:floropumice_stalagmites",
       "minecraft:seagrass_warm",
-      "abysm:trees_bloomshroom"
+      "abysm:patch_petals_underwater",
+      "abysm:trees_bloomshroom",
+      "abysm:patch_petals_surface"
     ],
     [
       "minecraft:freeze_top_layer"

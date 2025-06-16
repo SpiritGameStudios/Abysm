@@ -1,6 +1,5 @@
-package dev.spiritstudios.abysm.entity;
+package dev.spiritstudios.abysm.registry;
 
-import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnLocation;
 import net.minecraft.entity.SpawnLocationTypes;

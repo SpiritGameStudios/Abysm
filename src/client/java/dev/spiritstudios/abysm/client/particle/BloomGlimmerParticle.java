@@ -15,9 +15,10 @@ public class BloomGlimmerParticle extends AscendingParticle {
 	public float rotationSpeed = 0;
 
 	protected BloomGlimmerParticle(
-		ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, float scaleMultiplier, SpriteProvider spriteProvider
+		ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, float scaleMultiplier, SpriteProvider spriteProvider, int baseMaxAge, float gravityStrength, float velocityMultiplier
 	) {
-		super(world, x, y, z, 0F, 0F, 0F, velocityX, velocityY, velocityZ, scaleMultiplier, spriteProvider, 0.0F, 40, 0.0125F, false);
+		super(world, x, y, z, 0F, 0F, 0F, velocityX, velocityY, velocityZ, scaleMultiplier, spriteProvider, 0.0F, baseMaxAge, gravityStrength, false);
+		this.velocityMultiplier = velocityMultiplier;
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class BloomGlimmerParticle extends AscendingParticle {
 		public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			Random random = clientWorld.getRandom();
 
-			BloomGlimmerParticle particle = new BloomGlimmerParticle(clientWorld, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider);
+			BloomGlimmerParticle particle = new BloomGlimmerParticle(clientWorld, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider, 40, 0.0125F, 0.96F);
 
 			int col = ColorHelper.lerp(random.nextFloat(), getColorStart(), getColorEnd());
 			float red = ColorHelper.getRed(col) / 255.0F;
@@ -129,6 +130,28 @@ public class BloomGlimmerParticle extends AscendingParticle {
 		@Override
 		public int getColorEnd() {
 			return 0xEFDFFF;
+		}
+	}
+
+	public static class ThornFactory implements ParticleFactory<SimpleParticleType> {
+		private final SpriteProvider spriteProvider;
+
+		public ThornFactory(SpriteProvider spriteProvider) {
+			this.spriteProvider = spriteProvider;
+		}
+
+		public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			Random random = clientWorld.getRandom();
+
+			BloomGlimmerParticle particle = new BloomGlimmerParticle(clientWorld, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider, 25, 0.005F, 0.98F);
+
+			particle.setColor(1F, 1F, 1F);
+
+			particle.scale(0.45F + 0.75F * random.nextFloat());
+
+			particle.rotationSpeed = (float) ((-1.5F + random.nextGaussian()) * 0.2F * Math.sqrt(xSpeed*xSpeed + ySpeed*ySpeed + zSpeed*zSpeed));
+
+			return particle;
 		}
 	}
 }

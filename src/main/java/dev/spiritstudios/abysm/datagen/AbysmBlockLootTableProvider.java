@@ -6,13 +6,26 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.condition.TableBonusLootCondition;
+import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.function.SetCountLootFunction;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.loot.provider.number.UniformLootNumberProvider;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
-	public AbysmLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
+
+	protected static final float[] SAPLING_DROP_CHANCE = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
+
+	public AbysmBlockLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
 		super(dataOutput, registryLookup);
 	}
 
@@ -94,7 +107,11 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 		this.addSilkTouchOrElseDrop(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
 		this.addSilkTouchOrElseDrop(AbysmBlocks.SUNBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
 		this.addSilkTouchOrElseDrop(AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
-		
+
+		this.addPetaleavesDrop(AbysmBlocks.ROSEBLOOM_PETALEAVES, AbysmBlocks.ROSEBLOOM_PETALS, AbysmBlocks.ROSY_BLOOMSHROOM);
+		this.addPetaleavesDrop(AbysmBlocks.SUNBLOOM_PETALEAVES, AbysmBlocks.SUNBLOOM_PETALS, AbysmBlocks.SUNNY_BLOOMSHROOM);
+		this.addPetaleavesDrop(AbysmBlocks.MALLOWBLOOM_PETALEAVES, AbysmBlocks.MALLOWBLOOM_PETALS, AbysmBlocks.MAUVE_BLOOMSHROOM);
+
 		forEach(this::addSegmentedDrop,
 			AbysmBlocks.ROSEBLOOM_PETALS,
 			AbysmBlocks.SUNBLOOM_PETALS,
@@ -118,6 +135,30 @@ public class AbysmLootTableProvider extends FabricBlockLootTableProvider {
 
 	private void addSegmentedDrop(Block block) {
 		this.addDrop(block, this.segmentedDrops(block));
+	}
+
+	private void addPetaleavesDrop(Block petaleaves, Block petal, Block bloomshroom) {
+		this.addDrop(petaleaves, this.petaleavesDrops(petaleaves, petal, bloomshroom, SAPLING_DROP_CHANCE));
+	}
+
+	private LootTable.Builder petaleavesDrops(Block petaleaves, Block petal, Block bloomshroom, float... saplingChance) {
+		RegistryWrapper.Impl<Enchantment> impl = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
+
+		return this.dropsWithSilkTouchOrShears(
+				petaleaves,
+				(this.addSurvivesExplosionCondition(petaleaves, ItemEntry.builder(bloomshroom)))
+					.conditionally(TableBonusLootCondition.builder(impl.getOrThrow(Enchantments.FORTUNE), saplingChance))
+			)
+			.pool(
+				LootPool.builder()
+					.rolls(ConstantLootNumberProvider.create(1.0F))
+					.conditionally(this.createWithoutShearsOrSilkTouchCondition())
+					.with(
+						(this.applyExplosionDecay(
+							petaleaves, ItemEntry.builder(petal).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F)))
+						))
+					)
+			);
 	}
 
 	private void addLootForFamilies(BlockFamily... families) {

@@ -1,14 +1,13 @@
 package dev.spiritstudios.abysm.block;
 
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -30,19 +29,10 @@ import net.minecraft.world.tick.ScheduledTickView;
 import java.util.Optional;
 
 public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, Waterloggable {
-	protected static final MapCodec<SimpleParticleType> PARTICLE_TYPE_CODEC = Registries.PARTICLE_TYPE
-		.getCodec()
-		.comapFlatMap(
-			particleType -> particleType instanceof SimpleParticleType simpleParticleType
-				? DataResult.success(simpleParticleType)
-				: DataResult.error(() -> "Not a SimpleParticleType: " + particleType),
-			particleType -> particleType
-		)
-		.fieldOf("particle_options");
 	public static final MapCodec<SmallBloomshroomBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
 				RegistryKey.createCodec(RegistryKeys.CONFIGURED_FEATURE).fieldOf("feature").forGetter(block -> block.featureKey),
-				PARTICLE_TYPE_CODEC.forGetter(block -> block.particle),
+				AbysmCodecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle),
 				createSettingsCodec()
 			)
 			.apply(instance, SmallBloomshroomBlock::new)
