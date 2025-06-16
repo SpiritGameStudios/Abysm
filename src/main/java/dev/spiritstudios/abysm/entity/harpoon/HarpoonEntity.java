@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.entity.harpoon;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.component.BlessedComponent;
 import dev.spiritstudios.abysm.mixin.harpoon.PersistentProjectileEntityAccessor;
+import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
 import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
@@ -13,6 +14,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ProjectileDeflection;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -20,6 +22,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -131,6 +135,9 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 	@SuppressWarnings("SameParameterValue")
 	protected void beginReturn(boolean playSound) {
+		if (this.isReturning() && this.isNoClip()) {
+			return; // lol
+		}
 		this.setNoClip(true);
 		this.dataTracker.set(RETURNING, true);
 		if (playSound) {
@@ -143,7 +150,8 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		Entity entity = entityHitResult.getEntity();
 		float f = this.isSubmergedInWater() ? 8.0F : 3.5F;
 		Entity entity2 = this.getOwner();
-		DamageSource damageSource = this.getDamageSources().trident(this, entity2 == null ? this : entity2);
+		RegistryEntry<DamageType> damageType = this.getWorld().getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(AbysmDamageTypes.HARPOON);
+		DamageSource damageSource = new DamageSource(damageType, this, entity2 == null ? this : entity2);
 		if (this.getWorld() instanceof ServerWorld serverWorld) {
 			//noinspection DataFlowIssue
 			f = EnchantmentHelper.getDamage(serverWorld, this.getWeaponStack(), entity, damageSource, f);

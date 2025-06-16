@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlockTags;
 import dev.spiritstudios.abysm.block.AbysmItemTags;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
@@ -16,6 +17,9 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.*;
@@ -30,6 +34,7 @@ public class AbysmTagProviders {
 		pack.addProvider(((output, registriesFuture) -> new ItemTagProvider(output, registriesFuture, blockTagProvider)));
 		pack.addProvider(BiomeTagProvider::new);
 		pack.addProvider(EntityTypeTagProvider::new);
+		pack.addProvider(DamageTypeTagProvider::new);
 	}
 
 	private static class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
@@ -425,6 +430,24 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH
 				);
+		}
+	}
+
+	private static class DamageTypeTagProvider extends FabricTagProvider<DamageType> {
+
+		public DamageTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+			super(output, RegistryKeys.DAMAGE_TYPE, registriesFuture);
+		}
+
+		@Override
+		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+			getOrCreateTagBuilder(DamageTypeTags.IS_PROJECTILE).add(AbysmDamageTypes.HARPOON);
+			getOrCreateTagBuilder(DamageTypeTags.ALWAYS_KILLS_ARMOR_STANDS).add(AbysmDamageTypes.HARPOON);
+			getOrCreateTagBuilder(DamageTypeTags.PANIC_CAUSES).add(AbysmDamageTypes.CNIDOCYTE_STING).add(AbysmDamageTypes.HARPOON);
+
+			getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ARMOR).add(AbysmDamageTypes.CNIDOCYTE_STING).add(AbysmDamageTypes.PRESSURE);
+			getOrCreateTagBuilder(DamageTypeTags.BYPASSES_EFFECTS).add(AbysmDamageTypes.PRESSURE);
+			getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(AbysmDamageTypes.CNIDOCYTE_STING).add(AbysmDamageTypes.PRESSURE);
 		}
 	}
 }

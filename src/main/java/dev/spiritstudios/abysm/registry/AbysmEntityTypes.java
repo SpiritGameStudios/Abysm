@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.ElectricOoglyBooglyEntity;
+import dev.spiritstudios.abysm.entity.ManOWar;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.entity.SmallFloralFishEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -61,6 +62,14 @@ public class AbysmEntityTypes {
 			.trackingTickInterval(5)
 	);
 
+	public static final EntityType<ManOWar> MAN_O_WAR = register(
+		"man_o_war",
+		EntityType.Builder
+			.create(ManOWar::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(0.75f, 0.4f)
+			.maxTrackingRange(4)
+	);
+
 	private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
 		return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
 	}
@@ -78,6 +87,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(BIG_FLORAL_FISH, BigFloralFishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWar.createManOWarAttributes());
 	}
 
 }
