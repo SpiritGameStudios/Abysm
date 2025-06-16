@@ -303,6 +303,26 @@
     {
       "count": 1,
       "id": "abysm:harpoon"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floral_fish_small_spawn_egg"
+    },
+    {
+      "count": 1,
+      "id": "abysm:floral_fish_big_spawn_egg"
+    },
+    {
+      "count": 1,
+      "id": "abysm:bloomray_spawn_egg"
+    },
+    {
+      "count": 1,
+      "id": "abysm:electric_oogly_boogly_spawn_egg"
+    },
+    {
+      "count": 1,
+      "id": "abysm:man_o_war_spawn_egg"
     }
   ],
   "translate": "item_group.abysm.abysm"

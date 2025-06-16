@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "abysm:item/electric_oogly_boogly_spawn_egg"
+  }
+}

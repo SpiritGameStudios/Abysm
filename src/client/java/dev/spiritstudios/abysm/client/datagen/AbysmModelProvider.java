@@ -193,7 +193,12 @@ public class AbysmModelProvider extends FabricModelProvider {
 	@Override
 	public void generateItemModels(ItemModelGenerator generator) {
 		registerGenerated(generator,
-			AbysmItems.FLIPPERS
+			AbysmItems.FLIPPERS,
+			AbysmItems.SMALL_FLORAL_FISH_SPAWN_EGG,
+			AbysmItems.BIG_FLORAL_FISH_SPAWN_EGG,
+			AbysmItems.BLOOMRAY_SPAWN_EGG,
+			AbysmItems.ELECTRIC_OOGLY_BOOGLY_SPAWN_EGG,
+			AbysmItems.MAN_O_WAR_SPAWN_EGG
 		);
 		generator.register(AbysmItems.NOOPRAH);
 	}
