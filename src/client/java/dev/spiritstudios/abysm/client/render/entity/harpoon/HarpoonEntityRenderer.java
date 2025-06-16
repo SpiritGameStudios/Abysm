@@ -46,7 +46,10 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		}
 
 		Vec3d start = state.handPos;
-		Vec3d end = new Vec3d(state.x, state.y, state.z);
+
+		Vec3d anchorOffset = Vec3d.fromPolar(state.pitch, 180 - state.yaw).multiply(0.7).subtract(0, 0.1, 0);
+
+		Vec3d end = new Vec3d(state.x, state.y, state.z).add(anchorOffset);
 
 		Vec3d difference = start.subtract(end);
 		double distance = start.distanceTo(end);
@@ -56,9 +59,10 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 
 		float verticalAngle = (float) Math.asin(difference.y / distance);
 
-		float length = (float) (difference.length() - 1);
+		float length = (float) (distance);
 
 		matrices.push();
+		matrices.translate(anchorOffset.x, anchorOffset.y, anchorOffset.z);
 		{
 			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(-horizontalAngle - MathHelper.HALF_PI));
 			matrices.multiply(RotationAxis.POSITIVE_X.rotation(-verticalAngle));
