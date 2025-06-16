@@ -49,7 +49,7 @@ public class BloomshroomCrownBlock extends RotatableWaterloggableFlowerBlock {
 			spawnParticles(world, pos, direction, waterlogged, random, this.glimmerParticle, 0.4F, 1F, 1F);
 		}
 
-		int thornsCount = waterlogged ? 1 + random.nextInt(4) : random.nextInt(3);
+		int thornsCount = waterlogged ? 2 + random.nextInt(2) : 1;
 		for(int i = 0; i < thornsCount; i++) {
 			spawnParticles(world, pos, direction, waterlogged, random, this.thornsParticle, 0.9F, 2.6F, 1.4F);
 		}

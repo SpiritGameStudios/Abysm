@@ -312,7 +312,7 @@ public final class AbysmBlocks {
 	);
 	public static final Block ROSEBLOOM_PETALS = register(
 		"rosebloom_petals",
-		BloomPetalsBlock::new,
+		settings -> new BloomPetalsBlock(AbysmParticleTypes.ROSEBLOOM_PETALS, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(MapColor.RED)
 			.sounds(BlockSoundGroup.FLOWERBED)
@@ -359,7 +359,7 @@ public final class AbysmBlocks {
 	);
 	public static final Block SUNBLOOM_PETALS = register(
 		"sunbloom_petals",
-		BloomPetalsBlock::new,
+		settings -> new BloomPetalsBlock(AbysmParticleTypes.SUNBLOOM_PETALS, settings),
 		AbstractBlock.Settings.copy(ROSEBLOOM_PETALS)
 			.mapColor(MapColor.YELLOW),
 		PlaceableOnWaterOrBlockItem::new
@@ -403,7 +403,7 @@ public final class AbysmBlocks {
 	);
 	public static final Block MALLOWBLOOM_PETALS = register(
 		"mallowbloom_petals",
-		BloomPetalsBlock::new,
+		settings -> new BloomPetalsBlock(AbysmParticleTypes.MALLOWBLOOM_PETALS, settings),
 		AbstractBlock.Settings.copy(ROSEBLOOM_PETALS)
 			.mapColor(MapColor.PURPLE),
 		PlaceableOnWaterOrBlockItem::new

@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SideShapeType;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -36,7 +35,7 @@ public class BloomshroomCapBlock extends Block {
 		BlockPos downPos = pos.down();
 		BlockState downState = world.getBlockState(downPos);
 
-		if(!downState.isSideSolid(world, pos, Direction.UP, SideShapeType.FULL)) {
+		if(!downState.isSideSolidFullSquare(world, pos, Direction.UP)) {
 			if (random.nextInt(4) == 0) {
 				double x = pos.getX() + 0.05 + 0.9 * random.nextFloat();
 				double y = pos.getY() - 0.1 + 0.1 * random.nextFloat();
