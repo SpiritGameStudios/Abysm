@@ -15,6 +15,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -52,7 +53,7 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		Vec3d end = new Vec3d(state.x, state.y, state.z).add(anchorOffset);
 
 		Vec3d difference = start.subtract(end);
-		double distance = start.distanceTo(end);
+		double distance = start.distanceTo(end) + 0.1;
 
 		float horizontalAngle = (float) MathHelper.atan2(end.z - start.z, end.x - start.x);
 		horizontalAngle += MathHelper.ceil(-horizontalAngle / MathHelper.TAU) * MathHelper.TAU;
@@ -129,20 +130,19 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 				.add(this.dispatcher.camera.getProjection().getPosition(arm * 0.525F, -0.1F)
 					.multiply(960.0F / this.dispatcher.gameOptions.getFov().getValue())
 					.rotateY(angle * 0.5F)
-					.rotateX(-angle * 0.7F))
-				.subtract(0, 0.3, 0);
+					.rotateX(-angle * 0.7F)).subtract(0, 0.6, 0);
 		} else {
-			float yaw = MathHelper.lerp(tickProgress, player.lastBodyYaw, player.bodyYaw) * MathHelper.RADIANS_PER_DEGREE;
+			float yaw = (MathHelper.lerp(tickProgress, player.lastBodyYaw, player.bodyYaw) + 10) * MathHelper.RADIANS_PER_DEGREE;
 
 			double sinYaw = MathHelper.sin(yaw);
 			double cosYaw = MathHelper.cos(yaw);
 
 			float scale = player.getScale();
-			float horizontalScale = arm * 0.35F * scale;
+			float horizontalScale = arm * 0.5F * scale;
 			float yOffset = player.isInSneakingPose() ? -0.1875F : 0.0F;
 
 			return player.getCameraPosVec(tickProgress)
-				.add(-cosYaw * horizontalScale, yOffset - 0.45F * scale, -sinYaw * horizontalScale);
+				.add(-cosYaw * horizontalScale, yOffset - 0.75F * scale, -sinYaw * horizontalScale);
 		}
 	}
 

@@ -1,8 +1,6 @@
 package dev.spiritstudios.abysm.client.mixin;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -10,7 +8,6 @@ import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
