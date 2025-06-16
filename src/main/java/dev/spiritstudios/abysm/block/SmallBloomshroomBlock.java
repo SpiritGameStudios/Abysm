@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.*;
 import net.minecraft.fluid.FluidState;

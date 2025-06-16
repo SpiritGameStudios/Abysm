@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
+import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

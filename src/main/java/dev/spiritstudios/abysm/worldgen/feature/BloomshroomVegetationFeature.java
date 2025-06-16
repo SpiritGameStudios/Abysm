@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.worldgen.feature;
 
 import com.mojang.serialization.Codec;
-import dev.spiritstudios.abysm.block.AbysmBlockTags;
+import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

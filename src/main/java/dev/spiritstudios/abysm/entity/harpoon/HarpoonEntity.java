@@ -150,9 +150,10 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		Entity entity = entityHitResult.getEntity();
 		float f = this.isSubmergedInWater() ? 8.0F : 3.5F;
 		Entity entity2 = this.getOwner();
-		RegistryEntry<DamageType> damageType = this.getWorld().getRegistryManager().getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(AbysmDamageTypes.HARPOON);
+		World world = this.getWorld();
+		RegistryEntry<DamageType> damageType = AbysmDamageTypes.getFromWorld(world, AbysmDamageTypes.HARPOON);
 		DamageSource damageSource = new DamageSource(damageType, this, entity2 == null ? this : entity2);
-		if (this.getWorld() instanceof ServerWorld serverWorld) {
+		if (world instanceof ServerWorld serverWorld) {
 			//noinspection DataFlowIssue
 			f = EnchantmentHelper.getDamage(serverWorld, this.getWeaponStack(), entity, damageSource, f);
 		}
@@ -162,7 +163,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				return;
 			}
 
-			if (this.getWorld() instanceof ServerWorld serverWorld) {
+			if (world instanceof ServerWorld serverWorld) {
 				EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack(), item -> this.kill(serverWorld));
 			}
 

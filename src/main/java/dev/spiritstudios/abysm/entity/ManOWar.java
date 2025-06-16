@@ -1,7 +1,14 @@
 package dev.spiritstudios.abysm.entity;
 
+import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.mixin.EntityAttributeInstanceAccessor;
+import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
+import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
@@ -10,17 +17,39 @@ import net.minecraft.entity.ai.pathing.SwimNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.TypeFilter;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ManOWar extends WaterCreatureEntity {
+
+	public static final List<Vec3d> STARTING_OFFSETS;
+
+	public final List<TentacleData> tentacleData;
+
+	public static final int MIN_SWAY_OFFSET = 100;
+	public static final int MAX_SWAY_OFFSET = 2000;
+
+	public static final float INVERSE_MAX_SWAY_OFFSET = 1f / MAX_SWAY_OFFSET;
 
 	protected float prevScale = 1;
 	protected Vec3d prevVelocity = Vec3d.ZERO;
@@ -30,6 +59,12 @@ public class ManOWar extends WaterCreatureEntity {
 	public ManOWar(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
 		this.moveControl = new GarbageMoveControl(this);
+		ImmutableList.Builder<TentacleData> builder = ImmutableList.builder();
+		Random random = this.getRandom();
+		for(Vec3d vec3d : STARTING_OFFSETS) {
+			builder.add(new TentacleData(vec3d, random.nextBetween(MIN_SWAY_OFFSET, MAX_SWAY_OFFSET)));
+		}
+		tentacleData = builder.build();
 	}
 
 	public static DefaultAttributeContainer.Builder createManOWarAttributes() {
@@ -62,6 +97,33 @@ public class ManOWar extends WaterCreatureEntity {
 		}
 		this.prevVelocity = this.getVelocity();
 		super.tick();
+		if (this.getWorld() instanceof ServerWorld serverWorld) {
+			RegistryEntry<DamageType> damageType = AbysmDamageTypes.getFromWorld(serverWorld, AbysmDamageTypes.CNIDOCYTE_STING);
+			DamageSource source = new DamageSource(damageType, this);
+			final double expand = 0.3;
+			Box box = this.getBoundingBox().expand(expand, 0, expand);
+			box = box.withMinY(box.minY - scale * 1.5).withMaxY(box.maxY + expand);
+			serverWorld.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), box, living -> {
+				//noinspection CodeBlock2Expr
+				return living.isAlive() && !living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_FRIEND);
+			}).forEach(living -> {
+				living.damage(serverWorld, source, 5f);
+				living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 4), this);
+				living.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 200, 4), this);
+			});
+		}
+	}
+
+	@Override
+	public boolean damage(ServerWorld world, DamageSource source, float amount) {
+		if (source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+			return super.damage(world, source, amount);
+		}
+		Entity attacker = source.getAttacker();
+		if (attacker != null && attacker.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_FRIEND)) {
+			return false;
+		}
+		return super.damage(world, source, amount);
 	}
 
 	public Vec3d getPrevVelocity() {
@@ -168,5 +230,32 @@ public class ManOWar extends WaterCreatureEntity {
 		protected double adjustTargetY(Vec3d pos) {
 			return Math.max(MIN_Y_CHANGE, super.adjustTargetY(pos));
 		}
+	}
+
+	@SuppressWarnings("unused")
+	public record TentacleData(Vec3d relativePosition, int swayOffset) {
+		public static final Codec<TentacleData> CODEC = RecordCodecBuilder.create(
+			instance -> instance.group(
+					Vec3d.CODEC.fieldOf("relativePosition").forGetter(data -> data.relativePosition),
+					Codec.INT.fieldOf("swayOffset").forGetter(data -> data.swayOffset)
+				)
+				.apply(instance, TentacleData::new)
+		);
+		public static final Codec<List<TentacleData>> LIST_CODEC = CODEC.listOf();
+	}
+
+	static {
+		List<Vec3d> list = new ArrayList<>();
+		for (int i = 0; i <= 6; i++) {
+			int j = 2*i - 6;
+			list.add(new Vec3d(0, 0, j));
+			list.add(new Vec3d(1, 0, j));
+			list.add(new Vec3d(-1, 0, j));
+			list.add(new Vec3d(2, 0, j));
+			list.add(new Vec3d(-2, 0, j));
+			list.add(new Vec3d(3, 0, j));
+			list.add(new Vec3d(-3, 0, j));
+		}
+		STARTING_OFFSETS = ImmutableList.copyOf(list.stream().map(vec3d -> vec3d.multiply(0.05)).iterator());
 	}
 }

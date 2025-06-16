@@ -21,6 +21,9 @@
 		],
 		"fabric-datagen": [
 			"dev.spiritstudios.abysm.client.datagen.AbysmDatagen"
+		],
+		"cardinal-components-entity": [
+			"dev.spiritstudios.abysm.registry.cca.AbysmEntityComponents"
 		]
 	},
 	"mixins": [
@@ -36,5 +39,9 @@
 		"fabric-api": "*",
 		"specter-core": "*",
 		"java": ">=21"
+	},
+	"custom": {
+		"cardinal-components": [
+		]
 	}
 }

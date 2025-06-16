@@ -37,6 +37,8 @@ repositories {
 	maven("https://maven.spiritstudios.dev/releases/")
 	maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
 	maven("https://maven.terraformersmc.com/")
+	maven("https://maven.ladysnake.org/releases/")
+	maven("https://jitpack.io/")
 }
 
 dependencies {
@@ -53,6 +55,11 @@ dependencies {
 	include(libs.biolith)
 	modImplementation(libs.biolith)
 
+	include(libs.fabrik)
+	modImplementation(libs.fabrik)
+
+	include(libs.bundles.cca)
+	modImplementation(libs.bundles.cca)
 
 	modImplementation(libs.fabric.api)
 }

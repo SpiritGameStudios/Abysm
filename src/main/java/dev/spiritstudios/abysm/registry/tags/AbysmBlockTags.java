@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.block;
+package dev.spiritstudios.abysm.registry.tags;
 
 import dev.spiritstudios.abysm.Abysm;
 import net.minecraft.block.Block;

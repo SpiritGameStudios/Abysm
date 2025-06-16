@@ -1,8 +1,9 @@
 package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
-import dev.spiritstudios.abysm.block.AbysmBlockTags;
-import dev.spiritstudios.abysm.block.AbysmItemTags;
+import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
+import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
+import dev.spiritstudios.abysm.registry.tags.AbysmItemTags;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
@@ -17,9 +18,8 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageType;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.*;
@@ -430,6 +430,9 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH
 				);
+
+			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_FRIEND)
+				.add(EntityType.PUFFERFISH).add(AbysmEntityTypes.MAN_O_WAR);
 		}
 	}
 

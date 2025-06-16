@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm.block;
 
+import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

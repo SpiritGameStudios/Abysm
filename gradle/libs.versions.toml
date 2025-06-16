@@ -13,6 +13,9 @@ specter = "1.1.6"
 geckolib = "5.0.1"
 biolith = "3.3.0-beta.1"
 
+fabr_ik = "1.0.2"
+cardinal_components_api = "6.3.1"
+
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
@@ -38,6 +41,11 @@ specter_debug = { group = "dev.spiritstudios.specter", name = "specter-debug", v
 geckolib = { group = "software.bernie.geckolib", name = "geckolib-fabric-1.21.5", version.ref = "geckolib" }
 biolith = { group = "com.terraformersmc", name = "biolith-fabric", version.ref = "biolith" }
 
+fabrik = { group = "com.github.ekulxam", name = "fabr_ik", version.ref = "fabr_ik" }
+
+cardinal-components-base = { group = "org.ladysnake.cardinal-components-api", name = "cardinal-components-base", version.ref = "cardinal_components_api" }
+cardinal-components-entity = { group = "org.ladysnake.cardinal-components-api", name = "cardinal-components-entity", version.ref = "cardinal_components_api" }
+
 [bundles]
 specter = [
 	"specter_block",
@@ -49,4 +57,9 @@ specter = [
 	"specter_render",
 	"specter_gui",
 	"specter_serialization"
+]
+
+cca = [
+	"cardinal-components-base",
+	"cardinal-components-entity"
 ]
