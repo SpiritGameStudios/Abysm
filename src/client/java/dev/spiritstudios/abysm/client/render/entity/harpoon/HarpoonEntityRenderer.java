@@ -25,6 +25,8 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 	protected static final Identifier TEXTURE = Abysm.id("textures/entity/harpoon.png");
 	public static final Identifier CHAINS = Abysm.id("textures/entity/chains.png");
 
+	private static final RenderLayer RENDER_LAYER = RenderLayer.getEntityCutoutNoCull(CHAINS);
+
 	public HarpoonEntityRenderer(EntityRendererFactory.Context context) {
 		super(context);
 	}
@@ -43,73 +45,70 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 			return;
 		}
 
+		Vec3d start = state.handPos;
+		Vec3d end = new Vec3d(state.x, state.y, state.z);
+
+		Vec3d difference = start.subtract(end);
+		double distance = start.distanceTo(end);
+
+		float horizontalAngle = (float) MathHelper.atan2(end.z - start.z, end.x - start.x);
+		horizontalAngle += MathHelper.ceil(-horizontalAngle / MathHelper.TAU) * MathHelper.TAU;
+
+		float verticalAngle = (float) Math.asin(difference.y / distance);
+
+		float length = (float) (difference.length() - 1);
 		matrixStack.push();
-		final float tickProgress = MinecraftClient.getInstance().getRenderTickCounter().getTickProgress(false);
+		matrixStack.multiply(RotationAxis.POSITIVE_Y.rotation(-horizontalAngle - MathHelper.HALF_PI));
+		matrixStack.multiply(RotationAxis.POSITIVE_X.rotation(-verticalAngle));
 
-		Vec3d anchorAtEnd = Vec3d.fromPolar(state.pitch, 180 - state.yaw);
-		matrixStack.translate(anchorAtEnd.x, anchorAtEnd.y, anchorAtEnd.z);
+		matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45));
+		VertexConsumer consumer = vertexConsumerProvider.getBuffer(RENDER_LAYER);
 
-		Vec3d vec3d2 = new Vec3d(
-			MathHelper.lerp(tickProgress, state.prevX, state.x),
-			MathHelper.lerp(tickProgress, state.prevY, state.y) + state.standingEyeHeight,
-			MathHelper.lerp(tickProgress, state.prevZ, state.z)
-		).add(anchorAtEnd);
+		matrixStack.push();
+		renderPart(light, consumer, matrixStack.peek(), length, false);
+		matrixStack.pop();
 
-		float age = state.age + tickProgress;
-		float j = age * 0.15F % 1.0F;
-		Vec3d vec3d3 = state.handPos.subtract(vec3d2);
-		float k = (float) (vec3d3.length() + 0.1);
-		vec3d3 = vec3d3.normalize();
+		matrixStack.translate(0.1875, 0.1875, 0);
+		matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90));
 
-
-		matrixStack.multiply(RotationAxis.POSITIVE_Y.rotation(MathHelper.PI / 2.0F - (float) MathHelper.atan2(vec3d3.z, vec3d3.x)));
-		matrixStack.multiply(RotationAxis.POSITIVE_X.rotation((float) Math.acos(vec3d3.y)));
-
-		float theta = age * 0.05F * -1.5F;
-
-		float multiplier = 0.2F;
-
-		float cosTheta = MathHelper.cos(theta);
-		float sinTheta = MathHelper.sin(theta);
-
-		// cos(θ + π) = -cos(θ)
-		// sin(θ + π) = -sin(θ)
-		// cos(θ + π/2) = -sin(θ)
-		// sin(θ + π/2) = cos(θ)
-		// this was originally using 8 sin/cos calls because mojank:tm:
-
-		float p = -cosTheta * multiplier;
-		float q = -sinTheta * multiplier;
-
-		float r = cosTheta * multiplier;
-		float s = sinTheta * multiplier;
-
-		float t = -sinTheta * multiplier;
-		float u = cosTheta * multiplier;
-
-		float v = sinTheta * multiplier;
-		float w = -cosTheta * multiplier;
-
-		float y = 0.0F;
-		float z = 0.4999F;
-		float aa = -1.0F + j;
-		float ab = k * 2.5F + aa;
-
-		VertexConsumer buffer = vertexConsumerProvider.getBuffer(RenderLayer.getEntityCutoutNoCull(CHAINS));
-		MatrixStack.Entry entry = matrixStack.peek();
-
-		vertex(buffer, entry, p, k, q, z, ab, light);
-		vertex(buffer, entry, p, y, q, z, aa, light);
-		vertex(buffer, entry, r, y, s, y, aa, light);
-		vertex(buffer, entry, r, k, s, y, ab, light);
-		vertex(buffer, entry, t, k, u, z, ab, light);
-		vertex(buffer, entry, t, y, u, z, aa, light);
-		vertex(buffer, entry, v, y, w, y, aa, light);
-		vertex(buffer, entry, v, k, w, y, ab, light);
-
+		renderPart(light, consumer, matrixStack.peek(), length, true);
 		matrixStack.pop();
 
 		super.render(state, matrixStack, vertexConsumerProvider, light);
+	}
+
+	private static void renderPart(int light, VertexConsumer consumer, MatrixStack.Entry entry, float length, boolean shift) {
+		float minU = shift ? 0.5F : 0.0F;
+		float maxU = shift ? 1.0F : 0.5F;
+		float v = length / 10.0F;
+
+		consumer.vertex(entry, 0, 0.25F, 0)
+			.color(255, 255, 255, 255)
+			.texture(minU, 0)
+			.overlay(OverlayTexture.DEFAULT_UV)
+			.light(light)
+			.normal(entry, 0, -1, 0);
+
+		consumer.vertex(entry, 0, 0.25F, length)
+			.color(255, 255, 255, 255)
+			.texture(minU, v)
+			.overlay(OverlayTexture.DEFAULT_UV)
+			.light(light)
+			.normal(entry, 0, -1, 0);
+
+		consumer.vertex(entry, 0, 0.125F, length)
+			.color(255, 255, 255, 255)
+			.texture(maxU, v)
+			.overlay(OverlayTexture.DEFAULT_UV)
+			.light(light)
+			.normal(entry, 0, -1, 0);
+
+		consumer.vertex(entry, 0, 0.125F, 0)
+			.color(255, 255, 255, 255)
+			.texture(maxU, 0)
+			.overlay(OverlayTexture.DEFAULT_UV)
+			.light(light)
+			.normal(entry, 0, -1, 0);
 	}
 
 	public static Arm getArmHoldingRod(PlayerEntity player) {
@@ -119,19 +118,26 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 	private Vec3d getHandPos(PlayerEntity player, float angle, float tickProgress) {
 		int arm = getArmHoldingRod(player) == Arm.RIGHT ? 1 : -1;
 		if (this.dispatcher.gameOptions.getPerspective().isFirstPerson() && player == MinecraftClient.getInstance().player) {
-			double m = 960.0d / (double) this.dispatcher.gameOptions.getFov().getValue();
-			Vec3d vec3d = this.dispatcher.camera.getProjection().getPosition((float) arm * 0.525F, -0.1F).multiply(m).rotateY(angle * 0.5F).rotateX(-angle * 0.7F);
+			float m = 960.0F / this.dispatcher.gameOptions.getFov().getValue();
+
+			Vec3d vec3d = this.dispatcher.camera.getProjection().getPosition((float) arm * 0.525F, -0.1F)
+				.multiply(m)
+				.rotateY(angle * 0.5F)
+				.rotateX(-angle * 0.7F);
+
 			return player.getCameraPosVec(tickProgress).add(vec3d).subtract(0, 0.3, 0);
 		} else {
-			float yaw = MathHelper.lerp(tickProgress, player.lastBodyYaw, player.bodyYaw) * MathHelper.DEGREES_PER_RADIAN;
-			double d = MathHelper.sin(yaw);
-			double e = MathHelper.cos(yaw);
+			float yaw = MathHelper.lerp(tickProgress, player.lastBodyYaw, player.bodyYaw) * MathHelper.RADIANS_PER_DEGREE;
+
+			double sinYaw = MathHelper.sin(yaw);
+			double cosYaw = MathHelper.cos(yaw);
 
 			float scale = player.getScale();
-			double j = (double) arm * 0.35 * (double) scale;
-			double k = 0;
-			float offset = player.isInSneakingPose() ? -0.1875F : 0.0F;
-			return player.getCameraPosVec(tickProgress).add(-e * j - d * k, (double) offset - 0.45 * (double) scale, -d * j + e * k);
+			float horizontalScale = arm * 0.35F * scale;
+			float yOffset = player.isInSneakingPose() ? -0.1875F : 0.0F;
+
+			return player.getCameraPosVec(tickProgress)
+				.add(-cosYaw * horizontalScale, yOffset - 0.45F * scale, -sinYaw * horizontalScale);
 		}
 	}
 
