@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.client;
 
-import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
 import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
@@ -9,7 +8,6 @@ import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRendere
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.loader.api.FabricLoader;
 
 public class AbysmClient implements ClientModInitializer {
 
@@ -21,10 +19,5 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.FLYING_HARPOON, HarpoonEntityRenderer::new);
 
 		AbysmParticles.init();
-
-		FabricLoader.getInstance().getModContainer(Abysm.MODID).ifPresent(modContainer -> {
-//			ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(ChainGenerator.INSTANCE);
-		});
-
     }
 }
