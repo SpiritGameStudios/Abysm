@@ -23,6 +23,14 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofFile("music/game/cichlid").stream(true))
 				.category(SoundCategory.MUSIC)
 		);
+		exporter.add(
+			AbysmSoundEvents.SOUND_ENTITY_BLOOMRAY,
+			SoundTypeBuilder.of()
+				.sound(ofFile("entity/bloomray/bloomray_1"))
+				.sound(ofFile("entity/bloomray/bloomray_2"))
+				.sound(ofFile("entity/bloomray/bloomray_3"))
+				.category(SoundCategory.NEUTRAL)
+		);
 	}
 
 	private SoundTypeBuilder.EntryBuilder ofFile(String path) {
