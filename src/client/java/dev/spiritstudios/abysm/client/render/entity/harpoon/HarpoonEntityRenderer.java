@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.item.HarpoonItem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Frustum;
+import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -16,6 +17,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
@@ -37,11 +39,9 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 	}
 
 	@Override
-	public void render(HarpoonEntityRenderState state, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light) {
-		// lashing potato go (okay maybe it was too much mojank, thanks Echo)
-
-		if (state.player == null) {
-			super.render(state, matrixStack, vertexConsumerProvider, light);
+	public void render(HarpoonEntityRenderState state, MatrixStack matrices, VertexConsumerProvider consumers, int light) {
+		if (state.handPos == Vec3d.ZERO) {
+			super.render(state, matrices, consumers, light);
 			return;
 		}
 
@@ -57,57 +57,59 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		float verticalAngle = (float) Math.asin(difference.y / distance);
 
 		float length = (float) (difference.length() - 1);
-		matrixStack.push();
-		matrixStack.multiply(RotationAxis.POSITIVE_Y.rotation(-horizontalAngle - MathHelper.HALF_PI));
-		matrixStack.multiply(RotationAxis.POSITIVE_X.rotation(-verticalAngle));
 
-		matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45));
-		VertexConsumer consumer = vertexConsumerProvider.getBuffer(RENDER_LAYER);
+		matrices.push();
+		{
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotation(-horizontalAngle - MathHelper.HALF_PI));
+			matrices.multiply(RotationAxis.POSITIVE_X.rotation(-verticalAngle));
 
-		matrixStack.push();
-		renderPart(light, consumer, matrixStack.peek(), length, false);
-		matrixStack.pop();
+			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45));
+			VertexConsumer consumer = consumers.getBuffer(RENDER_LAYER);
 
-		matrixStack.translate(0.1875, 0.1875, 0);
-		matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90));
+			renderPart(state.startLight, state.endLight, consumer, matrices.peek(), length, false);
 
-		renderPart(light, consumer, matrixStack.peek(), length, true);
-		matrixStack.pop();
+			matrices.translate(0.1875, 0.1875, 0);
+			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90));
 
-		super.render(state, matrixStack, vertexConsumerProvider, light);
+			renderPart(state.startLight, state.endLight, consumer, matrices.peek(), length, true);
+		}
+		matrices.pop();
+
+		super.render(state, matrices, consumers, light);
 	}
 
-	private static void renderPart(int light, VertexConsumer consumer, MatrixStack.Entry entry, float length, boolean shift) {
+	private static void renderPart(int startLight, int endLight, VertexConsumer consumer, MatrixStack.Entry entry, float length, boolean shift) {
 		float minU = shift ? 0.5F : 0.0F;
 		float maxU = shift ? 1.0F : 0.5F;
-		float v = length / 10.0F;
+		float minV = 0.0F;
+		float maxV = length / 10.0F;
 
 		consumer.vertex(entry, 0, 0.25F, 0)
 			.color(255, 255, 255, 255)
-			.texture(minU, 0)
+			.texture(minU, minV)
 			.overlay(OverlayTexture.DEFAULT_UV)
-			.light(light)
+			.light(endLight)
 			.normal(entry, 0, -1, 0);
 
 		consumer.vertex(entry, 0, 0.25F, length)
 			.color(255, 255, 255, 255)
-			.texture(minU, v)
+			.texture(minU, maxV)
 			.overlay(OverlayTexture.DEFAULT_UV)
-			.light(light)
+			.light(startLight)
 			.normal(entry, 0, -1, 0);
 
 		consumer.vertex(entry, 0, 0.125F, length)
 			.color(255, 255, 255, 255)
-			.texture(maxU, v)
+			.texture(maxU, maxV)
 			.overlay(OverlayTexture.DEFAULT_UV)
-			.light(light)
+			.light(startLight)
 			.normal(entry, 0, -1, 0);
 
 		consumer.vertex(entry, 0, 0.125F, 0)
 			.color(255, 255, 255, 255)
-			.texture(maxU, 0)
+			.texture(maxU, minV)
 			.overlay(OverlayTexture.DEFAULT_UV)
-			.light(light)
+			.light(endLight)
 			.normal(entry, 0, -1, 0);
 	}
 
@@ -117,15 +119,14 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 
 	private Vec3d getHandPos(PlayerEntity player, float angle, float tickProgress) {
 		int arm = getArmHoldingRod(player) == Arm.RIGHT ? 1 : -1;
-		if (this.dispatcher.gameOptions.getPerspective().isFirstPerson() && player == MinecraftClient.getInstance().player) {
-			float m = 960.0F / this.dispatcher.gameOptions.getFov().getValue();
-
-			Vec3d vec3d = this.dispatcher.camera.getProjection().getPosition((float) arm * 0.525F, -0.1F)
-				.multiply(m)
-				.rotateY(angle * 0.5F)
-				.rotateX(-angle * 0.7F);
-
-			return player.getCameraPosVec(tickProgress).add(vec3d).subtract(0, 0.3, 0);
+		if (this.dispatcher.gameOptions.getPerspective().isFirstPerson() &&
+			player == MinecraftClient.getInstance().player) {
+			return player.getCameraPosVec(tickProgress)
+				.add(this.dispatcher.camera.getProjection().getPosition(arm * 0.525F, -0.1F)
+					.multiply(960.0F / this.dispatcher.gameOptions.getFov().getValue())
+					.rotateY(angle * 0.5F)
+					.rotateX(-angle * 0.7F))
+				.subtract(0, 0.3, 0);
 		} else {
 			float yaw = MathHelper.lerp(tickProgress, player.lastBodyYaw, player.bodyYaw) * MathHelper.RADIANS_PER_DEGREE;
 
@@ -141,15 +142,6 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		}
 	}
 
-	public static void vertex(VertexConsumer vertexConsumer, MatrixStack.Entry matrix, float x, float y, float z, float u, float v, int light) {
-		vertexConsumer.vertex(matrix, x, y, z)
-			.color(255, 255, 255, 255)
-			.texture(u, v)
-			.overlay(OverlayTexture.DEFAULT_UV)
-			.light(light)
-			.normal(0.0F, 1.0F, 0.0F);
-	}
-
 	@Override
 	public HarpoonEntityRenderState createRenderState() {
 		return new HarpoonEntityRenderState();
@@ -161,20 +153,20 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 	}
 
 	@Override
-	public void updateRenderState(HarpoonEntity harpoon, HarpoonEntityRenderState state, float f) {
-		super.updateRenderState(harpoon, state, f);
-		state.player = harpoon.getPlayer();
+	public void updateRenderState(HarpoonEntity harpoon, HarpoonEntityRenderState state, float tickProgress) {
+		super.updateRenderState(harpoon, state, tickProgress);
+		PlayerEntity player = harpoon.getPlayer();
 
-		if (state.player == null) {
-			state.handPos = Vec3d.ZERO;
-		} else {
-			float swingProgress = state.player.getHandSwingProgress(f);
-			float angle = MathHelper.sin(MathHelper.sqrt(swingProgress) * MathHelper.PI);
-			state.handPos = this.getHandPos(state.player, angle, f);
-		}
+		state.handPos = player == null ? Vec3d.ZERO : this.getHandPos(
+			player,
+			MathHelper.sin(MathHelper.sqrt(player.getHandSwingProgress(tickProgress)) * MathHelper.PI),
+			tickProgress
+		);
 
-		state.prevX = harpoon.lastX;
-		state.prevY = harpoon.lastY;
-		state.prevZ = harpoon.lastZ;
+		BlockPos start = BlockPos.ofFloored(state.handPos);
+		state.startLight = LightmapTextureManager.pack(getBlockLight(harpoon, start), getSkyLight(harpoon, start));
+
+		BlockPos end = BlockPos.ofFloored(state.x, state.y, state.z);
+		state.endLight = LightmapTextureManager.pack(getBlockLight(harpoon, end), getSkyLight(harpoon, end));
 	}
 }
