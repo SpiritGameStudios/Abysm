@@ -7,6 +7,7 @@ import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.item.equipment.ArmorMaterials;
 import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.registry.Registries;
@@ -40,6 +41,31 @@ public final class AbysmItems {
 		HarpoonItem::new,
 		new Item.Settings()
 			.maxCount(1).rarity(Rarity.RARE).attributeModifiers(HarpoonItem.createAttributes(2.2f, 2.2f))
+	);
+
+	public static final Item SMALL_FLORAL_FISH_SPAWN_EGG = register(
+		"floral_fish_small_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.SMALL_FLORAL_FISH, settings)
+	);
+
+	public static final Item BIG_FLORAL_FISH_SPAWN_EGG = register(
+		"floral_fish_big_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.BIG_FLORAL_FISH, settings)
+	);
+
+	public static final Item BLOOMRAY_SPAWN_EGG = register(
+		"bloomray_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.BLOOMRAY, settings)
+	);
+
+	public static final Item ELECTRIC_OOGLY_BOOGLY_SPAWN_EGG = register(
+		"electric_oogly_boogly_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY, settings)
+	);
+
+	public static final Item MAN_O_WAR_SPAWN_EGG = register(
+		"man_o_war_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.MAN_O_WAR, settings)
 	);
 
     private static RegistryKey<Item> keyOf(String id) {
