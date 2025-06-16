@@ -78,11 +78,11 @@ public abstract class AbstractEntityVariant {
 	}
 
 	// Helper methods for creating variant codecs
-	protected static @NotNull RecordCodecBuilder<BloomrayEntityVariant, Text> getNameCodec() {
+	protected static @NotNull <T extends AbstractEntityVariant> RecordCodecBuilder<T, Text> getNameCodec() {
 		return TextCodecs.CODEC.fieldOf("name").forGetter(variant -> variant.name);
 	}
 
-	protected static @NotNull RecordCodecBuilder<BloomrayEntityVariant, Identifier> getTextureCodec() {
+	protected static @NotNull <T extends AbstractEntityVariant> RecordCodecBuilder<T, Identifier> getTextureCodec() {
 		return Identifier.CODEC.fieldOf("texture").forGetter(variant -> variant.texture);
 	}
 }

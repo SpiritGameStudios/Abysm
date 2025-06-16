@@ -1,0 +1,8 @@
+{
+  "name": {
+    "translate": "abysm.entity.electric_oogly_boogly.smolly_molly"
+  },
+  "texture": "abysm:textures/entity/smolly_molly_boogly.png",
+  "electricity_color": -6657,
+  "deadly": false
+}

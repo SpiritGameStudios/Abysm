@@ -11,6 +11,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.SchoolingFishEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -37,6 +38,18 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);
 		builder.add(VARIANT_ID, BloomrayEntityVariant.getDefaultIntId(this.getRegistryManager()));
+	}
+
+	@Override
+	public void writeCustomDataToNbt(NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.putInt("variantId", this.getVariantIntId());
+	}
+
+	@Override
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.setVariantIntId(nbt.getInt("variantId").orElse(BloomrayEntityVariant.getDefaultIntId(this.getRegistryManager())));
 	}
 
 	@Override

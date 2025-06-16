@@ -2,6 +2,10 @@ package dev.spiritstudios.abysm.client.registry;
 
 import dev.spiritstudios.abysm.client.particle.BloomGlimmerParticle;
 import dev.spiritstudios.abysm.client.particle.BloomPetalParticle;
+import dev.spiritstudios.abysm.client.particle.OoglyBooglyElectricityParticle;
+import dev.spiritstudios.abysm.client.particle.OoglyBooglyFumesParticle;
+import dev.spiritstudios.abysm.client.particle.OoglyBooglySparkleParticle;
+import dev.spiritstudios.abysm.client.particle.SpiralingParticle;
 import dev.spiritstudios.abysm.registry.AbysmParticleTypes;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.particle.ParticleFactory;
@@ -20,6 +24,12 @@ public class AbysmParticles {
 		register(AbysmParticleTypes.ROSEBLOOM_PETALS, BloomPetalParticle.RosyFactory::new);
 		register(AbysmParticleTypes.SUNBLOOM_PETALS, BloomPetalParticle.SunnyFactory::new);
 		register(AbysmParticleTypes.MALLOWBLOOM_PETALS, BloomPetalParticle.MauveFactory::new);
+
+		register(AbysmParticleTypes.OOGLY_BOOGLY_SPARKLE, OoglyBooglySparkleParticle.Factory::new);
+		register(AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY, OoglyBooglyElectricityParticle.Factory::new);
+		register(AbysmParticleTypes.OOGLY_BOOGLY_FUMES, OoglyBooglyFumesParticle.Factory::new);
+		register(AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY_SPIRAL, SpiralingParticle.ElectricitySpiral::new);
+		register(AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY_SPECK, SpiralingParticle.ElectricitySpeck::new);
 	}
 
 	public static <T extends ParticleEffect> void register(ParticleType<T> type, ParticleFactory<T> provider) {

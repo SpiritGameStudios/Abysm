@@ -36,6 +36,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.ENTITY_PATTERN, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, Abysm.MODID));
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT, Abysm.MODID));
 
 		pack.addProvider(AbysmLootTableProvider::new);
 		pack.addProvider(AbysmRecipeProvider::new);
@@ -62,6 +63,10 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 
 		// Bloomray Entity (Texture) Variants
 		callback.add("crown", 5);
+
+		// Electric Oogly Boogly Entity (Texture) Variants
+		callback.add("electricity_color", 5);
+		callback.add("deadly", 6);
 	}
 
 	@Override
@@ -71,6 +76,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 			.addRegistry(RegistryKeys.CONFIGURED_FEATURE, AbysmConfiguredFeatures::bootstrap)
 			.addRegistry(RegistryKeys.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap)
 			.addRegistry(AbysmRegistries.ENTITY_PATTERN, AbysmEntityPatternVariants::bootstrap)
-			.addRegistry(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, AbysmEntityVariants::bloomrayBootstrap);
+			.addRegistry(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, AbysmEntityVariants::bloomrayBootstrap)
+			.addRegistry(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT, AbysmEntityVariants::ooglyBooglyBootstrap);
 	}
 }

@@ -10,6 +10,7 @@ import net.minecraft.entity.mob.MobEntity;
  */
 public interface Variantable<T extends AbstractEntityVariant> {
 	// TODO - possible DRY by accepting datatracker in get/set variant int ids?
+	// TODO - DRY via random variant upon spawn
 
 	/**
 	 * @return This Entity's EntityVariant, as the actual variant. This will likely use {@link Variantable#getVariantIntId()}.

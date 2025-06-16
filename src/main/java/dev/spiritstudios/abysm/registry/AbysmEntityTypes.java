@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.registry;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.BloomrayEntity;
+import dev.spiritstudios.abysm.entity.ElectricOoglyBooglyEntity;
 import dev.spiritstudios.abysm.entity.HarpoonEntity;
 import dev.spiritstudios.abysm.entity.SmallFloralFishEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -41,6 +42,15 @@ public class AbysmEntityTypes {
 			.maxTrackingRange(4)
 	);
 
+	public static final EntityType<ElectricOoglyBooglyEntity> ELECTRIC_OOGLY_BOOGLY = register(
+		"electric_oogly_boogly",
+		EntityType.Builder
+			.create(ElectricOoglyBooglyEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(1f, 1.5f)
+			.eyeHeight(0.5f)
+			.maxTrackingRange(4)
+	);
+
 	public static final EntityType<HarpoonEntity> FLYING_HARPOON = register(
 		"harpoon",
 		EntityType.Builder
@@ -67,6 +77,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(SMALL_FLORAL_FISH, SmallFloralFishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BIG_FLORAL_FISH, BigFloralFishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
 	}
 
 }
