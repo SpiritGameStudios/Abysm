@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.component.BlessedComponent;
 import dev.spiritstudios.abysm.mixin.harpoon.PersistentProjectileEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
 import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
@@ -22,7 +23,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -42,6 +42,10 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	protected int slot = -1;
 	protected int ticksAlive = 0;
 
+	protected boolean haul = false;
+	protected boolean blessed = false;
+	protected boolean grappling = false;
+
 	public HarpoonEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
 	}
@@ -57,6 +61,11 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		this.setVelocity(vec3d);
 		this.setNoGravity(true);
 		this.slot = slot;
+		if (weapon != null) {
+			this.haul = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.HAUL);
+			this.grappling = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.GRAPPLING);
+			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY).isBlessed();
+		}
 
 		double d = vec3d.horizontalLength();
 		this.setYaw((float)(MathHelper.atan2(vec3d.x, vec3d.z) * 180.0F / (float)Math.PI));
@@ -99,11 +108,30 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				Abysm.LOGGER.debug("An error occurred while ticking a harpoon!", indexOutOfBoundsException);
 				this.discard();
 			}
-			if (this.inGroundTime > 4 || (this.ticksAlive > 60 && this.inGroundTime < 1) || this.squaredDistanceTo(owner) > 65536) {
+			if (this.squaredDistanceTo(owner) > 65536) {
 				this.beginReturn(true);
+			} else {
+				if (this.grappling) {
+					if (this.inGroundTime > 200) {
+						this.beginReturn(true);
+					} else if (!this.isReturning() && this.isInGround()) {
+						if (owner.isSneaking()) {
+							this.beginReturn(true);
+						} else if (!this.getBoundingBox().expand(0.3).intersects(owner.getBoundingBox())) {
+							owner.setVelocity(this.getPos().subtract(owner.getPos()).normalize().multiply(2, 1.2, 2));
+							owner.velocityModified = true;
+							owner.fallDistance = 0;
+							((HarpoonDrag) owner).abysm$setDragTicks(2);
+						}
+					}
+				} else {
+					if (this.inGroundTime > 4 || (this.ticksAlive > 60 && this.inGroundTime < 1) || this.squaredDistanceTo(owner) > 65536) {
+						this.beginReturn(true);
+					}
+				}
 			}
 		}
-		if (this.isNoClip() && this.isReturning()) {
+		if (this.isReturning()) {
 			boolean closeEnough = this.squaredDistanceTo(owner) < 49;
 			this.setVelocity(owner.getEyePos().subtract(this.getPos()).normalize().multiply(closeEnough ? 0.65 : VELOCITY_POWER));
 		}
@@ -130,12 +158,12 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	}
 
 	public boolean isReturning() {
-		return this.dataTracker.get(RETURNING);
+		return this.dataTracker.get(RETURNING) && this.isNoClip();
 	}
 
 	@SuppressWarnings("SameParameterValue")
 	protected void beginReturn(boolean playSound) {
-		if (this.isReturning() && this.isNoClip()) {
+		if (this.isReturning()) {
 			return; // lol
 		}
 		this.setNoClip(true);
@@ -151,12 +179,14 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		float f = this.isSubmergedInWater() ? 8.0F : 3.5F;
 		Entity entity2 = this.getOwner();
 		World world = this.getWorld();
+		ItemStack weapon = this.getWeaponStack();
 		RegistryEntry<DamageType> damageType = AbysmDamageTypes.getFromWorld(world, AbysmDamageTypes.HARPOON);
 		DamageSource damageSource = new DamageSource(damageType, this, entity2 == null ? this : entity2);
 		if (world instanceof ServerWorld serverWorld) {
 			//noinspection DataFlowIssue
-			f = EnchantmentHelper.getDamage(serverWorld, this.getWeaponStack(), entity, damageSource, f);
+			f = EnchantmentHelper.getDamage(serverWorld, weapon, entity, damageSource, f);
 		}
+		f = this.haul ? 0.01f : f;
 		//noinspection deprecation
 		if (entity.sidedDamage(damageSource, f)) {
 			if (entity.getType() == EntityType.ENDERMAN) {
@@ -164,12 +194,16 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			}
 
 			if (world instanceof ServerWorld serverWorld) {
-				EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, this.getWeaponStack(), item -> this.kill(serverWorld));
+				EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, weapon, item -> this.kill(serverWorld));
 			}
 
 			if (entity instanceof LivingEntity livingEntity) {
 				this.knockback(livingEntity, damageSource);
 				this.onHit(livingEntity);
+				if (this.haul) {
+					((HarpoonDrag) livingEntity).abysm$setStuckHarpoon(this);
+					((HarpoonDrag) livingEntity).abysm$setDragTicks(2);
+				}
 			}
 		}
 		byte pierceLevel = this.getPierceLevel();

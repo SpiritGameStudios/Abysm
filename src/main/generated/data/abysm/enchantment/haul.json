@@ -1,0 +1,20 @@
+{
+  "anvil_cost": 1,
+  "description": {
+    "translate": "enchantment.abysm.haul"
+  },
+  "max_cost": {
+    "per_level_above_first": 0,
+    "base": 100
+  },
+  "max_level": 1,
+  "min_cost": {
+    "per_level_above_first": 0,
+    "base": 1
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#abysm:harpoon_only",
+  "weight": 1
+}

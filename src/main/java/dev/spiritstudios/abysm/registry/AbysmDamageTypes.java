@@ -14,9 +14,13 @@ import java.util.Map;
 
 public class AbysmDamageTypes {
 
-	public static final RegistryKey<DamageType> HARPOON = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Abysm.id("harpoon"));
-	public static final RegistryKey<DamageType> CNIDOCYTE_STING = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Abysm.id("cnidocyte_sting"));
-	public static final RegistryKey<DamageType> PRESSURE = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Abysm.id("pressure"));
+	public static final RegistryKey<DamageType> HARPOON = of("harpoon");
+	public static final RegistryKey<DamageType> CNIDOCYTE_STING = of("cnidocyte_sting");
+	public static final RegistryKey<DamageType> PRESSURE = of("pressure");
+
+	private static RegistryKey<DamageType> of(String path) {
+		return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Abysm.id(path));
+	}
 
 	public static RegistryEntry.Reference<DamageType> getFromWorld(World world, RegistryKey<DamageType> registryKey) {
 		return getFromDRM(world.getRegistryManager(), registryKey);

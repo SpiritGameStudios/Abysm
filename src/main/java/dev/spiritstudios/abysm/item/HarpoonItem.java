@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.item;
 import dev.spiritstudios.abysm.component.BlessedComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.component.type.AttributeModifierSlot;
@@ -14,6 +15,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -46,10 +48,19 @@ public class HarpoonItem extends Item {
 			ItemStack stack = user.getStackInHand(hand);
 			BlessedComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
 			if (component.isLoaded()) {
-				HarpoonEntity harpoon = new HarpoonEntity(world, user, user.getInventory().getSlotWithStack(stack), stack);
+				int slot;
+				if (hand == Hand.OFF_HAND) {
+					slot = PlayerInventory.OFF_HAND_SLOT;
+				} else {
+					slot = user.getInventory().getSlotWithStack(stack);
+				}
+				HarpoonEntity harpoon = new HarpoonEntity(world, user, slot, stack);
 				world.spawnEntity(harpoon);
 				stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().loaded(false).ticksSinceShot(0).build());
 				world.playSoundFromEntity(null, harpoon, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
+				if (AbysmEnchantments.hasEnchantment(stack, world, AbysmEnchantments.HAUL)) {
+					user.getItemCooldownManager().set(stack, 120);
+				}
 			} else {
 				user.getItemCooldownManager().set(stack, 10);
 			}
@@ -60,8 +71,15 @@ public class HarpoonItem extends Item {
 	@Override
 	public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
 		if (entity instanceof PlayerEntity player) {
-			int invSlot = player.getInventory().getSlotWithStack(stack);
+			PlayerInventory inventory = player.getInventory();
+			int invSlot = inventory.getSlotWithStack(stack);
 			if (invSlot == -1) {
+				super.inventoryTick(stack, world, entity, slot);
+				return;
+			}
+			ItemStack invStack = inventory.getStack(invSlot);
+			if (!ItemStack.areItemsAndComponentsEqual(stack, invStack)) {
+				super.inventoryTick(stack, world, entity, slot);
 				return;
 			}
 		}
@@ -69,8 +87,8 @@ public class HarpoonItem extends Item {
 		int ticksSinceLastShot = component.getTicksSinceShot();
 		if (ticksSinceLastShot >= 0 && ticksSinceLastShot < 200) {
 			stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().ticksSinceShot(ticksSinceLastShot + 1).build());
-		} else if (ticksSinceLastShot >= 200) {
-			stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().ticksSinceShot(0).loaded(true).build());
+		} else if (ticksSinceLastShot >= 200 && !component.isLoaded()) {
+			stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().loaded(true).build());
 		}
 		super.inventoryTick(stack, world, entity, slot);
 	}

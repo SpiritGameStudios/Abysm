@@ -1,18 +1,20 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "dev.spiritstudios.abysm.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "EntityAttributeInstanceAccessor",
-    "ItemEntryAccessor",
-    "LeavesBlockMixin",
-    "LivingEntityMixin",
-    "LootPoolBuilderAccessor",
-    "harpoon.PersistentProjectileEntityAccessor",
-    "harpoon.PersistentProjectileEntityMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
+	"required": true,
+	"minVersion": "0.8",
+	"package": "dev.spiritstudios.abysm.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"EntityAttributeInstanceAccessor",
+		"ItemEntryAccessor",
+		"LeavesBlockMixin",
+		"LivingEntityMixin",
+		"LootPoolBuilderAccessor",
+		"harpoon.LivingEntityMixin",
+		"harpoon.PersistentProjectileEntityAccessor",
+		"harpoon.PersistentProjectileEntityMixin",
+		"harpoon.ServerPlayNetworkHandlerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
 	}
 }

@@ -14,6 +14,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -341,6 +342,8 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
 				.add(AbysmItems.FLIPPERS);
 
+			getOrCreateTagBuilder(AbysmItemTags.HARPOON_ONLY).add(AbysmItems.NOOPRAH);
+
 			// region copy block tags
 			this.copy(BlockTags.BUTTONS, ItemTags.BUTTONS);
 			this.copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
@@ -433,6 +436,14 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_FRIEND)
 				.add(EntityType.PUFFERFISH).add(AbysmEntityTypes.MAN_O_WAR);
+
+			getOrCreateTagBuilder(AbysmEntityTypeTags.HARPOON_UNHAULABLE)
+				.forceAddTag(ConventionalEntityTypeTags.BOSSES)
+				.add(EntityType.ENDER_DRAGON)
+				.add(EntityType.GIANT)
+				//.add(EntityType.SHULKER)
+				.add(EntityType.WARDEN)
+				.add(EntityType.WITHER);
 		}
 	}
 

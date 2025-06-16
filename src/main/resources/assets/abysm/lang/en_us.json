@@ -80,6 +80,8 @@
 	"death.attack.abysm.harpoon": "%1$s was harpooned by %2$s",
 	"death.attack.abysm.harpoon.item": "%1$s was harpooned by %2$s using %3$s",
 	"death.attack.abysm.pressure": "%1$s couldn't handle the pressure",
+	"enchantment.abysm.haul": "Haul",
+	"enchantment.abysm.grappling": "Grappling",
 	"entity.abysm.floral_fish_big": "Big Floral Fish",
 	"entity.abysm.floral_fish_small": "Small Floral Fish",
 	"entity.abysm.harpoon": "Harpoon",

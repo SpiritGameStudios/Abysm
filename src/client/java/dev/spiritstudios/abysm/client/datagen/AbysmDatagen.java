@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.client.datagen;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.datagen.*;
 import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
+import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.registry.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
@@ -29,6 +30,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.BIOME, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.CONFIGURED_FEATURE, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.DAMAGE_TYPE, Abysm.MODID));
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.ENCHANTMENT, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.PLACED_FEATURE, Abysm.MODID));
 
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.ENTITY_PATTERN, Abysm.MODID));
@@ -73,6 +75,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 			.addRegistry(RegistryKeys.BIOME, AbysmBiomes::bootstrap)
 			.addRegistry(RegistryKeys.CONFIGURED_FEATURE, AbysmConfiguredFeatures::bootstrap)
 			.addRegistry(RegistryKeys.DAMAGE_TYPE, AbysmDamageTypes::bootstrap)
+			.addRegistry(RegistryKeys.ENCHANTMENT, AbysmEnchantments::bootstrap)
 			.addRegistry(RegistryKeys.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap)
 			.addRegistry(AbysmRegistries.ENTITY_PATTERN, AbysmEntityPatternVariants::bootstrap)
 			.addRegistry(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, AbysmEntityVariants::bloomrayBootstrap)

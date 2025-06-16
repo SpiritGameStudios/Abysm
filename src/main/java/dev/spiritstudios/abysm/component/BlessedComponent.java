@@ -62,6 +62,10 @@ public class BlessedComponent implements TooltipAppender {
 		this.ticksSinceShot = ticksSinceShot;
 	}
 
+	public boolean isBlessed() {
+		return !this.getStack().isEmpty();
+	}
+
 	@Override
 	public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
 		MutableText loaded;
@@ -123,7 +127,7 @@ public class BlessedComponent implements TooltipAppender {
 		return Objects.hash(heart, loaded, ticksSinceShot);
 	}
 
-	public static class Builder {
+    public static class Builder {
 
 		ItemStack heart = ItemStack.EMPTY;
 		boolean loaded = true;
