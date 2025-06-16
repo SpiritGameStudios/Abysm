@@ -1,4 +1,12 @@
 {
+  "entity.bloomray": {
+    "category": "neutral",
+    "sounds": [
+      "abysm:entity/bloomray/bloomray_1",
+      "abysm:entity/bloomray/bloomray_2",
+      "abysm:entity/bloomray/bloomray_3"
+    ]
+  },
   "music.overworld.floral_reef": {
     "category": "music",
     "sounds": [
