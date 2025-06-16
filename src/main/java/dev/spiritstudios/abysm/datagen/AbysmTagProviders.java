@@ -87,10 +87,12 @@ public class AbysmTagProviders {
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS);
 
 			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_TREES)
-				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
+				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
+				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS);
 
 			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_MUSHROOMS)
-				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
+				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
+				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS);
 
 			getOrCreateTagBuilder(BlockTags.COMBINATION_STEP_SOUND_BLOCKS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);

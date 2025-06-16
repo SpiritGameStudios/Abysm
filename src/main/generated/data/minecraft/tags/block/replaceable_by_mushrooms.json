@@ -3,6 +3,10 @@
     {
       "id": "#abysm:flowery_sprigs",
       "required": false
+    },
+    {
+      "id": "#abysm:bloom_petals",
+      "required": false
     }
   ]
 }
