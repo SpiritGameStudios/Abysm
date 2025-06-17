@@ -1,9 +1,5 @@
 package dev.spiritstudios.abysm.registry.cca;
 
-import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.entity.ManOWar;
-import org.ladysnake.cca.api.v3.component.ComponentKey;
-import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
 

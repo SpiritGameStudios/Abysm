@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.client.render.entity;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
-import dev.spiritstudios.abysm.entity.BloomrayEntity;
+import dev.spiritstudios.abysm.entity.floral_reef.BloomrayEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Identifier;

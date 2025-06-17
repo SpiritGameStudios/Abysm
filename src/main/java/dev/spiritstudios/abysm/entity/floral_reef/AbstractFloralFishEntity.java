@@ -1,5 +1,6 @@
-package dev.spiritstudios.abysm.entity;
+package dev.spiritstudios.abysm.entity.floral_reef;
 
+import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.entity.pattern.Patternable;
 import net.minecraft.entity.EntityData;

@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.client.render.entity;
 
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
-import dev.spiritstudios.abysm.entity.ManOWar;
 import net.minecraft.client.model.Dilation;
 import net.minecraft.client.model.ModelData;
 import net.minecraft.client.model.ModelPart;

@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.data.variant;
 
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.entity.floral_reef.BloomrayEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
@@ -35,7 +36,7 @@ import java.util.Optional;
  * @see dev.spiritstudios.abysm.registry.AbysmRegistries
  * @see dev.spiritstudios.abysm.registry.AbysmEntityVariants
  * @see BloomrayEntityVariant
- * @see dev.spiritstudios.abysm.entity.BloomrayEntity
+ * @see BloomrayEntity
  */
 public abstract class AbstractEntityVariant {
 	// TODO - Easier default id getting

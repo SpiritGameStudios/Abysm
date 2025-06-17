@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.entity;
+package dev.spiritstudios.abysm.entity.floral_reef;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
@@ -25,6 +25,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -110,6 +111,9 @@ public class ManOWar extends WaterCreatureEntity {
 				living.damage(serverWorld, source, 5f);
 				living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 4), this);
 				living.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 200, 4), this);
+				if (living.isDead() && living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_PREY) && this.random.nextBetween(0, 2) == 0) {
+
+				}
 			});
 		}
 	}

@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.client.render.entity;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.AbysmClient;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
-import dev.spiritstudios.abysm.entity.ManOWar;
+import dev.spiritstudios.abysm.entity.floral_reef.ManOWar;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;

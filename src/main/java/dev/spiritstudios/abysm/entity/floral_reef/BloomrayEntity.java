@@ -1,6 +1,7 @@
-package dev.spiritstudios.abysm.entity;
+package dev.spiritstudios.abysm.entity.floral_reef;
 
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
+import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.registry.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;

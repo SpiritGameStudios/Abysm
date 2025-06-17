@@ -16,6 +16,9 @@ biolith = "3.3.0-beta.1"
 fabr_ik = "1.0.2"
 cardinal_components_api = "6.3.1"
 
+sodium = "mc1.21.5-0.6.13-fabric"
+modmenu = "14.0.0-rc.2"
+
 [plugins]
 fabric_loom = { id = "fabric-loom", version.ref = "fabric_loom" }
 minotaur = { id = "com.modrinth.minotaur", version.ref = "minotaur" }
@@ -45,6 +48,9 @@ fabrik = { group = "com.github.ekulxam", name = "fabr_ik", version.ref = "fabr_i
 
 cardinal-components-base = { group = "org.ladysnake.cardinal-components-api", name = "cardinal-components-base", version.ref = "cardinal_components_api" }
 cardinal-components-entity = { group = "org.ladysnake.cardinal-components-api", name = "cardinal-components-entity", version.ref = "cardinal_components_api" }
+
+sodium = { group = "maven.modrinth", name = "sodium", version.ref = "sodium" }
+modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu" }
 
 [bundles]
 specter = [

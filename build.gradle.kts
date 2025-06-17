@@ -39,6 +39,7 @@ repositories {
 	maven("https://maven.terraformersmc.com/")
 	maven("https://maven.ladysnake.org/releases/")
 	maven("https://jitpack.io/")
+	maven("https://api.modrinth.com/maven/")
 }
 
 dependencies {
@@ -60,6 +61,9 @@ dependencies {
 
 	include(libs.bundles.cca)
 	modImplementation(libs.bundles.cca)
+
+	modRuntimeOnly(libs.sodium)
+	modRuntimeOnly(libs.modmenu)
 
 	modImplementation(libs.fabric.api)
 }

@@ -1,12 +1,12 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.entity.BigFloralFishEntity;
-import dev.spiritstudios.abysm.entity.BloomrayEntity;
-import dev.spiritstudios.abysm.entity.ElectricOoglyBooglyEntity;
-import dev.spiritstudios.abysm.entity.ManOWar;
+import dev.spiritstudios.abysm.entity.floral_reef.BigFloralFishEntity;
+import dev.spiritstudios.abysm.entity.floral_reef.BloomrayEntity;
+import dev.spiritstudios.abysm.entity.floral_reef.ElectricOoglyBooglyEntity;
+import dev.spiritstudios.abysm.entity.floral_reef.ManOWar;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
-import dev.spiritstudios.abysm.entity.SmallFloralFishEntity;
+import dev.spiritstudios.abysm.entity.floral_reef.SmallFloralFishEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
