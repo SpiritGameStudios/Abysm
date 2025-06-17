@@ -4,6 +4,7 @@
   "package": "dev.spiritstudios.abysm.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ChatScreenMixin",
     "WaterSuspendParticleMixin",
     "WorldRendererMixin"
   ],

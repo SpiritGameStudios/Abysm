@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm;
 
+import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
 import dev.spiritstudios.abysm.registry.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
@@ -7,6 +8,8 @@ import dev.spiritstudios.abysm.registry.*;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.specter.api.registry.RegistryHelper;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.Feature;
@@ -56,7 +59,14 @@ public class Abysm implements ModInitializer {
 		AbysmBiomes.addAllToGenerator();
 
 		AbysmLootTableModifications.init();
+
+		registerNetworking();
     }
+
+	private void registerNetworking() {
+		PayloadTypeRegistry.playC2S().register(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload.PACKET_CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload.Receiver.INSTANCE);
+	}
 
 	public static Identifier id(String path) {
 		return Identifier.of(MODID, path);
