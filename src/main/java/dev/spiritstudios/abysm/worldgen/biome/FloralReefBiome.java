@@ -19,7 +19,6 @@ import net.minecraft.world.gen.surfacebuilder.MaterialRules;
 import static net.minecraft.world.gen.surfacebuilder.MaterialRules.*;
 
 public final class FloralReefBiome extends AbysmBiome {
-	public static final MaterialRules.MaterialCondition CONDITION = MaterialRules.biome(AbysmBiomes.FLORAL_REEF);
 
 	public FloralReefBiome() {
 		super(AbysmBiomes.FLORAL_REEF, 0.5F, true, 0.5F);
@@ -87,19 +86,71 @@ public final class FloralReefBiome extends AbysmBiome {
 			0.5F
 		);
 
-		addSurfaceRules(
-			condition(surface(),
+		MaterialRule SAND = block(Blocks.SAND.getDefaultState());
+		MaterialRule SANDSTONE = block(Blocks.SANDSTONE.getDefaultState());
+
+		MaterialRule SDC_SANDSTONE_SAND = sequence(
+			condition(STONE_DEPTH_CEILING, SANDSTONE),
+			SAND
+		);
+
+		MaterialRule surfaceRule = sequence(
+			condition(
+				STONE_DEPTH_FLOOR,
+				condition(
+					MaterialRules.water(-1, 0),
+					SDC_SANDSTONE_SAND // one layer of sand at surface and shallow water
+				)
+			),
+			// unlike warm ocean, apply thick sand and sandstone no matter the depth
+			condition(
+				STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH,
+				SDC_SANDSTONE_SAND // place a few layers of sand (+ sandstone at bottom)
+			),
+			condition(STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH_RANGE_6, SANDSTONE) // place thick sandstone at shallow water
+		);
+
+		/*
+		// surface rule to replicate warm ocean behaviour, for reference
+		// this comment can be removed if no longer useful
+
+		MaterialRule STONE = block(Blocks.STONE.getDefaultState());
+		MaterialRule GRAVEL = block(Blocks.GRAVEL.getDefaultState());
+
+		MaterialRule SDC_STONE_GRAVEL = sequence(
+			condition(STONE_DEPTH_CEILING, STONE),
+			GRAVEL
+		);
+
+		MaterialRule surfaceRule = sequence(
+			condition(
+				STONE_DEPTH_FLOOR,
+				condition(
+					MaterialRules.water(-1, 0),
+					SDC_SANDSTONE_SAND // one layer of sand at surface and shallow water
+				)
+			),
+			condition(
+				MaterialRules.waterWithStoneDepth(-6, -1),
 				sequence(
-					sequence(condition(
-						STONE_DEPTH_CEILING,
-						block(Blocks.SANDSTONE.getDefaultState())
-					), block(Blocks.SAND.getDefaultState())),
-					sequence(condition(
-						STONE_DEPTH_CEILING,
-						block(Blocks.STONE.getDefaultState())
-					), block(Blocks.GRAVEL.getDefaultState()))
+					condition(
+						STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH,
+						SDC_SANDSTONE_SAND // place a few layers of sand (+ sandstone at bottom)
+					),
+					condition(STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH_RANGE_6, SANDSTONE) // place thick sandstone at shallow water
+				)
+			),
+			condition(STONE_DEPTH_FLOOR,
+				sequence(
+					SDC_SANDSTONE_SAND, // one layer of sand
+					SDC_STONE_GRAVEL // one layer of gravel... theoretically? probably entirely blocked by the sand layer
 				)
 			)
+		);
+		*/
+
+		addSurfaceRules(
+			condition(surface(), surfaceRule)
 		);
 	}
 }
