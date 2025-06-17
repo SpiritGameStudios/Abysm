@@ -112,7 +112,7 @@ public class ManOWar extends WaterCreatureEntity {
 				living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 4), this);
 				living.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 200, 4), this);
 				if (living.isDead() && living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_PREY) && this.random.nextBetween(0, 2) == 0) {
-
+					// asexual reproduction go
 				}
 			});
 		}

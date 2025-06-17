@@ -10,7 +10,9 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Requires implementing class to be of {@link MobEntity}
  */
-// help it's really bad what am I doing
+/* help it's really bad what am I doing
+   this is a half-unfinished garbage interface
+*/
 @SuppressWarnings("unused")
 public interface Breedable {
 
