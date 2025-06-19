@@ -43,6 +43,11 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	}
 
 	@Override
+	public int getMaxGroupSize() {
+		return super.getMaxGroupSize();
+	}
+
+	@Override
 	protected EntityNavigation createNavigation(World world) {
 		return new GlideNavigation(this, world);
 	}
@@ -151,7 +156,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		@Override
 		protected double adjustTargetY(Vec3d pos) {
 			double y = this.entity.getY();
-			return MathHelper.clamp(pos.y, y - 0.5, y + 0.5);
+			return MathHelper.clamp(pos.y, y - 1, y + 1);
 		}
 	}
 }
