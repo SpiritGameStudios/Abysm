@@ -3,34 +3,43 @@ package dev.spiritstudios.abysm.data.variant;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.registry.AbysmParticleTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.Block;
+import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
 
 public class BloomrayEntityVariant extends AbstractEntityVariant {
-
 	public static final Codec<BloomrayEntityVariant> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
 			getNameCodec(),
 			getTextureCodec(),
-			HideableCrownType.CODEC.fieldOf("crown").forGetter(variant -> variant.hideableCrownType)
+			HideableCrownType.CODEC.fieldOf("crown").forGetter(variant -> variant.hideableCrownType),
+			AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("glimmer").forGetter(variant -> variant.glimmerParticle),
+			AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("thorns").forGetter(variant -> variant.thornsParticle)
 		).apply(instance, BloomrayEntityVariant::new)
 	);
 
 	public static final BloomrayEntityVariant DEFAULT = new BloomrayEntityVariant(
 		Text.translatable("entity.abysm.bloomray.rosy"),
 		buildEntityTexturePath("rosy_bloomray"),
-		HideableCrownType.SODALITE_CROWN
+		HideableCrownType.SODALITE_CROWN,
+		AbysmParticleTypes.ROSEBLOOM_GLIMMER, AbysmParticleTypes.SODALITE_THORNS
 	);
 
 	public final HideableCrownType hideableCrownType;
+	public final SimpleParticleType glimmerParticle;
+	public final SimpleParticleType thornsParticle;
 
-	public BloomrayEntityVariant(Text name, Identifier texture, HideableCrownType hideableCrownType) {
+	public BloomrayEntityVariant(Text name, Identifier texture, HideableCrownType hideableCrownType, SimpleParticleType glimmerParticle, SimpleParticleType thornsParticle) {
 		super(name, texture);
 		this.hideableCrownType = hideableCrownType;
+		this.glimmerParticle = glimmerParticle;
+		this.thornsParticle = thornsParticle;
 	}
 
 	// Helper methods

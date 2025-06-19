@@ -37,7 +37,6 @@ repositories {
 	maven("https://maven.spiritstudios.dev/releases/")
 	maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
 	maven("https://maven.terraformersmc.com/")
-	maven("https://maven.ladysnake.org/releases/")
 	maven("https://jitpack.io/")
 	maven("https://api.modrinth.com/maven/")
 }
@@ -58,9 +57,6 @@ dependencies {
 
 	include(libs.fabrik)
 	modImplementation(libs.fabrik)
-
-	include(libs.bundles.cca)
-	modImplementation(libs.bundles.cca)
 
 	modRuntimeOnly(libs.sodium)
 	modRuntimeOnly(libs.modmenu)

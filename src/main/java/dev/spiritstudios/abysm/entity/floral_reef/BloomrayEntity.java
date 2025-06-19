@@ -13,6 +13,9 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -55,12 +58,46 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		if(this.random.nextBoolean()) {
+		if (this.random.nextBoolean()) {
 			this.setVariant(BloomrayEntityVariant.DEFAULT);
 		} else {
 			this.setVariant(this.getRegistryManager().getOrThrow(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT).get(AbysmEntityVariants.SUNNY_BLOOMRAY));
 		}
 		return super.initialize(world, difficulty, spawnReason, entityData);
+	}
+
+	@Override
+	public void tickMovement() {
+		super.tickMovement();
+
+		if (this.getWorld().isClient && random.nextFloat() < 0.15) {
+			Vec3d facing = Vec3d.fromPolar(getPitch(), bodyYaw).multiply(0.5);
+
+			int glimmerCount = 1 + random.nextInt(3);
+			for (int i = 0; i < glimmerCount; i++) {
+				spawnParticles(this.getPos().add(facing), random, this.getVariant().glimmerParticle, 0.4F, 1F, 1F);
+			}
+
+			int thornsCount = 2 + random.nextInt(2);
+			for (int i = 0; i < thornsCount; i++) {
+				spawnParticles(this.getPos().add(facing), random, this.getVariant().thornsParticle, 0.9F, 2.6F, 1.4F);
+			}
+		}
+	}
+
+	protected void spawnParticles(Vec3d pos, Random random, SimpleParticleType particle, float width, float orthogonalVelocityMultiplier, float normalVelocityMultiplier) {
+		double x = pos.getX() + width * (random.nextFloat() - 0.5);
+		double y = pos.getY() + 0.5F - 0.45F;
+		double z = pos.getZ() + width * (random.nextFloat() - 0.5);
+
+		double vx = random.nextGaussian() * (0.015) * orthogonalVelocityMultiplier + getVelocity().x;
+		double vy = random.nextGaussian() * (0.015) * orthogonalVelocityMultiplier;
+		double vz = random.nextGaussian() * (0.015) * orthogonalVelocityMultiplier + getVelocity().z;
+
+		vy *= 0.1F;
+		vy += random.nextFloat() * 0.12F * normalVelocityMultiplier;
+
+		getWorld().addParticleClient(particle, x, y, z, vx, vy, vz);
 	}
 
 	@Override

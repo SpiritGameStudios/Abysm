@@ -33,7 +33,7 @@ public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, W
 	public static final MapCodec<SmallBloomshroomBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
 				RegistryKey.createCodec(RegistryKeys.CONFIGURED_FEATURE).fieldOf("feature").forGetter(block -> block.featureKey),
-				AbysmCodecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle),
+				AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
 				createSettingsCodec()
 			)
 			.apply(instance, SmallBloomshroomBlock::new)

@@ -1,4 +1,6 @@
 {
+  "glimmer": "abysm:mallowbloom_glimmer",
+  "thorns": "abysm:melilite_thorns",
   "name": {
     "translate": "abysm.entity.bloomray.mauve"
   },

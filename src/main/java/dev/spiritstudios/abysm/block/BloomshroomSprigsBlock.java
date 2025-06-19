@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 
 public class BloomshroomSprigsBlock extends UnderwaterPlantBlock {
 	public static final MapCodec<BloomshroomSprigsBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(AbysmCodecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomshroomSprigsBlock::new)
+		instance -> instance.group(AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomshroomSprigsBlock::new)
 	);
 	private static final VoxelShape SHAPE = Block.createColumnShape(10.0, 0.0, 11.0);
 	private static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;

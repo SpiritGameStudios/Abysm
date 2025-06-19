@@ -24,6 +24,8 @@ public class SpiralingParticle extends SpriteBillboardParticle {
 	public int spiralLeaveAge;
 	public boolean billboard;
 
+	private final Quaternionf rotationStorage = new Quaternionf();
+
 	public SpiralingParticle(ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ, float maxRadius, float speed, int maxAge, int spiralLeaveAge, boolean billboard, SpriteProvider provider) {
 		super(clientWorld, x, y, z, velX, velY, velZ);
 		this.provider = provider;
@@ -52,41 +54,39 @@ public class SpiralingParticle extends SpriteBillboardParticle {
 	public void tick() {
 		super.tick();
 		this.lastAngle = this.angle;
-		if(this.scale <= 0f) {
+		if (this.scale <= 0f) {
 			this.markDead();
 		}
 
-		if(this.age == this.spiralLeaveAge) {
+		if (this.age == this.spiralLeaveAge) {
 			this.speed /= 2f;
 			this.velocityY = this.random.nextGaussian() / 64f;
 		}
 
-		if(this.age >= this.spiralLeaveAge) {
+		if (this.age >= this.spiralLeaveAge) {
 			this.radius += 0.001f;
 			this.scale -= 0.005f;
 		}
 
-		this.velocityX = Math.cos(this.age * this.speed) * this.radius;
-		this.velocityZ = Math.sin(this.age * this.speed) * this.radius;
-		this.angle = (float) (Math.atan2(this.velocityX, this.velocityZ) + Math.toRadians(90f));
+		this.velocityX = MathHelper.cos(this.age * this.speed) * this.radius;
+		this.velocityZ = MathHelper.sin(this.age * this.speed) * this.radius;
+		this.angle = (float) MathHelper.atan2(this.velocityX, this.velocityZ) + MathHelper.HALF_PI;
 
 		this.setSpriteForAge(this.provider);
 	}
 
 	@Override
 	public void render(VertexConsumer vertexConsumer, Camera camera, float tickProgress) {
-		if(this.billboard) {
+		if (this.billboard) {
 			super.render(vertexConsumer, camera, tickProgress);
 			return;
 		}
 
-		Quaternionf quaternionf = new Quaternionf();
-		float lerpedAngle = MathHelper.lerp(tickProgress, this.lastAngle, this.angle);
+		rotationStorage.rotationY(MathHelper.lerp(tickProgress, this.lastAngle, this.angle));
+		this.render(vertexConsumer, camera, rotationStorage, tickProgress);
 
-		quaternionf.rotateYXZ(lerpedAngle, 0, 0);
-		this.render(vertexConsumer, camera, quaternionf, tickProgress);
-		quaternionf.rotateY((float) Math.toRadians(180f));
-		this.render(vertexConsumer, camera, quaternionf, tickProgress);
+		rotationStorage.rotateY(MathHelper.PI);
+		this.render(vertexConsumer, camera, rotationStorage, tickProgress);
 	}
 
 	@Override
@@ -109,10 +109,16 @@ public class SpiralingParticle extends SpriteBillboardParticle {
 
 		// The radius has no unit of measurement, and is affected by the speed because I couldn't figure out the math before wanting to move on
 		public abstract float maxRadius(Random random);
+
 		public abstract float maxSpeed(Random random);
+
 		public abstract int maxAge(Random random);
+
 		public abstract int spiralLeaveAge(Random random);
-		public boolean billboard() { return true; }
+
+		public boolean billboard() {
+			return true;
+		}
 
 		public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ) {
 			Random random = clientWorld.getRandom();

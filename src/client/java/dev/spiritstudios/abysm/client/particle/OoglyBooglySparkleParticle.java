@@ -54,8 +54,7 @@ public class OoglyBooglySparkleParticle extends SpriteBillboardParticle {
 		}
 
 		public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ) {
-			OoglyBooglySparkleParticle particle = new OoglyBooglySparkleParticle(clientWorld, x, y, z, velX, velY, velZ, spriteProvider);
-			return particle;
+			return new OoglyBooglySparkleParticle(clientWorld, x, y, z, velX, velY, velZ, spriteProvider);
 		}
 	}
 }

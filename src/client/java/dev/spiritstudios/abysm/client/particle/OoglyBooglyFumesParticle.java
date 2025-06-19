@@ -18,6 +18,8 @@ import org.joml.Vector3f;
 public class OoglyBooglyFumesParticle extends SpriteBillboardParticle {
 	private final SpriteProvider provider;
 	private boolean deadly = false;
+	private final Quaternionf rotationStorage = new Quaternionf();
+
 	protected OoglyBooglyFumesParticle(ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ, OoglyBooglyFumesParticleEffect params, SpriteProvider provider) {
 		super(clientWorld, x, y, z, velX, velY, velZ);
 		this.provider = provider;
@@ -57,11 +59,11 @@ public class OoglyBooglyFumesParticle extends SpriteBillboardParticle {
 
 	@Override
 	public void render(VertexConsumer vertexConsumer, Camera camera, float tickProgress) {
-		Quaternionf quaternionf = new Quaternionf();
-		quaternionf.rotateYXZ(MathHelper.lerp(tickProgress, this.lastAngle, this.angle), (float) Math.toRadians(-45f), 0f);
-		this.render(vertexConsumer, camera, quaternionf, tickProgress);
-		quaternionf.rotateY((float) Math.toRadians(180f));
-		this.render(vertexConsumer, camera, quaternionf, tickProgress);
+		rotationStorage.rotationYXZ(MathHelper.lerp(tickProgress, this.lastAngle, this.angle), -MathHelper.PI / 4, 0f);
+		this.render(vertexConsumer, camera, rotationStorage, tickProgress);
+
+		rotationStorage.rotateY(MathHelper.PI);
+		this.render(vertexConsumer, camera, rotationStorage, tickProgress);
 	}
 
 	@Override

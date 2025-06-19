@@ -11,10 +11,8 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
 
 public class OoglyBooglyElectricityParticle extends SpriteBillboardParticle {
-	private final SpriteProvider provider;
 	protected OoglyBooglyElectricityParticle(ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ, SpriteProvider provider) {
 		super(clientWorld, x, y, z, velX, velY, velZ);
-		this.provider = provider;
 		this.velocityX = 0;
 		this.velocityY = 0;
 		this.velocityZ = 0;
@@ -22,7 +20,7 @@ public class OoglyBooglyElectricityParticle extends SpriteBillboardParticle {
 		this.maxAge = 2;
 		this.scale = 0.01f + this.random.nextFloat();
 
-		this.setSprite(this.provider);
+		this.setSprite(provider);
 	}
 
 	@Override

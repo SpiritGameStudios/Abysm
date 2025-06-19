@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 public class BloomPetaleavesBlock extends LeavesBlock {
 	public static final MapCodec<BloomPetaleavesBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
-			AbysmCodecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle),
+			AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
 			Codecs.rangedInclusiveFloat(0.0F, 1.0F)
 				.fieldOf("leaf_particle_chance")
 				.forGetter(tintedParticleLeavesBlock -> tintedParticleLeavesBlock.leafParticleChance),

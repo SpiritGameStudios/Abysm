@@ -13,7 +13,10 @@ import net.minecraft.world.World;
 
 public class BloomshroomCapBlock extends Block {
 	public static final MapCodec<BloomshroomCapBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(AbysmCodecs.PARTICLE_TYPE_CODEC.forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomshroomCapBlock::new)
+		instance -> instance.group(
+			AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
+			createSettingsCodec()
+		).apply(instance, BloomshroomCapBlock::new)
 	);
 
 	public final SimpleParticleType particle;
@@ -36,7 +39,7 @@ public class BloomshroomCapBlock extends Block {
 		BlockState downState = world.getBlockState(downPos);
 
 		if(!downState.isSideSolidFullSquare(world, pos, Direction.UP)) {
-			if (random.nextInt(4) == 0) {
+			if (random.nextFloat() < 0.05F) {
 				double x = pos.getX() + 0.05 + 0.9 * random.nextFloat();
 				double y = pos.getY() - 0.1 + 0.1 * random.nextFloat();
 				double z = pos.getZ() + 0.05 + 0.9 * random.nextFloat();

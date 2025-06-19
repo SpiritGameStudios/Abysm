@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.variant.AbstractEntityVariant;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
+import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -20,8 +21,20 @@ public class AbysmEntityVariants {
 
 	public static void bloomrayBootstrap(Registerable<BloomrayEntityVariant> registerable) {
 		register(registerable, ROSY_BLOOMRAY, BloomrayEntityVariant.DEFAULT);
-		registerBloomrayVariant(registerable, SUNNY_BLOOMRAY, BloomrayEntityVariant.HideableCrownType.ANYOLITE_CROWN);
-		registerBloomrayVariant(registerable, MAUVE_BLOOMRAY, BloomrayEntityVariant.HideableCrownType.MELILITE_CROWN);
+
+		registerBloomrayVariant(
+			registerable,
+			SUNNY_BLOOMRAY,
+			BloomrayEntityVariant.HideableCrownType.ANYOLITE_CROWN,
+			AbysmParticleTypes.SUNBLOOM_GLIMMER, AbysmParticleTypes.ANYOLITE_THORNS
+		);
+
+		registerBloomrayVariant(
+			registerable,
+			MAUVE_BLOOMRAY,
+			BloomrayEntityVariant.HideableCrownType.MELILITE_CROWN,
+			AbysmParticleTypes.MALLOWBLOOM_GLIMMER, AbysmParticleTypes.MELILITE_THORNS
+		);
 	}
 	// endregion
 
@@ -51,10 +64,10 @@ public class AbysmEntityVariants {
 		return RegistryKey.of(key, Abysm.id(path));
 	}
 
-	private static void registerBloomrayVariant(Registerable<BloomrayEntityVariant> registry, RegistryKey<BloomrayEntityVariant> key, BloomrayEntityVariant.HideableCrownType crownType) {
+	private static void registerBloomrayVariant(Registerable<BloomrayEntityVariant> registry, RegistryKey<BloomrayEntityVariant> key, BloomrayEntityVariant.HideableCrownType crownType, SimpleParticleType glimmer, SimpleParticleType thorns) {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + "_bloomray.png");
 		Text name = Text.translatable("abysm.entity.bloomray." + key.getValue().getPath());
-		BloomrayEntityVariant variant = new BloomrayEntityVariant(name, variantPath, crownType);
+		BloomrayEntityVariant variant = new BloomrayEntityVariant(name, variantPath, crownType, glimmer, thorns);
 		register(registry, key, variant);
 	}
 

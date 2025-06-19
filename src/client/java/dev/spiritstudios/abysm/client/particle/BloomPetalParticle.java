@@ -16,9 +16,9 @@ public class BloomPetalParticle extends SpriteBillboardParticle {
 	private float angularVelocity;
 	private final float angularAcceleration;
 	private final float windStrength;
-	private double xWindStrength;
-	private double zWindStrength;
-	private double swirlAngleOffset;
+	private final float xWindStrength;
+	private final float zWindStrength;
+	private final float swirlAngleOffset;
 	private final ParticleEffect nextParticle;
 
 	protected BloomPetalParticle(
@@ -53,10 +53,11 @@ public class BloomPetalParticle extends SpriteBillboardParticle {
 
 		this.windStrength = windStrength;
 
-		float pseudoAngle = this.random.nextFloat();
-		this.xWindStrength = Math.cos(Math.toRadians(pseudoAngle * 360.0F)) * this.windStrength;
-		this.zWindStrength = Math.sin(Math.toRadians(pseudoAngle * 360.0F)) * this.windStrength;
-		this.swirlAngleOffset = Math.toRadians(this.random.nextFloat() * 360.0F);
+		float windAngle = this.random.nextFloat() * MathHelper.PI;
+		this.xWindStrength = MathHelper.cos(windAngle) * this.windStrength;
+		this.zWindStrength = MathHelper.sin(windAngle) * this.windStrength;
+
+		this.swirlAngleOffset = this.random.nextFloat() * MathHelper.PI;
 
 		this.nextParticle = nextParticle;
 	}
@@ -85,8 +86,8 @@ public class BloomPetalParticle extends SpriteBillboardParticle {
 			xWind += this.xWindStrength * strength;
 			zWind += this.zWindStrength * strength;
 
-			xWind += lifeLeft * (Math.cos(lifeLeft * Math.TAU + this.swirlAngleOffset) * this.windStrength) * strength;
-			zWind += lifeLeft * (Math.sin(lifeLeft * Math.TAU + this.swirlAngleOffset) * this.windStrength) * strength;
+			xWind += lifeLeft * (MathHelper.cos(lifeLeft * MathHelper.TAU + this.swirlAngleOffset) * this.windStrength) * strength;
+			zWind += lifeLeft * (MathHelper.sin(lifeLeft * MathHelper.TAU + this.swirlAngleOffset) * this.windStrength) * strength;
 
 			this.velocityX += xWind * SPEED_SCALE;
 			this.velocityZ += zWind * SPEED_SCALE;

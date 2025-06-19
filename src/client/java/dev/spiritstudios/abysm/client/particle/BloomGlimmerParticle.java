@@ -11,7 +11,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 
 public class BloomGlimmerParticle extends AscendingParticle {
-
 	public float rotationSpeed = 0;
 
 	protected BloomGlimmerParticle(
@@ -24,9 +23,10 @@ public class BloomGlimmerParticle extends AscendingParticle {
 	@Override
 	public void tick() {
 		super.tick();
-		if(!this.dead) {
+
+		if (!this.dead) {
 			this.lastAngle = this.angle;
-			this.angle = this.angle + (float) Math.TAU * this.rotationSpeed;
+			this.angle = this.angle + MathHelper.TAU * this.rotationSpeed;
 
 			this.rotationSpeed *= 0.99F;
 		}
@@ -34,8 +34,8 @@ public class BloomGlimmerParticle extends AscendingParticle {
 
 	@Override
 	public float getSize(float tickProgress) {
-		float relativeAge = MathHelper.clamp((this.age + tickProgress) / this.maxAge, 0F, 1F);
-		float multiplier = MathHelper.clamp(relativeAge * 10.0F, 0.0F, 1.0F) * MathHelper.clamp((1 - relativeAge) * 2.0F, 0.0F, 1.0F);
+		float lifeProgress = MathHelper.clamp((this.age + tickProgress) / this.maxAge, 0F, 1F);
+		float multiplier = MathHelper.clamp(lifeProgress * 10.0F, 0.0F, 1.0F) * MathHelper.clamp((1 - lifeProgress) * 2.0F, 0.0F, 1.0F);
 		return this.scale * multiplier;
 	}
 
@@ -46,7 +46,7 @@ public class BloomGlimmerParticle extends AscendingParticle {
 		int baseBrightness = super.getBrightness(tickProgress);
 
 		int blockLight = baseBrightness & 0xFF;
-		blockLight += (int)(relativeAge * 3.0F * 16.0F);
+		blockLight += (int) (relativeAge * 3.0F * 16.0F);
 		if (blockLight > 240) {
 			blockLight = 240;
 		}
@@ -64,6 +64,7 @@ public class BloomGlimmerParticle extends AscendingParticle {
 		}
 
 		public abstract int getColorStart();
+
 		public abstract int getColorEnd();
 
 		public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
@@ -79,7 +80,7 @@ public class BloomGlimmerParticle extends AscendingParticle {
 
 			particle.scale(0.6F + 1.8F * random.nextFloat());
 
-			particle.rotationSpeed = (float) (random.nextGaussian() * 0.2F * Math.sqrt(xSpeed*xSpeed + ySpeed*ySpeed + zSpeed*zSpeed));
+			particle.rotationSpeed = (float) (random.nextGaussian() * 0.2F * Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed + zSpeed * zSpeed));
 
 			return particle;
 		}
@@ -149,7 +150,7 @@ public class BloomGlimmerParticle extends AscendingParticle {
 
 			particle.scale(0.45F + 0.75F * random.nextFloat());
 
-			particle.rotationSpeed = (float) ((-1.5F + random.nextGaussian()) * 0.2F * Math.sqrt(xSpeed*xSpeed + ySpeed*ySpeed + zSpeed*zSpeed));
+			particle.rotationSpeed = (float) ((-1.5F + random.nextGaussian()) * 0.2F * Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed + zSpeed * zSpeed));
 
 			return particle;
 		}
