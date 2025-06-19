@@ -46,8 +46,7 @@ public class BloomshroomTrunkPlacer extends TrunkPlacer {
 		return AbysmTrunkPlacerTypes.BLOOMSHROOM;
 	}
 
-	protected void getAndSetPetal(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, BlockPos pos, Direction direction) {
-		pos =  pos.offset(direction);
+	protected void getAndSetPetal(TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, BlockPos pos) {
 		if (!this.canReplace(world, pos)) return;
 
 		replacer.accept(
@@ -55,11 +54,6 @@ public class BloomshroomTrunkPlacer extends TrunkPlacer {
 			petalProvider.get(random, pos)
 				.withIfExists(Properties.WATERLOGGED,
 					world.testFluidState(pos, fluidState -> fluidState.isEqualAndStill(Fluids.WATER)))
-				.withIfExists(Properties.HORIZONTAL_FACING, direction)
-				.withIfExists(Properties.NORTH, direction == Direction.SOUTH)
-				.withIfExists(Properties.SHORT, direction == Direction.NORTH)
-				.withIfExists(Properties.EAST, direction == Direction.WEST)
-				.withIfExists(Properties.WEST, direction == Direction.EAST)
 		);
 	}
 
@@ -67,14 +61,43 @@ public class BloomshroomTrunkPlacer extends TrunkPlacer {
 	public List<FoliagePlacer.TreeNode> generate(
 		TestableWorld world, BiConsumer<BlockPos, BlockState> replacer, Random random, int height, BlockPos startPos, TreeFeatureConfig config
 	) {
+		// trunk
 		for (int i = 0; i < height; i++) {
 			this.getAndSetState(world, replacer, random, startPos.up(i), config);
 		}
 
+		for(Direction direction : SpecterMath.HORIZONTAL_DIRECTIONS) {
+			BlockPos p = startPos.offset(direction);
+			if(this.getAndSetState(world, replacer, random, p, config)) {
+				int downAmount = 1 + random.nextInt(2);
+				for(int i = 1; i <= downAmount; i++) {
+					boolean placed = this.getAndSetState(world, replacer, random, p.down(i), config);
+					if(!placed) break;
+				}
+
+				int upAmount = random.nextInt(2);
+				for(int i = 1; i <= upAmount; i++) {
+					boolean placed = this.getAndSetState(world, replacer, random, p.up(i), config);
+					if(!placed) break;
+				}
+			}
+		}
+
+		// leaves
 		BlockPos petalStart = startPos.up(height - petalOffset.get(random));
 
-		for (Direction direction : SpecterMath.HORIZONTAL_DIRECTIONS) {
-			this.getAndSetPetal(world, replacer, random, petalStart, direction);
+		for(int dx = -1; dx <= 1; dx ++) {
+			for(int dz = -1; dz <= 1; dz++) {
+				if(dx == 0 && dz == 0) continue;
+
+				boolean isCorner = dx != 0 && dz != 0;
+				if(!isCorner || random.nextFloat() < 0.4F) {
+					this.getAndSetPetal(world, replacer, random, petalStart.add(dx, 0, dz));
+				}
+				if(!isCorner && random.nextFloat() < 0.3F) {
+					this.getAndSetPetal(world, replacer, random, petalStart.add(dx, -1, dz));
+				}
+			}
 		}
 
 		return ImmutableList.of(new FoliagePlacer.TreeNode(startPos.up(height), 0, false));

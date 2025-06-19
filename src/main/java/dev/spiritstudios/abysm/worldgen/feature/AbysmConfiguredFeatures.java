@@ -53,64 +53,41 @@ public class AbysmConfiguredFeatures {
 			registerable
 		);
 
-		helper.add(
-			ROSY_BLOOMSHROOM, Feature.TREE,
-			new TreeFeatureConfig.Builder(
-				BlockStateProvider.of(AbysmBlocks.ROSY_BLOOMSHROOM_STEM
-					.getDefaultState().with(PillarBlock.AXIS, Direction.Axis.Y)),
-				new BloomshroomTrunkPlacer(
-					5, 5, 0,
-					UniformIntProvider.create(4, 5),
-					BlockStateProvider.of(AbysmBlocks.BLOOMSHROOM_GOOP)
-				),
-				BlockStateProvider.of(AbysmBlocks.ROSY_BLOOMSHROOM_CAP),
-				new BloomshroomFoliagePlacer(
-					ConstantIntProvider.create(4),
-					ConstantIntProvider.create(0),
-					BlockStateProvider.of(AbysmBlocks.BLOOMING_SODALITE_CROWN)
-				),
-				new TwoLayersFeatureSize(1, 0, 1)
-			).build()
+		registerBloomshroom(
+			helper,
+			ROSY_BLOOMSHROOM,
+			AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
+			AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
+			AbysmBlocks.ROSEBLOOM_PETALEAVES,
+			AbysmBlocks.BLOOMSHROOM_GOOP,
+			AbysmBlocks.BLOOMING_SODALITE_CROWN,
+			3,
+			0.8F,
+			0.4F
 		);
-
-		helper.add(
-			SUNNY_BLOOMSHROOM, Feature.TREE,
-			new TreeFeatureConfig.Builder(
-				BlockStateProvider.of(AbysmBlocks.SUNNY_BLOOMSHROOM_STEM
-					.getDefaultState().with(PillarBlock.AXIS, Direction.Axis.Y)),
-				new BloomshroomTrunkPlacer(
-					5, 5, 0,
-					UniformIntProvider.create(4, 5),
-					BlockStateProvider.of(AbysmBlocks.BLOOMSHROOM_GOOP)
-				),
-				BlockStateProvider.of(AbysmBlocks.SUNNY_BLOOMSHROOM_CAP),
-				new BloomshroomFoliagePlacer(
-					ConstantIntProvider.create(4),
-					ConstantIntProvider.create(0),
-					BlockStateProvider.of(AbysmBlocks.BLOOMING_ANYOLITE_CROWN)
-				),
-				new TwoLayersFeatureSize(1, 0, 1)
-			).build()
+		registerBloomshroom(
+			helper,
+			SUNNY_BLOOMSHROOM,
+			AbysmBlocks.SUNNY_BLOOMSHROOM_STEM,
+			AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
+			AbysmBlocks.SUNBLOOM_PETALEAVES,
+			AbysmBlocks.BLOOMSHROOM_GOOP,
+			AbysmBlocks.BLOOMING_ANYOLITE_CROWN,
+			2,
+			0.3F,
+			0.9F
 		);
-
-		helper.add(
-			MAUVE_BLOOMSHROOM, Feature.TREE,
-			new TreeFeatureConfig.Builder(
-				BlockStateProvider.of(AbysmBlocks.MAUVE_BLOOMSHROOM_STEM
-					.getDefaultState().with(PillarBlock.AXIS, Direction.Axis.Y)),
-				new BloomshroomTrunkPlacer(
-					5, 5, 0,
-					UniformIntProvider.create(4, 5),
-					BlockStateProvider.of(AbysmBlocks.BLOOMSHROOM_GOOP)
-				),
-				BlockStateProvider.of(AbysmBlocks.MAUVE_BLOOMSHROOM_CAP),
-				new BloomshroomFoliagePlacer(
-					ConstantIntProvider.create(4),
-					ConstantIntProvider.create(0),
-					BlockStateProvider.of(AbysmBlocks.BLOOMING_MELILITE_CROWN)
-				),
-				new TwoLayersFeatureSize(1, 0, 1)
-			).build()
+		registerBloomshroom(
+			helper,
+			MAUVE_BLOOMSHROOM,
+			AbysmBlocks.MAUVE_BLOOMSHROOM_STEM,
+			AbysmBlocks.MAUVE_BLOOMSHROOM_CAP,
+			AbysmBlocks.MALLOWBLOOM_PETALEAVES,
+			AbysmBlocks.BLOOMSHROOM_GOOP,
+			AbysmBlocks.BLOOMING_MELILITE_CROWN,
+			5,
+			0.2F,
+			0.5F
 		);
 
 		helper.add(
@@ -181,6 +158,32 @@ public class AbysmConfiguredFeatures {
 
 	public static RegistryKey<ConfiguredFeature<?, ?>> ofKey(String id) {
 		return RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, Abysm.id(id));
+	}
+
+	private static void registerBloomshroom(ConfiguredFeatureHelper helper, RegistryKey<ConfiguredFeature<?, ?>> key, Block stemBlock, Block capBlock, Block leavesBlock, Block goopBlock, Block crownBlock, int randomHeight, float horizontalTopPetalChance, float diagonalTopPetalChance) {
+		helper.add(
+			key, Feature.TREE,
+			new TreeFeatureConfig.Builder(
+				BlockStateProvider.of(stemBlock
+					.getDefaultState().with(PillarBlock.AXIS, Direction.Axis.Y)),
+				new BloomshroomTrunkPlacer(
+					8, randomHeight, 0,
+					UniformIntProvider.create(6, 7),
+					BlockStateProvider.of(leavesBlock)
+				),
+				BlockStateProvider.of(capBlock),
+				new BloomshroomFoliagePlacer(
+					ConstantIntProvider.create(3),
+					ConstantIntProvider.create(0),
+					BlockStateProvider.of(leavesBlock),
+					BlockStateProvider.of(goopBlock),
+					BlockStateProvider.of(crownBlock),
+					horizontalTopPetalChance,
+					diagonalTopPetalChance
+				),
+				new TwoLayersFeatureSize(1, 0, 1)
+			).build()
+		);
 	}
 
 	private static void registerBloomshroomVegetation(Registerable<ConfiguredFeature<?, ?>> registerable, Block sprigs, Block bloomshroom, RegistryKey<ConfiguredFeature<?, ?>> vegetationBonemeal) {
