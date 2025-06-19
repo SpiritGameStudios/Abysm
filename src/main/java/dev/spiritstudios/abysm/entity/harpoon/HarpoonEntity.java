@@ -120,7 +120,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 						} else if (!this.getBoundingBox().expand(0.3).intersects(owner.getBoundingBox())) {
 							owner.setVelocity(this.getPos().subtract(owner.getPos()).normalize().multiply(2, 1.2, 2));
 							owner.velocityModified = true;
-							owner.fallDistance = 0;
+							owner.fallDistance = 1;
 							((HarpoonDrag) owner).abysm$setDragTicks(2);
 						}
 					}
