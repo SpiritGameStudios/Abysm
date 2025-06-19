@@ -25,7 +25,6 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -181,18 +180,18 @@ public class ManOWar extends WaterCreatureEntity {
 			}
 
 			if (this.state == MoveControl.State.MOVE_TO && !this.obj.getNavigation().isIdle()) {
-				float f = (float)(this.speed * this.obj.getAttributeValue(EntityAttributes.MOVEMENT_SPEED));
-				this.obj.setMovementSpeed(MathHelper.lerp(0.125F, this.obj.getMovementSpeed(), f));
-				double d = this.targetX - this.obj.getX();
-				double e = this.targetY - this.obj.getY();
-				double g = this.targetZ - this.obj.getZ();
-				if (e != 0.0) {
-					double h = Math.sqrt(d * d + e * e + g * g);
-					this.obj.setVelocity(this.obj.getVelocity().add(0.0, this.obj.getMovementSpeed() * (e / h) * 0.1, 0.0));
+				float speed = (float)(this.speed * this.obj.getAttributeValue(EntityAttributes.MOVEMENT_SPEED));
+				this.obj.setMovementSpeed(MathHelper.lerp(0.125F, this.obj.getMovementSpeed(), speed));
+				double distanceX = this.targetX - this.obj.getX();
+				double distanceY = this.targetY - this.obj.getY();
+				double distanceZ = this.targetZ - this.obj.getZ();
+				if (distanceY != 0.0) {
+					double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
+					this.obj.setVelocity(this.obj.getVelocity().add(0.0, this.obj.getMovementSpeed() * (distanceY / distance) * 0.1, 0.0));
 				}
 
-				if (d != 0.0 || g != 0.0) {
-					float i = (float)(MathHelper.atan2(g, d) * 180.0F / (float)Math.PI) - 90.0F;
+				if (distanceX != 0.0 || distanceZ != 0.0) {
+					float i = (float)(MathHelper.atan2(distanceZ, distanceX) * MathHelper.DEGREES_PER_RADIAN) - 90.0F;
 					this.obj.setYaw(this.wrapDegrees(this.obj.getYaw(), i, 90.0F));
 					this.obj.bodyYaw = this.obj.getYaw();
 				}

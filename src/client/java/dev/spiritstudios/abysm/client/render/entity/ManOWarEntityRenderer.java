@@ -70,7 +70,7 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWar, ManOWarRen
 				vertexConsumer,
 				tentacle.relativePosition().toVector3f(),
 				line.add(0, 0,
-					(Math.sin((time + tentacle.swayOffset()) * ManOWar.INVERSE_MAX_SWAY_OFFSET) + 1) * 0.2),
+					(MathHelper.sin((time + tentacle.swayOffset()) * ManOWar.INVERSE_MAX_SWAY_OFFSET) + 1) * 0.2),
 				TENTACLE_ARGB);
 			matrixStack.pop();
 		});
