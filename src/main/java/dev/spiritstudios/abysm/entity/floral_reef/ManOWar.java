@@ -55,7 +55,9 @@ public class ManOWar extends WaterCreatureEntity {
 	protected float prevScale = 1;
 	protected Vec3d prevVelocity = Vec3d.ZERO;
 
-	protected static final double MIN_Y_CHANGE = 0.01;
+	protected static final double MIN_Y_CHANGE = 0.000001;
+
+	public static final double BASE_TENTACLE_LENGTH = 2.5; // remember that by default, scale is 2 and this value is for scale = 1
 
 	public ManOWar(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
@@ -103,7 +105,7 @@ public class ManOWar extends WaterCreatureEntity {
 			DamageSource source = new DamageSource(damageType, this);
 			final double expand = 0.3;
 			Box box = this.getBoundingBox().expand(expand, 0, expand);
-			box = box.withMinY(box.minY - scale * 1.5).withMaxY(box.maxY + expand);
+			box = box.withMinY(box.minY - scale * BASE_TENTACLE_LENGTH).withMaxY(box.maxY + expand);
 			serverWorld.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), box, living -> {
 				//noinspection CodeBlock2Expr
 				return living.isAlive() && !living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_FRIEND);
@@ -220,7 +222,7 @@ public class ManOWar extends WaterCreatureEntity {
 			if (wander == null) {
 				return null;
 			}
-			return new Vec3d(wander.x, Math.max(MIN_Y_CHANGE, wander.y), wander.z);
+			return new Vec3d(wander.x, Math.max(this.obj.getY() + MIN_Y_CHANGE, wander.y), wander.z);
 		}
 	}
 
@@ -232,7 +234,7 @@ public class ManOWar extends WaterCreatureEntity {
 
 		@Override
 		protected double adjustTargetY(Vec3d pos) {
-			return Math.max(MIN_Y_CHANGE, super.adjustTargetY(pos));
+			return Math.max(this.entity.getY() + MIN_Y_CHANGE, super.adjustTargetY(pos));
 		}
 	}
 

@@ -61,7 +61,7 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWar, ManOWarRen
 		}
 		matrixStack.push();
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.LINES);
-		Vec3d line = new Vec3d(0, 3, MathHelper.clamp(state.velocity.horizontalLengthSquared() * 500, 1.0E-7, 1.2)).multiply(0.5);
+		Vec3d line = new Vec3d(0, ManOWar.BASE_TENTACLE_LENGTH, MathHelper.clamp(state.velocity.horizontalLengthSquared() * 500, 1.0E-7, 1.2) * 0.5);
 		long time = Util.getMeasuringTimeMs();
 		state.tentacleData.forEach(tentacle -> {
 			matrixStack.push();

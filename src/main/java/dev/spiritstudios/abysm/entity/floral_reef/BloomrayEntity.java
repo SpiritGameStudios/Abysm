@@ -8,12 +8,16 @@ import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
+import net.minecraft.entity.ai.pathing.SwimNavigation;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
@@ -36,6 +40,11 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	// TODO - Custom AI for hiding in Bloomshroom crowns when scared(player nearby? Bigger fish/TBD enemy nearby?)
 	public BloomrayEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
+	}
+
+	@Override
+	protected EntityNavigation createNavigation(World world) {
+		return new GlideNavigation(this, world);
 	}
 
 	@Override
@@ -131,5 +140,18 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	@Override
 	public void setVariantIntId(int variantId) {
 		this.dataTracker.set(VARIANT_ID, variantId);
+	}
+
+	public static class GlideNavigation extends SwimNavigation {
+
+		public GlideNavigation(MobEntity mobEntity, World world) {
+			super(mobEntity, world);
+		}
+
+		@Override
+		protected double adjustTargetY(Vec3d pos) {
+			double y = this.entity.getY();
+			return MathHelper.clamp(pos.y, y - 0.5, y + 0.5);
+		}
 	}
 }
