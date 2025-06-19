@@ -27,7 +27,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -57,8 +56,8 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	public HarpoonEntity(World world, PlayerEntity owner, int slot, ItemStack weapon) {
 		this(AbysmEntityTypes.FLYING_HARPOON, owner.getX(), owner.getEyeY() - 0.1, owner.getZ(), world, ItemStack.EMPTY, weapon);
 		this.setOwner(owner);
-		Vec3d vec3d = owner.getRotationVec(1.0F).multiply(VELOCITY_POWER);
-		this.setVelocity(vec3d);
+		Vec3d velocity = owner.getRotationVec(1.0F).multiply(VELOCITY_POWER);
+		this.setVelocity(velocity);
 		this.setNoGravity(true);
 		this.slot = slot;
 		if (weapon != null) {
@@ -67,9 +66,11 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY).isBlessed();
 		}
 
-		double d = vec3d.horizontalLength();
-		this.setYaw((float)(MathHelper.atan2(vec3d.x, vec3d.z) * 180.0F / (float)Math.PI));
-		this.setPitch((float)(MathHelper.atan2(vec3d.y, d) * 180.0F / (float)Math.PI));
+		double d = velocity.horizontalLength();
+
+		this.setYaw((float)(MathHelper.atan2(velocity.x, velocity.z) * MathHelper.DEGREES_PER_RADIAN));
+		this.setPitch((float)(MathHelper.atan2(velocity.y, d) * MathHelper.DEGREES_PER_RADIAN));
+
 		this.lastYaw = this.getYaw();
 		this.lastPitch = this.getPitch();
 	}

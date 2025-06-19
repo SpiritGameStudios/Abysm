@@ -164,7 +164,7 @@ public class BloomPetalsBlock extends PlantBlock implements Waterloggable, Ferti
 		BlockState downState = world.getBlockState(downPos);
 
 		if(!downState.isSideSolidFullSquare(world, pos, Direction.UP)) {
-			if (random.nextInt(6) == 0) {
+			if (random.nextInt(10) == 0) {
 				double x = pos.getX() + 0.05 + 0.9 * random.nextFloat();
 				double y = pos.getY() - 0.1 + 0.1 * random.nextFloat();
 				double z = pos.getZ() + 0.05 + 0.9 * random.nextFloat();

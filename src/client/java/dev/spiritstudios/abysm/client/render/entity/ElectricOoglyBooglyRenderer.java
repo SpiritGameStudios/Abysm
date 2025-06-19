@@ -21,6 +21,7 @@ public class ElectricOoglyBooglyRenderer<R extends LivingEntityRenderState & Geo
 	public static final DataTicket<ElectricOoglyBooglyVariant> VARIANT_TICKET = DataTicket.create("oogly_boogly_variant_ticket", ElectricOoglyBooglyVariant.class);
 	public static final DataTicket<Boolean> IS_BLOWING_UP_WITH_MIND = DataTicket.create("oogly_boogly_blowing_up_with_mind_ticket", Boolean.class);
 	public static final DataTicket<Integer> BLOWING_UP_WITH_MIND_TICKS = DataTicket.create("oogly_boogly_blowing_up_with_mind_ticks_ticket", Integer.class);
+
 	public ElectricOoglyBooglyRenderer(EntityRendererFactory.Context context) {
 		super(context, new ElectricOoglyBooglyModel());
 
@@ -30,7 +31,7 @@ public class ElectricOoglyBooglyRenderer<R extends LivingEntityRenderState & Geo
 	@Override
 	public Identifier getTextureLocation(R renderState) {
 		ElectricOoglyBooglyVariant variant = renderState.getGeckolibData(VARIANT_TICKET);
-		if(variant != null && variant.getTexture() != null) return variant.getTexture();
+		if (variant != null && variant.getTexture() != null) return variant.getTexture();
 		return ElectricOoglyBooglyVariant.DEFAULT.getTexture();
 	}
 
@@ -53,7 +54,7 @@ public class ElectricOoglyBooglyRenderer<R extends LivingEntityRenderState & Geo
 		public void setCustomAnimations(AnimationState<ElectricOoglyBooglyEntity> animationState) {
 			// Head turning animation
 			super.setCustomAnimations(animationState);
-			if(!animateTentacles) return;
+			if (!animateTentacles) return;
 
 			float yaw = animationState.getDataOrDefault(DataTickets.ENTITY_BODY_YAW, 0f);
 
@@ -61,13 +62,13 @@ public class ElectricOoglyBooglyRenderer<R extends LivingEntityRenderState & Geo
 			float velX = (float) velocity.getX();
 			float velZ = (float) velocity.getZ();
 
-			float yawRadians = (float) Math.toRadians(yaw);
+			float yawRadians = yaw * MathHelper.RADIANS_PER_DEGREE;
 			float rotX = MathHelper.clamp(MathHelper.sin(yawRadians) * (velX * 15f), -0.75f, 0.75f);
 			float rotZ = MathHelper.clamp(MathHelper.cos(yawRadians) * (velZ * 3f), -0.5f, 0.5f);
 
 			for (String tentacleBone : TENTACLE_BONE_NAMES) {
 				GeoBone bone = getAnimationProcessor().getBone(tentacleBone);
-				if(bone == null) continue;
+				if (bone == null) continue;
 
 				bone.setRotX(bone.getRotX() + rotX);
 				bone.setRotZ(bone.getRotZ() + rotZ);

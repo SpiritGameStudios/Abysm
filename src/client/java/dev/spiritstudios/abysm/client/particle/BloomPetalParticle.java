@@ -48,8 +48,9 @@ public class BloomPetalParticle extends SpriteBillboardParticle {
 
 		this.gravityStrength = gravity * 1.2F * SPEED_SCALE;
 
-		this.angularVelocity = (float)Math.toRadians(this.random.nextBoolean() ? -60.0 : 60.0);
-		this.angularAcceleration = (float)Math.toRadians(this.random.nextBoolean() ? -10.0 : 10.0);
+
+		this.angularVelocity = this.random.nextBoolean() ? -MathHelper.PI / 6.0F : MathHelper.PI / 6.0F;
+		this.angularAcceleration = this.random.nextBoolean() ? -MathHelper.PI / 36.0F : MathHelper.PI / 36.0F;
 
 		this.windStrength = windStrength;
 

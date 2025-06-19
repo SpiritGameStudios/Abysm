@@ -94,9 +94,9 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 			} else {
 				float g = 6.0F / height;
 
-				for (float h = 0.0F; h < (float) (Math.PI * 2); h += g) {
-					int i = (int)(MathHelper.cos(h) * height);
-					int j = (int)(MathHelper.sin(h) * height);
+				for (float theta = 0.0F; theta < MathHelper.PI * 2; theta += g) {
+					int i = (int)(MathHelper.cos(theta) * height);
+					int j = (int)(MathHelper.sin(theta) * height);
 					if (canGenerateOrLava(world, pos.add(i, 0, j))) {
 						return false;
 					}
@@ -109,9 +109,9 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 		boolean canGenerate(StructureWorldAccess world, WindModifier wind) {
 			while (this.scale > 1) {
 				BlockPos.Mutable mutable = this.pos.mutableCopy();
-				int i = Math.min(10, this.getBaseScale());
+				int scale = Math.min(10, this.getBaseScale());
 
-				for (int j = 0; j < i; j++) {
+				for (int i = 0; i < scale; i++) {
 					if (world.getBlockState(mutable).isOf(Blocks.LAVA)) {
 						return false;
 					}
@@ -150,18 +150,18 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 					float horizontalLength = MathHelper.sqrt(x * x + z * z);
 					if (horizontalLength > this.scale) continue;
 
-					int k = this.scale(horizontalLength);
-					if (k <= 0) continue;
+					int scale = this.scale(horizontalLength);
+					if (scale <= 0) continue;
 
 					if (random.nextFloat() < 0.2) {
-						k = (int) (k * MathHelper.nextBetween(random, 0.8F, 1.0F));
+						scale = (int) (scale * MathHelper.nextBetween(random, 0.8F, 1.0F));
 					}
 
 					BlockPos.Mutable pos = this.pos.add(x, 0, z).mutableCopy();
 					boolean bl = false;
 					int l = world.getTopY(Heightmap.Type.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
 
-					for (int m = 0; m < k && pos.getY() < l; m++) {
+					for (int m = 0; m < scale && pos.getY() < l; m++) {
 						BlockPos blockPos = wind.modify(pos);
 						BlockState state = world.getBlockState(blockPos);
 						if (state.isAir() || state.isOf(Blocks.WATER) || state.isOf(Blocks.LAVA)) {
