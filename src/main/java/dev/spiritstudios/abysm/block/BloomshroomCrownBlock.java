@@ -16,8 +16,8 @@ import net.minecraft.world.World;
 public class BloomshroomCrownBlock extends RotatableWaterloggableFlowerBlock {
 	public static final MapCodec<BloomshroomCrownBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
-			AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("glimmer").forGetter(block -> block.glimmerParticle),
-			AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("thorns").forGetter(block -> block.thornsParticle),
+			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("glimmer").forGetter(block -> block.glimmerParticle),
+			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("thorns").forGetter(block -> block.thornsParticle),
 			createSettingsCodec()
 		).apply(instance, BloomshroomCrownBlock::new)
 	);

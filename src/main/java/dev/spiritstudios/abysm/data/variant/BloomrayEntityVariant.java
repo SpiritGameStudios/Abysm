@@ -19,8 +19,8 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 			getNameCodec(),
 			getTextureCodec(),
 			HideableCrownType.CODEC.fieldOf("crown").forGetter(variant -> variant.hideableCrownType),
-			AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("glimmer").forGetter(variant -> variant.glimmerParticle),
-			AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("thorns").forGetter(variant -> variant.thornsParticle)
+			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("glimmer").forGetter(variant -> variant.glimmerParticle),
+			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("thorns").forGetter(variant -> variant.thornsParticle)
 		).apply(instance, BloomrayEntityVariant::new)
 	);
 

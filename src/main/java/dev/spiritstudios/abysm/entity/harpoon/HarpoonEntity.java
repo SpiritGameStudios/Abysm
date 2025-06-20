@@ -102,7 +102,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		if (!this.getWorld().isClient()) {
 			try {
 				ItemStack invStack = owner.getInventory().getStack(this.slot);
-				if (!invStack.isOf(AbysmItems.NOOPRAH) || invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY).isLoaded()) {
+				if (!invStack.isOf(AbysmItems.NOOPRAH) || invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY).loaded()) {
 					this.discard();
 				}
 			} catch (IndexOutOfBoundsException indexOutOfBoundsException) {

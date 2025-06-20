@@ -6,7 +6,7 @@ import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registries;
 
 public class AbysmCodecs {
-	public static final Codec<SimpleParticleType> PARTICLE_TYPE_CODEC = Registries.PARTICLE_TYPE
+	public static final Codec<SimpleParticleType> SIMPLE_PARTICLE_TYPE = Registries.PARTICLE_TYPE
 		.getCodec()
 		.comapFlatMap(
 			particleType -> particleType instanceof SimpleParticleType simpleParticleType

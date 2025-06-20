@@ -16,67 +16,49 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
 
-import java.awt.Color;
-import java.util.Objects;
-import java.util.Optional;
+import java.awt.*;
 import java.util.function.Consumer;
 
 // remind me to implement TooltipAppender later
-public class BlessedComponent implements TooltipAppender {
+public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceShot) implements TooltipAppender {
 
 	public static final BlessedComponent EMPTY = new BlessedComponent.Builder().build();
 
-	protected static final int LIGHT = ColorHelper.fullAlpha(new Color(52, 189, 235).getRGB());
-	protected static final int DARK = ColorHelper.fullAlpha(new Color(48, 115, 171).getRGB());
+	private static final int LIGHT = ColorHelper.fullAlpha(new Color(52, 189, 235).getRGB());
+	private static final int DARK = ColorHelper.fullAlpha(new Color(48, 115, 171).getRGB());
 
 	public static final int SEVEN_HUNDRED = 700;
 	public static final float RECIPROCAL_OF_SEVEN_HUNDRED = 1f / SEVEN_HUNDRED;
 
 	public static final Codec<BlessedComponent> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
-				ItemStack.OPTIONAL_CODEC.optionalFieldOf("heart").forGetter(component-> component.heart),
-				Codec.BOOL.optionalFieldOf("loaded").forGetter(component -> component.loaded),
-				Codec.INT.optionalFieldOf("ticksSinceShot").forGetter(component -> component.ticksSinceShot)
+				ItemStack.OPTIONAL_CODEC.optionalFieldOf("heart", ItemStack.EMPTY).forGetter(component -> component.stack),
+				Codec.BOOL.optionalFieldOf("loaded", true).forGetter(component -> component.loaded),
+				Codec.INT.optionalFieldOf("ticksSinceShot", 0).forGetter(component -> component.ticksSinceShot)
 			)
 			.apply(instance, BlessedComponent::new)
 	);
 
 	public static final PacketCodec<RegistryByteBuf, BlessedComponent> PACKET_CODEC = PacketCodec.tuple(
-		ItemStack.OPTIONAL_PACKET_CODEC.collect(PacketCodecs::optional), (component -> component.heart),
-		PacketCodecs.BOOLEAN.collect(PacketCodecs::optional), (component -> component.loaded),
-		PacketCodecs.VAR_INT.collect(PacketCodecs::optional), (component -> component.ticksSinceShot),
+		ItemStack.PACKET_CODEC, (component -> component.stack),
+		PacketCodecs.BOOLEAN, (component -> component.loaded),
+		PacketCodecs.VAR_INT, (component -> component.ticksSinceShot),
 		BlessedComponent::new
 	);
 
-	private final Optional<ItemStack> heart;
-	private final Optional<Boolean> loaded;
-	private final Optional<Integer> ticksSinceShot;
-
-	public BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceShot) {
-		this(Optional.of(stack), Optional.of(loaded), Optional.of(ticksSinceShot));
-	}
-
-	public BlessedComponent(Optional<ItemStack> stack, Optional<Boolean> loaded, Optional<Integer> ticksSinceShot) {
-		this.heart = stack;
-		this.loaded = loaded;
-		this.ticksSinceShot = ticksSinceShot;
-	}
-
 	public boolean isBlessed() {
-		return !this.getStack().isEmpty();
+		return !this.stack().isEmpty();
 	}
 
 	@Override
 	public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
-		MutableText loaded;
-		if (this.isLoaded()) {
-			loaded = Text.translatable("item.abysm.harpoon.loaded");
-		} else {
-			loaded = Text.translatable("item.abysm.harpoon.not_loaded");
-		}
+		MutableText loaded = this.loaded() ?
+			Text.translatable("item.abysm.harpoon.loaded") :
+			Text.translatable("item.abysm.harpoon.not_loaded");
+
 		textConsumer.accept(loaded.formatted(Formatting.YELLOW, Formatting.UNDERLINE));
 
-		if (!this.getStack().isEmpty()) {
+		if (!this.stack().isEmpty()) {
 			textConsumer.accept(scrollingGradient(Text.translatable("item.abysm.harpoon.blessed"), SEVEN_HUNDRED, RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK, false));
 		}
 	}
@@ -100,35 +82,18 @@ public class BlessedComponent implements TooltipAppender {
 	}
 
 
-	public ItemStack getStack() {
-		return this.heart.orElse(ItemStack.EMPTY);
-	}
-
-	public boolean isLoaded() {
-		return this.loaded.orElse(true);
-	}
-
-	public int getTicksSinceShot() {
-		return this.ticksSinceShot.orElse(0);
-	}
-
 	public Builder buildNew() {
-		return new Builder().stack(this.getStack()).loaded(this.isLoaded()).ticksSinceShot(this.getTicksSinceShot());
+		return new Builder().stack(this.stack()).loaded(this.loaded()).ticksSinceShot(this.ticksSinceShot());
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof BlessedComponent component)) return false;
-		return ItemStack.areItemsAndComponentsEqual(this.getStack(), component.getStack()) && this.isLoaded() == component.isLoaded() && this.getTicksSinceShot() == component.getTicksSinceShot();
+		if (!(o instanceof BlessedComponent(ItemStack stack1, boolean loaded1, int sinceShot))) return false;
+
+		return ItemStack.areItemsAndComponentsEqual(this.stack(), stack1) && this.loaded() == loaded1 && this.ticksSinceShot() == sinceShot;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(heart, loaded, ticksSinceShot);
-	}
-
-    public static class Builder {
-
+	public static class Builder {
 		ItemStack heart = ItemStack.EMPTY;
 		boolean loaded = true;
 		int ticksSinceShot = 0;

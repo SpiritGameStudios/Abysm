@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 public class BloomshroomCapBlock extends Block {
 	public static final MapCodec<BloomshroomCapBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
-			AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
+			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("particle").forGetter(block -> block.particle),
 			createSettingsCodec()
 		).apply(instance, BloomshroomCapBlock::new)
 	);

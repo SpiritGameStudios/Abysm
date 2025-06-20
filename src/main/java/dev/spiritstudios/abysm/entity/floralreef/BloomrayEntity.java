@@ -3,7 +3,6 @@ package dev.spiritstudios.abysm.entity.floralreef;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
-import dev.spiritstudios.abysm.registry.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
@@ -66,11 +65,12 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		if (this.random.nextBoolean()) {
-			this.setVariant(BloomrayEntityVariant.DEFAULT);
-		} else {
-			this.setVariant(this.getRegistryManager().getOrThrow(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT).get(AbysmEntityVariants.SUNNY_BLOOMRAY));
-		}
+		this.getRegistryManager().getOrThrow(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT)
+			.getRandom(random)
+			.ifPresentOrElse(
+				entry -> setVariant(entry.value()),
+				() -> setVariant(BloomrayEntityVariant.DEFAULT)
+			);
 		return super.initialize(world, difficulty, spawnReason, entityData);
 	}
 

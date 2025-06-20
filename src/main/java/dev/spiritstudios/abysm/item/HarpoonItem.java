@@ -47,7 +47,7 @@ public class HarpoonItem extends Item {
 		if (!world.isClient()) {
 			ItemStack stack = user.getStackInHand(hand);
 			BlessedComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
-			if (component.isLoaded()) {
+			if (component.loaded()) {
 				int slot;
 				if (hand == Hand.OFF_HAND) {
 					slot = PlayerInventory.OFF_HAND_SLOT;
@@ -84,10 +84,10 @@ public class HarpoonItem extends Item {
 			}
 		}
 		BlessedComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
-		int ticksSinceLastShot = component.getTicksSinceShot();
+		int ticksSinceLastShot = component.ticksSinceShot();
 		if (ticksSinceLastShot >= 0 && ticksSinceLastShot < 200) {
 			stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().ticksSinceShot(ticksSinceLastShot + 1).build());
-		} else if (ticksSinceLastShot >= 200 && !component.isLoaded()) {
+		} else if (ticksSinceLastShot >= 200 && !component.loaded()) {
 			stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().loaded(true).build());
 		}
 		super.inventoryTick(stack, world, entity, slot);
@@ -122,7 +122,7 @@ public class HarpoonItem extends Item {
 		if (clickType == ClickType.RIGHT) {
 			ItemStack slotStack = slot.getStack();
 			BlessedComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
-			ItemStack componentStack = component.getStack();
+			ItemStack componentStack = component.stack();
 			if (componentStack.isEmpty() && slotStack.isOf(Items.HEART_OF_THE_SEA)) {
 				stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().stack(slotStack.copyWithCount(1)).build());
 				slotStack.decrement(1);

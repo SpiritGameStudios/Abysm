@@ -36,7 +36,7 @@ public class PersistentProjectileEntityMixin {
 					return true;
 				}
 				BlessedComponent component = invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
-				if (component.isLoaded()) {
+				if (component.loaded()) {
 					return true;
 				}
 				invStack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().loaded(true).build());

@@ -29,7 +29,7 @@ import java.util.function.Function;
 
 public class BloomPetalsBlock extends PlantBlock implements Waterloggable, Fertilizable, Segmented {
 	public static final MapCodec<BloomPetalsBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(AbysmCodecs.PARTICLE_TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomPetalsBlock::new)
+		instance -> instance.group(AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("particle").forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomPetalsBlock::new)
 	);
 	public static final EnumProperty<Direction> HORIZONTAL_FACING = Properties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
