@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.data.variant;
 
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.entity.floral_reef.BloomrayEntity;
+import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;

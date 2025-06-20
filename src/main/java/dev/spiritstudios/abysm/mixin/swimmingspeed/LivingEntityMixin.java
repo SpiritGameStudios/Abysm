@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.mixin;
+package dev.spiritstudios.abysm.mixin.swimmingspeed;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.spiritstudios.abysm.registry.AbysmEntityAttributes;

@@ -1,19 +1,24 @@
-package dev.spiritstudios.abysm.entity.floral_reef;
+package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.registry.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.brain.task.TargetUtil;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundGoal;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.SimpleParticleType;
@@ -42,11 +47,6 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	}
 
 	@Override
-	public int getMaxGroupSize() {
-		return super.getMaxGroupSize();
-	}
-
-	@Override
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);
 		builder.add(VARIANT_ID, BloomrayEntityVariant.getDefaultIntId(this.getRegistryManager()));
@@ -72,6 +72,28 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 			this.setVariant(this.getRegistryManager().getOrThrow(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT).get(AbysmEntityVariants.SUNNY_BLOOMRAY));
 		}
 		return super.initialize(world, difficulty, spawnReason, entityData);
+	}
+
+	public static DefaultAttributeContainer.Builder createRayAttributes() {
+		return FishEntity.createFishAttributes()
+			.add(EntityAttributes.MOVEMENT_SPEED, 1);
+	}
+
+	@Override
+	protected EntityNavigation createNavigation(World world) {
+		return super.createNavigation(world);
+	}
+
+	public WanderAroundGoal createWanderGoal() {
+		return new GlideToRandomPlaceGoal(this);
+	}
+
+	@Override
+	protected void pushAway(Entity entity) {
+		if (entity instanceof BloomrayEntity) {
+			return;
+		}
+		super.pushAway(entity);
 	}
 
 	@Override
@@ -141,15 +163,11 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		this.dataTracker.set(VARIANT_ID, variantId);
 	}
 
-	public WanderAroundGoal createWanderGoal() {
-		return new GlideToRandomPlaceGoal(this);
-	}
-
 	public static class GlideToRandomPlaceGoal extends SwimAroundGoal {
 		private final BloomrayEntity bloomray;
 
 		public GlideToRandomPlaceGoal(BloomrayEntity bloomray) {
-			super(bloomray, 1.0, 40);
+			super(bloomray, 2, 10);
 			this.bloomray = bloomray;
 		}
 
@@ -161,7 +179,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		@Nullable
 		@Override
 		protected Vec3d getWanderTarget() {
-			return TargetUtil.find(this.mob, 10, 2);
+			return TargetUtil.find(this.mob, 15, 1);
 		}
 	}
 }

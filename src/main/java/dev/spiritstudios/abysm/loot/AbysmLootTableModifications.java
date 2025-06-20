@@ -2,8 +2,8 @@ package dev.spiritstudios.abysm.loot;
 
 import com.google.common.collect.ImmutableList;
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.mixin.ItemEntryAccessor;
-import dev.spiritstudios.abysm.mixin.LootPoolBuilderAccessor;
+import dev.spiritstudios.abysm.mixin.loottable.ItemEntryAccessor;
+import dev.spiritstudios.abysm.mixin.loottable.LootPoolBuilderAccessor;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;

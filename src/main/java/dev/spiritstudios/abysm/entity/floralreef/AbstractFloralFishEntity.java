@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.entity.floral_reef;
+package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;

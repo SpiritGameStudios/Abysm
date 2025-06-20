@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.mixin;
+package dev.spiritstudios.abysm.mixin.loottable;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.loot.LootPool;

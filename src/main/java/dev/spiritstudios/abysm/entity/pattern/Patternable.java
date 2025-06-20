@@ -38,8 +38,8 @@ import java.util.Optional;
  *
  * See the Small Floral Fish Entity (and its renderer) for examples!
  *
- * @see dev.spiritstudios.abysm.entity.floral_reef.AbstractFloralFishEntity
- * @see dev.spiritstudios.abysm.entity.floral_reef.SmallFloralFishEntity
+ * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity
+ * @see dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity
  * @see dev.spiritstudios.abysm.registry.AbysmEntityPatternVariants
  */
 public interface Patternable {
@@ -48,15 +48,15 @@ public interface Patternable {
 
 	/**
 	 * @return This Entity's EntityPattern. Use the {@link net.minecraft.entity.data.DataTracker#get(TrackedData)} method with your EntityPattern Tracked Data key.
-	 * @see dev.spiritstudios.abysm.entity.floral_reef.AbstractFloralFishEntity#ENTITY_PATTERN
-	 * @see dev.spiritstudios.abysm.entity.floral_reef.AbstractFloralFishEntity#getEntityPattern()
+	 * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity#ENTITY_PATTERN
+	 * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity#getEntityPattern()
 	 */
 	EntityPattern getEntityPattern();
 
 	/**
 	 * @param pattern Set this Entity's EntityPattern. Use {@link net.minecraft.entity.data.DataTracker#set(TrackedData, Object)} with your EntityPattern Tracked Data key.
-	 * @see dev.spiritstudios.abysm.entity.floral_reef.AbstractFloralFishEntity#ENTITY_PATTERN
-	 * @see dev.spiritstudios.abysm.entity.floral_reef.AbstractFloralFishEntity#setEntityPattern(EntityPattern)
+	 * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity#ENTITY_PATTERN
+	 * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity#setEntityPattern(EntityPattern)
 	 */
 	void setEntityPattern(EntityPattern pattern);
 

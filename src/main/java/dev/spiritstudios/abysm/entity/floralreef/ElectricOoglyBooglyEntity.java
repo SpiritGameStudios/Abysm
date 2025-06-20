@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.entity.floral_reef;
+package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;

@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.mixin;
+package dev.spiritstudios.abysm.mixin.loottable;
 
 import net.minecraft.item.Item;
 import net.minecraft.loot.entry.ItemEntry;

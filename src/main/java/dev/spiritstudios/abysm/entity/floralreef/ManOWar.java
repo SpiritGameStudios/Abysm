@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.entity.floral_reef;
+package dev.spiritstudios.abysm.entity.floralreef;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
