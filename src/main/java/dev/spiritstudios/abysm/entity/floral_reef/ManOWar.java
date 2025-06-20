@@ -3,19 +3,18 @@ package dev.spiritstudios.abysm.entity.floral_reef;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.mixin.EntityAttributeInstanceAccessor;
 import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
+import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.SwimNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
@@ -51,10 +50,7 @@ public class ManOWar extends WaterCreatureEntity {
 
 	public static final float INVERSE_MAX_SWAY_OFFSET = 1f / MAX_SWAY_OFFSET;
 
-	protected float prevScale = 1;
 	protected Vec3d prevVelocity = Vec3d.ZERO;
-
-	protected static final double MIN_Y_CHANGE = 0.000001;
 
 	public static final double BASE_TENTACLE_LENGTH = 2.5; // remember that by default, scale is 2 and this value is for scale = 1
 
@@ -67,6 +63,7 @@ public class ManOWar extends WaterCreatureEntity {
 			builder.add(new TentacleData(vec3d, random.nextBetween(MIN_SWAY_OFFSET, MAX_SWAY_OFFSET)));
 		}
 		tentacleData = builder.build();
+		this.calculateDimensions();
 	}
 
 	public static DefaultAttributeContainer.Builder createManOWarAttributes() {
@@ -89,14 +86,6 @@ public class ManOWar extends WaterCreatureEntity {
 
 	@Override
 	public void tick() {
-		float scale = this.getScale();
-		if (this.prevScale != scale) {
-			this.prevScale = scale;
-			EntityAttributeInstance attribute = this.getAttributes().getCustomInstance(EntityAttributes.SCALE);
-			if (attribute != null) {
-				((EntityAttributeInstanceAccessor) attribute).abysm$invokeOnUpdate();
-			}
-		}
 		this.prevVelocity = this.getVelocity();
 		super.tick();
 		if (this.getWorld() instanceof ServerWorld serverWorld) {
@@ -104,10 +93,11 @@ public class ManOWar extends WaterCreatureEntity {
 			DamageSource source = new DamageSource(damageType, this);
 			final double expand = 0.3;
 			Box box = this.getBoundingBox().expand(expand, 0, expand);
-			box = box.withMinY(box.minY - scale * BASE_TENTACLE_LENGTH).withMaxY(box.maxY + expand);
+			box = box.withMinY(box.minY - this.getScale() * BASE_TENTACLE_LENGTH).withMaxY(box.maxY + expand);
+			TargetPredicate targetPredicate = TargetPredicate.createAttackable();
 			serverWorld.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), box, living -> {
 				//noinspection CodeBlock2Expr
-				return living.isAlive() && !living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_FRIEND);
+				return living.isAlive() && !living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_FRIEND) && targetPredicate.test(serverWorld, this, living);
 			}).forEach(living -> {
 				living.damage(serverWorld, source, 5f);
 				living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 4), this);
@@ -221,7 +211,7 @@ public class ManOWar extends WaterCreatureEntity {
 			if (wander == null) {
 				return null;
 			}
-			return new Vec3d(wander.x, Math.max(this.obj.getY() + MIN_Y_CHANGE, wander.y), wander.z);
+			return new Vec3d(wander.x, Math.max(this.obj.getY(), wander.y), wander.z);
 		}
 	}
 
@@ -233,7 +223,7 @@ public class ManOWar extends WaterCreatureEntity {
 
 		@Override
 		protected double adjustTargetY(Vec3d pos) {
-			return Math.max(this.entity.getY() + MIN_Y_CHANGE, super.adjustTargetY(pos));
+			return Math.max(this.entity.getY(), super.adjustTargetY(pos));
 		}
 	}
 

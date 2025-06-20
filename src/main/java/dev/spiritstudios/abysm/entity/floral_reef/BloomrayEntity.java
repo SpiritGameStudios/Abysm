@@ -8,16 +8,15 @@ import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.SwimNavigation;
+import net.minecraft.entity.ai.brain.task.TargetUtil;
+import net.minecraft.entity.ai.goal.SwimAroundGoal;
+import net.minecraft.entity.ai.goal.WanderAroundGoal;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
@@ -37,7 +36,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	// TODO - Mauve variant texture
 	// TODO - Programmatically animate the swimming animation instead of manual animation because that's the only animation that'll probably be needed
 	// TODO - Custom swimming AI to make it glide through the water, reducing the up/down movement amount
-	// TODO - Custom AI for hiding in Bloomshroom crowns when scared(player nearby? Bigger fish/TBD enemy nearby?)
+	// TODO - Custom AI for hiding in Bloomshroom crowns when scared(player nearby? Bigger bloomray/TBD enemy nearby?)
 	public BloomrayEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
 	}
@@ -45,11 +44,6 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	@Override
 	public int getMaxGroupSize() {
 		return super.getMaxGroupSize();
-	}
-
-	@Override
-	protected EntityNavigation createNavigation(World world) {
-		return new GlideNavigation(this, world);
 	}
 
 	@Override
@@ -147,16 +141,27 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		this.dataTracker.set(VARIANT_ID, variantId);
 	}
 
-	public static class GlideNavigation extends SwimNavigation {
+	public WanderAroundGoal createWanderGoal() {
+		return new GlideToRandomPlaceGoal(this);
+	}
 
-		public GlideNavigation(MobEntity mobEntity, World world) {
-			super(mobEntity, world);
+	public static class GlideToRandomPlaceGoal extends SwimAroundGoal {
+		private final BloomrayEntity bloomray;
+
+		public GlideToRandomPlaceGoal(BloomrayEntity bloomray) {
+			super(bloomray, 1.0, 40);
+			this.bloomray = bloomray;
 		}
 
 		@Override
-		protected double adjustTargetY(Vec3d pos) {
-			double y = this.entity.getY();
-			return MathHelper.clamp(pos.y, y - 1, y + 1);
+		public boolean canStart() {
+			return this.bloomray.hasSelfControl() && super.canStart();
+		}
+
+		@Nullable
+		@Override
+		protected Vec3d getWanderTarget() {
+			return TargetUtil.find(this.mob, 10, 2);
 		}
 	}
 }

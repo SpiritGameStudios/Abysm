@@ -4,7 +4,6 @@
 	"package": "dev.spiritstudios.abysm.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"EntityAttributeInstanceAccessor",
 		"ItemEntryAccessor",
 		"LeavesBlockMixin",
 		"LivingEntityMixin",
