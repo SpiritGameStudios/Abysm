@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.client.render.entity;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.AbysmClient;
+import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
 import dev.spiritstudios.abysm.entity.floralreef.ManOWar;
 import net.minecraft.client.render.RenderLayer;

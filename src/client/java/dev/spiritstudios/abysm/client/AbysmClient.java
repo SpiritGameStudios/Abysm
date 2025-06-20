@@ -5,7 +5,7 @@ import dev.spiritstudios.abysm.client.registry.AbysmParticles;
 import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
-import dev.spiritstudios.abysm.client.render.entity.GarbageBagModel;
+import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
@@ -21,7 +21,6 @@ public class AbysmClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-
 		EntityModelLayerRegistry.registerModelLayer(MAN_O_WAR_LAYER, GarbageBagModel::getTexturedModelData);
 
 		EntityRendererRegistry.register(AbysmEntityTypes.SMALL_FLORAL_FISH, SmallFloralFishEntityRenderer::new);

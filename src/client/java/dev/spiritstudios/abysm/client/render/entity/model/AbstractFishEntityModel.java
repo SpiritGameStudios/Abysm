@@ -1,5 +1,6 @@
-package dev.spiritstudios.abysm.client.render.entity;
+package dev.spiritstudios.abysm.client.render.entity.model;
 
+import dev.spiritstudios.abysm.client.render.entity.AbstractFishEntityRenderer;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;

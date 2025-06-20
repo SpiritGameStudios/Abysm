@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.client.render.entity;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.feature.EntityPatternFeatureRenderer;
+import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;

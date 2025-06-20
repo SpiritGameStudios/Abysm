@@ -32,7 +32,7 @@ public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 
 	public static final Codec<BlessedComponent> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
-				ItemStack.OPTIONAL_CODEC.optionalFieldOf("heart", ItemStack.EMPTY).forGetter(component -> component.stack),
+				ItemStack.OPTIONAL_CODEC.fieldOf("heart").forGetter(component -> component.stack),
 				Codec.BOOL.optionalFieldOf("loaded", true).forGetter(component -> component.loaded),
 				Codec.INT.optionalFieldOf("ticksSinceShot", 0).forGetter(component -> component.ticksSinceShot)
 			)
@@ -40,14 +40,14 @@ public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 	);
 
 	public static final PacketCodec<RegistryByteBuf, BlessedComponent> PACKET_CODEC = PacketCodec.tuple(
-		ItemStack.PACKET_CODEC, (component -> component.stack),
+		ItemStack.OPTIONAL_PACKET_CODEC, (component -> component.stack),
 		PacketCodecs.BOOLEAN, (component -> component.loaded),
 		PacketCodecs.VAR_INT, (component -> component.ticksSinceShot),
 		BlessedComponent::new
 	);
 
 	public boolean isBlessed() {
-		return !this.stack().isEmpty();
+		return !this.stack.isEmpty();
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 
 		textConsumer.accept(loaded.formatted(Formatting.YELLOW, Formatting.UNDERLINE));
 
-		if (!this.stack().isEmpty()) {
+		if (isBlessed()) {
 			textConsumer.accept(scrollingGradient(Text.translatable("item.abysm.harpoon.blessed"), SEVEN_HUNDRED, RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK, false));
 		}
 	}
