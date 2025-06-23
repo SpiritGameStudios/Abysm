@@ -78,7 +78,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 
 	public static DefaultAttributeContainer.Builder createRayAttributes() {
 		return FishEntity.createFishAttributes()
-			.add(EntityAttributes.MOVEMENT_SPEED, 0.9);
+			.add(EntityAttributes.MOVEMENT_SPEED, 0.85);
 	}
 
 	@Override
@@ -194,7 +194,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		@Nullable
 		@Override
 		protected Vec3d getWanderTarget() {
-			return TargetUtil.find(this.mob, 20, 1);
+			return TargetUtil.find(this.mob, 18, 1);
 		}
 	}
 }
