@@ -4,7 +4,7 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.AbysmClient;
 import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
-import dev.spiritstudios.abysm.entity.floralreef.ManOWar;
+import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -20,7 +20,7 @@ import net.minecraft.util.math.Vec3d;
 
 import java.awt.Color;
 
-public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWar, ManOWarRenderState, GarbageBagModel> {
+public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManOWarRenderState, GarbageBagModel> {
 
 	protected static final Identifier TEXTURE = Abysm.id("textures/entity/man_o_war.png");
 	public static final int TENTACLE_ARGB = ColorHelper.fullAlpha(new Color(5, 41, 66).getRGB());
@@ -44,7 +44,7 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWar, ManOWarRen
 	}
 
 	@Override
-	public void updateRenderState(ManOWar manOWar, ManOWarRenderState state, float tickProgress) {
+	public void updateRenderState(ManOWarEntity manOWar, ManOWarRenderState state, float tickProgress) {
 		super.updateRenderState(manOWar, state, tickProgress);
 		state.velocity = manOWar.getPrevVelocity().lerp(manOWar.getVelocity(), tickProgress);
 		state.tentacleData = manOWar.tentacleData;
@@ -62,7 +62,7 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWar, ManOWarRen
 		}
 		matrixStack.push();
 		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.LINES);
-		Vec3d line = new Vec3d(0, ManOWar.BASE_TENTACLE_LENGTH, MathHelper.clamp(state.velocity.horizontalLengthSquared() * 500, 1.0E-7, 1.2) * 0.5);
+		Vec3d line = new Vec3d(0, ManOWarEntity.BASE_TENTACLE_LENGTH, MathHelper.clamp(state.velocity.horizontalLengthSquared() * 500, 1.0E-7, 1.2) * 0.5);
 		long time = Util.getMeasuringTimeMs();
 		state.tentacleData.forEach(tentacle -> {
 			matrixStack.push();
@@ -71,7 +71,7 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWar, ManOWarRen
 				vertexConsumer,
 				tentacle.relativePosition().toVector3f(),
 				line.add(0, 0,
-					(MathHelper.sin((time + tentacle.swayOffset()) * ManOWar.INVERSE_MAX_SWAY_OFFSET) + 1) * 0.2),
+					(MathHelper.sin((time + tentacle.swayOffset()) * ManOWarEntity.INVERSE_MAX_SWAY_OFFSET) + 1) * 0.2),
 				TENTACLE_ARGB);
 			matrixStack.pop();
 		});

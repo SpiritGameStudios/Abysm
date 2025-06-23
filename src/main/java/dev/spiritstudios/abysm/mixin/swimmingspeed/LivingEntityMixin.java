@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm.mixin.swimmingspeed;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.spiritstudios.abysm.registry.AbysmEntityAttributes;
 import net.minecraft.entity.Entity;
@@ -25,8 +26,7 @@ public abstract class LivingEntityMixin extends Entity {
         super(type, world);
     }
 
-    // Warning: I don't think this injector chains
-    @ModifyConstant(method = "travelInFluid", constant = @Constant(floatValue = 0.9F))
+    @ModifyExpressionValue(method = "travelInFluid", at = @At(value = "CONSTANT", args = "floatValue=0.9"))
     private float applySpecialFluidMovingSpeed(float constant) {
         if (this.isSprinting()) return (float) getAttributeValue(AbysmEntityAttributes.SWIMMING_SPEED);
         return constant;

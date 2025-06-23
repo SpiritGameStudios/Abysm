@@ -3,10 +3,12 @@ package dev.spiritstudios.abysm.entity.floralreef;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
+import dev.spiritstudios.abysm.registry.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.brain.task.TargetUtil;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
@@ -76,9 +78,22 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 
 	public static DefaultAttributeContainer.Builder createRayAttributes() {
 		return FishEntity.createFishAttributes()
-			.add(EntityAttributes.MOVEMENT_SPEED, 1);
+			.add(EntityAttributes.MOVEMENT_SPEED, 0.9);
 	}
 
+	@Override
+	public void travel(Vec3d movementInput) {
+		if (this.isTouchingWater()) {
+			this.updateVelocity(this.getMovementSpeed() * 0.02F, movementInput);
+			this.move(MovementType.SELF, this.getVelocity());
+			this.setVelocity(this.getVelocity().multiply(0.9));
+			if (this.getTarget() == null) {
+				this.setVelocity(this.getVelocity().add(0.0, -0.005, 0.0));
+			}
+		} else {
+			super.travel(movementInput);
+		}
+	}
 	@Override
 	protected EntityNavigation createNavigation(World world) {
 		return super.createNavigation(world);
@@ -167,7 +182,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		private final BloomrayEntity bloomray;
 
 		public GlideToRandomPlaceGoal(BloomrayEntity bloomray) {
-			super(bloomray, 2, 10);
+			super(bloomray, 1.0, 10);
 			this.bloomray = bloomray;
 		}
 
@@ -179,7 +194,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		@Nullable
 		@Override
 		protected Vec3d getWanderTarget() {
-			return TargetUtil.find(this.mob, 15, 1);
+			return TargetUtil.find(this.mob, 20, 1);
 		}
 	}
 }

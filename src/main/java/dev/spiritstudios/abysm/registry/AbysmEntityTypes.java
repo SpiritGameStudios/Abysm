@@ -4,7 +4,7 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.ElectricOoglyBooglyEntity;
-import dev.spiritstudios.abysm.entity.floralreef.ManOWar;
+import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -39,7 +39,7 @@ public class AbysmEntityTypes {
 		"bloomray",
 		EntityType.Builder
 			.create(BloomrayEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(4f, 1.5f)
+			.dimensions(3.8f, 1f)
 			.maxTrackingRange(4)
 	);
 
@@ -62,10 +62,10 @@ public class AbysmEntityTypes {
 			.trackingTickInterval(5)
 	);
 
-	public static final EntityType<ManOWar> MAN_O_WAR = register(
+	public static final EntityType<ManOWarEntity> MAN_O_WAR = register(
 		"man_o_war",
 		EntityType.Builder
-			.create(ManOWar::new, SpawnGroup.WATER_AMBIENT)
+			.create(ManOWarEntity::new, SpawnGroup.WATER_AMBIENT)
 			.dimensions(0.75f, 0.4f)
 			.maxTrackingRange(4)
 	);
@@ -87,7 +87,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(BIG_FLORAL_FISH, BigFloralFishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createRayAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWar.createManOWarAttributes());
+		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());
 	}
 
 }

@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManOWar extends WaterCreatureEntity {
+public class ManOWarEntity extends WaterCreatureEntity {
 
 	public static final List<Vec3d> STARTING_OFFSETS;
 
@@ -54,7 +54,7 @@ public class ManOWar extends WaterCreatureEntity {
 
 	public static final double BASE_TENTACLE_LENGTH = 2.5; // remember that by default, scale is 2 and this value is for scale = 1
 
-	public ManOWar(EntityType<? extends WaterCreatureEntity> entityType, World world) {
+	public ManOWarEntity(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
 		this.moveControl = new GarbageMoveControl(this);
 		ImmutableList.Builder<TentacleData> builder = ImmutableList.builder();
@@ -156,9 +156,9 @@ public class ManOWar extends WaterCreatureEntity {
 	}
 
 	public static class GarbageMoveControl extends MoveControl {
-		protected final ManOWar obj;
+		protected final ManOWarEntity obj;
 
-		public GarbageMoveControl(ManOWar owner) {
+		public GarbageMoveControl(ManOWarEntity owner) {
 			super(owner);
 			this.obj = owner;
 		}
@@ -192,9 +192,9 @@ public class ManOWar extends WaterCreatureEntity {
 	}
 
 	public static class DriftToRandomPlaceGoal extends SwimAroundGoal {
-		protected final ManOWar obj;
+		protected final ManOWarEntity obj;
 
-		public DriftToRandomPlaceGoal(ManOWar owner) {
+		public DriftToRandomPlaceGoal(ManOWarEntity owner) {
 			super(owner, 1.0, 40);
 			this.obj = owner;
 		}
