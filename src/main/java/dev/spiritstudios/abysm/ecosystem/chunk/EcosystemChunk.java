@@ -51,11 +51,12 @@ public class EcosystemChunk {
 	}
 
 	public PopInfo getPopInfo(EcosystemType<?> type) {
-		return this.entityPopulation.getOrDefault(type, new PopInfo(type));
+		return this.entityPopulation.computeIfAbsent(type, PopInfo::new);
 	}
 
 	public static class PopInfo {
 		public final EcosystemType<?> type;
+		// Replace with a World field and List of the Entity's int ids?
 		public List<MobEntity> entities = new ArrayList<>();
 
 		public PopInfo(EcosystemType<?> type) {
