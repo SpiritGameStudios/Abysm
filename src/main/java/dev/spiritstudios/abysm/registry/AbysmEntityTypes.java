@@ -1,12 +1,8 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
-import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
-import dev.spiritstudios.abysm.entity.floralreef.ElectricOoglyBooglyEntity;
-import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
+import dev.spiritstudios.abysm.entity.floralreef.*;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
-import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -38,7 +34,7 @@ public class AbysmEntityTypes {
 	public static final EntityType<BloomrayEntity> BLOOMRAY = register(
 		"bloomray",
 		EntityType.Builder
-			.create(BloomrayEntity::new, SpawnGroup.WATER_AMBIENT)
+			.create(BloomrayEntity::new, SpawnGroup.WATER_CREATURE)
 			.dimensions(3.8f, 1f)
 			.maxTrackingRange(4)
 	);
