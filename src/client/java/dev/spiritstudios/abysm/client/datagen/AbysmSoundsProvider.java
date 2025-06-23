@@ -20,15 +20,22 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 		exporter.add(
 			AbysmSoundEvents.MUSIC_OVERWORLD_FLORAL_REEF,
 			SoundTypeBuilder.of()
-				.sound(ofFile("music/game/cichlid").stream(true))
+				.sound(ofFile("music/game/cichlid").stream(true).volume(0.4F))
 				.category(SoundCategory.MUSIC)
 		);
 		exporter.add(
+			AbysmSoundEvents.MUSIC_OVERWORLD_DEEP_SEA_RUINS,
+			SoundTypeBuilder.of()
+				.sound(ofFile("music/game/colossal_codecs").stream(true).volume(0.4F))
+				.category(SoundCategory.MUSIC)
+		);
+
+		exporter.add(
 			AbysmSoundEvents.SOUND_ENTITY_BLOOMRAY,
 			SoundTypeBuilder.of()
-				.sound(ofFile("entity/bloomray/bloomray_1"))
-				.sound(ofFile("entity/bloomray/bloomray_2"))
-				.sound(ofFile("entity/bloomray/bloomray_3"))
+				.sound(ofFile("entity/bloomray/bloomray_1").volume(0.4F))
+				.sound(ofFile("entity/bloomray/bloomray_2").volume(0.4F))
+				.sound(ofFile("entity/bloomray/bloomray_3").volume(0.4F))
 				.category(SoundCategory.NEUTRAL)
 		);
 	}

@@ -9,6 +9,8 @@ import net.minecraft.util.Identifier;
 
 public class AbysmSoundEvents {
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_FLORAL_REEF = registerReference("music.overworld.floral_reef");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_DEEP_SEA_RUINS = registerReference("music.overworld.deep_sea_ruins");
+
 	public static final RegistryEntry.Reference<SoundEvent> SOUND_ENTITY_BLOOMRAY = registerReference("entity.bloomray");
 
 	private static SoundEvent register(String path) {

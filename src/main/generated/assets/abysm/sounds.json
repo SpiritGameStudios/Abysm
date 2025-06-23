@@ -2,9 +2,28 @@
   "entity.bloomray": {
     "category": "neutral",
     "sounds": [
-      "abysm:entity/bloomray/bloomray_1",
-      "abysm:entity/bloomray/bloomray_2",
-      "abysm:entity/bloomray/bloomray_3"
+      {
+        "volume": 0.4,
+        "name": "abysm:entity/bloomray/bloomray_1"
+      },
+      {
+        "volume": 0.4,
+        "name": "abysm:entity/bloomray/bloomray_2"
+      },
+      {
+        "volume": 0.4,
+        "name": "abysm:entity/bloomray/bloomray_3"
+      }
+    ]
+  },
+  "music.overworld.deep_sea_ruins": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/colossal_codecs"
+      }
     ]
   },
   "music.overworld.floral_reef": {
@@ -12,6 +31,7 @@
     "sounds": [
       {
         "stream": true,
+        "volume": 0.4,
         "name": "abysm:music/game/cichlid"
       }
     ]
