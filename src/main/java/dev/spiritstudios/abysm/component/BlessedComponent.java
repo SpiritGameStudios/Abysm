@@ -19,7 +19,6 @@ import net.minecraft.util.math.ColorHelper;
 import java.awt.*;
 import java.util.function.Consumer;
 
-// remind me to implement TooltipAppender later
 public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceShot) implements TooltipAppender {
 
 	public static final BlessedComponent EMPTY = new BlessedComponent.Builder().build();
@@ -40,9 +39,9 @@ public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 	);
 
 	public static final PacketCodec<RegistryByteBuf, BlessedComponent> PACKET_CODEC = PacketCodec.tuple(
-		ItemStack.OPTIONAL_PACKET_CODEC, (component -> component.stack),
-		PacketCodecs.BOOLEAN, (component -> component.loaded),
-		PacketCodecs.VAR_INT, (component -> component.ticksSinceShot),
+		ItemStack.OPTIONAL_PACKET_CODEC, component -> component.stack,
+		PacketCodecs.BOOLEAN, component -> component.loaded,
+		PacketCodecs.VAR_INT, component -> component.ticksSinceShot,
 		BlessedComponent::new
 	);
 

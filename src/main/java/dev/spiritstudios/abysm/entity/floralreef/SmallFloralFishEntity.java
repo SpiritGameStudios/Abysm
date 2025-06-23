@@ -2,19 +2,16 @@ package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
-import dev.spiritstudios.abysm.entity.ecosystem.EcologicalEntity;
-import dev.spiritstudios.abysm.entity.ecosystem.EcosystemLogic;
+import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
+import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
+import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
-import net.minecraft.block.Block;
+import dev.spiritstudios.abysm.registry.EcosystemTypes;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class SmallFloralFishEntity extends AbstractFloralFishEntity implements EcologicalEntity {
 	public static final EntityPatternVariant DEFAULT_PATTERN_VARIANT = new EntityPatternVariant(
@@ -42,18 +39,8 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 	}
 
 	@Override
-	public List<Class<? extends LivingEntity>> definePredators() {
-		return List.of(BloomrayEntity.class);
-	}
-
-	@Override
-	public List<Class<? extends LivingEntity>> definePrey() {
-		return List.of(ElectricOoglyBooglyEntity.class);
-	}
-
-	@Override
-	public List<Block> definePlants() {
-		return List.of(AbysmBlocks.BLUE_SCABIOSA);
+	public EcosystemType<?> getEcosystemType() {
+		return EcosystemTypes.SMALL_FLORAL_FISH;
 	}
 
 	@Override

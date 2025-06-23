@@ -1,10 +1,20 @@
 package dev.spiritstudios.abysm;
 
-import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
-import dev.spiritstudios.abysm.registry.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
-import dev.spiritstudios.abysm.registry.*;
+import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
+import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.registry.AbysmEntityAttributes;
+import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
+import dev.spiritstudios.abysm.registry.AbysmFeatures;
+import dev.spiritstudios.abysm.registry.AbysmFoliagePlacerTypes;
+import dev.spiritstudios.abysm.registry.AbysmItems;
+import dev.spiritstudios.abysm.registry.AbysmParticleTypes;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
+import dev.spiritstudios.abysm.registry.AbysmSpawnRestrictions;
+import dev.spiritstudios.abysm.registry.AbysmTrunkPlacerTypes;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.specter.api.registry.RegistryHelper;
 import net.fabricmc.api.ModInitializer;
