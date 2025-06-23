@@ -2,15 +2,12 @@ package dev.spiritstudios.abysm.client.render.entity.model;
 
 import dev.spiritstudios.abysm.client.render.entity.AbstractFishEntityRenderer;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.processing.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 /**
  * Basic GeckoLib Entity Model for fish entities. Handles things like flapping the tail bone and rotating the body bone(constructor param) while swimming.<br><br>
@@ -20,8 +17,6 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
  * @see dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer.SmallFloralFishEntityModel
  */
 public abstract class AbstractFishEntityModel<T extends GeoAnimatable> extends DefaultedEntityGeoModel<T> {
-	public static final DataTicket<Boolean> TEST_TICKET = DataTicket.create("test", Boolean.class);
-
 	// The names of the bones groups (the folders in BlockBench) to animate the swimming animation
 	// The body animation is optional, defined in the constructor
 	public static final String TAIL = "tail";
@@ -37,12 +32,6 @@ public abstract class AbstractFishEntityModel<T extends GeoAnimatable> extends D
 
 	public AbstractFishEntityModel(Identifier assetSubpath, boolean animateBodyAndTail) {
 		this(assetSubpath, animateBodyAndTail, false);
-	}
-
-	@Override
-	public void addAdditionalStateData(T animatable, GeoRenderState renderState) {
-		LivingEntity entity = (LivingEntity) animatable;
-		renderState.addGeckolibData(TEST_TICKET, !entity.isBaby());
 	}
 
 	@Override
