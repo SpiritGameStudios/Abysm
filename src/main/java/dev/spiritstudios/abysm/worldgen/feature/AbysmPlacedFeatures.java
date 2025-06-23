@@ -9,6 +9,7 @@ import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
@@ -61,6 +62,7 @@ public class AbysmPlacedFeatures {
 			SquarePlacementModifier.of(),
 			PlacedFeatures.OCEAN_FLOOR_WG_HEIGHTMAP,
 			wouldSurvive(AbysmBlocks.MAUVE_BLOOMSHROOM),
+			belowSurfaceModifier(12),
 			BiomePlacementModifier.of()
 		);
 
@@ -129,7 +131,12 @@ public class AbysmPlacedFeatures {
 			SquarePlacementModifier.of(),
 			PlacedFeatures.OCEAN_FLOOR_WG_HEIGHTMAP,
 			wouldSurvive(bloomShroom),
+			belowSurfaceModifier(12),
 			BiomePlacementModifier.of()
 		);
+	}
+
+	private static PlacementModifier belowSurfaceModifier(int depth) {
+		return SurfaceThresholdFilterPlacementModifier.of(Heightmap.Type.WORLD_SURFACE_WG, Integer.MIN_VALUE, -depth);
 	}
 }
