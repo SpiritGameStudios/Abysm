@@ -38,6 +38,13 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofFile("entity/bloomray/bloomray_3").volume(0.4F))
 				.category(SoundCategory.NEUTRAL)
 		);
+
+		exporter.add(
+			AbysmSoundEvents.MUSIC_DISC_RENAISSANCE,
+			SoundTypeBuilder.of()
+				.sound(ofFile("records/renaissance").stream(true).volume(0.4F))
+				.category(SoundCategory.RECORDS)
+		);
 	}
 
 	private SoundTypeBuilder.EntryBuilder ofFile(String path) {

@@ -68,6 +68,14 @@ public final class AbysmItems {
 		settings -> new SpawnEggItem(AbysmEntityTypes.MAN_O_WAR, settings)
 	);
 
+	public static final Item MUSIC_DISC_RENAISSANCE = register(
+		"music_disc_renaissance",
+		new Item.Settings()
+			.maxCount(1)
+			.rarity(Rarity.RARE)
+			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("renaissance")))
+	);
+
     private static RegistryKey<Item> keyOf(String id) {
         return RegistryKey.of(RegistryKeys.ITEM, Abysm.id(id));
     }
