@@ -3,7 +3,6 @@ package dev.spiritstudios.abysm.entity.floralreef;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
-import dev.spiritstudios.abysm.registry.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
@@ -13,7 +12,6 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.brain.task.TargetUtil;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundGoal;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
@@ -94,10 +92,6 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 			super.travel(movementInput);
 		}
 	}
-	@Override
-	protected EntityNavigation createNavigation(World world) {
-		return super.createNavigation(world);
-	}
 
 	public WanderAroundGoal createWanderGoal() {
 		return new GlideToRandomPlaceGoal(this);
@@ -109,6 +103,18 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 			return;
 		}
 		super.pushAway(entity);
+	}
+
+	@Override
+	public void tick() {
+		/*
+		// for some reason, the bloomray's yaw temporarily desyncs (sometimes) when moving to a new location
+		float diff = Math.abs(this.bodyYaw - this.lastBodyYaw);
+		if (diff > 1) {
+			Abysm.LOGGER.info("Change in bodyYaw was {}, bodyYaw was {}, lastBodyYaw was {}", diff, this.bodyYaw, this.lastBodyYaw);
+		}
+		 */
+		super.tick();
 	}
 
 	@Override
@@ -188,7 +194,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		@Nullable
 		@Override
 		protected Vec3d getWanderTarget() {
-			return TargetUtil.find(this.mob, 18, 1);
+			return TargetUtil.find(this.mob, 17, 2);
 		}
 	}
 }
