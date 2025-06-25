@@ -323,6 +323,10 @@
     {
       "count": 1,
       "id": "abysm:man_o_war_spawn_egg"
+    },
+    {
+      "count": 1,
+      "id": "abysm:music_disc_renaissance"
     }
   ],
   "translate": "item_group.abysm.abysm"
