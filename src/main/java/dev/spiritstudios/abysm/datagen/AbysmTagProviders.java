@@ -1,13 +1,13 @@
 package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
-import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
-import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
-import dev.spiritstudios.abysm.registry.tags.AbysmItemTags;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
+import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
+import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
+import dev.spiritstudios.abysm.registry.tags.AbysmItemTags;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -27,6 +27,9 @@ import net.minecraft.registry.tag.*;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class AbysmTagProviders {
@@ -267,8 +270,17 @@ public class AbysmTagProviders {
 
 		public void addFamilyToTag(BlockFamily family, TagKey<Block> tag) {
 			FabricTagBuilder builder = getOrCreateTagBuilder(tag);
+
+			// family.getVariants() gives a HashMap, so sort it for consistent ordering
+			Collection<Block> blocks = family.getVariants().values();
+			List<Block> blocksSorted = blocks.stream().sorted((b1, b2) -> {
+				char[] c1 = b1.getTranslationKey().toCharArray();
+				char[] c2 = b2.getTranslationKey().toCharArray();
+				return Arrays.compare(c1, c2);
+			}).toList();
+
 			builder.add(family.getBaseBlock());
-			for(Block block : family.getVariants().values()) {
+			for(Block block : blocksSorted) {
 				builder.add(block);
 			}
 		}
