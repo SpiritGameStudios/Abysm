@@ -2,13 +2,10 @@ package dev.spiritstudios.abysm.client;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
-import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
-import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
-import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.AbysmRenderPipelines;
+import dev.spiritstudios.abysm.client.render.entity.*;
 import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -31,5 +28,6 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.MAN_O_WAR, ManOWarEntityRenderer::new);
 
 		AbysmParticles.init();
+		AbysmRenderPipelines.init();
     }
 }

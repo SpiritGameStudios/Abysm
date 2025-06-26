@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "ChatScreenMixin",
+    "ClientPlayerEntityMixin",
     "GlResourceManagerMixin",
+    "LightmapTextureManagerMixin",
     "WaterSuspendParticleMixin",
     "WorldRendererMixin"
   ],
