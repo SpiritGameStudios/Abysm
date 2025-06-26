@@ -1,20 +1,21 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "dev.spiritstudios.abysm.client.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "client": [
-    "ChatScreenMixin",
-    "ClientPlayerEntityMixin",
-    "GlResourceManagerMixin",
-    "LightmapTextureManagerMixin",
-    "WaterSuspendParticleMixin",
-    "WorldRendererMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "mixins": [
-    "LivingEntityRendererMixin"
-  ]
+	"required": true,
+	"minVersion": "0.8",
+	"package": "dev.spiritstudios.abysm.client.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"BackgroundRendererMixin",
+		"ChatScreenMixin",
+		"ClientPlayerEntityMixin",
+		"GlResourceManagerMixin",
+		"LightmapTextureManagerMixin",
+		"WaterSuspendParticleMixin",
+		"WorldRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"mixins": [
+		"LivingEntityRendererMixin"
+	]
 }
