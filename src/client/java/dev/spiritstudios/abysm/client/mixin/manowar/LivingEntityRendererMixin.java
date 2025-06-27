@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin;
+package dev.spiritstudios.abysm.client.mixin.manowar;
 
 import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;

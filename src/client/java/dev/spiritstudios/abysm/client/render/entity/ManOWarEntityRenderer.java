@@ -1,21 +1,28 @@
 package dev.spiritstudios.abysm.client.render.entity;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
 import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.Frustum;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.render.entity.state.EntityHitboxAndView;
+import net.minecraft.client.render.entity.state.EntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
 
@@ -47,6 +54,7 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 		super.updateRenderState(manOWar, state, tickProgress);
 		state.velocity = manOWar.getPrevVelocity().lerp(manOWar.getVelocity(), tickProgress);
 		state.tentacleData = manOWar.tentacleData;
+		state.tentacleBox = manOWar.getTentacleBox();
 	}
 
 	@Override
@@ -60,14 +68,14 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 			return;
 		}
 		matrixStack.push();
-		VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.LINES);
+		VertexConsumer lines = vertexConsumerProvider.getBuffer(RenderLayer.LINES);
 		Vec3d line = new Vec3d(0, ManOWarEntity.BASE_TENTACLE_LENGTH, MathHelper.clamp(state.velocity.horizontalLengthSquared() * 500, 1.0E-7, 1.2) * 0.5);
 		long time = Util.getMeasuringTimeMs();
 		state.tentacleData.forEach(tentacle -> {
 			matrixStack.push();
 			matrixStack.translate(0, 1.5, 0);
 			VertexRendering.drawVector(matrixStack,
-				vertexConsumer,
+				lines,
 				tentacle.relativePosition().toVector3f(),
 				line.add(0, 0,
 					(MathHelper.sin((time + tentacle.swayOffset()) * ManOWarEntity.INVERSE_MAX_SWAY_OFFSET) + 1) * 0.2),
@@ -75,5 +83,19 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 			matrixStack.pop();
 		});
 		matrixStack.pop();
+	}
+
+	public static void renderTentacleBox(MatrixStack matrices, VertexConsumer lines, ManOWarRenderState state) {
+		matrices.push();
+		Box box = state.tentacleBox;
+		Vec3d center = box.getCenter();
+		matrices.translate(-center.x, -center.y - state.baseScale, -center.z);
+		VertexRendering.drawBox(matrices, lines, box, 0, 1, 0, 1);
+		matrices.pop();
+	}
+
+	@Override
+	public boolean shouldRender(ManOWarEntity entity, Frustum frustum, double x, double y, double z) {
+		return true;
 	}
 }

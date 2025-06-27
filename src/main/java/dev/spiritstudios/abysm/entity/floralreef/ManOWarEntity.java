@@ -104,11 +104,8 @@ public class ManOWarEntity extends WaterCreatureEntity {
 		if (this.getWorld() instanceof ServerWorld serverWorld) {
 			RegistryEntry<DamageType> damageType = AbysmDamageTypes.getFromWorld(serverWorld, AbysmDamageTypes.CNIDOCYTE_STING);
 			DamageSource source = new DamageSource(damageType, this);
-			final double expand = 0.3;
-			Box box = this.getBoundingBox().expand(expand, 0, expand);
-			box = box.withMinY(box.minY - this.getScale() * BASE_TENTACLE_LENGTH).withMaxY(box.maxY + expand);
 			TargetPredicate targetPredicate = TargetPredicate.createAttackable();
-			serverWorld.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), box, living -> {
+			serverWorld.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), this.getTentacleBox(), living -> {
 				//noinspection CodeBlock2Expr
 				return living.isAlive() && !living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_FRIEND) && targetPredicate.test(serverWorld, this, living);
 			}).forEach(living -> {
@@ -120,6 +117,12 @@ public class ManOWarEntity extends WaterCreatureEntity {
 				}
 			});
 		}
+	}
+
+	public Box getTentacleBox() {
+		final double expand = 0.3;
+		Box box = this.getBoundingBox().expand(expand, 0, expand);
+		return box.withMinY(box.minY - this.getScale() * BASE_TENTACLE_LENGTH).withMaxY(box.maxY + expand);
 	}
 
 	@Override

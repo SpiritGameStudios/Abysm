@@ -10,12 +10,13 @@
 		"GlResourceManagerMixin",
 		"LightmapTextureManagerMixin",
 		"WaterSuspendParticleMixin",
-		"WorldRendererMixin"
+		"WorldRendererMixin",
+		"manowar.EntityRenderDispatcherMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
 	},
 	"mixins": [
-		"LivingEntityRendererMixin"
+		"manowar.LivingEntityRendererMixin"
 	]
 }
