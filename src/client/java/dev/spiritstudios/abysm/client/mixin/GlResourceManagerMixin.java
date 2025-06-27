@@ -6,10 +6,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 /* TODO: Merge into specter
-Temporary fix for me to not crash
+Patch for a vanilla bug, validation being turned on causes breeze renderers to break.
  */
 @Mixin(GlResourceManager.class)
-public class GlResourceManagerMixin {
+public abstract class GlResourceManagerMixin {
 
 	@ModifyExpressionValue(method = "setupRenderPass", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gl/RenderPassImpl;IS_DEVELOPMENT:Z"))
 	private boolean noCrash(boolean original) {

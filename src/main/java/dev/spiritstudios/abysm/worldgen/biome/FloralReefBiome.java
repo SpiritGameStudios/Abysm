@@ -66,12 +66,12 @@ public final class FloralReefBiome extends AbysmBiome {
 			.spawn(
 				SpawnGroup.WATER_AMBIENT,
 				50,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.BIG_FLORAL_FISH, 8, 8)
+				new SpawnSettings.SpawnEntry(AbysmEntityTypes.BIG_FLORAL_FISH, 8, 16)
 			)
 			.spawn(
 				SpawnGroup.WATER_AMBIENT,
 				50,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.SMALL_FLORAL_FISH, 8, 8)
+				new SpawnSettings.SpawnEntry(AbysmEntityTypes.SMALL_FLORAL_FISH, 8, 16)
 			)
 			.spawn(
 				SpawnGroup.WATER_CREATURE,

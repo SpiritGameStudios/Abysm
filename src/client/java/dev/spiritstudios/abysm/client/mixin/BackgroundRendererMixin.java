@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BackgroundRenderer.class)
-public class BackgroundRendererMixin {
+public abstract class BackgroundRendererMixin {
 
 	@Shadow
 	private static long lastWaterFogColorUpdateTime;
@@ -33,13 +33,13 @@ public class BackgroundRendererMixin {
 	private static int adjustWaterFogColor(int value, Camera camera, float tickProgress, ClientWorld world, int clampedViewDistance, float skyDarkness) {
 		CameraSubmersionType cameraSubmersionType = camera.getSubmersionType();
 		if(cameraSubmersionType == CameraSubmersionType.WATER) {
-			double lightness = 0.5 + 2.0 * MathHelper.clamp(MathHelper.cos(world.getSkyAngle(1.0F) * (float) (Math.PI * 2)), -0.25, 0.25);
+			float lightness = 0.5F + 2.0F * MathHelper.clamp(MathHelper.cos(world.getSkyAngle(1.0F) * MathHelper.TAU), -0.25F, 0.25F);
 			RegistryEntry<Biome> biome = world.getBiome(BlockPos.ofFloored(camera.getPos()));
 
 			// update underwater visiblity
 			float visibilityMultiplier;
 			if (biome.matchesKey(AbysmBiomes.FLORAL_REEF)) {
-				visibilityMultiplier = 0.3F + 0.7F * (float) lightness;
+				visibilityMultiplier = 0.3F + 0.7F * lightness;
 			} else {
 				visibilityMultiplier = 1.0F;
 			}
@@ -55,7 +55,7 @@ public class BackgroundRendererMixin {
 			// adjust fog color
 			if (lightness < 0.999F && biome.matchesKey(AbysmBiomes.FLORAL_REEF)) {
 				int nightWaterFogColor = 0x11082F;
-				return ColorHelper.lerp((float) lightness, nightWaterFogColor, value);
+				return ColorHelper.lerp(lightness, nightWaterFogColor, value);
 			} else {
 				return value;
 			}

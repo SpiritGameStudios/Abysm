@@ -170,14 +170,14 @@
     "water_ambient": [
       {
         "type": "abysm:floral_fish_big",
-        "maxCount": 8,
+        "maxCount": 16,
         "minCount": 8,
         "weight": 50
       },
       {
         "type": "abysm:floral_fish_small",
-        "maxCount": 8,
-        "minCount": 8,
+        "maxCount": 16,
+        "minCount": 9,
         "weight": 50
       }
     ],

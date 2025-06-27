@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.client.render.entity;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.client.AbysmClient;
 import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
 import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
@@ -18,7 +17,7 @@ import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManOWarRenderState, GarbageBagModel> {
 
@@ -26,7 +25,7 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 	public static final int TENTACLE_ARGB = ColorHelper.fullAlpha(new Color(5, 41, 66).getRGB());
 
 	public ManOWarEntityRenderer(EntityRendererFactory.Context ctx) {
-		this(ctx, new GarbageBagModel(ctx.getPart(AbysmClient.MAN_O_WAR_LAYER)), 0.4f);
+		this(ctx, new GarbageBagModel(ctx.getPart(AbysmEntityLayers.MAN_O_WAR)), 0.4f);
 	}
 
 	protected ManOWarEntityRenderer(EntityRendererFactory.Context ctx, GarbageBagModel model, float shadowRadius) {
