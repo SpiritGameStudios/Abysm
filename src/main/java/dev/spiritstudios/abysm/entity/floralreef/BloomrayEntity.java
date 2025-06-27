@@ -66,7 +66,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
 		this.getRegistryManager().getOrThrow(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT)
-			.getRandom(random)
+			.getRandom(this.random)
 			.ifPresentOrElse(
 				entry -> setVariant(entry.value()),
 				() -> setVariant(BloomrayEntityVariant.DEFAULT)
@@ -76,7 +76,8 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 
 	public static DefaultAttributeContainer.Builder createRayAttributes() {
 		return FishEntity.createFishAttributes()
-			.add(EntityAttributes.MOVEMENT_SPEED, 0.85);
+			.add(EntityAttributes.MOVEMENT_SPEED, 0.85)
+			.add(EntityAttributes.MAX_HEALTH, 14);
 	}
 
 	@Override
@@ -121,22 +122,26 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	public void tickMovement() {
 		super.tickMovement();
 
-		if (this.getWorld().isClient && random.nextFloat() < 0.15) {
-			Vec3d facing = Vec3d.fromPolar(getPitch(), bodyYaw).multiply(0.5);
+		World world = this.getWorld();
+		if (world.isClient() && this.random.nextFloat() < 0.15) {
+			Vec3d facing = Vec3d.fromPolar(this.getPitch(), this.bodyYaw).multiply(0.5);
+			Vec3d pos = this.getPos().add(facing);
 
-			int glimmerCount = 1 + random.nextInt(3);
+			BloomrayEntityVariant variant = this.getVariant();
+
+			int glimmerCount = 1 + this.random.nextInt(3);
 			for (int i = 0; i < glimmerCount; i++) {
-				spawnParticles(this.getPos().add(facing), random, this.getVariant().glimmerParticle, 0.4F, 1F, 1F);
+				spawnParticles(world, pos, this.random, variant.glimmerParticle, 0.4F, 1F, 1F);
 			}
 
-			int thornsCount = 2 + random.nextInt(2);
+			int thornsCount = 2 + this.random.nextInt(2);
 			for (int i = 0; i < thornsCount; i++) {
-				spawnParticles(this.getPos().add(facing), random, this.getVariant().thornsParticle, 0.9F, 2.6F, 1.4F);
+				spawnParticles(world, pos, random, variant.thornsParticle, 0.9F, 2.6F, 1.4F);
 			}
 		}
 	}
 
-	protected void spawnParticles(Vec3d pos, Random random, SimpleParticleType particle, float width, float orthogonalVelocityMultiplier, float normalVelocityMultiplier) {
+	protected void spawnParticles(World world, Vec3d pos, Random random, SimpleParticleType particle, float width, float orthogonalVelocityMultiplier, float normalVelocityMultiplier) {
 		double x = pos.getX() + width * (random.nextFloat() - 0.5);
 		double y = pos.getY() + 0.5F - 0.45F;
 		double z = pos.getZ() + width * (random.nextFloat() - 0.5);
@@ -148,7 +153,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		vy *= 0.1F;
 		vy += random.nextFloat() * 0.12F * normalVelocityMultiplier;
 
-		getWorld().addParticleClient(particle, x, y, z, vx, vy, vz);
+		world.addParticleClient(particle, x, y, z, vx, vy, vz);
 	}
 
 	@Override
