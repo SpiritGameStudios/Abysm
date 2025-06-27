@@ -10,7 +10,6 @@ Patch for a vanilla bug, validation being turned on causes breeze renderers to b
  */
 @Mixin(GlResourceManager.class)
 public abstract class GlResourceManagerMixin {
-
 	@ModifyExpressionValue(method = "setupRenderPass", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gl/RenderPassImpl;IS_DEVELOPMENT:Z"))
 	private boolean noCrash(boolean original) {
 		return false;

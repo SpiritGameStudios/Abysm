@@ -12,8 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Debug(export = true)
 @Mixin(FishEntity.class)
-public class FishEntityMixin {
-
+public abstract class FishEntityMixin {
 	@WrapOperation(method = "initGoals", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ai/goal/GoalSelector;add(ILnet/minecraft/entity/ai/goal/Goal;)V", ordinal = 2))
 	private void useCustomBloomrayGoalInstead(GoalSelector instance, int priority, Goal goal, Operation<Void> original) {
 		if ((FishEntity) (Object) this instanceof BloomrayEntity bloomray) {

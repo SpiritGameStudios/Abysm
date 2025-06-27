@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.client;
 
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
-import dev.spiritstudios.abysm.client.render.AbysmRenderPipelines;
 import dev.spiritstudios.abysm.client.render.entity.AbysmEntityLayers;
 import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
@@ -30,6 +29,5 @@ public class AbysmClient implements ClientModInitializer {
 
 		AbysmEntityLayers.init();
 		AbysmParticles.init();
-		AbysmRenderPipelines.init();
     }
 }

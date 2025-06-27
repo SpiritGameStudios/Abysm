@@ -29,6 +29,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.TypeFilter;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -36,12 +37,24 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManOWarEntity extends WaterCreatureEntity {
+	public static final Vec3d[] STARTING_OFFSETS = Util.make(new Vec3d[49], array -> {
+		int index = 0;
 
-	public static final List<Vec3d> STARTING_OFFSETS;
+		for (int i = 0; i <= 6; i++) {
+			int z = 2 * i - 6;
+
+			array[index++] = new Vec3d(0, 0, z).multiply(0.05);
+			array[index++] = new Vec3d(1, 0, z).multiply(0.05);
+			array[index++] = new Vec3d(-1, 0, z).multiply(0.05);
+			array[index++] = new Vec3d(2, 0, z).multiply(0.05);
+			array[index++] = new Vec3d(-2, 0, z).multiply(0.05);
+			array[index++] = new Vec3d(3, 0, z).multiply(0.05);
+			array[index++] = new Vec3d(-3, 0, z).multiply(0.05);
+		}
+	});
 
 	public final List<TentacleData> tentacleData;
 
@@ -59,7 +72,7 @@ public class ManOWarEntity extends WaterCreatureEntity {
 		this.moveControl = new GarbageMoveControl(this);
 		ImmutableList.Builder<TentacleData> builder = ImmutableList.builder();
 		Random random = this.getRandom();
-		for(Vec3d vec3d : STARTING_OFFSETS) {
+		for (Vec3d vec3d : STARTING_OFFSETS) {
 			builder.add(new TentacleData(vec3d, random.nextBetween(MIN_SWAY_OFFSET, MAX_SWAY_OFFSET)));
 		}
 		tentacleData = builder.build();
@@ -170,7 +183,7 @@ public class ManOWarEntity extends WaterCreatureEntity {
 			}
 
 			if (this.state == MoveControl.State.MOVE_TO && !this.obj.getNavigation().isIdle()) {
-				float speed = (float)(this.speed * this.obj.getAttributeValue(EntityAttributes.MOVEMENT_SPEED));
+				float speed = (float) (this.speed * this.obj.getAttributeValue(EntityAttributes.MOVEMENT_SPEED));
 				this.obj.setMovementSpeed(MathHelper.lerp(0.125F, this.obj.getMovementSpeed(), speed));
 				double distanceX = this.targetX - this.obj.getX();
 				double distanceY = this.targetY - this.obj.getY();
@@ -181,7 +194,7 @@ public class ManOWarEntity extends WaterCreatureEntity {
 				}
 
 				if (distanceX != 0.0 || distanceZ != 0.0) {
-					float i = (float)(MathHelper.atan2(distanceZ, distanceX) * MathHelper.DEGREES_PER_RADIAN) - 90.0F;
+					float i = (float) (MathHelper.atan2(distanceZ, distanceX) * MathHelper.DEGREES_PER_RADIAN) - 90.0F;
 					this.obj.setYaw(this.wrapDegrees(this.obj.getYaw(), i, 90.0F));
 					this.obj.bodyYaw = this.obj.getYaw();
 				}
@@ -237,20 +250,5 @@ public class ManOWarEntity extends WaterCreatureEntity {
 				.apply(instance, TentacleData::new)
 		);
 		public static final Codec<List<TentacleData>> LIST_CODEC = CODEC.listOf();
-	}
-
-	static {
-		List<Vec3d> list = new ArrayList<>();
-		for (int i = 0; i <= 6; i++) {
-			int j = 2*i - 6;
-			list.add(new Vec3d(0, 0, j));
-			list.add(new Vec3d(1, 0, j));
-			list.add(new Vec3d(-1, 0, j));
-			list.add(new Vec3d(2, 0, j));
-			list.add(new Vec3d(-2, 0, j));
-			list.add(new Vec3d(3, 0, j));
-			list.add(new Vec3d(-3, 0, j));
-		}
-		STARTING_OFFSETS = ImmutableList.copyOf(list.stream().map(vec3d -> vec3d.multiply(0.05)).iterator());
 	}
 }

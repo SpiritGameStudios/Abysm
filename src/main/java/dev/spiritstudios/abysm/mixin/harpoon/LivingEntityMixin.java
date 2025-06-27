@@ -3,14 +3,10 @@ package dev.spiritstudios.abysm.mixin.harpoon;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonDrag;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
-import net.minecraft.registry.tag.EntityTypeTags;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,7 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements HarpoonDrag {
-
 	@Shadow
 	public abstract boolean isInCreativeMode();
 
@@ -55,8 +50,8 @@ public abstract class LivingEntityMixin extends Entity implements HarpoonDrag {
 		this.setVelocity(this.abysm$harpoon.getVelocity());
 		this.velocityDirty = true;
 		this.setPosition(this.abysm$harpoon.getPos());
-		LivingEntity thisLiving = (LivingEntity) (Object) this;
-		if (thisLiving instanceof PathAwareEntity pathAwareEntity) {
+
+		if ((Object) this instanceof PathAwareEntity pathAwareEntity) {
 			pathAwareEntity.getNavigation().stop();
 		}
 	}

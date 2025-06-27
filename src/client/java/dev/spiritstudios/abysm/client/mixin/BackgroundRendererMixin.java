@@ -23,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BackgroundRenderer.class)
 public abstract class BackgroundRendererMixin {
-
 	@Shadow
 	private static long lastWaterFogColorUpdateTime;
 	@Unique private static float underwaterVisibilityMultiplier = 1.0F;
@@ -32,7 +31,7 @@ public abstract class BackgroundRendererMixin {
 	@ModifyVariable(method = "getFogColor", at = @At("STORE"), ordinal = 1)
 	private static int adjustWaterFogColor(int value, Camera camera, float tickProgress, ClientWorld world, int clampedViewDistance, float skyDarkness) {
 		CameraSubmersionType cameraSubmersionType = camera.getSubmersionType();
-		if(cameraSubmersionType == CameraSubmersionType.WATER) {
+		if (cameraSubmersionType == CameraSubmersionType.WATER) {
 			float lightness = 0.5F + 2.0F * MathHelper.clamp(MathHelper.cos(world.getSkyAngle(1.0F) * MathHelper.TAU), -0.25F, 0.25F);
 			RegistryEntry<Biome> biome = world.getBiome(BlockPos.ofFloored(camera.getPos()));
 
@@ -67,11 +66,11 @@ public abstract class BackgroundRendererMixin {
 	@Inject(method = "getFogColor", at = @At(value = "INVOKE", target = "Ljava/lang/Math;min(FF)F", ordinal = 0))
 	private static void reduceUnderwaterVisiblity(Camera camera, float tickProgress, ClientWorld world, int clampedViewDistance, float skyDarkness, CallbackInfoReturnable<Vector4f> cir, @Local(ordinal = 5) LocalFloatRef underwaterVisibilityRef) {
 		CameraSubmersionType cameraSubmersionType = camera.getSubmersionType();
-		if(cameraSubmersionType == CameraSubmersionType.WATER) {
+		if (cameraSubmersionType == CameraSubmersionType.WATER) {
 			// adjust underwater visibility
 			float visibilityMultiplier = MathHelper.lerp(tickProgress, underwaterVisibilityMultiplier, nextUnderwaterVisibilityMultiplier);
 
-			if(visibilityMultiplier < 0.999F) {
+			if (visibilityMultiplier < 0.999F) {
 				underwaterVisibilityRef.set(underwaterVisibilityRef.get() * visibilityMultiplier);
 			}
 		}

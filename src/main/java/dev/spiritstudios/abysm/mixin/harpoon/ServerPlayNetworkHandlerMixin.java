@@ -9,8 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayNetworkHandler.class)
-public class ServerPlayNetworkHandlerMixin {
-
+public abstract class ServerPlayNetworkHandlerMixin {
 	@Inject(method = "isEntityOnAir", at = @At(value = "HEAD"), cancellable = true)
 	private void flyingHarpoon(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		if (entity instanceof HarpoonDrag harpoonDrag && harpoonDrag.abysm$getDragTicks() > 0) {

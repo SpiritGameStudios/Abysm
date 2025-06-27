@@ -7,7 +7,6 @@ import net.minecraft.util.math.Vec3d;
 import java.util.List;
 
 public class ManOWarRenderState extends LivingEntityRenderState {
-
 	public List<ManOWarEntity.TentacleData> tentacleData;
 	public Vec3d velocity = Vec3d.ZERO;
 }

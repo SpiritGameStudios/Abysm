@@ -22,8 +22,10 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		super(world, profile);
 	}
 
-	@Unique private float underwaterAmbientSkyLight;
-	@Unique private float lastUnderwaterAmbientSkyLight;
+	@Unique
+	private float underwaterAmbientSkyLight;
+	@Unique
+	private float lastUnderwaterAmbientSkyLight;
 
 	@Inject(method = "tickMovement", at = @At("RETURN"))
 	private void updateAmbientSkyLight(CallbackInfo ci) {
@@ -32,7 +34,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		float targetAmbientSkyLight = inFloralReef ? 0.18F : 0.0F;
 
 		this.lastUnderwaterAmbientSkyLight = this.underwaterAmbientSkyLight;
-		if(this.isSubmergedIn(FluidTags.WATER)) {
+		if (this.isSubmergedIn(FluidTags.WATER)) {
 			this.underwaterAmbientSkyLight = MathHelper.lerp(0.1F, this.underwaterAmbientSkyLight, targetAmbientSkyLight);
 		} else {
 			this.underwaterAmbientSkyLight = targetAmbientSkyLight;

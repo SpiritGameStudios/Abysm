@@ -11,11 +11,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.OptionalInt;
 
 @Mixin(LeavesBlock.class)
-public class LeavesBlockMixin {
-
+public abstract class LeavesBlockMixin {
 	@Inject(method = "getOptionalDistanceFromLog", at = @At("HEAD"), cancellable = true)
 	private static void applyForNonLogLeavePreservers(BlockState state, CallbackInfoReturnable<OptionalInt> cir) {
-		if(state.isIn(AbysmBlockTags.ALSO_PRESERVES_LEAVES)) {
+		if (state.isIn(AbysmBlockTags.ALSO_PRESERVES_LEAVES)) {
 			cir.setReturnValue(OptionalInt.of(0));
 		}
 	}
