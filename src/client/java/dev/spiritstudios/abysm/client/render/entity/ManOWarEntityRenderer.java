@@ -55,6 +55,7 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 		state.velocity = manOWar.getPrevVelocity().lerp(manOWar.getVelocity(), tickProgress);
 		state.tentacleData = manOWar.tentacleData;
 		state.tentacleBox = manOWar.getTentacleBox();
+		state.centerBoxPos = manOWar.getBoundingBox().getCenter();
 	}
 
 	@Override
@@ -87,10 +88,9 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 
 	public static void renderTentacleBox(MatrixStack matrices, VertexConsumer lines, ManOWarRenderState state) {
 		matrices.push();
-		Box box = state.tentacleBox;
-		Vec3d center = box.getCenter();
-		matrices.translate(-center.x, -center.y - state.baseScale, -center.z);
-		VertexRendering.drawBox(matrices, lines, box, 0, 1, 0, 1);
+		Vec3d center = state.centerBoxPos;
+		matrices.translate(-center.x, -center.y, -center.z);
+		VertexRendering.drawBox(matrices, lines, state.tentacleBox, 0, 1, 0, 1);
 		matrices.pop();
 	}
 

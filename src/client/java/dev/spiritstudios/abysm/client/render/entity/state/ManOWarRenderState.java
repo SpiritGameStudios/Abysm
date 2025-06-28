@@ -11,4 +11,5 @@ public class ManOWarRenderState extends LivingEntityRenderState {
 	public List<ManOWarEntity.TentacleData> tentacleData;
 	public Vec3d velocity = Vec3d.ZERO;
 	public Box tentacleBox;
+	public Vec3d centerBoxPos;
 }

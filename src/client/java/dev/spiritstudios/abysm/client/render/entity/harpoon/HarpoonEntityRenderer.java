@@ -2,8 +2,11 @@ package dev.spiritstudios.abysm.client.render.entity.harpoon;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.state.HarpoonEntityRenderState;
+import dev.spiritstudios.abysm.component.BlessedComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.item.HarpoonItem;
+import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Frustum;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -11,10 +14,14 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
@@ -172,5 +179,26 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 
 		BlockPos end = BlockPos.ofFloored(state.x, state.y, state.z);
 		state.endLight = LightmapTextureManager.pack(getBlockLight(harpoon, end), getSkyLight(harpoon, end));
+	}
+
+	public static void renderInStack(MinecraftClient client, ClientWorld clientWorld, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+		HarpoonEntity harpoon = AbysmEntityTypes.FLYING_HARPOON.create(clientWorld, SpawnReason.COMMAND);
+		if (harpoon == null) {
+			return;
+		}
+		matrices.push();
+		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+		matrices.translate(0, -0.05, 1.7);
+		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45));
+		EntityRenderDispatcher dispatcher = client.getEntityRenderDispatcher();
+		dispatcher.setRenderShadows(false);
+		boolean hitbox = dispatcher.shouldRenderHitboxes();
+		dispatcher.setRenderHitboxes(false);
+		dispatcher.render(harpoon, 0, 0, 0, 1.0F, matrices, vertexConsumers, light);
+		dispatcher.setRenderShadows(true);
+		if (hitbox) {
+			dispatcher.setRenderHitboxes(true);
+		}
+		matrices.pop();
 	}
 }

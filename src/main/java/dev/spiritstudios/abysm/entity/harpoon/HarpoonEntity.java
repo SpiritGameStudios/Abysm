@@ -109,16 +109,14 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				Abysm.LOGGER.debug("An error occurred while ticking a harpoon!", indexOutOfBoundsException);
 				this.discard();
 			}
-			if (this.squaredDistanceTo(owner) > 65536) {
+			if (owner.isSneaking() || this.squaredDistanceTo(owner) > 65536) {
 				this.beginReturn(true);
 			} else {
 				if (this.grappling) {
 					if (this.inGroundTime > 200) {
 						this.beginReturn(true);
 					} else if (!this.isReturning() && this.isInGround()) {
-						if (owner.isSneaking()) {
-							this.beginReturn(true);
-						} else if (!this.getBoundingBox().expand(0.3).intersects(owner.getBoundingBox())) {
+						if (!this.getBoundingBox().expand(0.3).intersects(owner.getBoundingBox())) {
 							owner.setVelocity(this.getPos().subtract(owner.getPos()).normalize().multiply(2, 1.2, 2));
 							owner.velocityModified = true;
 							owner.fallDistance = 1;

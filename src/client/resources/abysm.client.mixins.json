@@ -11,6 +11,10 @@
 		"LightmapTextureManagerMixin",
 		"WaterSuspendParticleMixin",
 		"WorldRendererMixin",
+		"harpoon.HeldItemFeatureRendererMixin",
+		"harpoon.ItemModelManagerMixin",
+		"harpoon.ItemRendererMixin",
+		"harpoon.ItemRenderStateMixin",
 		"manowar.EntityRenderDispatcherMixin",
 		"manowar.LivingEntityRendererMixin"
 	],
