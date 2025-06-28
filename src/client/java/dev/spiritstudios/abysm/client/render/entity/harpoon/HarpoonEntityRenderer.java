@@ -181,12 +181,15 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		state.endLight = LightmapTextureManager.pack(getBlockLight(harpoon, end), getSkyLight(harpoon, end));
 	}
 
-	public static void renderInStack(MinecraftClient client, ClientWorld clientWorld, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+	public static void renderInStack(MinecraftClient client, ClientWorld clientWorld, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, boolean thirdPerson) {
 		HarpoonEntity harpoon = AbysmEntityTypes.FLYING_HARPOON.create(clientWorld, SpawnReason.COMMAND);
 		if (harpoon == null) {
 			return;
 		}
 		matrices.push();
+		if (thirdPerson) {
+			matrices.translate(0, 3.75 * 0.0625, 7.5 * 0.0625);
+		}
 		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
 		matrices.translate(0, -0.05, 1.7);
 		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45));

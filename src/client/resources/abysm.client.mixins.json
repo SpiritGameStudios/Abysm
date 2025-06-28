@@ -15,6 +15,7 @@
 		"harpoon.ItemModelManagerMixin",
 		"harpoon.ItemRendererMixin",
 		"harpoon.ItemRenderStateMixin",
+		"harpoon.PlayerEntityRendererMixin",
 		"manowar.EntityRenderDispatcherMixin",
 		"manowar.LivingEntityRendererMixin"
 	],

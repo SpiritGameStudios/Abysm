@@ -86,16 +86,16 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 		matrixStack.pop();
 	}
 
+	@Override
+	public boolean shouldRender(ManOWarEntity entity, Frustum frustum, double x, double y, double z) {
+		return true;
+	}
+
 	public static void renderTentacleBox(MatrixStack matrices, VertexConsumer lines, ManOWarRenderState state) {
 		matrices.push();
 		Vec3d center = state.centerBoxPos;
 		matrices.translate(-center.x, -center.y, -center.z);
 		VertexRendering.drawBox(matrices, lines, state.tentacleBox, 0, 1, 0, 1);
 		matrices.pop();
-	}
-
-	@Override
-	public boolean shouldRender(ManOWarEntity entity, Frustum frustum, double x, double y, double z) {
-		return true;
 	}
 }

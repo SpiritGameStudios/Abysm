@@ -34,6 +34,6 @@ public class ItemRendererMixin {
 		if (clientWorld == null) {
 			return;
 		}
-		HarpoonEntityRenderer.renderInStack(client, clientWorld, matrices, vertexConsumers, light);
+		HarpoonEntityRenderer.renderInStack(client, clientWorld, matrices, vertexConsumers, light, false);
 	}
 }
