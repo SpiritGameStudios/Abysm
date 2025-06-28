@@ -28,6 +28,6 @@ public class HeldItemFeatureRendererMixin {
 		if (clientWorld == null) {
 			return;
 		}
-		HarpoonEntityRenderer.renderInStack(client, clientWorld, matrices, vertexConsumers, light, true);
+		HarpoonEntityRenderer.renderInStack(itemState, client, clientWorld, matrices, vertexConsumers, light);
 	}
 }

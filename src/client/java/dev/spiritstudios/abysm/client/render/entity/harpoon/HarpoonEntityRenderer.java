@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.client.render.entity.harpoon;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.client.mixin.harpoon.ItemRenderStateAccessor;
 import dev.spiritstudios.abysm.client.render.entity.state.HarpoonEntityRenderState;
 import dev.spiritstudios.abysm.component.BlessedComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
@@ -17,6 +18,8 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
+import net.minecraft.client.render.item.ItemRenderState;
+import net.minecraft.client.render.model.json.Transformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.SpawnReason;
@@ -29,6 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3f;
 
 public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntity, HarpoonEntityRenderState> {
 
@@ -181,15 +185,13 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		state.endLight = LightmapTextureManager.pack(getBlockLight(harpoon, end), getSkyLight(harpoon, end));
 	}
 
-	public static void renderInStack(MinecraftClient client, ClientWorld clientWorld, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, boolean thirdPerson) {
+	public static void renderInStack(ItemRenderState state, MinecraftClient client, ClientWorld clientWorld, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
 		HarpoonEntity harpoon = AbysmEntityTypes.FLYING_HARPOON.create(clientWorld, SpawnReason.COMMAND);
 		if (harpoon == null) {
 			return;
 		}
 		matrices.push();
-		if (thirdPerson) {
-			matrices.translate(0, 3.75 * 0.0625, 7.5 * 0.0625);
-		}
+		applyTransforms(state, matrices);
 		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
 		matrices.translate(0, -0.05, 1.7);
 		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45));
@@ -203,5 +205,20 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 			dispatcher.setRenderHitboxes(true);
 		}
 		matrices.pop();
+	}
+
+	private static void applyTransforms(ItemRenderState state, MatrixStack matrices) {
+		if (state.isEmpty()) {
+			return;
+		}
+		ItemRenderState.LayerRenderState layerRenderState = ((ItemRenderStateAccessor) state).abysm$invokeGetFirstLayer();
+		Transformation transformation = ((ItemRenderStateAccessor.LayerRenderStateAccessor) layerRenderState).abysm$getTransform();
+		if (transformation == Transformation.IDENTITY) {
+			return;
+		}
+		transformation = new Transformation(transformation.rotation(), transformation.translation().mul(1, new Vector3f()), transformation.scale());
+		boolean leftHand = ((ItemRenderStateAccessor) state).abysm$getDisplayContext().isLeftHand();
+		transformation.apply(leftHand, matrices.peek());
+		matrices.peek().translate(0.5F, 0.5F, 0.5F);
 	}
 }
