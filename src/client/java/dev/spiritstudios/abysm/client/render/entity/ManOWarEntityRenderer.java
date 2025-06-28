@@ -55,7 +55,7 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 		state.velocity = manOWar.getPrevVelocity().lerp(manOWar.getVelocity(), tickProgress);
 		state.tentacleData = manOWar.tentacleData;
 		state.tentacleBox = manOWar.getTentacleBox();
-		state.centerBoxPos = manOWar.getBoundingBox().getCenter();
+		state.centerBoxPos = manOWar.getBoundingBox().getHorizontalCenter();
 	}
 
 	@Override
