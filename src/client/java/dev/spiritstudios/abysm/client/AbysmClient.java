@@ -1,13 +1,8 @@
 package dev.spiritstudios.abysm.client;
 
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
-import dev.spiritstudios.abysm.client.render.entity.AbysmEntityLayers;
-import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
-import dev.spiritstudios.abysm.client.render.entity.FlippersRenderer;
-import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.AbysmRenderPipelines;
+import dev.spiritstudios.abysm.client.render.entity.*;
 import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
@@ -29,5 +24,6 @@ public class AbysmClient implements ClientModInitializer {
 
 		AbysmEntityLayers.init();
 		AbysmParticles.init();
+		AbysmRenderPipelines.init();
     }
 }
