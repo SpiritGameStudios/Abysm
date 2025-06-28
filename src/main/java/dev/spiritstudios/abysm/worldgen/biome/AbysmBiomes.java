@@ -13,9 +13,11 @@ import java.util.List;
 
 public final class AbysmBiomes {
 	public static final RegistryKey<Biome> FLORAL_REEF = ofKey("floral_reef");
+	public static final RegistryKey<Biome> DEEP_SEA_RUINS = ofKey("deep_sea_ruins");
 
 	public static final List<AbysmBiome> BIOMES = List.of(
-		new FloralReefBiome()
+		new FloralReefBiome(),
+		new DeepSeaRuinsBiome()
 	);
 
 	public static void bootstrap(Registerable<Biome> registerable) {

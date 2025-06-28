@@ -1,9 +1,5 @@
 {
-  "carvers": [
-    "minecraft:cave",
-    "minecraft:cave_extra_underground",
-    "minecraft:canyon"
-  ],
+  "carvers": [],
   "downfall": 0.5,
   "effects": {
     "fog_color": 12638463,
@@ -25,18 +21,9 @@
   },
   "features": [
     [],
-    [
-      "minecraft:lake_lava_underground",
-      "minecraft:lake_lava_surface"
-    ],
-    [
-      "minecraft:amethyst_geode",
-      "abysm:floropumice_stalagmites"
-    ],
-    [
-      "minecraft:monster_room",
-      "minecraft:monster_room_deep"
-    ],
+    [],
+    [],
+    [],
     [],
     [],
     [
@@ -71,10 +58,7 @@
       "minecraft:disk_gravel"
     ],
     [],
-    [
-      "minecraft:spring_water",
-      "minecraft:spring_lava"
-    ],
+    [],
     [
       "minecraft:glow_lichen",
       "minecraft:trees_water",
@@ -84,15 +68,7 @@
       "minecraft:red_mushroom_normal",
       "minecraft:patch_pumpkin",
       "minecraft:patch_sugar_cane",
-      "minecraft:patch_firefly_bush_near_water",
-      "abysm:patch_sprigs",
-      "minecraft:seagrass_warm",
-      "abysm:patch_petals_underwater",
-      "abysm:trees_bloomshroom",
-      "abysm:patch_petals_surface"
-    ],
-    [
-      "minecraft:freeze_top_layer"
+      "minecraft:patch_firefly_bush_near_water"
     ]
   ],
   "has_precipitation": true,
@@ -167,28 +143,8 @@
         "weight": 10
       }
     ],
-    "water_ambient": [
-      {
-        "type": "abysm:floral_fish_big",
-        "maxCount": 16,
-        "minCount": 8,
-        "weight": 50
-      },
-      {
-        "type": "abysm:floral_fish_small",
-        "maxCount": 16,
-        "minCount": 8,
-        "weight": 50
-      }
-    ],
-    "water_creature": [
-      {
-        "type": "abysm:bloomray",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 1
-      }
-    ]
+    "water_ambient": [],
+    "water_creature": []
   },
   "temperature": 0.5
 }
