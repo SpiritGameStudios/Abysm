@@ -79,7 +79,7 @@ public class FleePredatorsGoal extends Goal {
 	@Override
 	public boolean canStart() {
 		ServerWorld serverWorld = getServerWorld(this.mob);
-		Set<EntityType<? extends MobEntity>> predators = ((EcologicalEntity) this.mob).getEcosystemType().getPredators();
+		Set<EntityType<? extends MobEntity>> predators = ((EcologicalEntity) this.mob).getEcosystemType().predators();
 		this.targetEntity = serverWorld
 			.getClosestEntity(
 				serverWorld.getEntitiesByType(TypeFilter.instanceOf(MobEntity.class),

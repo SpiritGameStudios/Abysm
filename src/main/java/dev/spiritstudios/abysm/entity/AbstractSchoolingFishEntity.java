@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -13,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -39,6 +41,20 @@ public abstract class AbstractSchoolingFishEntity extends SchoolingFishEntity im
 
 	public static DefaultAttributeContainer.Builder createPredatoryFishAttributes() {
 		return createFishAttributes().add(EntityAttributes.ATTACK_DAMAGE);
+	}
+
+	@Override
+	public void travel(Vec3d movementInput) {
+		if (this.isTouchingWater()) {
+			this.updateVelocity(this.getMovementSpeed() * 0.02F, movementInput);
+			this.move(MovementType.SELF, this.getVelocity());
+			this.setVelocity(this.getVelocity().multiply(0.9));
+			if (this.getTarget() == null) {
+				this.setVelocity(this.getVelocity().add(0.0, -0.005, 0.0));
+			}
+		} else {
+			super.travel(movementInput);
+		}
 	}
 
 	@Override

@@ -86,7 +86,7 @@ public class HuntPreyGoal extends TrackTargetGoal {
 
 	protected void findClosestTarget() {
 		ServerWorld serverWorld = getServerWorld(this.mob);
-		Set<EntityType<? extends MobEntity>> prey = ((EcologicalEntity) this.mob).getEcosystemType().getPrey();
+		Set<EntityType<? extends MobEntity>> prey = ((EcologicalEntity) this.mob).getEcosystemType().prey();
 		this.targetEntity = serverWorld.getClosestEntity(
 			serverWorld.getEntitiesByType(TypeFilter.instanceOf(MobEntity.class),
 				this.getSearchBox(this.getFollowRange()),

@@ -88,20 +88,6 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 			.add(EntityAttributes.ATTACK_DAMAGE, 1.5);
 	}
 
-	@Override
-	public void travel(Vec3d movementInput) {
-		if (this.isTouchingWater()) {
-			this.updateVelocity(this.getMovementSpeed() * 0.02F, movementInput);
-			this.move(MovementType.SELF, this.getVelocity());
-			this.setVelocity(this.getVelocity().multiply(0.9));
-			if (this.getTarget() == null) {
-				this.setVelocity(this.getVelocity().add(0.0, -0.005, 0.0));
-			}
-		} else {
-			super.travel(movementInput);
-		}
-	}
-
 	public WanderAroundGoal createWanderGoal() {
 		return new GlideToRandomPlaceGoal(this);
 	}
