@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.client.mixin.harpoon;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.spiritstudios.abysm.registry.AbysmItems;

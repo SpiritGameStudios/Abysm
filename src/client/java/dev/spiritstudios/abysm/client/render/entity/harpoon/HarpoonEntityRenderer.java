@@ -3,10 +3,8 @@ package dev.spiritstudios.abysm.client.render.entity.harpoon;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.mixin.harpoon.ItemRenderStateAccessor;
 import dev.spiritstudios.abysm.client.render.entity.state.HarpoonEntityRenderState;
-import dev.spiritstudios.abysm.component.BlessedComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.item.HarpoonItem;
-import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Frustum;
@@ -24,8 +22,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -191,19 +187,24 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 			return;
 		}
 		matrices.push();
+
 		applyTransforms(state, matrices);
 		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
 		matrices.translate(0, -0.05, 1.7);
 		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45));
+
 		EntityRenderDispatcher dispatcher = client.getEntityRenderDispatcher();
-		dispatcher.setRenderShadows(false);
-		boolean hitbox = dispatcher.shouldRenderHitboxes();
+		boolean hitboxes = dispatcher.shouldRenderHitboxes();
 		dispatcher.setRenderHitboxes(false);
+		dispatcher.setRenderShadows(false);
+
 		dispatcher.render(harpoon, 0, 0, 0, 1.0F, matrices, vertexConsumers, light);
-		dispatcher.setRenderShadows(true);
-		if (hitbox) {
+
+		if (hitboxes) {
 			dispatcher.setRenderHitboxes(true);
 		}
+		dispatcher.setRenderShadows(true);
+
 		matrices.pop();
 	}
 
