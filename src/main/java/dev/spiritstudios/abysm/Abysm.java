@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
 import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
 import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.registry.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmFeatures;
@@ -42,6 +43,7 @@ public class Abysm implements ModInitializer {
 		AbysmEntityTypes.init();
 		AbysmEntityAttributes.init();
 		AbysmSpawnRestrictions.init();
+		AbysmEcosystemTypes.init();
 
 		AbysmParticleTypes.init();
 

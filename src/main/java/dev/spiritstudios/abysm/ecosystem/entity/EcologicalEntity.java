@@ -1,8 +1,11 @@
 package dev.spiritstudios.abysm.ecosystem.entity;
 
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.registry.EcosystemTypes;
+import dev.spiritstudios.abysm.registry.AbysmEcosystemTypes;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.util.math.BlockPos;
+
+import java.util.List;
 
 // Contains methods for handling all entity-related logic that all Ecosystem-related classes may need to call(e.g. EcosystemChunk)
 public interface EcologicalEntity {
@@ -16,7 +19,7 @@ public interface EcologicalEntity {
 	/**
 	 * @return This Entity's {@link EcosystemType}. Defined in a non-data-driven Registry, used for knowing an Entity's Ecosystem-related info, such as predators, prey, plants, and more.
 	 * @see EcosystemType
-	 * @see EcosystemTypes
+	 * @see AbysmEcosystemTypes
 	 */
 	EcosystemType<?> getEcosystemType();
 
@@ -34,4 +37,30 @@ public interface EcologicalEntity {
 	default void tickEcosystemLogic() {
 		this.getEcosystemLogic().tick();
 	}
+
+	default void alertEcosystemOfSpawn() {
+		this.getEcosystemLogic().onSpawn();
+	}
+
+	default void alertEcosystemOfDeath() {
+		this.getEcosystemLogic().onDeath();
+	}
+
+	// Will probably commit crimes by casting self(this) to MobEntity for all of these
+	default List<? extends MobEntity> getNearbyPredators() {
+		return List.of();
+	}
+
+	default List<? extends MobEntity> getNearbyPrey() {
+		return List.of();
+	}
+
+	default List<? extends MobEntity> getNearbySameType() {
+		return List.of();
+	}
+
+	default List<BlockPos> getNearbyPlants() {
+		return List.of();
+	}
+
 }

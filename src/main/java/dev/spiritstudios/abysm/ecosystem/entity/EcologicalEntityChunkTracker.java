@@ -51,6 +51,6 @@ public class EcologicalEntityChunkTracker {
 	@SuppressWarnings("UnstableApiUsage")
 	public EcosystemChunk getEcosystemChunk(World world, ChunkPos pos) {
 		Chunk worldChunk = world.getChunk(pos.x, pos.z);
-		return worldChunk.getAttachedOrCreate(AbysmAttachments.ECOSYSTEM_CHUNK, EcosystemChunk::new);
+		return worldChunk.getAttachedOrCreate(AbysmAttachments.ECOSYSTEM_CHUNK, () -> new EcosystemChunk(world, pos));
 	}
 }
