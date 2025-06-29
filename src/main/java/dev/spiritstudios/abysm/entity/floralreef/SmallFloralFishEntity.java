@@ -5,12 +5,17 @@ import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.registry.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.util.DyeColor;
@@ -26,7 +31,7 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 
 	public static final EntityPattern DEFAULT_PATTERN = new EntityPattern(DEFAULT_PATTERN_VARIANT, DyeColor.PINK.getEntityColor(), DyeColor.LIGHT_BLUE.getEntityColor());
 
-	public EcosystemLogic ecosystemLogic;
+	protected EcosystemLogic ecosystemLogic;
 
 	public SmallFloralFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
@@ -49,6 +54,11 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 	public void onDeath(DamageSource damageSource) {
 		this.alertEcosystemOfDeath();
 		super.onDeath(damageSource);
+	}
+
+	@Override
+	protected void initGoals() {
+		super.initGoals();
 	}
 
 	@Override

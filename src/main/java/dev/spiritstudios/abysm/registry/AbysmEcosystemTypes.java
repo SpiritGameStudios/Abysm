@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
+import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.Registry;
@@ -17,14 +18,22 @@ public class AbysmEcosystemTypes {
 			.setPredators(AbysmEntityTypes.BIG_FLORAL_FISH, AbysmEntityTypes.BLOOMRAY)
 			.setPrey(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY)
 			.setPlants(AbysmBlocks.PURPLE_SCABIOSA, AbysmBlocks.PINK_SCABIOSA, AbysmBlocks.RED_SCABIOSA)
+			.setTargetPopulation(10)
 	);
 
 	public static final EcosystemType<BigFloralFishEntity> BIG_FLORAL_FISH = register(
 		"big_floral_fish",
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.BIG_FLORAL_FISH)
+			.setPredators(AbysmEntityTypes.BLOOMRAY)
 			.setPrey(AbysmEntityTypes.SMALL_FLORAL_FISH)
-			.setTargetPopulation(3)
+			.setTargetPopulation(7)
+	);
+	public static final EcosystemType<BloomrayEntity> BLOOMRAY = register(
+		"bloomray",
+		EcosystemType.Builder.create(AbysmEntityTypes.BLOOMRAY)
+			.setPrey(AbysmEntityTypes.SMALL_FLORAL_FISH, AbysmEntityTypes.BIG_FLORAL_FISH)
+			.setTargetPopulation(4)
 	);
 
 //	public static <T extends MobEntity & EcologicalEntity> EcosystemType<T> register(EcosystemType.Builder<T> builder) {

@@ -1,8 +1,12 @@
 package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
+import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
+import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
+import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
+import dev.spiritstudios.abysm.registry.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
@@ -14,6 +18,7 @@ import net.minecraft.entity.ai.goal.SwimAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -32,17 +37,18 @@ import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 
-public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEntity, Variantable<BloomrayEntityVariant> {
+public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEntity, Variantable<BloomrayEntityVariant>, EcologicalEntity {
 //	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.bloomray.idle");
 	public static final TrackedData<Integer> VARIANT_ID = DataTracker.registerData(BloomrayEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
-	// TODO - Adjust stats for bigger entity now
+	protected EcosystemLogic ecosystemLogic;
+
 	// TODO - Mauve variant texture
 	// TODO - Programmatically animate the swimming animation instead of manual animation because that's the only animation that'll probably be needed
-	// TODO - Custom swimming AI to make it glide through the water, reducing the up/down movement amount
 	// TODO - Custom AI for hiding in Bloomshroom crowns when scared(player nearby? Bigger bloomray/TBD enemy nearby?)
 	public BloomrayEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
+		this.ecosystemLogic = createEcosystemLogic(this);
 	}
 
 	@Override
@@ -71,13 +77,15 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 				entry -> setVariant(entry.value()),
 				() -> setVariant(BloomrayEntityVariant.DEFAULT)
 			);
+		this.alertEcosystemOfSpawn();
 		return super.initialize(world, difficulty, spawnReason, entityData);
 	}
 
 	public static DefaultAttributeContainer.Builder createRayAttributes() {
-		return FishEntity.createFishAttributes()
+		return AbstractSchoolingFishEntity.createPredatoryFishAttributes()
 			.add(EntityAttributes.MOVEMENT_SPEED, 0.85)
-			.add(EntityAttributes.MAX_HEALTH, 14);
+			.add(EntityAttributes.MAX_HEALTH, 14)
+			.add(EntityAttributes.ATTACK_DAMAGE, 1.5);
 	}
 
 	@Override
@@ -116,6 +124,23 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		}
 		 */
 		super.tick();
+		this.tickEcosystemLogic();
+	}
+
+	@Override
+	public void onDeath(DamageSource damageSource) {
+		this.alertEcosystemOfDeath();
+		super.onDeath(damageSource);
+	}
+
+	@Override
+	public EcosystemLogic getEcosystemLogic() {
+		return this.ecosystemLogic;
+	}
+
+	@Override
+	public EcosystemType<?> getEcosystemType() {
+		return AbysmEcosystemTypes.BLOOMRAY;
 	}
 
 	@Override

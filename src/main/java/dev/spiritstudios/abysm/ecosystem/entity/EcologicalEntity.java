@@ -46,6 +46,10 @@ public interface EcologicalEntity {
 		this.getEcosystemLogic().onDeath();
 	}
 
+	default boolean isHungry() {
+		return true;
+	}
+
 	// Will probably commit crimes by casting self(this) to MobEntity for all of these
 	default List<? extends MobEntity> getNearbyPredators() {
 		return List.of();

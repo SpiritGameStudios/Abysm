@@ -1,6 +1,12 @@
 package dev.spiritstudios.abysm.entity;
 
+import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.item.ItemStack;
@@ -19,6 +25,20 @@ public abstract class AbstractSchoolingFishEntity extends SchoolingFishEntity im
 
 	public AbstractSchoolingFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
+	}
+
+	@Override
+	protected void initGoals() {
+		super.initGoals();
+		if (this instanceof EcologicalEntity) {
+			this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+			this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
+			this.targetSelector.add(0, new HuntPreyGoal(this, false));
+		}
+	}
+
+	public static DefaultAttributeContainer.Builder createPredatoryFishAttributes() {
+		return createFishAttributes().add(EntityAttributes.ATTACK_DAMAGE);
 	}
 
 	@Override

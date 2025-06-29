@@ -96,7 +96,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		ticksAlive++;
 		PlayerEntity owner = this.getPlayer();
 		if (owner == null || !owner.isAlive()) {
-			super.tick();
+			this.discard();
 			return;
 		}
 		if (!this.getWorld().isClient()) {

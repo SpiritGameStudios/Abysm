@@ -100,7 +100,6 @@ public class EcosystemChunk {
 	}
 
 
-
 	@SuppressWarnings("UnstableApiUsage")
 	public boolean entityNearbyPopOkay(EcologicalEntity entity) {
 		EcosystemType<?> ecosystemType = entity.getEcosystemType();

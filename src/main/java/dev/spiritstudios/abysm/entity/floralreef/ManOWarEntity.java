@@ -7,6 +7,7 @@ import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -84,6 +85,11 @@ public class ManOWarEntity extends WaterCreatureEntity {
 			.add(EntityAttributes.MAX_HEALTH, 15)
 			.add(EntityAttributes.MOVEMENT_SPEED, 0.4)
 			.add(EntityAttributes.SCALE, 2);
+	}
+
+	@Override
+	protected void loot(ServerWorld world, ItemEntity itemEntity) {
+		super.loot(world, itemEntity);
 	}
 
 	@Override
