@@ -2,14 +2,12 @@ package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.datagen.*;
-import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
-import dev.spiritstudios.abysm.registry.AbysmEnchantments;
-import dev.spiritstudios.abysm.registry.AbysmEntityPatternVariants;
-import dev.spiritstudios.abysm.registry.AbysmEntityVariants;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.*;
+import dev.spiritstudios.abysm.structure.AbysmStructureSets;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
+import dev.spiritstudios.abysm.worldgen.structure.AbysmStructures;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.JsonKeySortOrderCallback;
@@ -29,6 +27,8 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.BIOME, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.CONFIGURED_FEATURE, Abysm.MODID));
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.STRUCTURE, Abysm.MODID));
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.STRUCTURE_SET, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.DAMAGE_TYPE, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.ENCHANTMENT, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.PLACED_FEATURE, Abysm.MODID));
@@ -74,6 +74,8 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		registryBuilder
 			.addRegistry(RegistryKeys.BIOME, AbysmBiomes::bootstrap)
 			.addRegistry(RegistryKeys.CONFIGURED_FEATURE, AbysmConfiguredFeatures::bootstrap)
+			.addRegistry(RegistryKeys.STRUCTURE, AbysmStructures::bootstrap)
+			.addRegistry(RegistryKeys.STRUCTURE_SET, AbysmStructureSets::bootstrap)
 			.addRegistry(RegistryKeys.DAMAGE_TYPE, AbysmDamageTypes::bootstrap)
 			.addRegistry(RegistryKeys.ENCHANTMENT, AbysmEnchantments::bootstrap)
 			.addRegistry(RegistryKeys.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap)

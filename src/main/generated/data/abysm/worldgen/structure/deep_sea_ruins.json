@@ -1,0 +1,6 @@
+{
+  "type": "abysm:deep_sea_ruins",
+  "biomes": "#minecraft:is_deep_ocean",
+  "spawn_overrides": {},
+  "step": "underground_structures"
+}

@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
-import com.terraformersmc.biolith.api.biome.BiomePlacement;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.sound.MusicType;
@@ -8,7 +7,6 @@ import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.OverworldBiomeCreator;
 import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
@@ -56,19 +54,7 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 
 	@Override
 	public void addToGenerator() {
-		var defaultParameter = MultiNoiseUtil.ParameterRange.of(-1.0F, 1.0F);
-
-		BiomePlacement.addOverworld(
-			key,
-			MultiNoiseUtil.createNoiseHypercube(
-				defaultParameter,
-				defaultParameter,
-				MultiNoiseUtil.ParameterRange.of(-1.05F, -0.455F),
-				defaultParameter,
-				MultiNoiseUtil.ParameterRange.of(0.2F, 0.8F),
-				defaultParameter,
-				0.0F
-			)
-		);
+		// NO-OP
+		// Deep Sea Ruins is not generated through typical biome gen, and is instead generated within the bounds of its structure
 	}
 }

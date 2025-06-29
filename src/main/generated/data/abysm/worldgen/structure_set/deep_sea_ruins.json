@@ -1,0 +1,19 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "exclusion_zone": {
+      "chunk_count": 4,
+      "other_set": "minecraft:ocean_monuments"
+    },
+    "salt": 55147411,
+    "separation": 8,
+    "spacing": 28,
+    "spread_type": "triangular"
+  },
+  "structures": [
+    {
+      "structure": "abysm:deep_sea_ruins",
+      "weight": 1
+    }
+  ]
+}
