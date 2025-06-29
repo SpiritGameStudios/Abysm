@@ -25,7 +25,7 @@ public class EcologicalEntityChunkTracker {
 		// Possible performance increase by only checking this every 5 or 10 ticks?
 		this.prevPos = this.currentPos;
 		this.currentPos = this.entity.getChunkPos();
-		if(this.currentPos != this.prevPos) {
+		if (this.currentPos != this.prevPos) {
 			this.onChunkEnter(this.currentPos);
 			this.onChunkLeave(this.prevPos);
 		}
@@ -34,7 +34,7 @@ public class EcologicalEntityChunkTracker {
 	// Notify EcosystemChunks
 	public void onChunkEnter(ChunkPos pos) {
 		World world = this.entity.getWorld();
-		if(world.isClient) return;
+		if (world.isClient) return;
 
 		EcosystemChunk chunk = getEcosystemChunk(world, pos);
 		chunk.onEntityEnter(this.entity);
@@ -42,7 +42,7 @@ public class EcologicalEntityChunkTracker {
 
 	public void onChunkLeave(ChunkPos pos) {
 		World world = this.entity.getWorld();
-		if(world.isClient) return;
+		if (world.isClient) return;
 
 		EcosystemChunk chunk = getEcosystemChunk(world, pos);
 		chunk.onEntityLeave(this.entity);

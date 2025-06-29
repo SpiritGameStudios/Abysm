@@ -12,7 +12,7 @@ public interface EcologicalEntity {
 
 	/**
 	 * @return This Entity's created EcosystemLogic. Used for managing Ecosystem related code for Entity actions.
-	 * @see	EcologicalEntity#createEcosystemLogic(MobEntity)
+	 * @see    EcologicalEntity#createEcosystemLogic(MobEntity)
 	 */
 	EcosystemLogic getEcosystemLogic();
 

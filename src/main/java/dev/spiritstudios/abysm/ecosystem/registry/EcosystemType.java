@@ -6,60 +6,21 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 
-public class EcosystemType<T extends MobEntity & EcologicalEntity> {
-	// This mob's EntityType - used for sorting/finding/tracking
-	private final EntityType<T> entityType;
-	// The predators of this mob
-	private final ImmutableSet<EntityType<? extends MobEntity>> predators;
-	// The prey of this mob
-	private final ImmutableSet<EntityType<? extends MobEntity>> prey;
-	// The plants of this mob
-	private final ImmutableSet<Block> plants;
-	// The target population across the chunkSearchRadius amount of chunks
-	private final int targetPopulation;
-	// The chunk search radius for any chunk to maintain the targetPopulation amount (1 = 3x3 chunks, 2 = 4x4, etc.)
-	// If the current population from the chunk area equals or exceeds the targetPopulation,
-	// the population is considered okay and can be hunted, otherwise it is considered not okay and needs repopulating
-	private final int populationChunkSearchRadius;
-
-	public EcosystemType(
-		EntityType<T> entityType,
-		ImmutableSet<EntityType<? extends MobEntity>> predators,
-		ImmutableSet<EntityType<? extends MobEntity>> prey,
-		ImmutableSet<Block> plants,
-		int targetPopulation, int populationChunkSearchRadius
-	) {
-		this.entityType = entityType;
-		this.predators = predators;
-		this.prey = prey;
-		this.plants = plants;
-		this.targetPopulation = targetPopulation;
-		this.populationChunkSearchRadius = populationChunkSearchRadius;
-	}
-
-	public EntityType<T> getEntityType() {
-		return entityType;
-	}
-
-	public ImmutableSet<EntityType<? extends MobEntity>> getPredators() {
-		return predators;
-	}
-
-	public ImmutableSet<EntityType<? extends MobEntity>> getPrey() {
-		return prey;
-	}
-
-	public ImmutableSet<Block> getPlants() {
-		return plants;
-	}
-
-	public int getTargetPopulation() {
-		return targetPopulation;
-	}
-
-	public int getPopulationChunkSearchRadius() {
-		return populationChunkSearchRadius;
-	}
+/**
+ * @param entityType                  This mob's EntityType - used for sorting/finding/tracking
+ * @param predators                   The predators of this mob
+ * @param prey                        The prey of this mob
+ * @param plants                      The plants of this mob
+ * @param targetPopulation            The target population across the chunkSearchRadius amount of chunks
+ * @param populationChunkSearchRadius The chunk search radius for any chunk to maintain the targetPopulation amount (1 = 3x3 chunks, 2 = 4x4, etc.) If the current population from the chunk area equals or exceeds the targetPopulation, the population is considered okay and can be hunted, otherwise it is considered not okay and needs repopulating
+ */
+public record EcosystemType<T extends MobEntity & EcologicalEntity>(
+	EntityType<T> entityType,
+	ImmutableSet<EntityType<? extends MobEntity>> predators,
+	ImmutableSet<EntityType<? extends MobEntity>> prey,
+	ImmutableSet<Block> plants, int targetPopulation,
+	int populationChunkSearchRadius
+) {
 
 	public static class Builder<T extends MobEntity & EcologicalEntity> {
 		private final EntityType<T> entityType;
