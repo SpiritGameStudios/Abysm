@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -16,7 +17,6 @@ import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -68,7 +68,7 @@ public class EcosystemChunk {
 	}
 
 	public void addEntity(MobEntity entity) {
-		if(!(entity instanceof EcologicalEntity ecologicalEntity)) return;
+		if (!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 
 		EcosystemType<?> type = ecologicalEntity.getEcosystemType();
 		PopInfo popInfo = getPopInfo(type);
@@ -76,7 +76,7 @@ public class EcosystemChunk {
 	}
 
 	public void removeEntity(MobEntity entity) {
-		if(!(entity instanceof EcologicalEntity ecologicalEntity)) return;
+		if (!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 
 		EcosystemType<?> type = ecologicalEntity.getEcosystemType();
 		PopInfo popInfo = getPopInfo(type);
@@ -84,14 +84,15 @@ public class EcosystemChunk {
 	}
 
 	public void handlePopIncrease(MobEntity entity) {
-		if(!(entity instanceof EcologicalEntity ecologicalEntity)) return;
+		if (!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 		boolean popOkay = this.entityNearbyPopOkay(ecologicalEntity);
 
-		if(popOkay) {
+		if (popOkay) {
 			// Choose random (closet?) predator to start hunting
 
 		} else {
 			// Notify self type to repopulate
+
 		}
 	}
 
@@ -100,23 +101,18 @@ public class EcosystemChunk {
 	}
 
 
-
 	@SuppressWarnings("UnstableApiUsage")
 	public boolean entityNearbyPopOkay(EcologicalEntity entity) {
 		EcosystemType<?> ecosystemType = entity.getEcosystemType();
 
-		int chunkSearchRadius = ecosystemType.getPopulationChunkSearchRadius();
-		List<ChunkPos> adjacentChunkPoses = ChunkPos.stream(this.pos, chunkSearchRadius).toList(); // List to gather amount
-
-		int countedChunks = 0; // Only count chunks if their center block is in oceans or river tag
+		int chunkSearchRadius = ecosystemType.populationChunkSearchRadius();
 		int totalAmount = 0;
 
-		for (ChunkPos chunkPos : adjacentChunkPoses) {
+		for (ChunkPos chunkPos : ChunkPos.stream(this.pos, chunkSearchRadius).toList()) {
 			// Don't create new EcosystemChunk during search to possibly help reduce created data
 			Chunk chunk = this.world.getChunk(chunkPos.x, chunkPos.z);
 			if (!accountChunkForPopCount(chunk)) continue;
 
-			countedChunks++;
 			if (!chunk.hasAttached(AbysmAttachments.ECOSYSTEM_CHUNK)) continue;
 			EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
 			if (ecosystemChunk == null) continue;
@@ -126,7 +122,7 @@ public class EcosystemChunk {
 			totalAmount += info.getEntityCount();
 		}
 
-		int targetPopulation = ecosystemType.getTargetPopulation();
+		int targetPopulation = ecosystemType.targetPopulation();
 
 		return totalAmount >= targetPopulation;
 	}
@@ -136,9 +132,9 @@ public class EcosystemChunk {
 		BlockPos centerPos = chunk.getPos().getCenterAtY(seaLevel - 5);
 		RegistryEntry<Biome> biome = world.getBiome(centerPos);
 
-		// FIXME - Floral Reef isn't being recognized as being in ocean tag despite literally having it in the debugger????????????
-//		return (biome.isIn(BiomeTags.IS_OCEAN) || biome.isIn(BiomeTags.IS_DEEP_OCEAN) || biome.isIn(BiomeTags.IS_RIVER));
-		return true;
+		// Don't include vanilla biomes for now because it's safe to assume we're only checking for Abysm entities
+		return biome.isIn(ConventionalBiomeTags.IS_OCEAN) || biome.isIn(ConventionalBiomeTags.IS_DEEP_OCEAN) || biome.isIn(ConventionalBiomeTags.IS_SHALLOW_OCEAN);
+//		return (biome.isIn(ConventionalBiomeTags.IS_OCEAN) || biome.isIn(BiomeTags.IS_OCEAN) || biome.isIn(BiomeTags.IS_DEEP_OCEAN) || biome.isIn(BiomeTags.IS_RIVER));
 	}
 
 	public PopInfo getPopInfo(EcosystemType<?> type) {
@@ -147,7 +143,7 @@ public class EcosystemChunk {
 
 	@Nullable
 	public PopInfo getPopInfo(EcosystemType<?> type, boolean createIfEmpty) {
-		if(createIfEmpty) return this.entityPopulation.computeIfAbsent(type, PopInfo::new);
+		if (createIfEmpty) return this.entityPopulation.computeIfAbsent(type, PopInfo::new);
 		return this.entityPopulation.getOrDefault(type, null);
 	}
 
@@ -184,7 +180,7 @@ public class EcosystemChunk {
 		}
 
 		public boolean populationOkay() {
-			return this.getEntityCount() >= this.type.getTargetPopulation();
+			return this.getEntityCount() >= this.type.targetPopulation();
 		}
 	}
 
