@@ -136,7 +136,7 @@ public class EcosystemChunk {
 		BlockPos centerPos = chunk.getPos().getCenterAtY(seaLevel - 5);
 		RegistryEntry<Biome> biome = world.getBiome(centerPos);
 
-		// FIXME - add Floral Reef to oceans biome tag
+		// FIXME - Floral Reef isn't being recognized as being in ocean tag despite literally having it in the debugger????????????
 //		return (biome.isIn(BiomeTags.IS_OCEAN) || biome.isIn(BiomeTags.IS_DEEP_OCEAN) || biome.isIn(BiomeTags.IS_RIVER));
 		return true;
 	}
