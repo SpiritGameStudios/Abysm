@@ -449,6 +449,12 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_FRIEND)
 				.add(EntityType.PUFFERFISH).add(AbysmEntityTypes.MAN_O_WAR);
 
+			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_PREY)
+				.add(EntityType.SALMON).add(EntityType.COD)
+				.add(EntityType.TROPICAL_FISH)
+				.add(AbysmEntityTypes.SMALL_FLORAL_FISH)
+				.add(AbysmEntityTypes.BIG_FLORAL_FISH);
+
 			getOrCreateTagBuilder(AbysmEntityTypeTags.HARPOON_UNHAULABLE)
 				.forceAddTag(ConventionalEntityTypeTags.BOSSES)
 				.add(EntityType.ENDER_DRAGON)

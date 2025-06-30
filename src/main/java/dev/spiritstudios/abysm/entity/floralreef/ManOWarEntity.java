@@ -4,12 +4,14 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
+import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
@@ -19,13 +21,20 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.entity.vehicle.AbstractBoatEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ServerTask;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -39,8 +48,13 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ManOWarEntity extends WaterCreatureEntity {
+
+	protected static final TrackedData<Boolean> CHILD = DataTracker.registerData(ManOWarEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	protected int breedingAge = 0;
+
 	public static final Vec3d[] STARTING_OFFSETS = Util.make(new Vec3d[49], array -> {
 		int index = 0;
 
@@ -84,12 +98,8 @@ public class ManOWarEntity extends WaterCreatureEntity {
 		return MobEntity.createMobAttributes()
 			.add(EntityAttributes.MAX_HEALTH, 15)
 			.add(EntityAttributes.MOVEMENT_SPEED, 0.4)
-			.add(EntityAttributes.SCALE, 2);
-	}
-
-	@Override
-	protected void loot(ServerWorld world, ItemEntity itemEntity) {
-		super.loot(world, itemEntity);
+			.add(EntityAttributes.SCALE, 2)
+			.add(EntityAttributes.ATTACK_DAMAGE, 5);
 	}
 
 	@Override
@@ -111,24 +121,120 @@ public class ManOWarEntity extends WaterCreatureEntity {
 			RegistryEntry<DamageType> damageType = AbysmDamageTypes.getFromWorld(serverWorld, AbysmDamageTypes.CNIDOCYTE_STING);
 			DamageSource source = new DamageSource(damageType, this);
 			TargetPredicate targetPredicate = TargetPredicate.createAttackable();
+			float damage = (float) this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
+			AtomicBoolean hasCreatedChild = new AtomicBoolean(false);
 			serverWorld.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), this.getTentacleBox(), living -> {
 				//noinspection CodeBlock2Expr
 				return living.isAlive() && !living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_FRIEND) && targetPredicate.test(serverWorld, this, living);
 			}).forEach(living -> {
-				living.damage(serverWorld, source, 5f);
+				living.damage(serverWorld, source, damage);
 				living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 4), this);
 				living.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 200, 4), this);
-				if (living.isDead() && living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_PREY) && this.random.nextBetween(0, 2) == 0) {
-					// asexual reproduction go
-				}
+				living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 2), this);
+				MinecraftServer server = serverWorld.getServer();
+				server.send(new ServerTask(server.getTicks(), () -> {
+					if (hasCreatedChild.get()) {
+						return;
+					}
+					hasCreatedChild.set(true);
+					if (!this.isBaby()
+						&& (living.isDead() || living.isRemoved())
+						&& living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_PREY)
+						&& this.random.nextBetween(0, 2) == 0) {
+						ManOWarEntity child = AbysmEntityTypes.MAN_O_WAR.create(serverWorld, SpawnReason.BREEDING);
+						if (child == null) {
+							return;
+						}
+						child.setBaby(true);
+						child.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
+						serverWorld.spawnEntity(child);
+					}
+				}));
 			});
 		}
 	}
 
+	@Override
+	public float getScaleFactor() {
+		return 1.0F;
+	}
+
+	@Override
+	protected void initDataTracker(DataTracker.Builder builder) {
+		super.initDataTracker(builder);
+		builder.add(CHILD, false);
+	}
+
+	public int getBreedingAge() {
+		if (this.getWorld().isClient) {
+			return this.dataTracker.get(CHILD) ? -1 : 1;
+		} else {
+			return this.breedingAge;
+		}
+	}
+
+	public void setBreedingAge(int age) {
+		int i = this.getBreedingAge();
+		this.breedingAge = age;
+		if (i < 0 && age >= 0 || i >= 0 && age < 0) {
+			this.dataTracker.set(CHILD, age < 0);
+			this.onGrowUp();
+		}
+	}
+
+	@Override
+	public void onTrackedDataSet(TrackedData<?> data) {
+		if (CHILD.equals(data)) {
+			this.calculateDimensions();
+		}
+
+		super.onTrackedDataSet(data);
+	}
+
+	protected void onGrowUp() {
+		if (!this.isBaby() && this.hasVehicle() && this.getVehicle() instanceof AbstractBoatEntity abstractBoatEntity && !abstractBoatEntity.isSmallerThanBoat(this)) {
+			this.stopRiding();
+		}
+	}
+
+	@Override
+	public void writeCustomDataToNbt(NbtCompound nbt) {
+		super.writeCustomDataToNbt(nbt);
+		nbt.putInt("breedingAge", this.getBreedingAge());
+	}
+
+	@Override
+	public void readCustomDataFromNbt(NbtCompound nbt) {
+		super.readCustomDataFromNbt(nbt);
+		this.setBreedingAge(nbt.getInt("breedingAge", 0));
+	}
+
+	@Override
+	public boolean isBaby() {
+		return this.getBreedingAge() < 0;
+	}
+
+	@Override
+	public void setBaby(boolean baby) {
+		this.setBreedingAge(baby ? -24000 : 0);
+	}
+
+	@Override
+	protected void loot(ServerWorld world, ItemEntity itemEntity) {
+		super.loot(world, itemEntity);
+	}
+
 	public Box getTentacleBox() {
-		final double expand = 0.3;
-		Box box = this.getBoundingBox().expand(expand, 0, expand);
-		return box.withMinY(box.minY - this.getScale() * BASE_TENTACLE_LENGTH).withMaxY(box.maxY + expand);
+		return getTentacleBox(0.1 * this.getScale());
+	}
+
+	public Box getTentacleBox(double expand) {
+		return getTentacleBox(expand, expand, expand);
+	}
+
+	public Box getTentacleBox(double expandX, double expandY, double expandZ) {
+		Box box = this.getBoundingBox().expand(expandX, 0, expandZ);
+		return box.withMinY(box.minY - this.getScale() * BASE_TENTACLE_LENGTH - expandY).withMaxY(box.maxY + expandY);
 	}
 
 	@Override
@@ -171,6 +277,15 @@ public class ManOWarEntity extends WaterCreatureEntity {
 		}
 
 		super.tickMovement();
+
+		if (!this.getWorld().isClient && this.isAlive()) {
+			int i = this.getBreedingAge();
+			if (i < 0) {
+				this.setBreedingAge(++i);
+			} else if (i > 0) {
+				this.setBreedingAge(--i);
+			}
+		}
 	}
 
 	protected SoundEvent getFlopSound() {

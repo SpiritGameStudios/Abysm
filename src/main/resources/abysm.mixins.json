@@ -1,28 +1,30 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "dev.spiritstudios.abysm.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "LeavesBlockMixin",
-    "bloomray.FishEntityMixin",
-    "harpoon.LivingEntityMixin",
-    "harpoon.PersistentProjectileEntityAccessor",
-    "harpoon.PersistentProjectileEntityMixin",
-    "harpoon.ServerPlayNetworkHandlerMixin",
-    "loottable.ItemEntryAccessor",
-    "loottable.LootPoolBuilderAccessor",
-    "swimmingspeed.LivingEntityMixin",
-    "worldgen.CarverContextAccessor",
-    "worldgen.CarverContextMixin",
-    "worldgen.CarverMixin",
-    "worldgen.ChunkNoiseSamplerAccessor",
-    "worldgen.ChunkNoiseSamplerMixin",
-    "worldgen.NoiseChunkGeneratorMixin",
-    "worldgen.StructureAccessorAccessor",
-    "worldgen.StructureWeightSamplerMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
+	"required": true,
+	"minVersion": "0.8",
+	"package": "dev.spiritstudios.abysm.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"LeavesBlockMixin",
+		"bloomray.FishEntityMixin",
+		"harpoon.LivingEntityMixin",
+		"harpoon.PersistentProjectileEntityAccessor",
+		"harpoon.PersistentProjectileEntityMixin",
+		"harpoon.ServerPlayNetworkHandlerMixin",
+		"loottable.ItemEntryAccessor",
+		"loottable.LootPoolBuilderAccessor",
+		"manowar.LivingEntityMixin",
+		"manowar.MobEntityMixin",
+		"swimmingspeed.LivingEntityMixin",
+		"worldgen.CarverContextAccessor",
+		"worldgen.CarverContextMixin",
+		"worldgen.CarverMixin",
+		"worldgen.ChunkNoiseSamplerAccessor",
+		"worldgen.ChunkNoiseSamplerMixin",
+		"worldgen.NoiseChunkGeneratorMixin",
+		"worldgen.StructureAccessorAccessor",
+		"worldgen.StructureWeightSamplerMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
 	}
 }
