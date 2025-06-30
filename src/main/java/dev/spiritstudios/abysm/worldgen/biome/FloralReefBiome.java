@@ -7,6 +7,7 @@ import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicType;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStep;
@@ -32,6 +33,7 @@ public final class FloralReefBiome extends AbysmBiome {
 			.waterFogColor(0x08304C)
 			.fogColor(0xC0D8FF)
 			.skyColor(OverworldBiomeCreator.getSkyColor(temperature))
+			.moodSound(BiomeMoodSound.CAVE)
 			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_FLORAL_REEF));
 	}
 

@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
+import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmItemTags;
@@ -351,10 +352,39 @@ public class AbysmTagProviders {
 
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-			getOrCreateTagBuilder(ItemTags.FOOT_ARMOR)
-				.add(AbysmItems.FLIPPERS);
+			// region vanilla item tags
+			getOrCreateTagBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
+				.add(
+					AbysmItems.FLIPPERS
+				);
 
-			getOrCreateTagBuilder(AbysmItemTags.HARPOON_ONLY).add(AbysmItems.NOOPRAH);
+			getOrCreateTagBuilder(ItemTags.ARMOR_ENCHANTABLE)
+				.add(
+					AbysmItems.FLIPPERS
+				);
+
+			getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE)
+				.add(
+					AbysmItems.FLIPPERS
+				);
+
+			getOrCreateTagBuilder(ItemTags.EQUIPPABLE_ENCHANTABLE)
+				.add(
+					AbysmItems.FLIPPERS
+				);
+
+			getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE)
+				.add(
+					AbysmItems.NOOPRAH
+				);
+			// endregion
+
+			// region abysm item tags
+			getOrCreateTagBuilder(AbysmItemTags.HARPOON_ENCHANTABLE)
+				.add(
+					AbysmItems.NOOPRAH
+				);
+			// endregion
 
 			// region copy block tags
 			this.copy(BlockTags.BUTTONS, ItemTags.BUTTONS);
@@ -406,12 +436,114 @@ public class AbysmTagProviders {
 
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+			// region vanilla tags
 			getOrCreateTagBuilder(BiomeTags.IS_OVERWORLD)
-				.add(AbysmBiomes.FLORAL_REEF);
+				.add(
+					AbysmBiomes.FLORAL_REEF,
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
 
-			// Using the conventional tag here since the vanilla one overrides the music
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_OCEAN)
-				.add(AbysmBiomes.FLORAL_REEF);
+			getOrCreateTagBuilder(BiomeTags.MINESHAFT_BLOCKING)
+				.add(
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(BiomeTags.WATER_ON_MAP_OUTLINES) // add these biomes here since they aren't in IS_OCEAN
+				.add(
+					AbysmBiomes.FLORAL_REEF,
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(BiomeTags.SPAWNS_COLD_VARIANT_FROGS)
+				.add(
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(BiomeTags.SPAWNS_COLD_VARIANT_FARM_ANIMALS)
+				.add(
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS)
+				.add(
+					AbysmBiomes.FLORAL_REEF
+				);
+			// endregion
+
+			// region convention tags
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_OVERWORLD)
+				.add(
+					AbysmBiomes.FLORAL_REEF,
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_TEMPERATE)
+				.add(
+					AbysmBiomes.FLORAL_REEF,
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_WET)
+				.add(
+					AbysmBiomes.FLORAL_REEF,
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_WET_OVERWORLD)
+				.add(
+					AbysmBiomes.FLORAL_REEF,
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_TEMPERATE_OVERWORLD)
+				.add(
+					AbysmBiomes.FLORAL_REEF,
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_OCEAN) // Using only the conventional tag here since the vanilla one overrides the music
+				.add(
+					AbysmBiomes.FLORAL_REEF,
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_DEEP_OCEAN)
+				.add(
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_UNDERGROUND)
+				.add(
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_MAGICAL)
+				.add(
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_RARE)
+				.add(
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_FLORAL)
+				.add(
+					AbysmBiomes.FLORAL_REEF
+				);
+
+			getOrCreateTagBuilder(ConventionalBiomeTags.IS_AQUATIC)
+				.add(
+					AbysmBiomes.FLORAL_REEF,
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
+			// endregion
+
+			// region abysm tags
+			getOrCreateTagBuilder(AbysmBiomeTags.DEEP_SEA_RUINS_HAS_STRUCTURE)
+				.addOptionalTag(
+					BiomeTags.IS_DEEP_OCEAN
+				);
+			// endregion
 		}
 	}
 
@@ -422,6 +554,7 @@ public class AbysmTagProviders {
 
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+			// region vanilla entity tags
 			getOrCreateTagBuilder(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
@@ -431,13 +564,19 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
-					AbysmEntityTypes.BIG_FLORAL_FISH
+					AbysmEntityTypes.BIG_FLORAL_FISH,
+					AbysmEntityTypes.BLOOMRAY,
+					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
+					AbysmEntityTypes.MAN_O_WAR
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.AQUATIC)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
-					AbysmEntityTypes.BIG_FLORAL_FISH
+					AbysmEntityTypes.BIG_FLORAL_FISH,
+					AbysmEntityTypes.BLOOMRAY,
+					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
+					AbysmEntityTypes.MAN_O_WAR
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH)
@@ -446,22 +585,38 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.BIG_FLORAL_FISH
 				);
 
+			getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES)
+				.add(
+					AbysmEntityTypes.FLYING_HARPOON
+				);
+			// endregion
+
+			// region abysm entity tags
 			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_FRIEND)
-				.add(EntityType.PUFFERFISH).add(AbysmEntityTypes.MAN_O_WAR);
+				.add(
+					EntityType.PUFFERFISH,
+					AbysmEntityTypes.MAN_O_WAR
+				);
 
 			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_PREY)
-				.add(EntityType.SALMON).add(EntityType.COD)
-				.add(EntityType.TROPICAL_FISH)
-				.add(AbysmEntityTypes.SMALL_FLORAL_FISH)
-				.add(AbysmEntityTypes.BIG_FLORAL_FISH);
+				.add(
+					EntityType.SALMON,
+					EntityType.COD,
+					EntityType.TROPICAL_FISH,
+					AbysmEntityTypes.SMALL_FLORAL_FISH,
+					AbysmEntityTypes.BIG_FLORAL_FISH
+				);
 
 			getOrCreateTagBuilder(AbysmEntityTypeTags.HARPOON_UNHAULABLE)
 				.forceAddTag(ConventionalEntityTypeTags.BOSSES)
-				.add(EntityType.ENDER_DRAGON)
-				.add(EntityType.GIANT)
-				//.add(EntityType.SHULKER)
-				.add(EntityType.WARDEN)
-				.add(EntityType.WITHER);
+				.add(
+					EntityType.ENDER_DRAGON,
+					EntityType.GIANT,
+					//EntityType.SHULKER,
+					EntityType.WARDEN,
+					EntityType.WITHER
+				);
+			// endregion
 		}
 	}
 

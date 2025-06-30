@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.worldgen.biome;
 
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicType;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
@@ -24,7 +25,8 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 			.waterFogColor(0x08304C)
 			.fogColor(0xC0D8FF)
 			.skyColor(OverworldBiomeCreator.getSkyColor(temperature))
-			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_FLORAL_REEF));
+			.moodSound(BiomeMoodSound.CAVE)
+			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_DEEP_SEA_RUINS));
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 {
 	"attribute.name.abysm.swimming_speed": "Swimming Speed",
+	"biome.abysm.deep_sea_ruins": "Deep Sea Ruins",
+	"biome.abysm.floral_reef": "Floral Reef",
 	"block.abysm.black_scabiosa": "Black Scabiosa",
 	"block.abysm.blooming_anyolite_crown": "Blooming Anyolite Crown",
 	"block.abysm.blooming_melilite_crown": "Blooming Melilite Crown",
@@ -114,6 +116,7 @@
 	"tag.item.abysm.bloomshroom_stems": "Bloomshroom Stems",
 	"tag.item.abysm.bloomshroom_caps": "Bloomshroom Caps",
 	"tag.item.abysm.flowery_sprigs": "Flowery Sprigs",
+	"tag.item.abysm.harpoon_only": "Harpoon Only",
 	"tag.item.abysm.mauve_bloomshroom_stems": "Mauve Bloomshroom Stems",
 	"tag.item.abysm.rosy_bloomshroom_stems": "Rosy Bloomshroom Stems",
 	"tag.item.abysm.scabiosas": "Scabiosas",

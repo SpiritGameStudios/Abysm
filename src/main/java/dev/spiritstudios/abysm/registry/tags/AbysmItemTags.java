@@ -18,7 +18,7 @@ public final class AbysmItemTags {
 	public static final TagKey<Item> BLOOMING_CROWNS = of("blooming_crowns");
 	public static final TagKey<Item> SCABIOSAS = of("scabiosas");
 
-	public static final TagKey<Item> HARPOON_ONLY = of("harpoon_only");
+	public static final TagKey<Item> HARPOON_ENCHANTABLE = of("enchantable/harpoon");
 
 	private static TagKey<Item> of(String id) {
 		return TagKey.of(RegistryKeys.ITEM, Abysm.id(id));

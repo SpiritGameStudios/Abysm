@@ -15,6 +15,6 @@
   "slots": [
     "mainhand"
   ],
-  "supported_items": "#abysm:harpoon_only",
+  "supported_items": "#abysm:enchantable/harpoon",
   "weight": 1
 }

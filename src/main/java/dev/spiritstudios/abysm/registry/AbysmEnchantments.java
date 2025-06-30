@@ -6,7 +6,6 @@ import dev.spiritstudios.abysm.registry.tags.AbysmItemTags;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.damage.DamageType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -48,7 +47,7 @@ public class AbysmEnchantments {
 		RegistryEntryLookup<Item> item = registerable.getRegistryLookup(RegistryKeys.ITEM);
 		ImmutableMap.Builder<RegistryKey<Enchantment>, Enchantment> enchantments = ImmutableMap.builder();
 		enchantments.put(HAUL, Enchantment.builder(Enchantment.definition(
-				item.getOrThrow(AbysmItemTags.HARPOON_ONLY),
+				item.getOrThrow(AbysmItemTags.HARPOON_ENCHANTABLE),
 				1,
 				1,
 				Enchantment.constantCost(1),
@@ -57,7 +56,7 @@ public class AbysmEnchantments {
 				AttributeModifierSlot.MAINHAND))
 			.build(HAUL.getValue()));
 		enchantments.put(GRAPPLING, Enchantment.builder(Enchantment.definition(
-				item.getOrThrow(AbysmItemTags.HARPOON_ONLY),
+				item.getOrThrow(AbysmItemTags.HARPOON_ENCHANTABLE),
 				1,
 				1,
 				Enchantment.constantCost(1),
