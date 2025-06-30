@@ -11,18 +11,15 @@ import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.brain.task.TargetUtil;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
 import net.minecraft.entity.ai.goal.WanderAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.SimpleParticleType;
@@ -38,13 +35,10 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 
 public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEntity, Variantable<BloomrayEntityVariant>, EcologicalEntity {
-//	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.bloomray.idle");
 	public static final TrackedData<Integer> VARIANT_ID = DataTracker.registerData(BloomrayEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
 	protected EcosystemLogic ecosystemLogic;
 
-	// TODO - Mauve variant texture
-	// TODO - Programmatically animate the swimming animation instead of manual animation because that's the only animation that'll probably be needed
 	// TODO - Custom AI for hiding in Bloomshroom crowns when scared(player nearby? Bigger bloomray/TBD enemy nearby?)
 	public BloomrayEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
@@ -114,9 +108,9 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	}
 
 	@Override
-	public void onDeath(DamageSource damageSource) {
+	public void onRemove(RemovalReason reason) {
 		this.alertEcosystemOfDeath();
-		super.onDeath(damageSource);
+		super.onRemove(reason);
 	}
 
 	@Override

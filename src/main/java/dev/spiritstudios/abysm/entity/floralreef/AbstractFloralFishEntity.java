@@ -23,7 +23,6 @@ import software.bernie.geckolib.animation.PlayState;
 import java.util.List;
 
 // TODO - Dropped fish item & bucket item
-// TODO - Spawn egg item
 // TODO - Something something component magic to allow for commands to spawn specific pattern variant combos (see TropicalFishEntity)
 public abstract class AbstractFloralFishEntity extends AbstractSchoolingFishEntity implements GeoEntity, Patternable {
 	public static final List<Integer> PATTERN_COLORS = List.of(

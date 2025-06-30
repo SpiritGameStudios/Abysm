@@ -8,10 +8,15 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.registry.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
+import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.util.DyeColor;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class BigFloralFishEntity extends AbstractFloralFishEntity implements EcologicalEntity {
 	public static final EntityPatternVariant DEFAULT_PATTERN_VARIANT = new EntityPatternVariant(
@@ -23,6 +28,24 @@ public class BigFloralFishEntity extends AbstractFloralFishEntity implements Eco
 	public BigFloralFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
 		this.ecosystemLogic = this.createEcosystemLogic(this);
+	}
+
+	@Override
+	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
+		this.alertEcosystemOfSpawn();
+		return super.initialize(world, difficulty, spawnReason, entityData);
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+		this.tickEcosystemLogic();
+	}
+
+	@Override
+	public void onRemove(RemovalReason reason) {
+		this.alertEcosystemOfDeath();
+		super.onRemove(reason);
 	}
 
 	@Override

@@ -5,18 +5,12 @@ import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
-import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.registry.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.LocalDifficulty;
@@ -51,9 +45,9 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 	}
 
 	@Override
-	public void onDeath(DamageSource damageSource) {
+	public void onRemove(RemovalReason reason) {
 		this.alertEcosystemOfDeath();
-		super.onDeath(damageSource);
+		super.onRemove(reason);
 	}
 
 	@Override

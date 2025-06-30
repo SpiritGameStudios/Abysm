@@ -101,10 +101,19 @@ public class EcosystemChunk {
 	}
 
 
-	@SuppressWarnings("UnstableApiUsage")
 	public boolean entityNearbyPopOkay(EcologicalEntity entity) {
 		EcosystemType<?> ecosystemType = entity.getEcosystemType();
+		return ecosystemTypeNearbyPopOkay(ecosystemType);
+	}
 
+	public boolean ecosystemTypeNearbyPopOkay(EcosystemType<?> ecosystemType) {
+		int population = getNearbyEcosystemTypePopulation(ecosystemType);
+		int targetPopulation = ecosystemType.targetPopulation();
+		return population >= targetPopulation;
+	}
+
+	@SuppressWarnings("UnstableApiUsage")
+	public int getNearbyEcosystemTypePopulation(EcosystemType<?> ecosystemType) {
 		int chunkSearchRadius = ecosystemType.populationChunkSearchRadius();
 		int totalAmount = 0;
 
@@ -121,10 +130,7 @@ public class EcosystemChunk {
 
 			totalAmount += info.getEntityCount();
 		}
-
-		int targetPopulation = ecosystemType.targetPopulation();
-
-		return totalAmount >= targetPopulation;
+		return totalAmount;
 	}
 
 	private boolean accountChunkForPopCount(Chunk chunk) {
@@ -134,7 +140,6 @@ public class EcosystemChunk {
 
 		// Don't include vanilla biomes for now because it's safe to assume we're only checking for Abysm entities
 		return biome.isIn(ConventionalBiomeTags.IS_OCEAN) || biome.isIn(ConventionalBiomeTags.IS_DEEP_OCEAN) || biome.isIn(ConventionalBiomeTags.IS_SHALLOW_OCEAN);
-//		return (biome.isIn(ConventionalBiomeTags.IS_OCEAN) || biome.isIn(BiomeTags.IS_OCEAN) || biome.isIn(BiomeTags.IS_DEEP_OCEAN) || biome.isIn(BiomeTags.IS_RIVER));
 	}
 
 	public PopInfo getPopInfo(EcosystemType<?> type) {
@@ -162,6 +167,7 @@ public class EcosystemChunk {
 	public static class PopInfo {
 		public final EcosystemType<?> type;
 		public final Set<Integer> entityIds = new IntOpenHashSet();
+		// TODO - Don't respawn namtagged entities
 
 		public PopInfo(EcosystemType<?> type) {
 			this.type = type;
