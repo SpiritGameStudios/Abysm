@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public class MobEntityMixin {
 
 	@WrapOperation(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Box;expand(DDD)Lnet/minecraft/util/math/Box;"))
-	private Box useTentacleBoxInstead(Box instance, double x, double y, double z, Operation<Box> original) {
+	private Box useTentacleBoxToLoot(Box instance, double x, double y, double z, Operation<Box> original) {
 		if ((MobEntity) (Object) this instanceof ManOWarEntity manOWar) {
 			return manOWar.getTentacleBox(x, y, z);
 		}
