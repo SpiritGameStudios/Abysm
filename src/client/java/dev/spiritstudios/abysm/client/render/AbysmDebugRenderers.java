@@ -12,5 +12,4 @@ public class AbysmDebugRenderers {
 	public static void init() {
 		DebugRendererRegistry.register(ECOSYSTEM_DEBUG_RENDERER_ID, new EcosystemDebugRenderer(MinecraftClient.getInstance()));
 	}
-
 }

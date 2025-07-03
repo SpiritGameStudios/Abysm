@@ -34,11 +34,12 @@ public class DeepSeaRuinsStructure extends Structure {
 		return Optional.of(new Structure.StructurePosition(blockPos.add(0, offset, 0), Either.right(structurePiecesCollector)));
 	}
 
+	@SuppressWarnings("deprecation")
 	private int addPieces(StructurePiecesCollector collector, Structure.Context context) {
 		ChunkPos chunkPos = context.chunkPos();
 		ChunkRandom random = context.random();
 
-		for(int i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) {
 			int spread = 30;
 			DeepSeaRuinsGenerator.SphereCave room = new DeepSeaRuinsGenerator.SphereCave(
 				0,

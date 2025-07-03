@@ -2,10 +2,7 @@ package dev.spiritstudios.abysm.entity.pattern;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
-import net.fabricmc.fabric.api.object.builder.v1.entity.FabricTrackedDataRegistry;
-import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
@@ -27,11 +24,14 @@ public record EntityPattern(EntityPatternVariant variant, int baseColor, int pat
 		).apply(instance, EntityPattern::new)
 	);
 
-	public static final PacketCodec<RegistryByteBuf, EntityPattern> PACKET_CODEC = PacketCodecs.registryCodec(CODEC);
+	public static final PacketCodec<RegistryByteBuf, EntityPattern> PACKET_CODEC = PacketCodec.tuple(
+		EntityPatternVariant.ENTRY_PACKET_CODEC, EntityPattern::variant,
+		PacketCodecs.INTEGER, EntityPattern::baseColor,
+		PacketCodecs.INTEGER, EntityPattern::patternColor,
+		EntityPattern::new
+	);
 
-	public static final TrackedDataHandler<EntityPattern> ENTITY_PATTERN_DATA_HANDLER = TrackedDataHandler.create(PACKET_CODEC);
-
-	public static final EntityPattern EMPTY_PATTERN = new EntityPattern(null, 16383998, 16383998);
+	public static final EntityPattern EMPTY_PATTERN = new EntityPattern(null, 0xF9FFFE, 0xF9FFFE);
 
 	public static Optional<EntityPattern> fromNbt(NbtCompound nbt) {
 		return nbt.get("entity_pattern", CODEC);
@@ -40,9 +40,4 @@ public record EntityPattern(EntityPatternVariant variant, int baseColor, int pat
 	public void writeNbt(NbtCompound nbt) {
 		nbt.put("entity_pattern", CODEC, this);
 	}
-
-	public static void init() {
-		FabricTrackedDataRegistry.register(Abysm.id("entity_pattern_data_handler"), ENTITY_PATTERN_DATA_HANDLER);
-	}
-
 }

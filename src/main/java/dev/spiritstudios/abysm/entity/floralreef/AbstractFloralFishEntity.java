@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.entity.floralreef;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.entity.pattern.Patternable;
+import dev.spiritstudios.abysm.registry.AbysmTrackedDataHandlers;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -32,7 +33,7 @@ public abstract class AbstractFloralFishEntity extends AbstractSchoolingFishEnti
 		DyeColor.RED.getEntityColor(), DyeColor.YELLOW.getEntityColor(), DyeColor.LIME.getEntityColor()
 	);
 
-	public static final TrackedData<EntityPattern> ENTITY_PATTERN = DataTracker.registerData(AbstractFloralFishEntity.class, EntityPattern.ENTITY_PATTERN_DATA_HANDLER);
+	public static final TrackedData<EntityPattern> ENTITY_PATTERN = DataTracker.registerData(AbstractFloralFishEntity.class, AbysmTrackedDataHandlers.ENTITY_PATTERN);
 
 	public AbstractFloralFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);

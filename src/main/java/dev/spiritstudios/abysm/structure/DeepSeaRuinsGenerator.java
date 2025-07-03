@@ -14,9 +14,7 @@ import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class DeepSeaRuinsGenerator {
-
 	public static class SphereCave extends StructurePiece {
-
 		private final SDFSphere sphereObject;
 		private final double radius;
 		private final double outerRadius;
@@ -27,6 +25,7 @@ public class DeepSeaRuinsGenerator {
 				chainLength,
 				makeBoundingBox(x, y, z, outerRadius)
 			);
+
 			this.radius = radius;
 			this.outerRadius = outerRadius;
 			this.sphereObject = new SDFSphere(x, y, z, radius, outerRadius);
@@ -34,9 +33,12 @@ public class DeepSeaRuinsGenerator {
 
 		public SphereCave(NbtCompound nbt) {
 			super(AbysmStructurePieceTypes.DEEP_SEA_RUINS_HOLLOW, nbt);
-			this.radius = nbt.getDouble("rad", 0);
-			this.outerRadius = nbt.getDouble("out_rad", 0);
+
+			this.radius = nbt.getDouble("radius", 0);
+			this.outerRadius = nbt.getDouble("outer_radius", 0);
+
 			BlockBox box = this.boundingBox;
+
 			this.sphereObject = new SDFSphere(
 				(box.getMinX() + box.getMaxX()) / 2.0,
 				(box.getMinY() + box.getMaxY()) / 2.0,
@@ -64,8 +66,8 @@ public class DeepSeaRuinsGenerator {
 
 		@Override
 		protected void writeNbt(StructureContext context, NbtCompound nbt) {
-			nbt.putDouble("rad", this.radius);
-			nbt.putDouble("out_rad", this.outerRadius);
+			nbt.putDouble("radius", this.radius);
+			nbt.putDouble("outer_radius", this.outerRadius);
 		}
 
 		@Override

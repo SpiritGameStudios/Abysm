@@ -37,7 +37,7 @@ import java.util.concurrent.CompletableFuture;
 
 // Hold a spyglass in main hand to have text rendering stay a few blocks beneath sea level instead of following you
 public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
-	private static final int DARK_RED = -10223616; // ColorHelper.getArgb(100, 0, 0)
+	private static final int DARK_RED = 0x640000;
 
 	public final MinecraftClient client;
 	private double lastUpdateTime = Double.MIN_VALUE;
@@ -63,6 +63,8 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 		if (ecosystemChunkMap == null) return;
 
 		double initY = this.client.gameRenderer.getCamera().getPos().y * 0.95;
+		assert this.client.player != null;
+
 		if (this.client.player.isHolding(Items.SPYGLASS)) {
 			initY = this.client.player.getWorld().getSeaLevel() - 3;
 		}
@@ -137,6 +139,9 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 		@SuppressWarnings("UnstableApiUsage")
 		EcosystemLoadingStatus(IntegratedServer server, ChunkPos playerChunkPos) {
 			ClientWorld clientWorld = EcosystemDebugRenderer.this.client.world; // how???
+			// you can do that because this class isn't static
+			// - echo
+
 			RegistryKey<World> worldKey = clientWorld.getRegistryKey();
 
 			// This is beyond cursed but it's what Minecraft does ¯\_(ツ)_/¯

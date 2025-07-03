@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
@@ -16,9 +17,9 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 // Handles all entities within a specific chunk, accounting for adjacent chunks too.
 // This class will tell entities how they should be feeling based on the data available.
@@ -40,7 +41,7 @@ import java.util.Set;
 public class EcosystemChunk {
 	public final World world;
 	public final ChunkPos pos;
-	public final Map<EcosystemType<?>, PopInfo> entityPopulation = new HashMap<>();
+	public final Map<EcosystemType<?>, PopInfo> entityPopulation = new Object2ObjectOpenHashMap<>();
 
 	public EcosystemChunk(World world, ChunkPos pos) {
 		this.world = world;
@@ -115,22 +116,23 @@ public class EcosystemChunk {
 	@SuppressWarnings("UnstableApiUsage")
 	public int getNearbyEcosystemTypePopulation(EcosystemType<?> ecosystemType) {
 		int chunkSearchRadius = ecosystemType.populationChunkSearchRadius();
-		int totalAmount = 0;
+		AtomicInteger totalAmount = new AtomicInteger();
 
-		for (ChunkPos chunkPos : ChunkPos.stream(this.pos, chunkSearchRadius).toList()) {
+		ChunkPos.stream(this.pos, chunkSearchRadius).forEach(chunkPos -> {
 			// Don't create new EcosystemChunk during search to possibly help reduce created data
 			Chunk chunk = this.world.getChunk(chunkPos.x, chunkPos.z);
-			if (!accountChunkForPopCount(chunk)) continue;
+			if (!accountChunkForPopCount(chunk)) return;
 
-			if (!chunk.hasAttached(AbysmAttachments.ECOSYSTEM_CHUNK)) continue;
+			if (!chunk.hasAttached(AbysmAttachments.ECOSYSTEM_CHUNK)) return;
 			EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
-			if (ecosystemChunk == null) continue;
+			if (ecosystemChunk == null) return;
 			PopInfo info = ecosystemChunk.getPopInfo(ecosystemType, false);
-			if (info == null) continue;
+			if (info == null) return;
 
-			totalAmount += info.getEntityCount();
-		}
-		return totalAmount;
+			totalAmount.addAndGet(info.getEntityCount());
+		});
+
+		return totalAmount.get();
 	}
 
 	private boolean accountChunkForPopCount(Chunk chunk) {

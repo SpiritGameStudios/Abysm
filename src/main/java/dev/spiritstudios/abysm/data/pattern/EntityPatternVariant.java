@@ -38,7 +38,7 @@ public record EntityPatternVariant(EntityType<?> entityType, String name, Identi
 		).apply(instance, EntityPatternVariant::new)
 	);
 
-	public static final PacketCodec<RegistryByteBuf, EntityPatternVariant> PACKET_CODEC = PacketCodecs.registryCodec(CODEC);
+	public static final PacketCodec<RegistryByteBuf, EntityPatternVariant> ENTRY_PACKET_CODEC = PacketCodecs.registryValue(AbysmRegistries.ENTITY_PATTERN);
 
 	// Unused, but I believe it is still needed?
 //	public static final Codec<RegistryEntry<EntityPatternVariant>> ENTRY_CODEC = RegistryElementCodec.of(EntityPatternVariantRegistry.ENTITY_PATTERN_VARIANT_KEY, CODEC);
