@@ -3,20 +3,49 @@ package dev.spiritstudios.abysm.data.fishenchantment;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public record FishEnchantment(List<Entry> modifiers) {
 
 	public static final Codec<FishEnchantment> CODEC = Entry.CODEC.listOf().xmap(FishEnchantment::new, enchantment -> enchantment.modifiers);
+	public static final PacketCodec<RegistryByteBuf, FishEnchantment> PACKET_CODEC = PacketCodecs.registryValue(AbysmRegistries.FISH_ENCHANTMENT);
 
 	public static final FishEnchantment DEFAULT = builder().build();
+
+	public static Registry<FishEnchantment> getRegistry(World world) {
+		return getRegistry(world.getRegistryManager());
+	}
+
+	public static Registry<FishEnchantment> getRegistry(DynamicRegistryManager drm) {
+		return drm.getOrThrow(AbysmRegistries.FISH_ENCHANTMENT);
+	}
+
+	@SuppressWarnings("unused")
+	@Nullable
+	public Identifier getId(World world) {
+		return this.getId(world.getRegistryManager());
+	}
+
+	@Nullable
+	public Identifier getId(DynamicRegistryManager drm) {
+		return drm.getOptional(AbysmRegistries.FISH_ENCHANTMENT)
+			.map(registry ->
+				registry.getId(this))
+			.orElse(null);
+	}
 
 	public static Builder builder() {
 		return new Builder();

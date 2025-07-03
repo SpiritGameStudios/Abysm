@@ -1,0 +1,8 @@
+[
+  {
+    "type": "minecraft:luck",
+    "amount": 1.0,
+    "id": "abysm:obfuscated",
+    "operation": "add_value"
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "type": "minecraft:armor",
+    "amount": 10.0,
+    "id": "abysm:shell",
+    "operation": "add_value"
+  }
+]

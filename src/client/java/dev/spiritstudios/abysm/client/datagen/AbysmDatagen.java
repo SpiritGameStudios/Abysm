@@ -36,6 +36,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.ENTITY_PATTERN, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT, Abysm.MODID));
+		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.FISH_ENCHANTMENT, Abysm.MODID));
 
 		pack.addProvider(AbysmBlockLootTableProvider::new);
 		pack.addProvider(AbysmFishingLootTableProvider::new);
@@ -81,6 +82,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 			.addRegistry(RegistryKeys.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap)
 			.addRegistry(AbysmRegistries.ENTITY_PATTERN, AbysmEntityPatternVariants::bootstrap)
 			.addRegistry(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, AbysmEntityVariants::bloomrayBootstrap)
-			.addRegistry(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT, AbysmEntityVariants::ooglyBooglyBootstrap);
+			.addRegistry(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT, AbysmEntityVariants::ooglyBooglyBootstrap)
+			.addRegistry(AbysmRegistries.FISH_ENCHANTMENT, AbysmFishEnchantments::bootstrap);
 	}
 }

@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm.entity.depths;
 
+import dev.spiritstudios.abysm.util.PressureFinder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -26,9 +27,14 @@ public class MysteriousBlobEntity extends WaterCreatureEntity {
 	public static DefaultAttributeContainer.Builder createVaseAttributes() {
 		return MobEntity.createMobAttributes()
 			.add(EntityAttributes.ATTACK_DAMAGE, Long.MAX_VALUE)
-			.add(EntityAttributes.WATER_MOVEMENT_EFFICIENCY, 1)
+			.add(EntityAttributes.MAX_HEALTH, 1000000)
+			.add(EntityAttributes.ARMOR, 10)
+			.add(EntityAttributes.ARMOR_TOUGHNESS, 100)
 			.add(EntityAttributes.KNOCKBACK_RESISTANCE, 0.5)
-			.add(EntityAttributes.MAX_HEALTH, 1000000);
+			.add(EntityAttributes.LUCK, 10)
+			.add(EntityAttributes.FOLLOW_RANGE, 32)
+			.add(EntityAttributes.WATER_MOVEMENT_EFFICIENCY, 1)
+			.add(EntityAttributes.MOVEMENT_SPEED, 0.9);
 	}
 
 	@Override
@@ -61,5 +67,13 @@ public class MysteriousBlobEntity extends WaterCreatureEntity {
 	public void onStoppedTrackingBy(ServerPlayerEntity player) {
 		super.onStoppedTrackingBy(player);
 		this.bossBar.removePlayer(player);
+	}
+
+	public float getPressure() {
+		return PressureFinder.getPressure(this.getWorld(), this.getBlockPos());
+	}
+
+	public boolean isHappy() {
+		return this.getPressure() >= 0.61f;
 	}
 }

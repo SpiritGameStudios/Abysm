@@ -1,0 +1,8 @@
+[
+  {
+    "type": "minecraft:attack_damage",
+    "amount": 2.0,
+    "id": "abysm:jaw",
+    "operation": "add_value"
+  }
+]
