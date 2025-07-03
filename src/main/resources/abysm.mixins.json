@@ -14,6 +14,8 @@
 		"loottable.LootPoolBuilderAccessor",
 		"manowar.LivingEntityMixin",
 		"manowar.MobEntityMixin",
+		"pressure.LivingEntityMixin",
+		"pressure.PlayerEntityMixin",
 		"swimmingspeed.LivingEntityMixin",
 		"worldgen.CarverContextAccessor",
 		"worldgen.CarverContextMixin",

@@ -12,6 +12,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +20,13 @@ import org.jetbrains.annotations.Nullable;
 public class MysteriousBlobEntity extends WaterCreatureEntity {
 
 	protected final ServerBossBar bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.BLUE, BossBar.Style.NOTCHED_6);
+
+	protected float scaleXZ = 1f;
+	protected float prevScaleXZ = 1f;
+	protected float targetScaleXZ = 1f;
+	protected float targetScaleY = 1f;
+	protected float scaleY = 1f;
+	protected float prevScaleY = 1f;
 
 	public MysteriousBlobEntity(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
@@ -52,6 +60,42 @@ public class MysteriousBlobEntity extends WaterCreatureEntity {
 	}
 
 	@Override
+	public void tick() {
+		super.tick();
+
+		World world = this.getWorld();
+
+		if (this.isHappy()) {
+			this.targetScaleY = 1;
+			this.targetScaleXZ = 1;
+		} else {
+			float woah = world.getTime() * 0.1f;
+			this.targetScaleY = MathHelper.sin(woah);
+			this.targetScaleXZ = MathHelper.cos(woah);
+		}
+
+		if (this.scaleXZ != this.targetScaleXZ) {
+			this.scaleXZ = MathHelper.lerp(0.15f, this.scaleXZ, this.targetScaleXZ);
+		}
+		if (this.scaleY != this.targetScaleY) {
+			this.scaleY = MathHelper.lerp(0.15f, this.scaleY, this.targetScaleY);
+		}
+
+		boolean scaleDirty = false;
+		if (this.prevScaleXZ != this.scaleXZ) {
+			scaleDirty = true;
+			this.prevScaleXZ = this.scaleXZ;
+		}
+		if (this.prevScaleY != this.scaleY) {
+			scaleDirty = true;
+			this.prevScaleY = this.scaleY;
+		}
+		if (scaleDirty) {
+			this.calculateDimensions();
+		}
+	}
+
+	@Override
 	protected void mobTick(ServerWorld world) {
 		super.mobTick(world);
 		this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
@@ -74,6 +118,30 @@ public class MysteriousBlobEntity extends WaterCreatureEntity {
 	}
 
 	public boolean isHappy() {
-		return this.getPressure() >= 0.61f;
+		return this.getPressure() >= 54f;
+	}
+
+	public float getScaleXZ() {
+		return this.scaleXZ;
+	}
+
+	public float getScaleY() {
+		return this.scaleY;
+	}
+
+	public float lerpScaleXZ(float delta) {
+		return MathHelper.lerp(delta, this.prevScaleXZ, this.scaleXZ);
+	}
+
+	public float lerpScaleY(float delta) {
+		return MathHelper.lerp(delta, this.prevScaleY, this.scaleY);
+	}
+
+	public void setTargetScaleXZ(float scale) {
+		this.targetScaleXZ = scale;
+	}
+
+	public void setTargetScaleY(float scale) {
+		this.targetScaleY = scale;
 	}
 }
