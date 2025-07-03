@@ -25,7 +25,7 @@ public abstract class ChatScreenMixin extends Screen {
 		if (chatText.startsWith("/")) {
 			return;
 		}
-		if (chatText.toLowerCase(Locale.ROOT).replace(" ", "").contains("\u006F\u0062\u0061\u0062\u006F")) {
+		if (chatText.toLowerCase(Locale.ROOT).replaceAll("\\s", "").contains("\u006F\u0062\u0061\u0062\u006F")) {
 			ClientPlayNetworking.send(UserTypedForbiddenWordC2SPayload.INSTANCE);
 		}
 	}
