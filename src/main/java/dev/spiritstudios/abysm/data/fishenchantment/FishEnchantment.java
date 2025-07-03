@@ -85,7 +85,6 @@ public record FishEnchantment(List<Entry> modifiers) {
 		}
 	}
 
-
 	@SuppressWarnings("unused")
 	public record Entry(RegistryEntry<EntityAttribute> attribute, EntityAttributeModifier modifier) {
 		public static final Codec<Entry> CODEC = RecordCodecBuilder.create(

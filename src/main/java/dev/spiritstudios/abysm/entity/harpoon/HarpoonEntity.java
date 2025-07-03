@@ -9,6 +9,7 @@ import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmItems;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -37,6 +38,8 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 	public static final float VELOCITY_POWER = 3.5f;
 	public static final TrackedData<Boolean> RETURNING = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
+	public static final SoundEvent CHAIN_SOUND = Blocks.CHAIN.getDefaultState().getSoundGroup().getFallSound();
 
 	protected int slot = -1;
 	protected int ticksAlive = 0;
@@ -99,7 +102,11 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			this.discard();
 			return;
 		}
-		if (!this.getWorld().isClient()) {
+		World world = this.getWorld();
+		if (!world.isClient()) {
+			if (this.inGroundTime <= 0 && this.age % 4 == 0) {
+				this.playSound(CHAIN_SOUND, 10.0F, 1.05F);
+			}
 			try {
 				ItemStack invStack = owner.getInventory().getStack(this.slot);
 				if (!invStack.isOf(AbysmItems.NOOPRAH) || invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY).loaded()) {
