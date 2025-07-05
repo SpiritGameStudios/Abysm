@@ -1,9 +1,19 @@
 package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.datagen.*;
+import dev.spiritstudios.abysm.datagen.AbysmBlockLootTableProvider;
+import dev.spiritstudios.abysm.datagen.AbysmFishingLootTableProvider;
+import dev.spiritstudios.abysm.datagen.AbysmItemGroupProvider;
+import dev.spiritstudios.abysm.datagen.AbysmItemMetatagProvider;
+import dev.spiritstudios.abysm.datagen.AbysmRecipeProvider;
+import dev.spiritstudios.abysm.datagen.AbysmTagProviders;
+import dev.spiritstudios.abysm.datagen.AutomaticDynamicRegistryProvider;
+import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
+import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
-import dev.spiritstudios.abysm.registry.*;
+import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
+import dev.spiritstudios.abysm.registry.AbysmEnchantments;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.structure.AbysmStructureSets;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
