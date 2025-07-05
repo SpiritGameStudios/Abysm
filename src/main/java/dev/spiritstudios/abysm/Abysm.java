@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
+import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
@@ -12,9 +13,9 @@ import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.structure.AbysmStructurePieceTypes;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
+import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctionTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmFeatures;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
 import dev.spiritstudios.abysm.worldgen.tree.AbysmFoliagePlacerTypes;
@@ -78,6 +79,7 @@ public class Abysm implements ModInitializer {
 		);
 
 		AbysmStructurePieceTypes.init();
+		AbysmDensityFunctionTypes.init();
 
 		AbysmBiomes.addAllToGenerator();
 

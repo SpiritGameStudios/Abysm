@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.worldgen;
 
 import dev.spiritstudios.abysm.duck.CarverContextDuckInterface;
-import dev.spiritstudios.abysm.duck.StructureWeightSamplerDuckInterface;
+import dev.spiritstudios.abysm.worldgen.densityfunction.DensityFunctionWrapper;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.gen.HeightContext;
 import net.minecraft.world.gen.carver.CarverContext;
@@ -17,15 +17,15 @@ public abstract class CarverContextMixin extends HeightContext implements Carver
 	}
 
 	@Unique
-	private StructureWeightSamplerDuckInterface sampler;
+	private DensityFunctionWrapper sampler;
 
 	@Override
-	public void abysm$setSampler(StructureWeightSamplerDuckInterface sampler) {
+	public void abysm$setFunction(DensityFunctionWrapper sampler) {
 		this.sampler = sampler;
 	}
 
 	@Override
-	public @Nullable StructureWeightSamplerDuckInterface abysm$getSampler() {
+	public @Nullable DensityFunctionWrapper abysm$getSampler() {
 		return this.sampler;
 	}
 }

@@ -33,7 +33,7 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 	public GenerationSettings.Builder createGenerationSettings(RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
 		GenerationSettings.LookupBackedBuilder builder = new GenerationSettings.LookupBackedBuilder(featureLookup, carverLookup);
 
-		DefaultBiomeFeatures.addMineables(builder);
+		addBasicFeatures(builder);
 
 		DefaultBiomeFeatures.addDefaultOres(builder);
 		DefaultBiomeFeatures.addDefaultDisks(builder);

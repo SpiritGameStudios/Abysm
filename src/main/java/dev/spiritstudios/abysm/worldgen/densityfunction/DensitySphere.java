@@ -1,6 +1,6 @@
-package dev.spiritstudios.abysm.worldgen.sdf;
+package dev.spiritstudios.abysm.worldgen.densityfunction;
 
-public class SDFSphere implements SDFObject {
+public class DensitySphere implements DensityBlob {
 
 	private double x;
 	private double y;
@@ -9,7 +9,7 @@ public class SDFSphere implements SDFObject {
 	private final double outerRadius;
 	private final double thickness;
 
-	public SDFSphere(double x, double y, double z, double radius, double outerRadius) {
+	public DensitySphere(double x, double y, double z, double radius, double outerRadius) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -24,7 +24,6 @@ public class SDFSphere implements SDFObject {
 		this.z += z;
 	}
 
-	@Override
 	public double sampleSdf(double bx, double by, double bz) {
 		double dx = bx - x;
 		double dy = by - y;
@@ -34,16 +33,19 @@ public class SDFSphere implements SDFObject {
 	}
 
 	@Override
-	public double sampleDensity(double bx, double by, double bz) {
+	public double sampleDensity(int x, int y, int z) {
 		// return 0 if outside outer radius, 1 if inside inner radius, and a smooth gradient between
-		double innerSd = this.sampleSdf(bx, by, bz);
+		double innerSd = this.sampleSdf(x, y, z);
 		if(innerSd <= 0.0) {
-			return 1.0;
+			// return greater than 1.0 further within inner radius
+			return 1.0 - innerSd;
 		} else {
 			double outerSd = innerSd - this.thickness;
 			if(outerSd >= 0.0) {
+				// return 0.0 if outside outer radius
 				return 0.0;
 			} else {
+				// smoothly transition between 0.0 on outer radius and 1.0 on inner radius
 				return 1.0 - (innerSd / this.thickness);
 			}
 		}

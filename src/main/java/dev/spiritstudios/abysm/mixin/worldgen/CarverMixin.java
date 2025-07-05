@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.worldgen;
 
 import dev.spiritstudios.abysm.duck.CarverContextDuckInterface;
-import dev.spiritstudios.abysm.duck.StructureWeightSamplerDuckInterface;
+import dev.spiritstudios.abysm.worldgen.densityfunction.DensityFunctionWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
@@ -24,13 +24,13 @@ public abstract class CarverMixin<C extends CarverConfig> {
 
 	@Inject(method = "carveAtPoint", at = @At("HEAD"), cancellable = true)
 	private void blockCarving(CarverContext context, C config, Chunk chunk, Function<BlockPos, RegistryEntry<Biome>> posToBiome, CarvingMask mask, BlockPos.Mutable pos, BlockPos.Mutable tmp, AquiferSampler aquiferSampler, MutableBoolean replacedGrassy, CallbackInfoReturnable<Boolean> cir) {
-		StructureWeightSamplerDuckInterface sampler = ((CarverContextDuckInterface)context).abysm$getSampler();
+		DensityFunctionWrapper sampler = ((CarverContextDuckInterface)context).abysm$getSampler();
 		// only sample if needed (i.e. if the sampler has been set for this chunk's CarverContext)
 		if(sampler != null) {
-			double signedDistance = sampler.abysm$sampleSDF(pos.getX(), pos.getY(), pos.getZ());
+			double density = sampler.sample(pos);
 
 			// do not carve inside of shell caves
-			if(signedDistance < 0.0) {
+			if(density >= 1.0) {
 				cir.setReturnValue(false);
 
 				// DEBUG: place glass

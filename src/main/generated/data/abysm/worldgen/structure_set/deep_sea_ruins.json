@@ -2,7 +2,7 @@
   "placement": {
     "type": "minecraft:random_spread",
     "exclusion_zone": {
-      "chunk_count": 4,
+      "chunk_count": 10,
       "other_set": "minecraft:ocean_monuments"
     },
     "salt": 55147411,

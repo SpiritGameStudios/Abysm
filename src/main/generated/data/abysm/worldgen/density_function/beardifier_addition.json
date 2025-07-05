@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:square",
+  "argument": {
+    "type": "minecraft:square",
+    "argument": {
+      "type": "minecraft:mul",
+      "argument1": "abysm:ruins_shell_cave",
+      "argument2": {
+        "type": "minecraft:add",
+        "argument1": 1.0,
+        "argument2": {
+          "type": "minecraft:mul",
+          "argument1": 5.5,
+          "argument2": {
+            "type": "minecraft:square",
+            "argument": {
+              "type": "minecraft:noise",
+              "noise": "abysm:ruins_shell_beard",
+              "xz_scale": 1.0,
+              "y_scale": 1.0
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:noise",
+  "noise": "abysm:ruins_sediment",
+  "xz_scale": 1.0,
+  "y_scale": 2.5
+}

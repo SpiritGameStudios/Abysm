@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:cache_once",
+  "argument": {
+    "type": "minecraft:mul",
+    "argument1": {
+      "type": "abysm:shell_cave"
+    },
+    "argument2": {
+      "type": "minecraft:add",
+      "argument1": 1.0,
+      "argument2": {
+        "type": "minecraft:mul",
+        "argument1": 0.9,
+        "argument2": {
+          "type": "minecraft:square",
+          "argument": "abysm:ruins_sediment_noise"
+        }
+      }
+    }
+  }
+}

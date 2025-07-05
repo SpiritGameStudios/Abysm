@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.structure;
 
-import dev.spiritstudios.abysm.worldgen.sdf.SDFSphere;
+import dev.spiritstudios.abysm.worldgen.densityfunction.DensitySphere;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.structure.StructureContext;
 import net.minecraft.structure.StructurePiece;
@@ -15,7 +15,7 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 
 public class DeepSeaRuinsGenerator {
 	public static class SphereCave extends StructurePiece {
-		private final SDFSphere sphereObject;
+		private final DensitySphere sphereObject;
 		private final double radius;
 		private final double outerRadius;
 
@@ -28,7 +28,7 @@ public class DeepSeaRuinsGenerator {
 
 			this.radius = radius;
 			this.outerRadius = outerRadius;
-			this.sphereObject = new SDFSphere(x, y, z, radius, outerRadius);
+			this.sphereObject = new DensitySphere(x, y, z, radius, outerRadius);
 		}
 
 		public SphereCave(NbtCompound nbt) {
@@ -39,7 +39,7 @@ public class DeepSeaRuinsGenerator {
 
 			BlockBox box = this.boundingBox;
 
-			this.sphereObject = new SDFSphere(
+			this.sphereObject = new DensitySphere(
 				(box.getMinX() + box.getMaxX()) / 2.0,
 				(box.getMinY() + box.getMaxY()) / 2.0,
 				(box.getMinZ() + box.getMaxZ()) / 2.0,
@@ -60,7 +60,7 @@ public class DeepSeaRuinsGenerator {
 			);
 		}
 
-		public SDFSphere getSphereObject() {
+		public DensitySphere getSphereObject() {
 			return this.sphereObject;
 		}
 
