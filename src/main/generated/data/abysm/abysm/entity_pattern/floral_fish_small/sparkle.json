@@ -1,6 +1,8 @@
 {
   "entity": "abysm:floral_fish_small",
-  "name": "Sparkle",
+  "name": {
+    "translate": "entity.abysm.floral_fish_small.sparkle"
+  },
   "pattern": "abysm:textures/entity/pattern/floral_fish_small/sparkle.png",
   "colorable": true
 }

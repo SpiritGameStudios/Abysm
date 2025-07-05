@@ -2,10 +2,15 @@ package dev.spiritstudios.abysm.entity.pattern;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryOps;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.ServerWorldAccess;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +27,7 @@ import java.util.Optional;
  *     <ul>
  *         <li>Implement this interface and fill in the required methods.</li>
  *         <li>Override the Entity#initDataTracker method to include your DataTracked EntityVariant. This syncs your variant.</li>
- *         <li>Override the Entity#writeCustomDataToNbt and Entity#readCustomDataFromNbt to call {@link Patternable#writeEntityPatternNbt(NbtCompound)} and {@link Patternable#readEntityPatternNbt(Entity, NbtCompound)} respectively. These keep your variants persistent on world save.</li>
+ *         <li>Override the Entity#writeCustomDataToNbt and Entity#readCustomDataFromNbt to call {@link Patternable#writeEntityPatternNbt(RegistryOps, NbtCompound)} and {@link Patternable#readEntityPatternNbt(Entity, RegistryOps, NbtCompound)} respectively. These keep your variants persistent on world save.</li>
  *         <li>Override the MobEntity#initialize method to call {@link Patternable#getPatternForInitialize(ServerWorldAccess, Entity, EntityData)}, which sets your entity's variant upon spawning.</li>
  *     </ul>
  *     <li>For the entity renderer:</li>
@@ -35,7 +40,7 @@ import java.util.Optional;
  *     <li>Create all the built-in variant keys in {@link AbysmEntityPatternVariants}, and all them in the bootstrap method. Don't forget to run datagen!</li>
  *     <li>Launch the game and test. I believe that's all that needs to be done.</li>
  * </ul>
- *
+ * <p>
  * See the Small Floral Fish Entity (and its renderer) for examples!
  *
  * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity
@@ -43,7 +48,6 @@ import java.util.Optional;
  * @see AbysmEntityPatternVariants
  */
 public interface Patternable {
-
 	List<Integer> DEFAULT_DYE_ENTITY_COLORS = Arrays.stream(DyeColor.values()).map(DyeColor::getEntityColor).toList();
 
 	/**
@@ -64,10 +68,10 @@ public interface Patternable {
 	 * The default pattern, most likely used in case of an error. Under most circumstances, this should never get used.
 	 *
 	 * @return This entity's default pattern.
-	 * @see	Patternable#getFallbackPattern(Entity)
+	 * @see Patternable#getFallbackPattern(Entity)
 	 * @see Patternable#getCommonPatterns()
 	 */
-	EntityPattern getDefaultPattern();
+	EntityPattern getDefaultPattern(RegistryEntryLookup<EntityPatternVariant> lookup);
 
 	/**
 	 * @return A list of common patterns that a majority of entities will use. Leave empty for no common patterns. {@link Patternable#commonPatternChance()} determines the chance of this list being used.
@@ -87,11 +91,13 @@ public interface Patternable {
 
 	/**
 	 * A fallback pattern for this entity to use in case of an error. This is used if this entity is being reloaded, but its pattern can't be found.<br><br>
-	 * If a list of common patterns is provided, a random one is chosen from there. Otherwise the {@link Patternable#getDefaultPattern()} pattern is used.
+	 * If a list of common patterns is provided, a random one is chosen from there. Otherwise, the {@link Patternable#getDefaultPattern(RegistryEntryLookup)} pattern is used.
+	 *
 	 * @return A fallback pattern.
 	 */
 	default EntityPattern getFallbackPattern(Entity self) {
-		if(this.getCommonPatterns().isEmpty()) return this.getDefaultPattern();
+		if (this.getCommonPatterns().isEmpty())
+			return this.getDefaultPattern(self.getRegistryManager().getOrThrow(AbysmRegistries.ENTITY_PATTERN));
 		int index = self.getRandom().nextInt(this.getCommonPatterns().size());
 		return this.getCommonPatterns().get(index);
 	}
@@ -100,15 +106,15 @@ public interface Patternable {
 	 * @return An EntityPattern for this entity upon initialization.
 	 */
 	default EntityPattern getPatternForInitialize(ServerWorldAccess world, Entity self, @Nullable EntityData entityData) {
-		if(entityData instanceof PatternedEntityData patternData) {
+		if (entityData instanceof PatternedEntityData patternData) {
 			return patternData.getPattern();
 		}
 
-		if(!this.getCommonPatterns().isEmpty() && world.getRandom().nextFloat() < this.commonPatternChance()) {
+		if (!this.getCommonPatterns().isEmpty() && world.getRandom().nextFloat() < this.commonPatternChance()) {
 			List<EntityPattern> commonPatterns = this.getCommonPatterns();
 			int patternIndex = world.getRandom().nextInt(commonPatterns.size());
 			EntityPattern pattern = commonPatterns.get(patternIndex);
-			if(pattern != null) return pattern;
+			if (pattern != null) return pattern;
 		}
 
 		return getRandomPattern(world, self);
@@ -120,10 +126,11 @@ public interface Patternable {
 	 * @see Patternable#getPatternForInitialize(ServerWorldAccess, Entity, EntityData)
 	 */
 	default EntityPattern getRandomPattern(ServerWorldAccess world, Entity self) {
-		List<EntityPatternVariant> variants = EntityPatternVariant.getVariantsForEntityType(world, self.getType()).stream().toList();
+		List<RegistryEntry<EntityPatternVariant>> variants = EntityPatternVariant.getVariantsForEntityType(world, self.getType()).toList();
 		int total = variants.size();
 		int randomIndex = world.getRandom().nextInt(total);
-		EntityPatternVariant variant = variants.get(randomIndex);
+
+		RegistryEntry<EntityPatternVariant> variant = variants.get(randomIndex);
 
 		List<Integer> baseColors = this.getBaseColors();
 		int baseColor = baseColors.get(world.getRandom().nextInt(baseColors.size()));
@@ -137,16 +144,16 @@ public interface Patternable {
 	/**
 	 * Write this entity's pattern to the world's nbt.
 	 */
-	default void writeEntityPatternNbt(NbtCompound nbt) {
-		this.getEntityPattern().writeNbt(nbt);
+	default void writeEntityPatternNbt(RegistryOps<NbtElement> ops, NbtCompound nbt) {
+		this.getEntityPattern().writeNbt(ops, nbt);
 	}
 
 	/**
 	 * Read an entity pattern from the world's nbt.
 	 */
-	default void readEntityPatternNbt(Entity self, NbtCompound nbt) {
-		Optional<EntityPattern> pattern = EntityPattern.fromNbt(nbt);
-		if(pattern.isPresent()) {
+	default void readEntityPatternNbt(Entity self, RegistryOps<NbtElement> ops, NbtCompound nbt) {
+		Optional<EntityPattern> pattern = EntityPattern.fromNbt(ops, nbt);
+		if (pattern.isPresent()) {
 			this.setEntityPattern(pattern.get());
 		} else {
 			Abysm.LOGGER.warn("Could not read EntityPattern for {}! Using fallback pattern instead.", self.getType());

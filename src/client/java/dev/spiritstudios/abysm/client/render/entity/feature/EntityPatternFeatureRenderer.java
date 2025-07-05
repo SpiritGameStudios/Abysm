@@ -26,7 +26,7 @@ public class EntityPatternFeatureRenderer<T extends GeoAnimatable, O, R extends 
 	@Override
 	protected Identifier getTextureResource(R state) {
 		EntityPattern pattern = state.getGeckolibData(DATA_TICKET);
-		if (pattern != null && pattern.variant() != null) return pattern.variant().patternPath();
+		if (pattern != null && pattern.variant() != null) return pattern.variant().value().patternPath();
 		return MISSING_TEXTURE;
 	}
 

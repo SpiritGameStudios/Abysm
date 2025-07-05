@@ -9,12 +9,15 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.text.Text;
+import net.minecraft.text.TextCodecs;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.ServerWorldAccess;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * The data-drivable record which contains texture path information for Entity Patterns/entity renderers to use.
@@ -25,40 +28,38 @@ import java.util.stream.Collectors;
  * @param baseTexture The base texture for the model - if empty, the default entity texture is used instead
  * @param colorable If the pattern is meant to be colored with code(default), or has pre-defined colors - if empty, defaults to true
  */
-public record EntityPatternVariant(EntityType<?> entityType, String name, Identifier patternPath, Optional<Identifier> baseTexture, Optional<Boolean> colorable) {
-	// TODO - replace "name" codec entry from String to Text
+public record EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, Optional<Identifier> baseTexture, Optional<Boolean> colorable) {
 	// TODO (unimportant) - Actually impl. base texture & colorable codec entries in required places
 	public static final Codec<EntityPatternVariant> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
 			EntityType.CODEC.fieldOf("entity").forGetter(pattern -> pattern.entityType),
-			Codec.STRING.fieldOf("name").forGetter(pattern -> pattern.name),
+			TextCodecs.CODEC.fieldOf("name").forGetter(pattern -> pattern.name),
 			Identifier.CODEC.fieldOf("pattern").forGetter(pattern -> pattern.patternPath),
 			Identifier.CODEC.optionalFieldOf("base").forGetter(pattern -> pattern.baseTexture),
 			Codec.BOOL.optionalFieldOf("colorable").forGetter(pattern -> pattern.colorable)
 		).apply(instance, EntityPatternVariant::new)
 	);
 
-	public static final PacketCodec<RegistryByteBuf, EntityPatternVariant> ENTRY_PACKET_CODEC = PacketCodecs.registryValue(AbysmRegistries.ENTITY_PATTERN);
+	public static final PacketCodec<RegistryByteBuf, RegistryEntry<EntityPatternVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistries.ENTITY_PATTERN);
 
-	// Unused, but I believe it is still needed?
-//	public static final Codec<RegistryEntry<EntityPatternVariant>> ENTRY_CODEC = RegistryElementCodec.of(EntityPatternVariantRegistry.ENTITY_PATTERN_VARIANT_KEY, CODEC);
-
-	public EntityPatternVariant(EntityType<?> entityType, String name, Identifier patternPath) {
+	public EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath) {
 		this(entityType, name, patternPath, Optional.empty(), Optional.of(true));
 	}
 
-	public EntityPatternVariant(EntityType<?> entityType, String name, Identifier patternPath, Identifier baseTexture) {
+	public EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, Identifier baseTexture) {
 		this(entityType, name, patternPath, Optional.of(baseTexture), Optional.of(true));
 	}
 
-	public EntityPatternVariant(EntityType<?> entityType, String name, Identifier patternPath, boolean colorable) {
+	public EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, boolean colorable) {
 		this(entityType, name, patternPath, Optional.empty(), Optional.of(colorable));
 	}
 
-	public static Set<EntityPatternVariant> getVariantsForEntityType(ServerWorldAccess world, EntityType<?> entityType) {
+	public static Stream<RegistryEntry<EntityPatternVariant>> getVariantsForEntityType(ServerWorldAccess world, EntityType<?> entityType) {
 		DynamicRegistryManager registryManager = world.getRegistryManager();
 		Registry<EntityPatternVariant> registry = registryManager.getOrThrow(AbysmRegistries.ENTITY_PATTERN);
-		return registry.stream().filter(patternVariant -> patternVariant.entityType.equals(entityType)).collect(Collectors.toSet());
+		return registry.streamEntries()
+			.<RegistryEntry<EntityPatternVariant>>map(Function.identity())
+			.filter(patternVariant -> patternVariant.value().entityType.equals(entityType));
 	}
 
 }

@@ -1,6 +1,8 @@
 {
   "entity": "abysm:floral_fish_big",
-  "name": "Lookout",
+  "name": {
+    "translate": "entity.abysm.floral_fish_big.lookout"
+  },
   "pattern": "abysm:textures/entity/pattern/floral_fish_big/lookout.png",
   "colorable": true
 }

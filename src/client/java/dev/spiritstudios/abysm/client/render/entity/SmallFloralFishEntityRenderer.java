@@ -3,7 +3,6 @@ package dev.spiritstudios.abysm.client.render.entity;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.feature.EntityPatternFeatureRenderer;
 import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
-import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -21,10 +20,9 @@ public class SmallFloralFishEntityRenderer<R extends LivingEntityRenderState & G
 	@Override
 	public Identifier getTextureLocation(R renderState) {
 		EntityPattern pattern = renderState.getGeckolibData(EntityPatternFeatureRenderer.DATA_TICKET);
-		if(pattern != null) {
-			EntityPatternVariant variant = pattern.variant();
-			if(variant != null) {
-				if(variant.baseTexture().isPresent()) return variant.baseTexture().get();
+		if (pattern != null) {
+			if (pattern.variant() != null) {
+				return pattern.variant().value().baseTexture().orElseGet(() -> super.getTextureLocation(renderState));
 			}
 		}
 		return super.getTextureLocation(renderState);

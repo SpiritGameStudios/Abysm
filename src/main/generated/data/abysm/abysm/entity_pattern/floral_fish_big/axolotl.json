@@ -1,6 +1,8 @@
 {
   "entity": "abysm:floral_fish_big",
-  "name": "Axolotl",
+  "name": {
+    "translate": "entity.abysm.floral_fish_big.axolotl"
+  },
   "pattern": "abysm:textures/entity/pattern/floral_fish_big/axolotl.png",
   "colorable": true
 }

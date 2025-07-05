@@ -1,6 +1,8 @@
 {
   "entity": "abysm:floral_fish_big",
-  "name": "Starry",
+  "name": {
+    "translate": "entity.abysm.floral_fish_big.starry"
+  },
   "pattern": "abysm:textures/entity/pattern/floral_fish_big/starry.png",
   "colorable": true
 }

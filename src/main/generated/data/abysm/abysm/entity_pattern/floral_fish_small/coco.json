@@ -1,6 +1,8 @@
 {
   "entity": "abysm:floral_fish_small",
-  "name": "Coco",
+  "name": {
+    "translate": "entity.abysm.floral_fish_small.coco"
+  },
   "pattern": "abysm:textures/entity/pattern/floral_fish_small/coco.png",
   "colorable": true
 }

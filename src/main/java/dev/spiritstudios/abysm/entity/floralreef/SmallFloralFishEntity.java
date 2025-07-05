@@ -2,16 +2,19 @@ package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
+import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
-import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
+import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.SchoolingFishEntity;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -20,10 +23,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class SmallFloralFishEntity extends AbstractFloralFishEntity implements EcologicalEntity {
 	public static final EntityPatternVariant DEFAULT_PATTERN_VARIANT = new EntityPatternVariant(
-		AbysmEntityTypes.SMALL_FLORAL_FISH, "Colorful", Abysm.id("textures/entity/pattern/floral_fish_small/colorful.png")
+		AbysmEntityTypes.SMALL_FLORAL_FISH, Text.translatable("entity.abysm.floral_fish_small.colorful"), Abysm.id("textures/entity/pattern/floral_fish_small/colorful.png")
 	);
-
-	public static final EntityPattern DEFAULT_PATTERN = new EntityPattern(DEFAULT_PATTERN_VARIANT, DyeColor.PINK.getEntityColor(), DyeColor.LIGHT_BLUE.getEntityColor());
 
 	protected EcosystemLogic ecosystemLogic;
 
@@ -56,8 +57,11 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 	}
 
 	@Override
-	public EntityPattern getDefaultPattern() {
-		return DEFAULT_PATTERN;
+	public EntityPattern getDefaultPattern(RegistryEntryLookup<EntityPatternVariant> lookup) {
+		return new EntityPattern(
+			lookup.getOrThrow(AbysmEntityPatternVariants.FLORAL_FISH_SMALL_COLORFUL),
+			DyeColor.PINK.getEntityColor(), DyeColor.LIGHT_BLUE.getEntityColor()
+		);
 	}
 
 	@Override

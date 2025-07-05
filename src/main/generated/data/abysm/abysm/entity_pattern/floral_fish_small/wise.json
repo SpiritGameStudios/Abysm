@@ -1,6 +1,8 @@
 {
   "entity": "abysm:floral_fish_small",
-  "name": "Wise",
+  "name": {
+    "translate": "entity.abysm.floral_fish_small.wise"
+  },
   "pattern": "abysm:textures/entity/pattern/floral_fish_small/wise.png",
   "colorable": true
 }
