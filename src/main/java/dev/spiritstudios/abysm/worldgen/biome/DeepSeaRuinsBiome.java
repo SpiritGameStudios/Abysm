@@ -21,8 +21,8 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 	public BiomeEffects.Builder createEffects() {
 		// TODO: Temporary colors
 		return new BiomeEffects.Builder()
-			.waterColor(0x0093C4)
-			.waterFogColor(0x08304C)
+			.waterColor(0x1C7A56)
+			.waterFogColor(0x06140F)
 			.fogColor(0xC0D8FF)
 			.skyColor(OverworldBiomeCreator.getSkyColor(temperature))
 			.moodSound(BiomeMoodSound.CAVE)

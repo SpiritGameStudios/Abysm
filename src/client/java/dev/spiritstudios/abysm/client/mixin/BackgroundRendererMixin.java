@@ -39,7 +39,9 @@ public abstract class BackgroundRendererMixin {
 			float visibilityMultiplier;
 			if (biome.matchesKey(AbysmBiomes.FLORAL_REEF)) {
 				visibilityMultiplier = 0.3F + 0.7F * lightness;
-			} else {
+			} else if(biome.matchesKey(AbysmBiomes.DEEP_SEA_RUINS)) {
+				visibilityMultiplier = 0.13F;
+			}else {
 				visibilityMultiplier = 1.0F;
 			}
 
