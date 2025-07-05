@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.data.variant;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
+import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
@@ -21,7 +22,7 @@ import java.util.Optional;
  * <ul type="1">
  *     <li>Create a new class extending this class. You'll need a codec, and likely want a default value & your own static methods for {@link AbstractEntityVariant#fromIntId(RegistryKey, AbstractEntityVariant, DynamicRegistryManager, int)} & {@link AbstractEntityVariant#toIntId(RegistryKey, DynamicRegistryManager, AbstractEntityVariant)}.</li>
  *     <li>Create a RegistryKey in {@link dev.spiritstudios.abysm.registry.AbysmRegistries} & add it to the dynamic registries.</li>
- *     <li>Create your own bootstrap method with the built-in variant in {@link dev.spiritstudios.abysm.registry.AbysmEntityVariants} for your key, and add that bootstrap method to AbysmDatagen#buildRegistry.</li>
+ *     <li>Create your own bootstrap method with the built-in variant in {@link AbysmEntityVariants} for your key, and add that bootstrap method to AbysmDatagen#buildRegistry.</li>
  *     <li>In your Entity class:
  *     <ul type="1">
  *         <li>Implement {@link dev.spiritstudios.abysm.entity.variant.Variantable} and fill in the methods.</li>
@@ -34,7 +35,7 @@ import java.util.Optional;
  *     </li>
  * </ul>
  * @see dev.spiritstudios.abysm.registry.AbysmRegistries
- * @see dev.spiritstudios.abysm.registry.AbysmEntityVariants
+ * @see AbysmEntityVariants
  * @see BloomrayEntityVariant
  * @see BloomrayEntity
  */

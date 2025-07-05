@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.worldgen;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.spiritstudios.abysm.duck.StructureWeightSamplerDuckInterface;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.StructureWeightSampler;

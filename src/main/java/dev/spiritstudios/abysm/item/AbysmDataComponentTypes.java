@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.item;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.component.BlessedComponent;

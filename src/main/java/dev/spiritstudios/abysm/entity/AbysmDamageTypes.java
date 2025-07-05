@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.entity;
 
 import com.google.common.collect.ImmutableMap;
 import dev.spiritstudios.abysm.Abysm;

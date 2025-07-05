@@ -1,9 +1,11 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.entity.pattern;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
+import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;

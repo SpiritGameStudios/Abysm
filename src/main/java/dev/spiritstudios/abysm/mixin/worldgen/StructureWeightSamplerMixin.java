@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.worldgen;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.spiritstudios.abysm.duck.StructureWeightSamplerDuckInterface;
-import dev.spiritstudios.abysm.registry.AbysmStructureTypes;
+import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
 import dev.spiritstudios.abysm.structure.DeepSeaRuinsGenerator;
 import dev.spiritstudios.abysm.worldgen.sdf.SDFObject;
 import dev.spiritstudios.abysm.worldgen.sdf.ShellCaveSampler;

@@ -1,10 +1,10 @@
 package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
-import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
-import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
-import dev.spiritstudios.abysm.registry.AbysmItems;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
+import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;

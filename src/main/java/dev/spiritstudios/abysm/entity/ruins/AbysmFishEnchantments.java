@@ -1,8 +1,9 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.entity.ruins;
 
 import com.google.common.collect.ImmutableMap;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -13,7 +14,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 import java.util.Map;
 
 public class AbysmFishEnchantments {
-
 	public static final RegistryKey<FishEnchantment> NONE = of("none");
 	public static final RegistryKey<FishEnchantment> JAW = of("jaw");
 	public static final RegistryKey<FishEnchantment> SHELL = of("shell");

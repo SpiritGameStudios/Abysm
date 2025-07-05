@@ -1,8 +1,8 @@
 package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
-import dev.spiritstudios.abysm.registry.AbysmItems;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.specter.api.core.reflect.ReflectionHelper;
 import dev.spiritstudios.specter.api.item.datagen.SpecterItemGroupProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;

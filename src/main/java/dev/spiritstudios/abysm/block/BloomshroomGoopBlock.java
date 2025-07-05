@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
-import dev.spiritstudios.abysm.registry.AbysmParticleTypes;
+import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SideShapeType;
 import net.minecraft.util.math.BlockPos;

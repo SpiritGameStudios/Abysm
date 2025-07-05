@@ -1,11 +1,14 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.ecosystem;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
+import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;

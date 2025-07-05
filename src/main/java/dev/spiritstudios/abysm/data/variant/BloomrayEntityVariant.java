@@ -2,8 +2,8 @@ package dev.spiritstudios.abysm.data.variant;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
-import dev.spiritstudios.abysm.registry.AbysmParticleTypes;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.Block;

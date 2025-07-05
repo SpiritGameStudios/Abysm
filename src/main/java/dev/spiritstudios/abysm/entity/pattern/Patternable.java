@@ -32,7 +32,7 @@ import java.util.Optional;
  *         <li>Override the getTextureLocation method to allow for the EntityPattern's base texture.</li>
  *         <li>Override the getRenderColor method to allow for the EntityPattern's base color.</li>
  *     </ul>
- *     <li>Create all the built-in variant keys in {@link dev.spiritstudios.abysm.registry.AbysmEntityPatternVariants}, and all them in the bootstrap method. Don't forget to run datagen!</li>
+ *     <li>Create all the built-in variant keys in {@link AbysmEntityPatternVariants}, and all them in the bootstrap method. Don't forget to run datagen!</li>
  *     <li>Launch the game and test. I believe that's all that needs to be done.</li>
  * </ul>
  *
@@ -40,7 +40,7 @@ import java.util.Optional;
  *
  * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity
  * @see dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity
- * @see dev.spiritstudios.abysm.registry.AbysmEntityPatternVariants
+ * @see AbysmEntityPatternVariants
  */
 public interface Patternable {
 

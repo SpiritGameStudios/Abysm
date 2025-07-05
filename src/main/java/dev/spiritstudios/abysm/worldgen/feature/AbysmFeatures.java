@@ -1,9 +1,5 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.worldgen.feature;
 
-import dev.spiritstudios.abysm.worldgen.feature.BloomshroomVegetationFeature;
-import dev.spiritstudios.abysm.worldgen.feature.SprigsFeature;
-import dev.spiritstudios.abysm.worldgen.feature.StalagmiteFeature;
-import dev.spiritstudios.abysm.worldgen.feature.StateProviderFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.NetherForestVegetationFeatureConfig;
 

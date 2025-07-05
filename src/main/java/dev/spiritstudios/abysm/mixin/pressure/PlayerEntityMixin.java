@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.mixin.pressure;
 
-import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
+import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.util.PressureFinder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

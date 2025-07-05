@@ -1,9 +1,11 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.entity.variant;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.variant.AbstractEntityVariant;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
+import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.Registry;

@@ -2,7 +2,6 @@ package dev.spiritstudios.abysm.worldgen.structure;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
-import dev.spiritstudios.abysm.registry.AbysmStructureTypes;
 import dev.spiritstudios.abysm.structure.DeepSeaRuinsGenerator;
 import net.minecraft.structure.StructurePiecesCollector;
 import net.minecraft.util.math.BlockPos;

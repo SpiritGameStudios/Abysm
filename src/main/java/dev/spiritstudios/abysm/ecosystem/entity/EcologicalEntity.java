@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.ecosystem.entity;
 
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.registry.AbysmEcosystemTypes;
+import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.LivingEntity;

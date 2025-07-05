@@ -2,7 +2,6 @@ package dev.spiritstudios.abysm.item;
 
 import dev.spiritstudios.abysm.component.BlessedComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
-import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.block.BlockState;

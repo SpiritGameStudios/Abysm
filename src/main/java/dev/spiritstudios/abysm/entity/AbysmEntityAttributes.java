@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.entity;
 
 import dev.spiritstudios.abysm.Abysm;
 import net.minecraft.entity.attribute.ClampedEntityAttribute;

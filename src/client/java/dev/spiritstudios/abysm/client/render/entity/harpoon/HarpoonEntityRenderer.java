@@ -5,7 +5,7 @@ import dev.spiritstudios.abysm.client.mixin.harpoon.ItemRenderStateAccessor;
 import dev.spiritstudios.abysm.client.render.entity.state.HarpoonEntityRenderState;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.item.HarpoonItem;
-import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
+import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Frustum;
 import net.minecraft.client.render.LightmapTextureManager;

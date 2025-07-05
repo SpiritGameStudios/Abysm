@@ -2,12 +2,12 @@ package dev.spiritstudios.abysm.entity.harpoon;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.component.BlessedComponent;
+import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
+import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.mixin.harpoon.PersistentProjectileEntityAccessor;
-import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
-import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
-import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
-import dev.spiritstudios.abysm.registry.AbysmItems;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -71,6 +71,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 		double d = velocity.horizontalLength();
 
+		//noinspection SuspiciousNameCombination
 		this.setYaw((float)(MathHelper.atan2(velocity.x, velocity.z) * MathHelper.DEGREES_PER_RADIAN));
 		this.setPitch((float)(MathHelper.atan2(velocity.y, d) * MathHelper.DEGREES_PER_RADIAN));
 

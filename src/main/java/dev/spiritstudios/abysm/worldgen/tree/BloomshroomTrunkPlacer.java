@@ -3,7 +3,6 @@ package dev.spiritstudios.abysm.worldgen.tree;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.registry.AbysmTrunkPlacerTypes;
 import dev.spiritstudios.specter.api.core.math.SpecterMath;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;

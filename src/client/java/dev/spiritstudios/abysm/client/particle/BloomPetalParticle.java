@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.client.particle;
 
-import dev.spiritstudios.abysm.registry.AbysmParticleTypes;
+import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.ParticleEffect;

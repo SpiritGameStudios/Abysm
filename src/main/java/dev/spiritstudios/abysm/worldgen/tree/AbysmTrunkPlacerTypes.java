@@ -1,6 +1,5 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.worldgen.tree;
 
-import dev.spiritstudios.abysm.worldgen.tree.BloomshroomTrunkPlacer;
 import net.minecraft.world.gen.trunk.TrunkPlacerType;
 
 public final class AbysmTrunkPlacerTypes {

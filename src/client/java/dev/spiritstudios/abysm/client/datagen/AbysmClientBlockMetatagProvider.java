@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.client.datagen;
 
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.specter.api.registry.metatag.datagen.MetatagProvider;
 import dev.spiritstudios.specter.api.render.client.BlockRenderLayer;
 import dev.spiritstudios.specter.api.render.client.RenderMetatags;

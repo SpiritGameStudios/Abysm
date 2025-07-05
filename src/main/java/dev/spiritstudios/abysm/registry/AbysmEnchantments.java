@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 import java.util.Map;
 
 public class AbysmEnchantments {
-
 	public static final RegistryKey<Enchantment> HAUL = of("haul");
 	public static final RegistryKey<Enchantment> GRAPPLING = of("grappling");
 

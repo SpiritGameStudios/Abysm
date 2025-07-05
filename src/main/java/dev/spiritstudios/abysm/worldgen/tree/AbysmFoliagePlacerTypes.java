@@ -1,6 +1,5 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.worldgen.tree;
 
-import dev.spiritstudios.abysm.worldgen.tree.BloomshroomFoliagePlacer;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
 
 public final class AbysmFoliagePlacerTypes {

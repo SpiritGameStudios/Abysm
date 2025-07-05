@@ -12,7 +12,7 @@ import net.minecraft.registry.RegistryWrapper;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import static dev.spiritstudios.abysm.registry.AbysmBlocks.*;
+import static dev.spiritstudios.abysm.block.AbysmBlocks.*;
 
 public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 	public AbysmItemMetatagProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {

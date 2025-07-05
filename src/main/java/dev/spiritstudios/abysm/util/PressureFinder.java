@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 
 public class PressureFinder {
-
 	/**
 	 * Gets the pressure at the given position according to the biome
 	 * @param world the world

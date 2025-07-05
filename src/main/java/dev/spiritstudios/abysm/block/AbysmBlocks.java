@@ -1,8 +1,8 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.block;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.block.*;
 import dev.spiritstudios.abysm.item.PlaceableOnWaterOrBlockItem;
+import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;

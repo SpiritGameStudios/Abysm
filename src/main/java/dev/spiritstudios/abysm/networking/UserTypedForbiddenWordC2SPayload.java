@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.networking;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.registry.AbysmDamageTypes;
+import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.RegistryByteBuf;

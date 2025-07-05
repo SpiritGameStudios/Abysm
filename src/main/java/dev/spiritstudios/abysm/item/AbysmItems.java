@@ -1,7 +1,8 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.item;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.item.HarpoonItem;
+import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
+import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.attribute.EntityAttributeModifier;

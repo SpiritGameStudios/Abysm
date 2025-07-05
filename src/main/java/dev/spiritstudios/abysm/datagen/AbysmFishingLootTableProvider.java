@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.loot.LootPool;

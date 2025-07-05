@@ -1,8 +1,7 @@
 package dev.spiritstudios.abysm.worldgen.feature;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
-import dev.spiritstudios.abysm.registry.AbysmFeatures;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.worldgen.tree.BloomshroomFoliagePlacer;
 import dev.spiritstudios.abysm.worldgen.tree.BloomshroomTrunkPlacer;
 import net.minecraft.block.Block;

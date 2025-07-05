@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.block;
 
 import com.google.common.collect.Maps;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.registry.Registries;

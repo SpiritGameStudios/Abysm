@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.entity.floralreef;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.entity.pattern.Patternable;
-import dev.spiritstudios.abysm.registry.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;

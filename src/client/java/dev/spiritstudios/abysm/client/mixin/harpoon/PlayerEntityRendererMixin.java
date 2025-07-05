@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.client.mixin.harpoon;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import dev.spiritstudios.abysm.registry.AbysmItems;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

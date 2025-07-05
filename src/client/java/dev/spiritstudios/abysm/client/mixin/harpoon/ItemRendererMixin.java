@@ -2,8 +2,8 @@ package dev.spiritstudios.abysm.client.mixin.harpoon;
 
 import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.component.BlessedComponent;
-import dev.spiritstudios.abysm.registry.AbysmDataComponentTypes;
-import dev.spiritstudios.abysm.registry.AbysmItems;
+import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderState;

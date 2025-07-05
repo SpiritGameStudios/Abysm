@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.datagen.*;
+import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.registry.*;
 import dev.spiritstudios.abysm.structure.AbysmStructureSets;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;

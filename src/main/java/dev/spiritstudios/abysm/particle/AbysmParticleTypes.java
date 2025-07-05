@@ -1,8 +1,7 @@
-package dev.spiritstudios.abysm.registry;
+package dev.spiritstudios.abysm.particle;
 
 import com.mojang.serialization.MapCodec;
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.particle.OoglyBooglyFumesParticleEffect;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;

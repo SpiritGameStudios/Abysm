@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.worldgen.feature;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.registry.AbysmBlocks;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.Registerable;

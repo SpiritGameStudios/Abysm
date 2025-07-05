@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
 import com.terraformersmc.biolith.api.biome.BiomePlacement;
-import dev.spiritstudios.abysm.registry.AbysmEntityTypes;
+import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import net.minecraft.block.Blocks;
