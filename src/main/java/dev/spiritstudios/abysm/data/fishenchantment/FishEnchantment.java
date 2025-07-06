@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.data.fishenchantment;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -10,8 +11,9 @@ import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -19,18 +21,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public record FishEnchantment(List<Entry> modifiers) {
+	public static final Codec<FishEnchantment> CODEC = Entry.CODEC.listOf()
+		.xmap(FishEnchantment::new, enchantment -> enchantment.modifiers);
 
-	public static final Codec<FishEnchantment> CODEC = Entry.CODEC.listOf().xmap(FishEnchantment::new, enchantment -> enchantment.modifiers);
-	public static final PacketCodec<RegistryByteBuf, FishEnchantment> PACKET_CODEC = PacketCodecs.registryValue(AbysmRegistries.FISH_ENCHANTMENT);
+	public static final PacketCodec<RegistryByteBuf, RegistryEntry<FishEnchantment>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistries.FISH_ENCHANTMENT);
 
-	public static final FishEnchantment DEFAULT = builder().build();
+	public static final Codec<RegistryEntry<FishEnchantment>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistries.FISH_ENCHANTMENT);
 
-	public static Registry<FishEnchantment> getRegistry(World world) {
-		return getRegistry(world.getRegistryManager());
+	public static RegistryEntry<FishEnchantment> getDefaultEntry(DynamicRegistryManager registryManager) {
+		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistries.FISH_ENCHANTMENT));
 	}
 
-	public static Registry<FishEnchantment> getRegistry(DynamicRegistryManager drm) {
-		return drm.getOrThrow(AbysmRegistries.FISH_ENCHANTMENT);
+	public static RegistryEntry<FishEnchantment> getDefaultEntry(RegistryEntryLookup<FishEnchantment> lookup) {
+		return lookup.getOrThrow(AbysmFishEnchantments.NONE);
 	}
 
 	@SuppressWarnings("unused")
@@ -51,28 +54,11 @@ public record FishEnchantment(List<Entry> modifiers) {
 		return new Builder();
 	}
 
-	@SuppressWarnings("unused")
-	public Builder copy() {
-		return this.copyWithExtraSize(0);
-	}
-
-	public Builder copyWithExtraSize(int extra) {
-		Builder builder = new Builder(this.modifiers.size() + extra);
-		for (Entry entry : this.modifiers) {
-			builder.add(entry.attribute, entry.modifier);
-		}
-		return builder;
-	}
-
 	public static class Builder {
 		private final ImmutableList.Builder<Entry> entries;
 
 		Builder() {
 			entries = ImmutableList.builder();
-		}
-
-		Builder(int expectedSize) {
-			entries = ImmutableList.builderWithExpectedSize(expectedSize);
 		}
 
 		public Builder add(RegistryEntry<EntityAttribute> attribute, EntityAttributeModifier modifier) {

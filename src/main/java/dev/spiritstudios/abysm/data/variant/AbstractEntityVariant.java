@@ -6,15 +6,11 @@ import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 /**
  * Abstract class containing basic necessary fields for entity texture variants, along with helper methods. (Not to be confused with Entity Pattern Variants!)<br><br>
@@ -56,16 +52,6 @@ public abstract class AbstractEntityVariant {
 	// Static helper methods to convert variants from/to int ids for packets.
 	// Doing it this way helps with performance, which is a concern of mine if we're going to data-drive multiple entities.
 	// Child classes of AbstractEntityVariant can add their own static method filling in the key and fallback params.
-	public static <T extends AbstractEntityVariant> T fromIntId(RegistryKey<Registry<T>> key, T fallback, DynamicRegistryManager registryManager, int id) {
-		Optional<RegistryEntry.Reference<T>> reference = registryManager.getOrThrow(key).getEntry(id);
-		return reference.map(RegistryEntry.Reference::value).orElse(fallback);
-	}
-
-	// Child classes of AbstractEntityVariant can add their own static method filling in the key.
-	public static <T extends AbstractEntityVariant> int toIntId(RegistryKey<Registry<T>> key, DynamicRegistryManager registryManager, T variant) {
-		return registryManager.getOrThrow(key).getRawId(variant);
-	}
-
 	public static Identifier buildEntityTexturePath(String path) {
 		return Abysm.id("textures/entity/" + path + ".png");
 	}

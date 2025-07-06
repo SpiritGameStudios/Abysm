@@ -3,12 +3,18 @@ package dev.spiritstudios.abysm.data.variant;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
-import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
+import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.Block;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
+import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.StringIdentifiable;
@@ -24,12 +30,17 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 		).apply(instance, BloomrayEntityVariant::new)
 	);
 
-	public static final BloomrayEntityVariant DEFAULT = new BloomrayEntityVariant(
-		Text.translatable("entity.abysm.bloomray.rosy"),
-		buildEntityTexturePath("rosy_bloomray"),
-		HideableCrownType.SODALITE_CROWN,
-		AbysmParticleTypes.ROSEBLOOM_GLIMMER, AbysmParticleTypes.SODALITE_THORNS
-	);
+	public static final Codec<RegistryEntry<BloomrayEntityVariant>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT);
+
+	public static final PacketCodec<RegistryByteBuf, RegistryEntry<BloomrayEntityVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT);
+
+	public static RegistryEntry<BloomrayEntityVariant> getDefaultEntry(DynamicRegistryManager registryManager) {
+		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT));
+	}
+
+	public static RegistryEntry<BloomrayEntityVariant> getDefaultEntry(RegistryEntryLookup<BloomrayEntityVariant> lookup) {
+		return lookup.getOrThrow(AbysmEntityVariants.ROSY_BLOOMRAY);
+	}
 
 	public final HideableCrownType hideableCrownType;
 	public final SimpleParticleType glimmerParticle;
@@ -42,19 +53,6 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 		this.thornsParticle = thornsParticle;
 	}
 
-	// Helper methods
-	public static BloomrayEntityVariant fromIntId(DynamicRegistryManager registryManager, int id) {
-		return AbstractEntityVariant.fromIntId(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, DEFAULT, registryManager, id);
-	}
-
-	public static int toIntId(DynamicRegistryManager registryManager, BloomrayEntityVariant variant) {
-		return AbstractEntityVariant.toIntId(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, registryManager, variant);
-	}
-
-	public static int getDefaultIntId(DynamicRegistryManager registryManager) {
-		return toIntId(registryManager, DEFAULT);
-	}
-
 	// Getter method(s)
 	public HideableCrownType getHideableCrownType() {
 		return hideableCrownType;
@@ -62,7 +60,7 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 
 	// Hiding crown type
 	// Uses this hard-coded enum instead of a block codec to hopefully reduce lag with the block finding AI
-	public static enum HideableCrownType implements StringIdentifiable{
+	public enum HideableCrownType implements StringIdentifiable{
 		SODALITE_CROWN(AbysmBlocks.BLOOMING_SODALITE_CROWN, "sodalite"),
 		ANYOLITE_CROWN(AbysmBlocks.BLOOMING_ANYOLITE_CROWN, "anyolite"),
 		MELILITE_CROWN(AbysmBlocks.BLOOMING_MELILITE_CROWN, "melilite");
@@ -71,7 +69,7 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 		private final Block crown;
 		private final String id;
 
-		private HideableCrownType(Block crown, String id) {
+		HideableCrownType(Block crown, String id) {
 			this.crown = crown;
 			this.id = id;
 		}

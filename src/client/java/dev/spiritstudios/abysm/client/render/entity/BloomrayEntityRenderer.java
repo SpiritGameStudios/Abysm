@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
+import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib.animatable.processing.AnimationState;
@@ -16,6 +17,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<BloomrayEntity, R> {
 	public static final DataTicket<BloomrayEntityVariant> VARIANT_TICKET = DataTicket.create("bloomray_variant_ticket", BloomrayEntityVariant.class);
+
 	public BloomrayEntityRenderer(EntityRendererFactory.Context context) {
 		super(context, new BloomrayEntityModel());
 		this.withScale(3f);
@@ -24,8 +26,9 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 	@Override
 	public Identifier getTextureLocation(R renderState) {
 		BloomrayEntityVariant variant = renderState.getGeckolibData(VARIANT_TICKET);
-		if(variant != null && variant.getTexture() != null) return variant.getTexture();
-		return BloomrayEntityVariant.DEFAULT.getTexture();
+		if (variant != null && variant.getTexture() != null) return variant.getTexture();
+
+		return MissingSprite.getMissingSpriteId();
 	}
 
 	public static class BloomrayEntityModel extends DefaultedEntityGeoModel<BloomrayEntity> {
@@ -54,7 +57,7 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 		public void setCustomAnimations(AnimationState<BloomrayEntity> animationState) {
 			super.setCustomAnimations(animationState);
 
-			if(this.doNotAnimate) return;
+			if (this.doNotAnimate) return;
 
 			// animate tail
 			GeoBone tail = getAnimationProcessor().getBone(TAIL);
@@ -66,7 +69,7 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 			// animate fins
 			GeoBone leftFin = getAnimationProcessor().getBone(LEFT_FIN);
 			GeoBone rightFin = getAnimationProcessor().getBone(RIGHT_FIN);
-			if(leftFin == null || rightFin == null) return;
+			if (leftFin == null || rightFin == null) return;
 
 			float finPitch = getFinPitch(animationState);
 			leftFin.setRotZ(finPitch);
@@ -75,7 +78,7 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 			// animate... antennas? What do you call the things on top of them that are based on the crown flowers?
 			GeoBone leftAntenna = getAnimationProcessor().getBone(LEFT_ANTENNA);
 			GeoBone rightAntenna = getAnimationProcessor().getBone(RIGHT_ANTENNA);
-			if(leftAntenna == null || rightAntenna == null) return;
+			if (leftAntenna == null || rightAntenna == null) return;
 
 			float antennaPitch = getAntennaPitch(animationState);
 			leftAntenna.setRotZ(antennaPitch);
@@ -83,7 +86,7 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 
 			GeoBone leftSpike = getAnimationProcessor().getBone(LEFT_CROWN_SPIKE);
 			GeoBone rightSpike = getAnimationProcessor().getBone(RIGHT_CROWN_SPIKE);
-			if(leftSpike == null || rightSpike == null) return;
+			if (leftSpike == null || rightSpike == null) return;
 
 			float spikePitch = getCrownSpikeYaw(animationState);
 			leftSpike.setRotZ(spikePitch);
@@ -98,21 +101,21 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 
 		private float getFinPitch(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
-			if(!renderState.touchingWater) return 0f;
+			if (!renderState.touchingWater) return 0f;
 			return 0.25f * MathHelper.sin(0.1f * renderState.age);
 		}
 
 		private float getAntennaPitch(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
-			if(!renderState.touchingWater) return 0f;
-			if(renderState.age % 1000 <= 20) return 0.5f + 0.5f * MathHelper.sin(0.5f * renderState.age);
+			if (!renderState.touchingWater) return 0f;
+			if (renderState.age % 1000 <= 20) return 0.5f + 0.5f * MathHelper.sin(0.5f * renderState.age);
 			return 0.5f + 0.07f * MathHelper.sin(0.3f * renderState.age);
 		}
 
 		private float getCrownSpikeYaw(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
-			if(!renderState.touchingWater) return 0f;
-			if((renderState.age + 200) % 1000 <= 20) return 0.35f + 0.15f * MathHelper.sin(renderState.age);
+			if (!renderState.touchingWater) return 0f;
+			if ((renderState.age + 200) % 1000 <= 20) return 0.35f + 0.15f * MathHelper.sin(renderState.age);
 			return 0.35f + 0.1f * MathHelper.sin(0.2f * renderState.age);
 		}
 	}

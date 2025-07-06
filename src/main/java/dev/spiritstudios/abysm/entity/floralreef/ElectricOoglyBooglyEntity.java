@@ -2,9 +2,10 @@ package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
+import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
-import dev.spiritstudios.abysm.particle.OoglyBooglyFumesParticleEffect;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
+import dev.spiritstudios.abysm.particle.OoglyBooglyFumesParticleEffect;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
@@ -17,6 +18,10 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.registry.RegistryOps;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -37,7 +42,7 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 	public static final RawAnimation BONK_ANIM = RawAnimation.begin().thenPlay("animation.ooglyboogly.bonk");
 	public static final RawAnimation BLOWING_UP_WITH_MIND_ANIM = RawAnimation.begin().thenLoop("animation.ooglyboogly.blowingupwithmind");
 
-	public static final TrackedData<Integer> VARIANT_ID = DataTracker.registerData(ElectricOoglyBooglyEntity.class, TrackedDataHandlerRegistry.INTEGER);
+	public static final TrackedData<RegistryEntry<ElectricOoglyBooglyVariant>> VARIANT = DataTracker.registerData(ElectricOoglyBooglyEntity.class, AbysmTrackedDataHandlers.ELECTRIC_OOGLY_BOOGLY_VARIANT);
 	public static final TrackedData<Boolean> BLOWING_UP_WITH_MIND = DataTracker.registerData(ElectricOoglyBooglyEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	public int ticksSinceBlowingUp = 0;
 
@@ -47,10 +52,12 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		int variants = this.getRegistryManager().getOrThrow(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT).size();
-		int index = this.getRandom().nextInt(variants);
-		ElectricOoglyBooglyVariant variant = this.getRegistryManager().getOrThrow(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT).get(index);
-		this.setVariant(variant);
+		this.getRegistryManager().getOrThrow(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT).getRandom(this.random)
+			.ifPresentOrElse(
+				this::setVariant,
+				() -> setVariant(ElectricOoglyBooglyVariant.getDefaultEntry(world.getRegistryManager()))
+			);
+
 		return super.initialize(world, difficulty, spawnReason, entityData);
 	}
 
@@ -58,26 +65,26 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);
 		builder.add(BLOWING_UP_WITH_MIND, false);
-		builder.add(VARIANT_ID, ElectricOoglyBooglyVariant.getDefaultIntId(this.getRegistryManager()));
+		builder.add(VARIANT, ElectricOoglyBooglyVariant.getDefaultEntry(this.getRegistryManager()));
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		if(this.isBlowingUpWithMind()) {
+		if (this.isBlowingUpWithMind()) {
 			this.ticksSinceBlowingUp++;
 			spawnElectricityParticle();
 			spawnFumesParticle();
-			if(this.ticksSinceBlowingUp % 10 == 0) {
+			if (this.ticksSinceBlowingUp % 10 == 0) {
 				this.spawnElectricitySpiralParticles();
 				this.spawnElectricitySpeckParticles();
-				if(!this.getWorld().isClient) {
+				if (!this.getWorld().isClient) {
 					ServerWorld serverWorld = (ServerWorld) this.getWorld();
 					serverWorld.playSoundFromEntity(this, this, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.HOSTILE, 1f, 0.2f + (this.ticksSinceBlowingUp / 60f));
 				}
 			}
-			if(this.ticksSinceBlowingUp >= 200) {
-				if(!this.getWorld().isClient) {
+			if (this.ticksSinceBlowingUp >= 200) {
+				if (!this.getWorld().isClient) {
 					float power = this.getVariant().isDeadly() ? 8f : 0f;
 					ServerWorld serverWorld = (ServerWorld) this.getWorld();
 					serverWorld.createExplosion(this, this.getX(), this.getY(), this.getZ(), power, World.ExplosionSourceType.MOB);
@@ -86,17 +93,17 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 			}
 		}
 
-		if(this.getWorld().isClient) return;
-		if(this.age % 2 != 0) return;
+		if (this.getWorld().isClient) return;
+		if (this.age % 2 != 0) return;
 		this.checkForBonk();
 	}
 
 	public void checkForBonk() {
 		List<Entity> nearbyPlayers = this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2f, -0.01f, 0.2f), this::canHit);
-		if(nearbyPlayers.isEmpty()) return;
+		if (nearbyPlayers.isEmpty()) return;
 
 		this.getLookControl().lookAt(nearbyPlayers.getFirst());
-		if(!this.isBlowingUpWithMind()) {
+		if (!this.isBlowingUpWithMind()) {
 			for (Entity nearbyPlayer : nearbyPlayers) {
 				double deltaX = (nearbyPlayer.getX() - this.getX()) * 1.25;
 				double deltaY = (nearbyPlayer.getY() - this.getY()) * 1.5;
@@ -140,6 +147,7 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 
 	private void spawnFumesParticle() {
 		ElectricOoglyBooglyVariant variant = this.getVariant();
+
 		this.getWorld().addParticleClient(
 			new OoglyBooglyFumesParticleEffect(variant.getElectricityColor(), variant.isDeadly()),
 			this.getX(),
@@ -172,7 +180,7 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		AnimationController<ElectricOoglyBooglyEntity> animController = new AnimationController<>(ANIM_CONTROLLER_STRING, 5, event -> {
-			if(event.animatable().isBlowingUpWithMind()) {
+			if (event.animatable().isBlowingUpWithMind()) {
 				return event.setAndContinue(BLOWING_UP_WITH_MIND_ANIM);
 			}
 			return event.setAndContinue(IDLE_ANIM);
@@ -185,17 +193,24 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
-		nbt.putInt("variantId", ElectricOoglyBooglyVariant.toIntId(this.getRegistryManager(), this.getVariant()));
-		nbt.putBoolean("blowing_up_with_mind", this.isBlowingUpWithMind());
-		nbt.putInt("ticks_since_blowing_up", this.ticksSinceBlowingUp);
+		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+
+		nbt.put("variant", ElectricOoglyBooglyVariant.ENTRY_CODEC, ops, this.dataTracker.get(VARIANT));
+
+		nbt.putBoolean("blowingUpWithMind", this.isBlowingUpWithMind());
+		nbt.putInt("ticksSinceBlowingUp", this.ticksSinceBlowingUp);
 	}
 
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		this.setVariantIntId(nbt.getInt("variantId").orElse(ElectricOoglyBooglyVariant.getDefaultIntId(this.getRegistryManager())));
-		this.setIsBlowingUpWithMind(nbt.getBoolean("blowing_up_with_mind").orElse(false));
-		this.ticksSinceBlowingUp = nbt.getInt("ticks_since_blowing_up").orElse(0);
+		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+
+		this.setVariant(nbt.get("variant", ElectricOoglyBooglyVariant.ENTRY_CODEC, ops)
+			.orElse(ElectricOoglyBooglyVariant.getDefaultEntry(this.getRegistryManager())));
+
+		this.setIsBlowingUpWithMind(nbt.getBoolean("blowingUpWithMind", false));
+		this.ticksSinceBlowingUp = nbt.getInt("ticksSinceBlowingUp", 0);
 	}
 
 	public boolean isBlowingUpWithMind() {
@@ -208,22 +223,12 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 
 	@Override
 	public ElectricOoglyBooglyVariant getVariant() {
-		return ElectricOoglyBooglyVariant.fromIntId(this.getRegistryManager(), this.getVariantIntId());
+		return this.dataTracker.get(VARIANT).value();
 	}
 
 	@Override
-	public void setVariant(ElectricOoglyBooglyVariant variant) {
-		this.setVariantIntId(ElectricOoglyBooglyVariant.toIntId(this.getRegistryManager(), variant));
-	}
-
-	@Override
-	public int getVariantIntId() {
-		return this.dataTracker.get(VARIANT_ID);
-	}
-
-	@Override
-	public void setVariantIntId(int variantId) {
-		this.dataTracker.set(VARIANT_ID, variantId);
+	public void setVariant(RegistryEntry<ElectricOoglyBooglyVariant> variant) {
+		this.dataTracker.set(VARIANT, variant);
 	}
 
 	private static String animString(RawAnimation anim) {

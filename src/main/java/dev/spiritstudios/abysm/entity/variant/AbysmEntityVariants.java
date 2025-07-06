@@ -15,14 +15,18 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
 
 public class AbysmEntityVariants {
-
 	// region bloomrays
 	public static final RegistryKey<BloomrayEntityVariant> ROSY_BLOOMRAY = ofBloomray("rosy");
 	public static final RegistryKey<BloomrayEntityVariant> SUNNY_BLOOMRAY = ofBloomray("sunny");
 	public static final RegistryKey<BloomrayEntityVariant> MAUVE_BLOOMRAY = ofBloomray("mauve");
 
 	public static void bloomrayBootstrap(Registerable<BloomrayEntityVariant> registerable) {
-		register(registerable, ROSY_BLOOMRAY, BloomrayEntityVariant.DEFAULT);
+		registerBloomrayVariant(
+			registerable,
+			ROSY_BLOOMRAY,
+			BloomrayEntityVariant.HideableCrownType.SODALITE_CROWN,
+			AbysmParticleTypes.ROSEBLOOM_GLIMMER, AbysmParticleTypes.SODALITE_THORNS
+		);
 
 		registerBloomrayVariant(
 			registerable,
@@ -47,7 +51,7 @@ public class AbysmEntityVariants {
 	public static final RegistryKey<ElectricOoglyBooglyVariant> ELECTRIC_ZOOGLY = ofOoglyBoogly("electric_zoogly");
 
 	public static void ooglyBooglyBootstrap(Registerable<ElectricOoglyBooglyVariant> registerable) {
-		register(registerable, ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyVariant.DEFAULT);
+		registerOoglyBoogly(registerable, ELECTRIC_OOGLY_BOOGLY, ColorHelper.fromFloats(1f, 0.75f, 1f, 0.75f), false);
 		registerOoglyBoogly(registerable, ELLY_EEGY_BOOGLY, ColorHelper.fromFloats(1f, 0.75f, 0.9f, 1f), false);
 		registerOoglyBoogly(registerable, SMOLLY_MOLLY, ColorHelper.fromFloats(1f, 1f, 0.9f, 1f), false);
 		registerOoglyBoogly(registerable, ELECTRIC_ZOOGLY, ColorHelper.fromFloats(1f, 1f, 0.75f, 0.85f), true);

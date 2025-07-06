@@ -12,13 +12,14 @@ import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Util;
 import net.minecraft.world.ServerWorldAccess;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * To create an entity with overlayable patterns:
@@ -78,7 +79,7 @@ public interface Patternable {
 	 * @see Patternable#commonPatternChance()
 	 */
 	default List<EntityPattern> getCommonPatterns() {
-		return List.of();
+		return Collections.emptyList();
 	}
 
 	/**
@@ -98,8 +99,8 @@ public interface Patternable {
 	default EntityPattern getFallbackPattern(Entity self) {
 		if (this.getCommonPatterns().isEmpty())
 			return this.getDefaultPattern(self.getRegistryManager().getOrThrow(AbysmRegistries.ENTITY_PATTERN));
-		int index = self.getRandom().nextInt(this.getCommonPatterns().size());
-		return this.getCommonPatterns().get(index);
+
+		return Util.getRandom(this.getCommonPatterns(), self.getRandom());
 	}
 
 	/**
@@ -111,9 +112,7 @@ public interface Patternable {
 		}
 
 		if (!this.getCommonPatterns().isEmpty() && world.getRandom().nextFloat() < this.commonPatternChance()) {
-			List<EntityPattern> commonPatterns = this.getCommonPatterns();
-			int patternIndex = world.getRandom().nextInt(commonPatterns.size());
-			EntityPattern pattern = commonPatterns.get(patternIndex);
+			EntityPattern pattern = Util.getRandom(getCommonPatterns(), self.getRandom());
 			if (pattern != null) return pattern;
 		}
 
@@ -127,18 +126,12 @@ public interface Patternable {
 	 */
 	default EntityPattern getRandomPattern(ServerWorldAccess world, Entity self) {
 		List<RegistryEntry<EntityPatternVariant>> variants = EntityPatternVariant.getVariantsForEntityType(world, self.getType()).toList();
-		int total = variants.size();
-		int randomIndex = world.getRandom().nextInt(total);
 
-		RegistryEntry<EntityPatternVariant> variant = variants.get(randomIndex);
-
-		List<Integer> baseColors = this.getBaseColors();
-		int baseColor = baseColors.get(world.getRandom().nextInt(baseColors.size()));
-
-		List<Integer> patternColors = this.getPatternColors();
-		int patternColor = patternColors.get(world.getRandom().nextInt(patternColors.size()));
-
-		return new EntityPattern(variant, baseColor, patternColor);
+		return new EntityPattern(
+			Util.getRandom(variants, self.getRandom()),
+			Util.getRandom(this.getBaseColors(), self.getRandom()),
+			Util.getRandom(this.getPatternColors(), self.getRandom())
+		);
 	}
 
 	/**
@@ -152,13 +145,13 @@ public interface Patternable {
 	 * Read an entity pattern from the world's nbt.
 	 */
 	default void readEntityPatternNbt(Entity self, RegistryOps<NbtElement> ops, NbtCompound nbt) {
-		Optional<EntityPattern> pattern = EntityPattern.fromNbt(ops, nbt);
-		if (pattern.isPresent()) {
-			this.setEntityPattern(pattern.get());
-		} else {
-			Abysm.LOGGER.warn("Could not read EntityPattern for {}! Using fallback pattern instead.", self.getType());
-			this.setEntityPattern(this.getFallbackPattern(self));
-		}
+		EntityPattern.fromNbt(ops, nbt).ifPresentOrElse(
+			this::setEntityPattern,
+			() -> {
+				Abysm.LOGGER.warn("Could not read EntityPattern for {}! Using fallback pattern instead.", self.getType());
+				this.setEntityPattern(this.getFallbackPattern(self));
+			}
+		);
 	}
 
 	/**
@@ -174,5 +167,4 @@ public interface Patternable {
 	default List<Integer> getPatternColors() {
 		return DEFAULT_DYE_ENTITY_COLORS;
 	}
-
 }

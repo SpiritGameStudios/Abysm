@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.entity.floralreef.ElectricOoglyBooglyEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
+import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -32,7 +33,8 @@ public class ElectricOoglyBooglyRenderer<R extends LivingEntityRenderState & Geo
 	public Identifier getTextureLocation(R renderState) {
 		ElectricOoglyBooglyVariant variant = renderState.getGeckolibData(VARIANT_TICKET);
 		if (variant != null && variant.getTexture() != null) return variant.getTexture();
-		return ElectricOoglyBooglyVariant.DEFAULT.getTexture();
+
+		return MissingSprite.getMissingSpriteId();
 	}
 
 	public static class ElectricOoglyBooglyModel extends DefaultedEntityGeoModel<ElectricOoglyBooglyEntity> {

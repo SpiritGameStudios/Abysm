@@ -1,12 +1,13 @@
 package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
+import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
+import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
-import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
@@ -19,10 +20,13 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.registry.RegistryOps;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
@@ -35,7 +39,7 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 
 public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEntity, Variantable<BloomrayEntityVariant>, EcologicalEntity {
-	public static final TrackedData<Integer> VARIANT_ID = DataTracker.registerData(BloomrayEntity.class, TrackedDataHandlerRegistry.INTEGER);
+	public static final TrackedData<RegistryEntry<BloomrayEntityVariant>> VARIANT = DataTracker.registerData(BloomrayEntity.class, AbysmTrackedDataHandlers.BLOOMRAY_VARIANT);
 
 	protected EcosystemLogic ecosystemLogic;
 
@@ -48,19 +52,26 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	@Override
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);
-		builder.add(VARIANT_ID, BloomrayEntityVariant.getDefaultIntId(this.getRegistryManager()));
+		builder.add(VARIANT, BloomrayEntityVariant.getDefaultEntry(this.getRegistryManager()));
 	}
 
 	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
-		nbt.putInt("variantId", this.getVariantIntId());
+		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+
+		nbt.put("variant", BloomrayEntityVariant.ENTRY_CODEC, ops, this.dataTracker.get(VARIANT));
 	}
 
 	@Override
 	public void readCustomDataFromNbt(NbtCompound nbt) {
 		super.readCustomDataFromNbt(nbt);
-		this.setVariantIntId(nbt.getInt("variantId").orElse(BloomrayEntityVariant.getDefaultIntId(this.getRegistryManager())));
+		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+
+		this.setVariant(
+			nbt.get("variant", BloomrayEntityVariant.ENTRY_CODEC, ops)
+				.orElse(BloomrayEntityVariant.getDefaultEntry(this.getRegistryManager()))
+		);
 	}
 
 	@Override
@@ -68,8 +79,8 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		this.getRegistryManager().getOrThrow(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT)
 			.getRandom(this.random)
 			.ifPresentOrElse(
-				entry -> setVariant(entry.value()),
-				() -> setVariant(BloomrayEntityVariant.DEFAULT)
+				this::setVariant,
+				() -> setVariant(BloomrayEntityVariant.getDefaultEntry(world.getRegistryManager()))
 			);
 		this.alertEcosystemOfSpawn();
 		return super.initialize(world, difficulty, spawnReason, entityData);
@@ -170,22 +181,12 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 
 	@Override
 	public BloomrayEntityVariant getVariant() {
-		return BloomrayEntityVariant.fromIntId(this.getRegistryManager(), this.getVariantIntId());
+		return this.dataTracker.get(VARIANT).value();
 	}
 
 	@Override
-	public void setVariant(BloomrayEntityVariant variant) {
-		this.setVariantIntId(BloomrayEntityVariant.toIntId(this.getRegistryManager(), variant));
-	}
-
-	@Override
-	public int getVariantIntId() {
-		return this.dataTracker.get(VARIANT_ID);
-	}
-
-	@Override
-	public void setVariantIntId(int variantId) {
-		this.dataTracker.set(VARIANT_ID, variantId);
+	public void setVariant(RegistryEntry<BloomrayEntityVariant> variant) {
+		this.dataTracker.set(VARIANT, variant);
 	}
 
 	public static class GlideToRandomPlaceGoal extends SwimAroundGoal {

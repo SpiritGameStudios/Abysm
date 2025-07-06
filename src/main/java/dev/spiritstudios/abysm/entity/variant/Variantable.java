@@ -1,8 +1,7 @@
 package dev.spiritstudios.abysm.entity.variant;
 
 import dev.spiritstudios.abysm.data.variant.AbstractEntityVariant;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.registry.entry.RegistryEntry;
 
 /**
  * @see AbstractEntityVariant
@@ -13,23 +12,13 @@ public interface Variantable<T extends AbstractEntityVariant> {
 	// TODO - DRY via random variant upon spawn
 
 	/**
-	 * @return This Entity's EntityVariant, as the actual variant. This will likely use {@link Variantable#getVariantIntId()}.
+	 * @return This Entity's EntityVariant, as the actual variant.
 	 */
 	T getVariant();
 
 	/**
-	 * Set this Entity's EntityVariant using the actual variant. This will likely use {@link Variantable#setVariantIntId(int)}.
+	 * Set this Entity's EntityVariant using the actual variant.
 	 */
-	void setVariant(T variant);
-
-	/**
-	 * @return This Entity's EntityVariant int id. This is expected to use this Entity's {@link MobEntity#getDataTracker()} {@link net.minecraft.entity.data.DataTracker#get(TrackedData)} method.
-	 */
-	int getVariantIntId();
-
-	/**
-	 * Set this Entity's EntityVariant int id. This is expected to use this Entity's {@link MobEntity#getDataTracker()} {@link net.minecraft.entity.data.DataTracker#set(TrackedData, Object)} method.
-	 */
-	void setVariantIntId(int variantId);
+	void setVariant(RegistryEntry<T> variant);
 
 }
