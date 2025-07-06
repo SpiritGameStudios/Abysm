@@ -1,6 +1,6 @@
 {
   "name": {
-    "translate": "entity.abysm.electric_oogly_boogly.oogly"
+    "translate": "abysm.entity.electric_oogly_boogly.electric_oogly"
   },
   "texture": "abysm:textures/entity/electric_oogly_boogly.png",
   "electricity_color": -4194369,

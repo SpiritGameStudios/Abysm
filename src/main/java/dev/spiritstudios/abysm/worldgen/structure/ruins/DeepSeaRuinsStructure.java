@@ -1,8 +1,8 @@
-package dev.spiritstudios.abysm.worldgen.structure;
+package dev.spiritstudios.abysm.worldgen.structure.ruins;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
-import dev.spiritstudios.abysm.structure.DeepSeaRuinsGenerator;
+import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
 import net.minecraft.structure.StructurePiecesCollector;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class DeepSeaRuinsStructure extends Structure {
 	public static final MapCodec<DeepSeaRuinsStructure> CODEC = createCodec(DeepSeaRuinsStructure::new);
 
-	protected DeepSeaRuinsStructure(Config config) {
+	public DeepSeaRuinsStructure(Config config) {
 		super(config);
 	}
 

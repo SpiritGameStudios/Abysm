@@ -8,7 +8,7 @@ import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
-import dev.spiritstudios.abysm.structure.AbysmStructureSets;
+import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureSets;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctions;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
@@ -43,8 +43,10 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(RegistryKeys.PLACED_FEATURE, Abysm.MODID));
 
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.ENTITY_PATTERN, Abysm.MODID));
+
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, Abysm.MODID));
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT, Abysm.MODID));
+
 		pack.addProvider(AutomaticDynamicRegistryProvider.factory(AbysmRegistries.FISH_ENCHANTMENT, Abysm.MODID));
 
 		pack.addProvider(AbysmBlockLootTableProvider::new);

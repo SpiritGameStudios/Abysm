@@ -13,7 +13,7 @@ import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import dev.spiritstudios.abysm.structure.AbysmStructurePieceTypes;
+import dev.spiritstudios.abysm.worldgen.structure.AbysmStructurePieceTypes;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctionTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmFeatures;

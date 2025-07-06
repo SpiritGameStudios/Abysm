@@ -1,7 +1,6 @@
-package dev.spiritstudios.abysm.structure;
+package dev.spiritstudios.abysm.worldgen.structure;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureKeys;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
@@ -16,7 +15,6 @@ import net.minecraft.world.gen.chunk.placement.StructurePlacement;
 import net.minecraft.world.gen.structure.Structure;
 
 public class AbysmStructureSets {
-
 	public static RegistryKey<StructureSet> DEEP_SEA_RUINS = keyOf("deep_sea_ruins");
 
 	public static void bootstrap(Registerable<StructureSet> structureSetRegisterable) {
@@ -33,7 +31,8 @@ public class AbysmStructureSets {
 					StructurePlacement.FrequencyReductionMethod.DEFAULT,
 					1.0F,
 					55147411,
-					structureSetLookup.getOptional(StructureSetKeys.OCEAN_MONUMENTS).map(monument -> new StructurePlacement.ExclusionZone(monument, 10)),
+					structureSetLookup.getOptional(StructureSetKeys.OCEAN_MONUMENTS)
+						.map(monument -> new StructurePlacement.ExclusionZone(monument, 10)),
 					28,
 					8,
 					SpreadType.TRIANGULAR

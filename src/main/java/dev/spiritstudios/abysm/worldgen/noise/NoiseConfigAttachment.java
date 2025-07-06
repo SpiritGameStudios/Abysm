@@ -11,19 +11,13 @@ import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
 import net.minecraft.world.gen.densityfunction.DensityFunction;
 import net.minecraft.world.gen.noise.NoiseConfig;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Optional;
 
 public class NoiseConfigAttachment {
-
-	@Unique
 	private @Nullable DensityFunction ruinsSedimentNoise = null;
-	@Unique
 	private @Nullable DensityFunction ruinsShellCave = null;
-	@Unique
 	private @Nullable DensityFunction ruinsShellCaveWithPillars = null;
-	@Unique
 	private @Nullable DensityFunction beardifierAddition = null;
 
 	public void attachBonusFunctions(ServerWorld world, SamplerFunction samplerFunction) {
@@ -35,7 +29,7 @@ public class NoiseConfigAttachment {
 		this.beardifierAddition = getDensityFunction(AbysmDensityFunctions.BEARDIFIER_ADDITION, dfRegistry, samplerFunction);
 	}
 
-	private  @Nullable DensityFunction getDensityFunction(RegistryKey<DensityFunction> key, Registry<DensityFunction> densityFunctionRegistry, SamplerFunction samplerFunction) {
+	private @Nullable DensityFunction getDensityFunction(RegistryKey<DensityFunction> key, Registry<DensityFunction> densityFunctionRegistry, SamplerFunction samplerFunction) {
 		Optional<DensityFunction> function = densityFunctionRegistry.getEntry(key.getValue()).map(RegistryEntry.Reference::value);
 
 		Optional<DensityFunction> appliedFunction = function.map(df -> df.apply(new DensityFunction.DensityFunctionVisitor() {
@@ -86,8 +80,8 @@ public class NoiseConfigAttachment {
 		return newNCA;
 	}
 
-	private DensityFunction apply(DensityFunction.DensityFunctionVisitor visitor, DensityFunction densityFunction) {
-		if(densityFunction == null) {
+	private DensityFunction apply(DensityFunction.DensityFunctionVisitor visitor, @Nullable DensityFunction densityFunction) {
+		if (densityFunction == null) {
 			return null;
 		} else {
 			return densityFunction.apply(visitor);
@@ -95,7 +89,7 @@ public class NoiseConfigAttachment {
 	}
 
 	public static NoiseConfigAttachment get(NoiseConfig noiseConfig) {
-		return ((NoiseConfigDuckInterface)(Object)noiseConfig).abysm$getAttachment();
+		return ((NoiseConfigDuckInterface) (Object) noiseConfig).abysm$getAttachment();
 	}
 
 	@FunctionalInterface

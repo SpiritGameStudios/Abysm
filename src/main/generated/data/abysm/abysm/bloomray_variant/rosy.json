@@ -2,7 +2,7 @@
   "glimmer": "abysm:rosebloom_glimmer",
   "thorns": "abysm:sodalite_thorns",
   "name": {
-    "translate": "entity.abysm.bloomray.rosy"
+    "translate": "abysm.entity.bloomray.rosy"
   },
   "texture": "abysm:textures/entity/rosy_bloomray.png",
   "crown": "sodalite"

@@ -4,7 +4,6 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
-import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registerable;
@@ -30,21 +29,21 @@ public class AbysmEntityPatternVariants {
 	public static final RegistryKey<EntityPatternVariant> FLORAL_FISH_BIG_SIRFISHY = ofFloralFishBig("sirfishy");
 
 	public static void bootstrap(Registerable<EntityPatternVariant> registerable) {
-		register(registerable, FLORAL_FISH_SMALL_COLORFUL, SmallFloralFishEntity.DEFAULT_PATTERN_VARIANT);
-		register(registerable, FLORAL_FISH_SMALL_FLOWY, AbysmEntityTypes.SMALL_FLORAL_FISH, "entity.abysm.floral_fish_small.flowy");
-		register(registerable, FLORAL_FISH_SMALL_SHRIMPSTER, AbysmEntityTypes.SMALL_FLORAL_FISH, "entity.abysm.floral_fish_small.shrimpster");
-		register(registerable, FLORAL_FISH_SMALL_SPEEDY, AbysmEntityTypes.SMALL_FLORAL_FISH, "entity.abysm.floral_fish_small.speedy");
-		register(registerable, FLORAL_FISH_SMALL_WISE, AbysmEntityTypes.SMALL_FLORAL_FISH, "entity.abysm.floral_fish_small.wise");
-		register(registerable, FLORAL_FISH_SMALL_SPARKLE, AbysmEntityTypes.SMALL_FLORAL_FISH, "entity.abysm.floral_fish_small.sparkle");
-		register(registerable, FLORAL_FISH_SMALL_COCO, AbysmEntityTypes.SMALL_FLORAL_FISH, "entity.abysm.floral_fish_small.coco");
+		register(registerable, FLORAL_FISH_SMALL_COLORFUL, AbysmEntityTypes.SMALL_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_SMALL_FLOWY, AbysmEntityTypes.SMALL_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_SMALL_SHRIMPSTER, AbysmEntityTypes.SMALL_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_SMALL_SPEEDY, AbysmEntityTypes.SMALL_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_SMALL_WISE, AbysmEntityTypes.SMALL_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_SMALL_SPARKLE, AbysmEntityTypes.SMALL_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_SMALL_COCO, AbysmEntityTypes.SMALL_FLORAL_FISH);
 
 		register(registerable, FLORAL_FISH_BIG_TERRA, BigFloralFishEntity.DEFAULT_PATTERN_VARIANT);
-		register(registerable, FLORAL_FISH_BIG_LOOKOUT, AbysmEntityTypes.BIG_FLORAL_FISH, "entity.abysm.floral_fish_big.lookout");
-		register(registerable, FLORAL_FISH_BIG_TABBY, AbysmEntityTypes.BIG_FLORAL_FISH, "entity.abysm.floral_fish_big.tabby");
-		register(registerable, FLORAL_FISH_BIG_AXOLOTL, AbysmEntityTypes.BIG_FLORAL_FISH, "entity.abysm.floral_fish_big.axolotl");
-		register(registerable, FLORAL_FISH_BIG_STRINGY, AbysmEntityTypes.BIG_FLORAL_FISH, "entity.abysm.floral_fish_big.stringy");
-		register(registerable, FLORAL_FISH_BIG_STARRY, AbysmEntityTypes.BIG_FLORAL_FISH, "entity.abysm.floral_fish_big.starry");
-		register(registerable, FLORAL_FISH_BIG_SIRFISHY, AbysmEntityTypes.BIG_FLORAL_FISH, "entity.abysm.floral_fish_big.coco");
+		register(registerable, FLORAL_FISH_BIG_LOOKOUT, AbysmEntityTypes.BIG_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_BIG_TABBY, AbysmEntityTypes.BIG_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_BIG_AXOLOTL, AbysmEntityTypes.BIG_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_BIG_STRINGY, AbysmEntityTypes.BIG_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_BIG_STARRY, AbysmEntityTypes.BIG_FLORAL_FISH);
+		register(registerable, FLORAL_FISH_BIG_SIRFISHY, AbysmEntityTypes.BIG_FLORAL_FISH);
 	}
 
 	private static void register(Registerable<EntityPatternVariant> registry, RegistryKey<EntityPatternVariant> key, EntityType<?> entityType, Text name) {
@@ -53,8 +52,8 @@ public class AbysmEntityPatternVariants {
 		register(registry, key, variant);
 	}
 
-	private static void register(Registerable<EntityPatternVariant> registry, RegistryKey<EntityPatternVariant> key, EntityType<?> entityType, String name) {
-		register(registry, key, entityType, Text.translatable(name));
+	private static void register(Registerable<EntityPatternVariant> registry, RegistryKey<EntityPatternVariant> key, EntityType<?> entityType) {
+		register(registry, key, entityType, Text.translatable(key.getRegistry().toTranslationKey() + "." + key.getValue().getPath()));
 	}
 
 	// I needed the boostrap method to all look the same (。﹏。*)

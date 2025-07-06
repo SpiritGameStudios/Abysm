@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.worldgen.densityfunction;
 
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.duck.StructureWeightSamplerDuckInterface;
-import dev.spiritstudios.abysm.structure.DeepSeaRuinsGenerator;
+import dev.spiritstudios.abysm.worldgen.structure.ruins.DeepSeaRuinsGenerator;
 import dev.spiritstudios.abysm.worldgen.noise.NoiseConfigAttachment;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
 import net.minecraft.block.BlockState;

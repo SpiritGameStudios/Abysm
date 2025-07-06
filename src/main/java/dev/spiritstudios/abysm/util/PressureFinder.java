@@ -15,12 +15,10 @@ public class PressureFinder {
 	 */
 	public static float getPressure(World world, BlockPos blockPos) {
 		RegistryEntry<Biome> biome = world.getBiome(blockPos);
-		if (biome == null) {
-			return 0;
-		}
-		if (biome.matchesKey(AbysmBiomes.DEEP_SEA_RUINS)) {
-			return 10f; // subject to change
-		}
+		if (biome == null) return 0;
+
+		if (biome.matchesKey(AbysmBiomes.DEEP_SEA_RUINS)) return 10f; // subject to change
+
 		return 0;
 	}
 }

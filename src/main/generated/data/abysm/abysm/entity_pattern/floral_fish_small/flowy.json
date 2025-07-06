@@ -1,7 +1,7 @@
 {
   "entity": "abysm:floral_fish_small",
   "name": {
-    "translate": "entity.abysm.floral_fish_small.flowy"
+    "translate": "entity.abysm.entity_pattern.floral_fish_small/flowy"
   },
   "pattern": "abysm:textures/entity/pattern/floral_fish_small/flowy.png",
   "colorable": true

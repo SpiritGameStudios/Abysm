@@ -1,5 +1,6 @@
-package dev.spiritstudios.abysm.structure;
+package dev.spiritstudios.abysm.worldgen.structure.ruins;
 
+import dev.spiritstudios.abysm.worldgen.structure.AbysmStructurePieceTypes;
 import dev.spiritstudios.abysm.worldgen.densityfunction.DensitySphere;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.structure.StructureContext;

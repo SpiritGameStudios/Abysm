@@ -1,6 +1,7 @@
-package dev.spiritstudios.abysm.structure;
+package dev.spiritstudios.abysm.worldgen.structure;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.worldgen.structure.ruins.DeepSeaRuinsGenerator;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.structure.StructurePieceType;
