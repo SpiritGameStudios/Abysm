@@ -256,7 +256,7 @@ public class ManOWarEntity extends WaterCreatureEntity {
 	@Override
 	public void travel(Vec3d movementInput) {
 		if (this.isTouchingWater()) {
-			this.updateVelocity(0.01F, movementInput);
+			this.updateVelocity(this.getMovementSpeed() * 0.025F, movementInput);
 			this.move(MovementType.SELF, this.getVelocity());
 			this.setVelocity(this.getVelocity().multiply(0.9));
 			if (this.getTarget() == null) {
@@ -293,47 +293,43 @@ public class ManOWarEntity extends WaterCreatureEntity {
 	}
 
 	public static class GarbageMoveControl extends MoveControl {
-		protected final ManOWarEntity obj;
 
-		public GarbageMoveControl(ManOWarEntity owner) {
+		public GarbageMoveControl(WaterCreatureEntity owner) {
 			super(owner);
-			this.obj = owner;
 		}
 
 		@Override
 		public void tick() {
-			if (this.obj.isSubmergedIn(FluidTags.WATER)) {
-				this.obj.setVelocity(this.obj.getVelocity().add(0.0, 0.005, 0.0));
+			if (this.entity.isSubmergedIn(FluidTags.WATER)) {
+				this.entity.setVelocity(this.entity.getVelocity().add(0.0, 0.005, 0.0));
 			}
 
-			if (this.state == MoveControl.State.MOVE_TO && !this.obj.getNavigation().isIdle()) {
-				float speed = (float) (this.speed * this.obj.getAttributeValue(EntityAttributes.MOVEMENT_SPEED));
-				this.obj.setMovementSpeed(MathHelper.lerp(0.125F, this.obj.getMovementSpeed(), speed));
-				double distanceX = this.targetX - this.obj.getX();
-				double distanceY = this.targetY - this.obj.getY();
-				double distanceZ = this.targetZ - this.obj.getZ();
+			if (this.state == MoveControl.State.MOVE_TO && !this.entity.getNavigation().isIdle()) {
+				float speed = (float) (this.speed * this.entity.getAttributeValue(EntityAttributes.MOVEMENT_SPEED));
+				this.entity.setMovementSpeed(MathHelper.lerp(0.125F, this.entity.getMovementSpeed(), speed));
+				double distanceX = this.targetX - this.entity.getX();
+				double distanceY = this.targetY - this.entity.getY();
+				double distanceZ = this.targetZ - this.entity.getZ();
 				if (distanceY != 0.0) {
 					double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY + distanceZ * distanceZ);
-					this.obj.setVelocity(this.obj.getVelocity().add(0.0, this.obj.getMovementSpeed() * (distanceY / distance) * 0.1, 0.0));
+					this.entity.setVelocity(this.entity.getVelocity().add(0.0, this.entity.getMovementSpeed() * (distanceY / distance) * 0.1, 0.0));
 				}
 
 				if (distanceX != 0.0 || distanceZ != 0.0) {
 					float i = (float) (MathHelper.atan2(distanceZ, distanceX) * MathHelper.DEGREES_PER_RADIAN) - 90.0F;
-					this.obj.setYaw(this.wrapDegrees(this.obj.getYaw(), i, 90.0F));
-					this.obj.bodyYaw = this.obj.getYaw();
+					this.entity.setYaw(this.wrapDegrees(this.entity.getYaw(), i, 90.0F));
+					this.entity.bodyYaw = this.entity.getYaw();
 				}
 			} else {
-				this.obj.setMovementSpeed(0.0F);
+				this.entity.setMovementSpeed(0.0F);
 			}
 		}
 	}
 
 	public static class DriftToRandomPlaceGoal extends SwimAroundGoal {
-		protected final ManOWarEntity obj;
 
 		public DriftToRandomPlaceGoal(ManOWarEntity owner) {
 			super(owner, 1.0, 40);
-			this.obj = owner;
 		}
 
 		@Override
@@ -348,7 +344,7 @@ public class ManOWarEntity extends WaterCreatureEntity {
 			if (wander == null) {
 				return null;
 			}
-			return new Vec3d(wander.x, Math.max(this.obj.getY(), wander.y), wander.z);
+			return new Vec3d(wander.x, Math.max(this.mob.getY(), wander.y), wander.z);
 		}
 	}
 

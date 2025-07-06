@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.entity;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
 import dev.spiritstudios.abysm.entity.floralreef.*;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -66,6 +67,13 @@ public class AbysmEntityTypes {
 			.maxTrackingRange(4)
 	);
 
+	public static final EntityType<MysteriousBlobEntity> MYSTERIOUS_BLOB = register(
+		"mysterious_blob",
+		EntityType.Builder
+			.create(MysteriousBlobEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(2.2F, 2F).eyeHeight(1.3F)
+	);
+
 	private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
 		return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
 	}
@@ -84,6 +92,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createRayAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());
+		FabricDefaultAttributeRegistry.register(MYSTERIOUS_BLOB, MysteriousBlobEntity.createVaseAttributes());
 	}
 
 }

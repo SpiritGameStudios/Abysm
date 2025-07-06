@@ -9,6 +9,7 @@ import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
 import dev.spiritstudios.abysm.client.render.entity.FlippersRenderer;
 import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.MysteriousBlobEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
@@ -26,6 +27,7 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.FLYING_HARPOON, HarpoonEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.MAN_O_WAR, ManOWarEntityRenderer::new);
+		EntityRendererRegistry.register(AbysmEntityTypes.MYSTERIOUS_BLOB, MysteriousBlobEntityRenderer::new);
 
 		ArmorRenderer.register(new FlippersRenderer(), AbysmItems.FLIPPERS);
 

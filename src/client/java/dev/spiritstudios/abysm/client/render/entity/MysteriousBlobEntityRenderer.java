@@ -1,0 +1,52 @@
+package dev.spiritstudios.abysm.client.render.entity;
+
+import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
+import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
+import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.state.LivingEntityRenderState;
+import net.minecraft.util.Identifier;
+import software.bernie.geckolib.constant.dataticket.DataTicket;
+import software.bernie.geckolib.renderer.base.GeoRenderState;
+
+public class MysteriousBlobEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends AbstractFishEntityRenderer<MysteriousBlobEntity, R> {
+
+	public static final DataTicket<Boolean> HAPPY_BLOB = DataTicket.create("happy_blob", Boolean.class);
+
+	public MysteriousBlobEntityRenderer(EntityRendererFactory.Context context) {
+		super(context, new EntityModel());
+	}
+
+	@Override
+	public Identifier getTextureLocation(R renderState) {
+		Identifier original = super.getTextureLocation(renderState);
+		Boolean happy = renderState.getGeckolibData(HAPPY_BLOB);
+		if (happy != null && !happy) {
+			return original.withPath(string -> {
+				int extension = string.indexOf('.');
+				return string.substring(0, extension) + "_unhappy" + string.substring(extension);
+			});
+		}
+		return original;
+	}
+
+	@SuppressWarnings("OverrideOnly")
+	@Override
+	public void updateRenderState(MysteriousBlobEntity blob, R entityRenderState, float partialTick) {
+		super.updateRenderState(blob, entityRenderState, partialTick);
+		this.scaleWidth = blob.lerpScaleXZ(partialTick);
+		this.scaleHeight = blob.lerpScaleY(partialTick);
+	}
+
+	public static class EntityModel extends AbstractFishEntityModel<MysteriousBlobEntity> {
+		public EntityModel() {
+			super(Abysm.id("mysterious_blob"), true);
+		}
+
+		@Override
+		public void addAdditionalStateData(MysteriousBlobEntity blob, GeoRenderState renderState) {
+			super.addAdditionalStateData(blob, renderState);
+			renderState.addGeckolibData(HAPPY_BLOB, blob.isHappy());
+		}
+	}
+}
