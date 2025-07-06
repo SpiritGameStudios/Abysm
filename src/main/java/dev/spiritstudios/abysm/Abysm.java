@@ -11,12 +11,13 @@ import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
 import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
+import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import dev.spiritstudios.abysm.worldgen.structure.AbysmStructurePieceTypes;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctionTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmFeatures;
+import dev.spiritstudios.abysm.worldgen.structure.AbysmStructurePieceTypes;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
 import dev.spiritstudios.abysm.worldgen.tree.AbysmFoliagePlacerTypes;
 import dev.spiritstudios.abysm.worldgen.tree.AbysmTrunkPlacerTypes;
@@ -25,6 +26,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
@@ -39,54 +41,60 @@ public class Abysm implements ModInitializer {
 
     @Override
     public void onInitialize() {
-		AbysmSoundEvents.init();
+		initRegistries();
+
+		registerNetworking();
+
+		// set up biome placements and surface rules
+		AbysmBiomes.addAllToGenerator();
+
+		AbysmAttachments.init();
+
+		AbysmSpawnRestrictions.init();
+
+		AbysmLootTableModifications.init();
+    }
+
+	private void initRegistries() {
+		AbysmRegistries.init();
+
+		// register blocks & items
 		AbysmBlocks.init();
 		AbysmDataComponentTypes.init();
 		AbysmItems.init();
 
-		AbysmTrackedDataHandlers.init();
-		AbysmEntityTypes.init();
+		// register entities & related
 		AbysmEntityAttributes.init();
-		AbysmSpawnRestrictions.init();
+		AbysmEntityTypes.init();
+		AbysmTrackedDataHandlers.init();
 		AbysmEcosystemTypes.init();
 
-		AbysmParticleTypes.init();
-
-		AbysmRegistries.init();
-
-		RegistryHelper.registerFields(
-			Registries.TRUNK_PLACER_TYPE, RegistryHelper.fixGenerics(TrunkPlacerType.class),
-			AbysmTrunkPlacerTypes.class,
-			MODID
-		);
-
-		RegistryHelper.registerFields(
-			Registries.FOLIAGE_PLACER_TYPE, RegistryHelper.fixGenerics(FoliagePlacerType.class),
-			AbysmFoliagePlacerTypes.class,
-			MODID
-		);
-
-		RegistryHelper.registerFields(
-			Registries.FEATURE, RegistryHelper.fixGenerics(Feature.class),
-			AbysmFeatures.class,
-			MODID
-		);
-
-		RegistryHelper.registerFields(
-			Registries.STRUCTURE_TYPE, RegistryHelper.fixGenerics(StructureType.class),
-			AbysmStructureTypes.class,
-			MODID
-		);
-
+		// region worldgen
+		// structures
 		AbysmStructurePieceTypes.init();
+		registerFields(Registries.STRUCTURE_TYPE, StructureType.class, AbysmStructureTypes.class);
+
+		// features
+		registerFields(Registries.FEATURE, Feature.class, AbysmFeatures.class);
+		registerFields(Registries.TRUNK_PLACER_TYPE, TrunkPlacerType.class, AbysmTrunkPlacerTypes.class);
+		registerFields(Registries.FOLIAGE_PLACER_TYPE, FoliagePlacerType.class, AbysmFoliagePlacerTypes.class);
+
 		AbysmDensityFunctionTypes.init();
+		// endregion
 
-		AbysmBiomes.addAllToGenerator();
+		// misc
+		AbysmSoundEvents.init();
+		AbysmParticleTypes.init();
+	}
 
-		AbysmLootTableModifications.init();
-
-		registerNetworking();
-    }
+	private <T> void registerFields(Registry<T> registry, Class<?> toRegister, Class<?> clazz) {
+		RegistryHelper.registerFields(
+			registry,
+			RegistryHelper.fixGenerics(toRegister),
+			clazz,
+			MODID
+		);
+	}
 
 	private void registerNetworking() {
 		PayloadTypeRegistry.playC2S().register(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload.PACKET_CODEC);

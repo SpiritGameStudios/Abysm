@@ -53,7 +53,7 @@ public class AbysmEntityPatternVariants {
 	}
 
 	private static void register(Registerable<EntityPatternVariant> registry, RegistryKey<EntityPatternVariant> key, EntityType<?> entityType) {
-		register(registry, key, entityType, Text.translatable(key.getRegistry().toTranslationKey() + "." + key.getValue().getPath()));
+		register(registry, key, entityType, Text.translatable(key.getRegistry().toTranslationKey() + "." + key.getValue().getPath().replace('/', '.')));
 	}
 
 	// I needed the boostrap method to all look the same (。﹏。*)

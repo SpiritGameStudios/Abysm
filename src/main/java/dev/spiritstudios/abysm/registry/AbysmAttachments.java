@@ -21,4 +21,8 @@ public class AbysmAttachments {
 	private static <T> AttachmentType<T> register(String path, AttachmentRegistry.Builder<T> builder) {
 		return builder.buildAndRegister(Abysm.id(path));
 	}
+
+	public static void init() {
+		// NO-OP
+	}
 }
