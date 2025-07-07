@@ -4,21 +4,20 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.worldgen.tree.BloomshroomFoliagePlacer;
 import dev.spiritstudios.abysm.worldgen.tree.BloomshroomTrunkPlacer;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LeafLitterBlock;
-import net.minecraft.block.PillarBlock;
+import net.minecraft.block.*;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
+import net.minecraft.structure.processor.StructureProcessorList;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.placementmodifier.PlacementModifier;
@@ -26,8 +25,11 @@ import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.stateprovider.WeightedBlockStateProvider;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class AbysmConfiguredFeatures {
+	public static final BlockPredicate IS_WATER = BlockPredicate.matchingBlocks(Blocks.WATER);
+
 	public static final RegistryKey<ConfiguredFeature<?, ?>> TREES_BLOOMSHROOM = ofKey("trees_bloomshroom");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> ROSY_BLOOMSHROOM = ofKey("rosy_bloomshroom");
@@ -46,7 +48,12 @@ public class AbysmConfiguredFeatures {
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
 
+	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_SEAGRASS_CAVE = ofKey("patch_seagrass_cave");
+
 	public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> registerable) {
+		RegistryEntryLookup<ConfiguredFeature<?, ?>> configuredFeatureLookup = registerable.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
+		RegistryEntryLookup<StructureProcessorList> processorListLookup = registerable.getRegistryLookup(RegistryKeys.PROCESSOR_LIST);
+
 		ConfiguredFeatureHelper helper = new ConfiguredFeatureHelper(
 			registerable.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE),
 			registerable
@@ -153,6 +160,18 @@ public class AbysmConfiguredFeatures {
 				0.33F
 			)
 		);
+
+		helper.add(
+			PATCH_SEAGRASS_CAVE, Feature.RANDOM_PATCH,
+			ConfiguredFeatures.createRandomPatchFeatureConfig(
+				250,
+				PlacedFeatures.createEntry(
+					Feature.SIMPLE_BLOCK,
+					new SimpleBlockFeatureConfig(BlockStateProvider.of(Blocks.SEAGRASS)),
+					createUnderwaterBlockPredicate(List.of(Blocks.CLAY))
+				)
+			)
+		);
 	}
 
 	public static RegistryKey<ConfiguredFeature<?, ?>> ofKey(String id) {
@@ -220,6 +239,17 @@ public class AbysmConfiguredFeatures {
 		}
 
 		return builder;
+	}
+
+	private static BlockPredicate createUnderwaterBlockPredicate(List<Block> validGround) {
+		BlockPredicate blockPredicate;
+		if (!validGround.isEmpty()) {
+			blockPredicate = BlockPredicate.bothOf(IS_WATER, BlockPredicate.matchingBlocks(Direction.DOWN.getVector(), validGround));
+		} else {
+			blockPredicate = IS_WATER;
+		}
+
+		return blockPredicate;
 	}
 
 	private record ConfiguredFeatureHelper(RegistryEntryLookup<ConfiguredFeature<?, ?>> lookup,

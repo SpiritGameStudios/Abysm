@@ -9,7 +9,9 @@ import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
@@ -30,6 +32,10 @@ public class AbysmPlacedFeatures {
 	public static final RegistryKey<PlacedFeature> PATCH_PETALS_SURFACE = ofKey("patch_petals_surface");
 
 	public static final RegistryKey<PlacedFeature> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
+
+	public static final RegistryKey<PlacedFeature> PATCH_SEAGRASS_CAVE = ofKey("patch_seagrass_cave");
+
+	public static final PlacementModifier RUINS_CAVE_RANGE = HeightRangePlacementModifier.uniform(YOffset.fixed(-56), YOffset.fixed(56));
 
 	public static void bootstrap(Registerable<PlacedFeature> registerable) {
 		PlacedFeatureHelper helper = new PlacedFeatureHelper(
@@ -96,6 +102,14 @@ public class AbysmPlacedFeatures {
 			PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP,
 			BiomePlacementModifier.of(),
 			SquarePlacementModifier.of()
+		);
+
+		helper.add(
+			PATCH_SEAGRASS_CAVE, AbysmConfiguredFeatures.PATCH_SEAGRASS_CAVE,
+			CountPlacementModifier.of(UniformIntProvider.create(5, 24)),
+			SquarePlacementModifier.of(),
+			RUINS_CAVE_RANGE,
+			BiomePlacementModifier.of()
 		);
 	}
 
