@@ -51,6 +51,7 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 		DefaultBiomeFeatures.addDefaultVegetation(builder, true);
 
 		builder
+			.feature(GenerationStep.Feature.UNDERGROUND_DECORATION, AbysmPlacedFeatures.PATCH_HANGING_LANTERN)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SEAGRASS_CAVE);
 
 		return builder;

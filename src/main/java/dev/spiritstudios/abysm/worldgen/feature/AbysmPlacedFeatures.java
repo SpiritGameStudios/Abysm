@@ -9,6 +9,8 @@ import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.YOffset;
@@ -34,6 +36,8 @@ public class AbysmPlacedFeatures {
 	public static final RegistryKey<PlacedFeature> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
 
 	public static final RegistryKey<PlacedFeature> PATCH_SEAGRASS_CAVE = ofKey("patch_seagrass_cave");
+
+	public static final RegistryKey<PlacedFeature> PATCH_HANGING_LANTERN = ofKey("patch_hanging_lantern");
 
 	public static final PlacementModifier RUINS_CAVE_RANGE = HeightRangePlacementModifier.uniform(YOffset.fixed(-56), YOffset.fixed(56));
 
@@ -109,6 +113,18 @@ public class AbysmPlacedFeatures {
 			CountPlacementModifier.of(UniformIntProvider.create(5, 24)),
 			SquarePlacementModifier.of(),
 			RUINS_CAVE_RANGE,
+			EnvironmentScanPlacementModifier.of(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.IS_AIR_OR_WATER, 20),
+			RandomOffsetPlacementModifier.vertically(ConstantIntProvider.create(1)),
+			BiomePlacementModifier.of()
+		);
+
+		helper.add(
+			PATCH_HANGING_LANTERN, AbysmConfiguredFeatures.PATCH_HANGING_LANTERN,
+			CountPlacementModifier.of(UniformIntProvider.create(1, 7)),
+			SquarePlacementModifier.of(),
+			RUINS_CAVE_RANGE,
+			EnvironmentScanPlacementModifier.of(Direction.UP, BlockPredicate.solid(), BlockPredicate.IS_AIR_OR_WATER, 20),
+			RandomOffsetPlacementModifier.vertically(ConstantIntProvider.create(-1)),
 			BiomePlacementModifier.of()
 		);
 	}

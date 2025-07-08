@@ -75,7 +75,9 @@
       "minecraft:disk_clay",
       "minecraft:disk_gravel"
     ],
-    [],
+    [
+      "abysm:patch_hanging_lantern"
+    ],
     [
       "minecraft:spring_water",
       "minecraft:spring_lava"

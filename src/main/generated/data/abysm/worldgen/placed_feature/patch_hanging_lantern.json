@@ -1,12 +1,12 @@
 {
-  "feature": "abysm:patch_seagrass_cave",
+  "feature": "abysm:patch_hanging_lantern",
   "placement": [
     {
       "type": "minecraft:count",
       "count": {
         "type": "minecraft:uniform",
-        "max_inclusive": 24,
-        "min_inclusive": 5
+        "max_inclusive": 7,
+        "min_inclusive": 1
       }
     },
     {
@@ -33,7 +33,7 @@
           "minecraft:water"
         ]
       },
-      "direction_of_search": "down",
+      "direction_of_search": "up",
       "max_steps": 20,
       "target_condition": {
         "type": "minecraft:solid"
@@ -42,7 +42,7 @@
     {
       "type": "minecraft:random_offset",
       "xz_spread": 0,
-      "y_spread": 1
+      "y_spread": -1
     },
     {
       "type": "minecraft:biome"

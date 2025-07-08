@@ -15,12 +15,15 @@ import net.minecraft.structure.processor.StructureProcessorList;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
+import net.minecraft.util.math.intprovider.BiasedToBottomIntProvider;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
+import net.minecraft.world.gen.placementmodifier.EnvironmentScanPlacementModifier;
 import net.minecraft.world.gen.placementmodifier.PlacementModifier;
+import net.minecraft.world.gen.placementmodifier.RandomOffsetPlacementModifier;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.stateprovider.WeightedBlockStateProvider;
 
@@ -49,6 +52,9 @@ public class AbysmConfiguredFeatures {
 	public static final RegistryKey<ConfiguredFeature<?, ?>> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_SEAGRASS_CAVE = ofKey("patch_seagrass_cave");
+
+	public static final RegistryKey<ConfiguredFeature<?, ?>> HANGING_LANTERN = ofKey("hanging_lantern");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_HANGING_LANTERN = ofKey("patch_hanging_lantern");
 
 	public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> registerable) {
 		RegistryEntryLookup<ConfiguredFeature<?, ?>> configuredFeatureLookup = registerable.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -169,6 +175,30 @@ public class AbysmConfiguredFeatures {
 					Feature.SIMPLE_BLOCK,
 					new SimpleBlockFeatureConfig(BlockStateProvider.of(Blocks.SEAGRASS)),
 					createUnderwaterBlockPredicate(List.of(Blocks.CLAY))
+				)
+			)
+		);
+
+		helper.add(
+			HANGING_LANTERN, AbysmFeatures.HANGING_LANTERN,
+			new HangingLanternFeature.Config(
+				BlockStateProvider.of(Blocks.SOUL_LANTERN.getDefaultState().with(LanternBlock.HANGING, true)),
+				BlockStateProvider.of(Blocks.CHAIN),
+				BiasedToBottomIntProvider.create(3, 18),
+				UniformIntProvider.create(3, 5)
+			)
+		);
+
+		helper.add(
+			PATCH_HANGING_LANTERN, Feature.RANDOM_PATCH,
+			new RandomPatchFeatureConfig(
+				6,
+				6,
+				3,
+				PlacedFeatures.createEntry(
+					configuredFeatureLookup.getOrThrow(HANGING_LANTERN),
+					EnvironmentScanPlacementModifier.of(Direction.UP, BlockPredicate.hasSturdyFace(Direction.DOWN), BlockPredicate.IS_AIR_OR_WATER, 8),
+					RandomOffsetPlacementModifier.vertically(ConstantIntProvider.create(-1))
 				)
 			)
 		);
