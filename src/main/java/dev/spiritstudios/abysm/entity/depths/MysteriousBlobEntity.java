@@ -44,6 +44,7 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 	protected final ServerBossBar bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.BLUE, BossBar.Style.NOTCHED_6);
 
+	protected int inverseHurtTime = 0;
 	protected float scaleXZ = 1f;
 	protected float prevScaleXZ = 1f;
 	protected float targetScaleXZ = 1f;
@@ -63,7 +64,7 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 			.add(EntityAttributes.ARMOR, 10)
 			.add(EntityAttributes.ARMOR_TOUGHNESS, 100)
 			.add(EntityAttributes.KNOCKBACK_RESISTANCE, 0.5)
-			.add(EntityAttributes.LUCK, 10)
+			.add(EntityAttributes.LUCK, 1024)
 			.add(EntityAttributes.FOLLOW_RANGE, 48)
 			.add(EntityAttributes.WATER_MOVEMENT_EFFICIENCY, 1)
 			.add(EntityAttributes.MOVEMENT_SPEED, 0.9);
@@ -119,14 +120,19 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 
 		World world = this.getWorld();
 
-		if (this.isHappy()) {
-			this.targetScaleY = 1;
-			this.targetScaleXZ = 1;
+		this.inverseHurtTime = this.maxHurtTime - this.hurtTime;
+
+		float sin;
+		if (this.inverseHurtTime < this.maxHurtTime) {
+			sin = MathHelper.sin(this.inverseHurtTime * MathHelper.TAU * 0.05F) * 0.8F;
+		} else if (this.isHappy()) {
+			sin = MathHelper.sin(world.getTime() * MathHelper.TAU * 0.005F) * 0.05F;
 		} else {
-			float woah = world.getTime() * 0.1f;
-			this.targetScaleY = MathHelper.cos(woah + MathHelper.PI) * 0.95F + 1;
-			this.targetScaleXZ = MathHelper.cos(woah) * 0.95F + 1;
+			sin = MathHelper.sin(world.getTime() * MathHelper.TAU * 0.005F) * 0.15F;
 		}
+
+		this.targetScaleY = -sin + 1;
+		this.targetScaleXZ = sin + 1;
 
 		if (this.scaleXZ != this.targetScaleXZ) {
 			this.scaleXZ = MathHelper.lerp(0.15f, this.scaleXZ, this.targetScaleXZ);

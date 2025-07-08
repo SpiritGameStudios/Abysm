@@ -5,7 +5,9 @@ import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityMode
 import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.RotationAxis;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
@@ -28,6 +30,12 @@ public class MysteriousBlobEntityRenderer<R extends LivingEntityRenderState & Ge
 			});
 		}
 		return original;
+	}
+
+	@Override
+	protected void applyRotations(R renderState, MatrixStack matrixStack, float nativeScale) {
+		super.applyRotations(renderState, matrixStack, nativeScale);
+		matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
 	}
 
 	@SuppressWarnings("OverrideOnly")

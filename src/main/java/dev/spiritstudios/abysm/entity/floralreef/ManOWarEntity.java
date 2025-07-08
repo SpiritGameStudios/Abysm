@@ -117,41 +117,44 @@ public class ManOWarEntity extends WaterCreatureEntity {
 	public void tick() {
 		this.prevVelocity = this.getVelocity();
 		super.tick();
-		if (this.getWorld() instanceof ServerWorld serverWorld) {
-			RegistryEntry<DamageType> damageType = AbysmDamageTypes.getFromWorld(serverWorld, AbysmDamageTypes.CNIDOCYTE_STING);
-			DamageSource source = new DamageSource(damageType, this);
-			TargetPredicate targetPredicate = TargetPredicate.createAttackable();
-			float damage = (float) this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
-			AtomicBoolean hasCreatedChild = new AtomicBoolean(false);
-			serverWorld.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), this.getTentacleBox(), living -> {
-				//noinspection CodeBlock2Expr
-				return living.isAlive() && !living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_FRIEND) && targetPredicate.test(serverWorld, this, living);
-			}).forEach(living -> {
-				living.damage(serverWorld, source, damage);
-				living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 4), this);
-				living.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 200, 4), this);
-				living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 2), this);
-				MinecraftServer server = serverWorld.getServer();
-				server.send(new ServerTask(server.getTicks(), () -> {
-					if (hasCreatedChild.get()) {
+	}
+
+	@Override
+	protected void mobTick(ServerWorld serverWorld) {
+		super.mobTick(serverWorld);
+		RegistryEntry<DamageType> damageType = AbysmDamageTypes.getFromWorld(serverWorld, AbysmDamageTypes.CNIDOCYTE_STING);
+		DamageSource source = new DamageSource(damageType, this);
+		TargetPredicate targetPredicate = TargetPredicate.createAttackable();
+		float damage = (float) this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);
+		AtomicBoolean hasCreatedChild = new AtomicBoolean(false);
+		serverWorld.getEntitiesByType(TypeFilter.instanceOf(LivingEntity.class), this.getTentacleBox(), living -> {
+			//noinspection CodeBlock2Expr
+			return living.isAlive() && !living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_FRIEND) && targetPredicate.test(serverWorld, this, living);
+		}).forEach(living -> {
+			living.damage(serverWorld, source, damage);
+			living.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 4), this);
+			living.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 200, 4), this);
+			living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 2), this);
+			MinecraftServer server = serverWorld.getServer();
+			server.send(new ServerTask(server.getTicks(), () -> {
+				if (hasCreatedChild.get()) {
+					return;
+				}
+				hasCreatedChild.set(true);
+				if (!this.isBaby()
+					&& (living.isDead() || living.isRemoved())
+					&& living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_PREY)
+					&& this.random.nextBetween(0, 2) == 0) {
+					ManOWarEntity child = AbysmEntityTypes.MAN_O_WAR.create(serverWorld, SpawnReason.BREEDING);
+					if (child == null) {
 						return;
 					}
-					hasCreatedChild.set(true);
-					if (!this.isBaby()
-						&& (living.isDead() || living.isRemoved())
-						&& living.getType().isIn(AbysmEntityTypeTags.MAN_O_WAR_PREY)
-						&& this.random.nextBetween(0, 2) == 0) {
-						ManOWarEntity child = AbysmEntityTypes.MAN_O_WAR.create(serverWorld, SpawnReason.BREEDING);
-						if (child == null) {
-							return;
-						}
-						child.setBaby(true);
-						child.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
-						serverWorld.spawnEntity(child);
-					}
-				}));
-			});
-		}
+					child.setBaby(true);
+					child.refreshPositionAndAngles(this.getX(), this.getY(), this.getZ(), 0.0F, 0.0F);
+					serverWorld.spawnEntity(child);
+				}
+			}));
+		});
 	}
 
 	@Override

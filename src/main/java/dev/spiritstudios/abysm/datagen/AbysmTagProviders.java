@@ -567,7 +567,9 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.BIG_FLORAL_FISH,
 					AbysmEntityTypes.BLOOMRAY,
 					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
-					AbysmEntityTypes.MAN_O_WAR
+					AbysmEntityTypes.MAN_O_WAR,
+					AbysmEntityTypes.LECTORFIN,
+					AbysmEntityTypes.MYSTERIOUS_BLOB
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.AQUATIC)
@@ -576,13 +578,16 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.BIG_FLORAL_FISH,
 					AbysmEntityTypes.BLOOMRAY,
 					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
-					AbysmEntityTypes.MAN_O_WAR
+					AbysmEntityTypes.MAN_O_WAR,
+					AbysmEntityTypes.LECTORFIN,
+					AbysmEntityTypes.MYSTERIOUS_BLOB
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
-					AbysmEntityTypes.BIG_FLORAL_FISH
+					AbysmEntityTypes.BIG_FLORAL_FISH,
+					AbysmEntityTypes.LECTORFIN
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES)
@@ -604,7 +609,8 @@ public class AbysmTagProviders {
 					EntityType.COD,
 					EntityType.TROPICAL_FISH,
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
-					AbysmEntityTypes.BIG_FLORAL_FISH
+					AbysmEntityTypes.BIG_FLORAL_FISH,
+					AbysmEntityTypes.LECTORFIN
 				);
 
 			getOrCreateTagBuilder(AbysmEntityTypeTags.HARPOON_UNHAULABLE)
@@ -612,10 +618,13 @@ public class AbysmTagProviders {
 				.add(
 					EntityType.ENDER_DRAGON,
 					EntityType.GIANT,
-					//EntityType.SHULKER,
 					EntityType.WARDEN,
-					EntityType.WITHER
+					EntityType.WITHER,
+					AbysmEntityTypes.MYSTERIOUS_BLOB
 				);
+
+			getOrCreateTagBuilder(ConventionalEntityTypeTags.BOSSES)
+				.add(AbysmEntityTypes.MYSTERIOUS_BLOB);
 			// endregion
 		}
 	}

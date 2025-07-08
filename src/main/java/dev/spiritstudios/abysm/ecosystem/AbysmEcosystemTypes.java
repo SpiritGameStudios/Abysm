@@ -8,6 +8,7 @@ import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
+import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.Registry;
@@ -37,6 +38,12 @@ public class AbysmEcosystemTypes {
 		EcosystemType.Builder.create(AbysmEntityTypes.BLOOMRAY)
 			.setPrey(AbysmEntityTypes.SMALL_FLORAL_FISH, AbysmEntityTypes.BIG_FLORAL_FISH)
 			.setTargetPopulation(4)
+	);
+
+	public static final EcosystemType<LectorfinEntity> LECTORFIN = register(
+		"lectorfin",
+		EcosystemType.Builder.create(AbysmEntityTypes.LECTORFIN)
+			.setPlants(/* oresoil */).setTargetPopulation(10)
 	);
 
 //	public static <T extends MobEntity & EcologicalEntity> EcosystemType<T> register(EcosystemType.Builder<T> builder) {

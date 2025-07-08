@@ -35,7 +35,7 @@ public abstract class AbstractSchoolingFishEntity extends SchoolingFishEntity im
 		if (this instanceof EcologicalEntity) {
 			this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
 			this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
-			this.targetSelector.add(0, new HuntPreyGoal(this, false));
+			this.targetSelector.add(1, new HuntPreyGoal(this, false));
 		}
 	}
 

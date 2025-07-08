@@ -4,10 +4,12 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
 import dev.spiritstudios.abysm.entity.floralreef.*;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
+import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -74,6 +76,13 @@ public class AbysmEntityTypes {
 			.dimensions(2.2F, 2F).eyeHeight(1.3F)
 	);
 
+	public static final EntityType<LectorfinEntity> LECTORFIN = register(
+		"lectorfin",
+		EntityType.Builder.create(LectorfinEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(0.52F, 0.3F).eyeHeight(0.195F)
+			.maxTrackingRange(4)
+	);
+
 	private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
 		return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
 	}
@@ -92,6 +101,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createRayAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());
+		FabricDefaultAttributeRegistry.register(LECTORFIN, LectorfinEntity.createPredatoryFishAttributes());
 		FabricDefaultAttributeRegistry.register(MYSTERIOUS_BLOB, MysteriousBlobEntity.createVaseAttributes());
 	}
 
