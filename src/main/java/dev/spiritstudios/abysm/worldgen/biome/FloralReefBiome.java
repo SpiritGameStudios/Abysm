@@ -156,7 +156,7 @@ public final class FloralReefBiome extends AbysmBiome {
 		);
 		*/
 
-		addSurfaceRules(
+		addOverworldSurfaceRulesForBiome(
 			condition(surface(), surfaceRule)
 		);
 	}

@@ -2,13 +2,14 @@ package dev.spiritstudios.abysm.worldgen.densityfunction;
 
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.duck.StructureWeightSamplerDuckInterface;
-import dev.spiritstudios.abysm.worldgen.structure.ruins.DeepSeaRuinsGenerator;
 import dev.spiritstudios.abysm.worldgen.noise.NoiseConfigAttachment;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
+import dev.spiritstudios.abysm.worldgen.structure.ruins.DeepSeaRuinsGenerator;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.ChunkNoiseSampler;
 import net.minecraft.world.gen.densityfunction.DensityFunction;
 import net.minecraft.world.gen.densityfunction.DensityFunctionTypes;
@@ -91,7 +92,7 @@ public class ShellCaveSampler implements AbysmDensityFunctionTypes.ShellCave, De
 		}
 	}
 
-	public static ChunkNoiseSampler.BlockStateSampler createBlockStateSampler(NoiseConfigAttachment noiseConfigAttachment, DensityFunction.DensityFunctionVisitor getActualDensityFunction, DensityFunctionTypes.Beardifying beardifying) {
+	public static ChunkNoiseSampler.BlockStateSampler createBlockStateSampler(NoiseConfigAttachment noiseConfigAttachment, DensityFunction.DensityFunctionVisitor getActualDensityFunction, DensityFunctionTypes.Beardifying beardifying, ChunkGeneratorSettings chunkGeneratorSettings) {
 		// apply transformations
 		NoiseConfigAttachment appliedNCA = noiseConfigAttachment.apply(getActualDensityFunction);
 
@@ -103,7 +104,7 @@ public class ShellCaveSampler implements AbysmDensityFunctionTypes.ShellCave, De
 		} else {
 			BlockState water = Blocks.WATER.getDefaultState();
 			BlockState shell = AbysmBlocks.SMOOTH_FLOROPUMICE.getDefaultState();
-			BlockState inner = Blocks.CLAY.getDefaultState();
+			BlockState inner = chunkGeneratorSettings.defaultBlock(); // this gets replaced later by a material rule, so should be the default material
 
 			return pos -> {
 				double amountInsideShell = ruinsCavePillars.sample(pos) - 1.0;

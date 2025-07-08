@@ -51,7 +51,7 @@ public abstract class ChunkNoiseSamplerMixin implements ChunkNoiseSamplerDuckInt
 		if(shellCaveSampler != null) {
 			NoiseConfigAttachment noiseConfigAttachment = NoiseConfigAttachment.get(noiseConfig);
 			// add a block state sampler to the start of the list
-			stateSamplerList.add(ShellCaveSampler.createBlockStateSampler(noiseConfigAttachment, this::getActualDensityFunction, this.beardifying));
+			stateSamplerList.add(ShellCaveSampler.createBlockStateSampler(noiseConfigAttachment, this::getActualDensityFunction, this.beardifying, chunkGeneratorSettings));
 		}
 	}
 

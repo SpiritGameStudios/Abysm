@@ -14,9 +14,7 @@ import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.surfacebuilder.MaterialRules;
 
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.biome;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.condition;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.*;
 
 public abstract class AbysmBiome {
 	protected final RegistryKey<Biome> key;
@@ -64,13 +62,21 @@ public abstract class AbysmBiome {
 
 	public abstract void addToGenerator();
 
-	public void addSurfaceRules(MaterialRules.MaterialRule... rules) {
+	public void addOverworldSurfaceRulesForBiome(MaterialRules.MaterialRule... rules) {
+		addOverworldSurfaceRules(onlyInThisBiome(rules));
+	}
+
+	public void addOverworldSurfaceRules(MaterialRule... rules) {
 		SurfaceGeneration.addOverworldSurfaceRules(
 			Identifier.ofVanilla("rules/overworld"),
-			condition(
-				biome(key),
-				rules.length == 1 ? rules[0] : sequence(rules)
-			)
+			rules
+		);
+	}
+
+	public MaterialRules.MaterialRule onlyInThisBiome(MaterialRules.MaterialRule... rules) {
+		return condition(
+			biome(this.key),
+			rules.length == 1 ? rules[0] : sequence(rules)
 		);
 	}
 

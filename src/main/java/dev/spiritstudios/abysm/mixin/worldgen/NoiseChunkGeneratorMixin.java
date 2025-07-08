@@ -78,7 +78,7 @@ public class NoiseChunkGeneratorMixin {
 						BiomeCoords.toBlock(biomeY) + 2,
 						BiomeCoords.toBlock(biomeZ) + 2
 					);
-					if (density >= 1.0) {
+					if (density >= 1.5) { // shell starts at 1.0, but pick a higher threshold to avoid biome leaking out
 						return biomeEntry;
 					} else {
 						return original.getBiome(biomeX, biomeY, biomeZ, noise);
