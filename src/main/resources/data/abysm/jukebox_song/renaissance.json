@@ -3,6 +3,6 @@
 	"description": {
 		"translate": "jukebox_song.abysm.renaissance"
 	},
-	"length_in_seconds": 241.0,
+	"length_in_seconds": 233.0,
 	"sound_event": "abysm:records.renaissance"
 }
