@@ -22,12 +22,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class BigFloralFishEntity extends AbstractFloralFishEntity implements EcologicalEntity {
-	public static final EntityPatternVariant DEFAULT_PATTERN_VARIANT = new EntityPatternVariant(
-		AbysmEntityTypes.BIG_FLORAL_FISH,
-		Text.translatable("entity.abysm.floral_fish_big.terra"),
-		Abysm.id("textures/entity/pattern/floral_fish_big/terra.png")
-	);
-
 	public EcosystemLogic ecosystemLogic;
 
 	public BigFloralFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {

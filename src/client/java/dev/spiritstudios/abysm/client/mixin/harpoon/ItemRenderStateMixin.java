@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(ItemRenderState.class)
-public class ItemRenderStateMixin implements HarpoonItemRenderState {
+public abstract class ItemRenderStateMixin implements HarpoonItemRenderState {
 
 	@Unique
 	private boolean abysm$renderHarpoon = false;

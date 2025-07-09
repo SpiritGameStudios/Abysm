@@ -3,7 +3,6 @@ package dev.spiritstudios.abysm.entity.pattern;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registerable;
@@ -37,7 +36,7 @@ public class AbysmEntityPatternVariants {
 		register(registerable, FLORAL_FISH_SMALL_SPARKLE, AbysmEntityTypes.SMALL_FLORAL_FISH);
 		register(registerable, FLORAL_FISH_SMALL_COCO, AbysmEntityTypes.SMALL_FLORAL_FISH);
 
-		register(registerable, FLORAL_FISH_BIG_TERRA, BigFloralFishEntity.DEFAULT_PATTERN_VARIANT);
+		register(registerable, FLORAL_FISH_BIG_TERRA, AbysmEntityTypes.BIG_FLORAL_FISH);
 		register(registerable, FLORAL_FISH_BIG_LOOKOUT, AbysmEntityTypes.BIG_FLORAL_FISH);
 		register(registerable, FLORAL_FISH_BIG_TABBY, AbysmEntityTypes.BIG_FLORAL_FISH);
 		register(registerable, FLORAL_FISH_BIG_AXOLOTL, AbysmEntityTypes.BIG_FLORAL_FISH);

@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(DrawContext.class)
-public class DrawContextMixin {
+public abstract class DrawContextMixin {
 
 	@Shadow
 	@Final

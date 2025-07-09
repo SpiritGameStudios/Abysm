@@ -9,6 +9,7 @@ import dev.spiritstudios.abysm.client.duck.ClientPlayerEntityDuckInterface;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.OptionalInt;
 
@@ -17,11 +18,11 @@ public class LightmapAdjustment {
 	public static void adjustLightmap(ClientPlayerEntity player, GpuTexture mainTexture, GpuTexture secondaryTexture, float tickProgress) {
 		float brightenSkyFactor = 0.0F; // at 0.0F does nothing, at 1.0F renders everything with maximum skylight
 
-		if(player.isSubmergedIn(FluidTags.WATER)) {
-			brightenSkyFactor = ((ClientPlayerEntityDuckInterface)player).abysm$getUnderwaterAmbientSkyLight(tickProgress);
+		if (player.isSubmergedIn(FluidTags.WATER)) {
+			brightenSkyFactor = ((ClientPlayerEntityDuckInterface) player).abysm$getUnderwaterAmbientSkyLight(tickProgress);
 		}
 
-		if(brightenSkyFactor > 0.001F) {
+		if (brightenSkyFactor > MathHelper.EPSILON) {
 			RenderSystem.ShapeIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.DrawMode.QUADS);
 			GpuBuffer indexBuffer = shapeIndexBuffer.getIndexBuffer(6);
 

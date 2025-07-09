@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemModelManager.class)
-public class ItemModelManagerMixin {
+public abstract class ItemModelManagerMixin {
 
 	@Inject(method = "update", at = @At("HEAD"))
 	private void updateHarpoon(ItemRenderState renderState, ItemStack stack, ItemDisplayContext displayContext, World world, LivingEntity entity, int seed, CallbackInfo ci) {
