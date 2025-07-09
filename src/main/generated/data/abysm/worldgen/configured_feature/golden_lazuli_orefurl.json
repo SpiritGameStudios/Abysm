@@ -1,0 +1,25 @@
+{
+  "type": "abysm:orefurl",
+  "config": {
+    "max_height": {
+      "type": "minecraft:biased_to_bottom",
+      "max_inclusive": 4,
+      "min_inclusive": 2
+    },
+    "orefurl_plant_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "abysm:golden_lazuli_orefurl_plant"
+      }
+    },
+    "orefurl_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "abysm:golden_lazuli_orefurl",
+        "Properties": {
+          "age": "0"
+        }
+      }
+    }
+  }
+}

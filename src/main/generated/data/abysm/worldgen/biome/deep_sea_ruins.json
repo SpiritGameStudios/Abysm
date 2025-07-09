@@ -92,7 +92,8 @@
       "minecraft:patch_pumpkin",
       "minecraft:patch_sugar_cane",
       "minecraft:patch_firefly_bush_near_water",
-      "abysm:patch_seagrass_cave"
+      "abysm:patch_seagrass_cave",
+      "abysm:patch_golden_lazuli_orefurl"
     ],
     [
       "minecraft:freeze_top_layer"

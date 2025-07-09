@@ -12,4 +12,5 @@ public final class AbysmFeatures {
 	public static final Feature<StateProviderFeatureConfig> SPRIGS = new SprigsFeature();
 	public static final Feature<NetherForestVegetationFeatureConfig> BLOOMSHROOM_VEGETATION = new BloomshroomVegetationFeature(NetherForestVegetationFeatureConfig.VEGETATION_CODEC);
 	public static final Feature<HangingLanternFeature.Config> HANGING_LANTERN = new HangingLanternFeature(HangingLanternFeature.Config.CODEC);
+	public static final Feature<OrefurlFeature.Config> OREFURL = new OrefurlFeature(OrefurlFeature.Config.CODEC);
 }

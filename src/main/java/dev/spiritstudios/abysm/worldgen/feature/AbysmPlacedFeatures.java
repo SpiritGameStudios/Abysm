@@ -36,6 +36,7 @@ public class AbysmPlacedFeatures {
 	public static final RegistryKey<PlacedFeature> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
 
 	public static final RegistryKey<PlacedFeature> PATCH_SEAGRASS_CAVE = ofKey("patch_seagrass_cave");
+	public static final RegistryKey<PlacedFeature> PATCH_GOLDEN_LAZULI_OREFURL = ofKey("patch_golden_lazuli_orefurl");
 
 	public static final RegistryKey<PlacedFeature> PATCH_HANGING_LANTERN = ofKey("patch_hanging_lantern");
 
@@ -110,7 +111,17 @@ public class AbysmPlacedFeatures {
 
 		helper.add(
 			PATCH_SEAGRASS_CAVE, AbysmConfiguredFeatures.PATCH_SEAGRASS_CAVE,
-			CountPlacementModifier.of(UniformIntProvider.create(5, 24)),
+			CountPlacementModifier.of(UniformIntProvider.create(15, 28)),
+			SquarePlacementModifier.of(),
+			RUINS_CAVE_RANGE,
+			EnvironmentScanPlacementModifier.of(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.IS_AIR_OR_WATER, 20),
+			RandomOffsetPlacementModifier.vertically(ConstantIntProvider.create(1)),
+			BiomePlacementModifier.of()
+		);
+
+		helper.add(
+			PATCH_GOLDEN_LAZULI_OREFURL, AbysmConfiguredFeatures.PATCH_GOLDEN_LAZULI_OREFURL,
+			CountPlacementModifier.of(UniformIntProvider.create(3, 16)),
 			SquarePlacementModifier.of(),
 			RUINS_CAVE_RANGE,
 			EnvironmentScanPlacementModifier.of(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.IS_AIR_OR_WATER, 20),

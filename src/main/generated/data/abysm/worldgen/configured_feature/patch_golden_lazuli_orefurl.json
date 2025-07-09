@@ -2,18 +2,28 @@
   "type": "minecraft:random_patch",
   "config": {
     "feature": {
-      "feature": {
-        "type": "minecraft:simple_block",
-        "config": {
-          "to_place": {
-            "type": "minecraft:simple_state_provider",
-            "state": {
-              "Name": "minecraft:seagrass"
-            }
-          }
-        }
-      },
+      "feature": "abysm:golden_lazuli_orefurl",
       "placement": [
+        {
+          "type": "minecraft:environment_scan",
+          "allowed_search_condition": {
+            "type": "minecraft:matching_blocks",
+            "blocks": [
+              "minecraft:air",
+              "minecraft:water"
+            ]
+          },
+          "direction_of_search": "down",
+          "max_steps": 3,
+          "target_condition": {
+            "type": "minecraft:solid"
+          }
+        },
+        {
+          "type": "minecraft:random_offset",
+          "xz_spread": 0,
+          "y_spread": 1
+        },
         {
           "type": "minecraft:block_predicate_filter",
           "predicate": {
@@ -37,8 +47,8 @@
         }
       ]
     },
-    "tries": 150,
-    "xz_spread": 7,
-    "y_spread": 3
+    "tries": 24,
+    "xz_spread": 4,
+    "y_spread": 2
   }
 }

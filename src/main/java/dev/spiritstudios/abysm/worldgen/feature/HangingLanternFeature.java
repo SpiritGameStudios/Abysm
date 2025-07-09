@@ -97,8 +97,8 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 	public record Config(BlockStateProvider lanternStateProvider, BlockStateProvider chainStateProvider, IntProvider maxLength, IntProvider spaceToFloor) implements FeatureConfig {
 		public static final Codec<Config> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
-					BlockStateProvider.TYPE_CODEC.fieldOf("lantern_state_provider").forGetter(Config::lanternStateProvider),
-					BlockStateProvider.TYPE_CODEC.fieldOf("chain_state_provider").forGetter(Config::chainStateProvider),
+					BlockStateProvider.TYPE_CODEC.fieldOf("lantern_provider").forGetter(Config::lanternStateProvider),
+					BlockStateProvider.TYPE_CODEC.fieldOf("chain_provider").forGetter(Config::chainStateProvider),
 					IntProvider.POSITIVE_CODEC.fieldOf("max_length").forGetter(Config::maxLength),
 					IntProvider.POSITIVE_CODEC.fieldOf("space_to_floor").forGetter(Config::spaceToFloor)
 				)

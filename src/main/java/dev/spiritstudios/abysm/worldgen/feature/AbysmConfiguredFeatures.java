@@ -21,6 +21,7 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
+import net.minecraft.world.gen.placementmodifier.BlockFilterPlacementModifier;
 import net.minecraft.world.gen.placementmodifier.EnvironmentScanPlacementModifier;
 import net.minecraft.world.gen.placementmodifier.PlacementModifier;
 import net.minecraft.world.gen.placementmodifier.RandomOffsetPlacementModifier;
@@ -52,6 +53,8 @@ public class AbysmConfiguredFeatures {
 	public static final RegistryKey<ConfiguredFeature<?, ?>> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_SEAGRASS_CAVE = ofKey("patch_seagrass_cave");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> GOLDEN_LAZULI_OREFURL = ofKey("golden_lazuli_orefurl");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_GOLDEN_LAZULI_OREFURL = ofKey("patch_golden_lazuli_orefurl");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> HANGING_LANTERN = ofKey("hanging_lantern");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_HANGING_LANTERN = ofKey("patch_hanging_lantern");
@@ -170,11 +173,35 @@ public class AbysmConfiguredFeatures {
 		helper.add(
 			PATCH_SEAGRASS_CAVE, Feature.RANDOM_PATCH,
 			ConfiguredFeatures.createRandomPatchFeatureConfig(
-				250,
+				150,
 				PlacedFeatures.createEntry(
 					Feature.SIMPLE_BLOCK,
 					new SimpleBlockFeatureConfig(BlockStateProvider.of(Blocks.SEAGRASS)),
 					createUnderwaterBlockPredicate(List.of(Blocks.CLAY))
+				)
+			)
+		);
+
+		helper.add(
+			GOLDEN_LAZULI_OREFURL, AbysmFeatures.OREFURL,
+			new OrefurlFeature.Config(
+				BlockStateProvider.of(AbysmBlocks.GOLDEN_LAZULI_OREFURL),
+				BlockStateProvider.of(AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT),
+				BiasedToBottomIntProvider.create(2, 4)
+			)
+		);
+
+		helper.add(
+			PATCH_GOLDEN_LAZULI_OREFURL, Feature.RANDOM_PATCH,
+			new RandomPatchFeatureConfig(
+				24,
+				4,
+				2,
+				PlacedFeatures.createEntry(
+					configuredFeatureLookup.getOrThrow(GOLDEN_LAZULI_OREFURL),
+					EnvironmentScanPlacementModifier.of(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.IS_AIR_OR_WATER, 3),
+					RandomOffsetPlacementModifier.vertically(ConstantIntProvider.create(1)),
+					BlockFilterPlacementModifier.of(createUnderwaterBlockPredicate(List.of(Blocks.CLAY)))
 				)
 			)
 		);

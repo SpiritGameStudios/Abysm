@@ -1,12 +1,12 @@
 {
-  "feature": "abysm:patch_seagrass_cave",
+  "feature": "abysm:patch_golden_lazuli_orefurl",
   "placement": [
     {
       "type": "minecraft:count",
       "count": {
         "type": "minecraft:uniform",
-        "max_inclusive": 28,
-        "min_inclusive": 15
+        "max_inclusive": 16,
+        "min_inclusive": 3
       }
     },
     {
