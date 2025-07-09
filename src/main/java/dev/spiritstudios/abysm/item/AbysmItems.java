@@ -1,8 +1,10 @@
 package dev.spiritstudios.abysm.item;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import net.minecraft.block.Block;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -21,6 +23,15 @@ import java.util.function.Function;
 
 @SuppressWarnings({"unused", "SameParameterValue"})
 public final class AbysmItems {
+	public static Item LAPIS_BULB = register(
+		"lapis_bulb",
+		createBlockItemWithUniqueName(AbysmBlocks.GOLDEN_LAZULI_OREFURL)
+	);
+
+	public static Item GOLD_LEAF = register(
+		"gold_leaf"
+	);
+
     public static final Item FLIPPERS = register(
             "flippers",
             new Item.Settings()
@@ -108,6 +119,10 @@ public final class AbysmItems {
 		}
 
 		return Registry.register(Registries.ITEM, key, item);
+	}
+
+	private static Function<Item.Settings, Item> createBlockItemWithUniqueName(Block block) {
+		return settings -> new BlockItem(block, settings.useItemPrefixedTranslationKey());
 	}
 
     public static void init() {

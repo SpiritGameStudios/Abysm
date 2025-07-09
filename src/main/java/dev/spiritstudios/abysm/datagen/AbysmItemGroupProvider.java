@@ -30,7 +30,10 @@ public class AbysmItemGroupProvider extends SpecterItemGroupProvider {
 			Block.class
 		).forEach(pair -> {
 			ItemStack stack = new ItemStack(pair.value().asItem());
-			if (!stack.isEmpty()) items.add(stack);
+			if (!stack.isEmpty()) {
+				if(stack.isOf(AbysmItems.LAPIS_BULB)) return; // avoid registering this item twice.
+				items.add(stack);
+			}
 		});
 
 		ReflectionHelper.getStaticFields(
@@ -38,7 +41,9 @@ public class AbysmItemGroupProvider extends SpecterItemGroupProvider {
 			Item.class
 		).forEach(pair -> {
 			ItemStack stack = new ItemStack(pair.value());
-			if (!stack.isEmpty()) items.add(stack);
+			if (!stack.isEmpty()) {
+				items.add(stack);
+			}
 		});
 
 		provider.accept(

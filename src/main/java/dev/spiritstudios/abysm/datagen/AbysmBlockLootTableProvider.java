@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
@@ -10,8 +11,10 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
+import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.condition.TableBonusLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
@@ -117,6 +120,9 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.SUNBLOOM_PETALS,
 			AbysmBlocks.MALLOWBLOOM_PETALS
 		);
+
+		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL, true);
+		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, false);
 	}
 
 	private void forEach(Consumer<Block> consumer, Block... blocks) {
@@ -159,6 +165,54 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 						))
 					)
 			);
+	}
+
+	private void addOrefurlDrop(Block orefurl, boolean isHead) {
+		RegistryWrapper.Impl<Enchantment> impl = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
+		LootTable.Builder builder = LootTable.builder();
+
+		if(isHead) {
+			// add guaranteed bulb drop
+			builder = builder.pool(LootPool.builder()
+				.with(
+					ItemEntry.builder(AbysmItems.LAPIS_BULB)
+				)
+			);
+		} else {
+			// add choice between bulbs and leaves
+			builder = builder.pool(LootPool.builder()
+				.with(
+					ItemEntry.builder(AbysmItems.LAPIS_BULB)
+				)
+				.with(
+					ItemEntry.builder(AbysmItems.GOLD_LEAF)
+				)
+			);
+
+			// add chance for bonus bulbs
+			builder = builder.pool(LootPool.builder()
+				.with(
+					ItemEntry.builder(AbysmItems.LAPIS_BULB)
+						.conditionally(RandomChanceLootCondition.builder(0.5F))
+						.apply(ApplyBonusLootFunction.binomialWithBonusCount(impl.getOrThrow(Enchantments.FORTUNE), 0.25F, 2))
+				)
+			);
+
+			// add chance for bonus leaves
+			builder = builder.pool(
+				LootPool.builder()
+					.with(
+						ItemEntry.builder(AbysmItems.GOLD_LEAF)
+							.conditionally(RandomChanceLootCondition.builder(0.5F))
+							.apply(ApplyBonusLootFunction.binomialWithBonusCount(impl.getOrThrow(Enchantments.FORTUNE), 0.25F, 2))
+					)
+			);
+		}
+
+		this.addDrop(
+			orefurl,
+			this.applyExplosionDecay(orefurl, builder)
+		);
 	}
 
 	private void addLootForFamilies(BlockFamily... families) {

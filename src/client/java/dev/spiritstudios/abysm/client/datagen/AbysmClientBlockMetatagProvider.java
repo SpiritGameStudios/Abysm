@@ -63,7 +63,10 @@ public class AbysmClientBlockMetatagProvider extends MetatagProvider<Block> {
 			AbysmBlocks.BLACK_SCABIOSA,
 
 			AbysmBlocks.ANTENNAE_PLANT,
-			AbysmBlocks.POTTED_ANTENNAE_PLANT
+			AbysmBlocks.POTTED_ANTENNAE_PLANT,
+
+			AbysmBlocks.GOLDEN_LAZULI_OREFURL,
+			AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT
 		);
 
 		addBlocksToLayer(builder, BlockRenderLayer.CUTOUT_MIPPED,

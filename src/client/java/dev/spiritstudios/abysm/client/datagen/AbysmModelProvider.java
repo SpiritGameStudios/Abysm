@@ -121,6 +121,8 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 		// region misc plants
 		generator.registerRoots(AbysmBlocks.ANTENNAE_PLANT, AbysmBlocks.POTTED_ANTENNAE_PLANT);
+
+		generator.registerPlantPart(AbysmBlocks.GOLDEN_LAZULI_OREFURL, AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, BlockStateModelGenerator.CrossType.NOT_TINTED);
 		// endregion
 	}
 
@@ -193,12 +195,17 @@ public class AbysmModelProvider extends FabricModelProvider {
 	@Override
 	public void generateItemModels(ItemModelGenerator generator) {
 		registerGenerated(generator,
+			AbysmItems.LAPIS_BULB,
+			AbysmItems.GOLD_LEAF,
+
 			AbysmItems.FLIPPERS,
+
 			AbysmItems.SMALL_FLORAL_FISH_SPAWN_EGG,
 			AbysmItems.BIG_FLORAL_FISH_SPAWN_EGG,
 			AbysmItems.BLOOMRAY_SPAWN_EGG,
 			AbysmItems.ELECTRIC_OOGLY_BOOGLY_SPAWN_EGG,
 			AbysmItems.MAN_O_WAR_SPAWN_EGG,
+
 			AbysmItems.MUSIC_DISC_RENAISSANCE
 		);
 		generator.register(AbysmItems.NOOPRAH);

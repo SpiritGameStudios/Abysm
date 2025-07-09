@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "abysm:block/golden_lazuli_orefurl"
+  }
+}

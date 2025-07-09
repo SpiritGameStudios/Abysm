@@ -564,6 +564,35 @@ public final class AbysmBlocks {
 		AbstractBlock.Settings.copy(POTTED_ROSY_SPRIGS),
 		false
 	);
+
+	// the random-ticked head of the plant
+	public static final Block GOLDEN_LAZULI_OREFURL = register(
+		"golden_lazuli_orefurl",
+		OrefurlBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.GOLD)
+			.sounds(BlockSoundGroup.SWEET_BERRY_BUSH)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 2)
+			.noCollision()
+			.ticksRandomly()
+			.breakInstantly(),
+		false
+	);
+
+	// the not-random-ticked body of the plant
+	public static final Block GOLDEN_LAZULI_OREFURL_PLANT = register(
+		"golden_lazuli_orefurl_plant",
+		OrefurlPlantBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.GOLD)
+			.sounds(BlockSoundGroup.SWEET_BERRY_BUSH)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 2)
+			.noCollision()
+			.breakInstantly(),
+		false
+	);
 	// endregion misc plants
 
 	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, @Nullable BiFunction<Block, Item.Settings, ? extends BlockItem> blockItemConstructor) {
