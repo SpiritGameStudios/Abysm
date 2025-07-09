@@ -73,7 +73,7 @@ public class HuntPreyGoal extends TrackTargetGoal {
 		if (this.reciprocalChance > 0 && this.mob.getRandom().nextInt(this.reciprocalChance) != 0) {
 			return false;
 		}
-		if (!((EcologicalEntity) this.mob).isHungry()) {
+		if (!((EcologicalEntity) this.mob).isHungryCarnivore()) {
 			return false;
 		}
 		this.findClosestTarget();

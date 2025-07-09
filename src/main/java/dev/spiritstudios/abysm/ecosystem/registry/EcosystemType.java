@@ -2,6 +2,8 @@ package dev.spiritstudios.abysm.ecosystem.registry;
 
 import com.google.common.collect.ImmutableSet;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
@@ -21,6 +23,8 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 	ImmutableSet<Block> plants, int targetPopulation,
 	int populationChunkSearchRadius
 ) {
+
+	public static final Int2ObjectMap<EcosystemType<? extends MobEntity>> TYPES = new Int2ObjectOpenHashMap<>();
 
 	public static class Builder<T extends MobEntity & EcologicalEntity> {
 		private final EntityType<T> entityType;

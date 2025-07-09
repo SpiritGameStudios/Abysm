@@ -10,11 +10,16 @@ import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 
+import java.util.HashMap;
+
 public class AbysmEcosystemTypes {
+
 	public static final EcosystemType<SmallFloralFishEntity> SMALL_FLORAL_FISH = register(
 		"small_floral_fish",
 		EcosystemType.Builder
@@ -43,7 +48,9 @@ public class AbysmEcosystemTypes {
 	public static final EcosystemType<LectorfinEntity> LECTORFIN = register(
 		"lectorfin",
 		EcosystemType.Builder.create(AbysmEntityTypes.LECTORFIN)
-			.setPlants(/* oresoil */).setTargetPopulation(10)
+			.setPlants(AbysmBlocks.GOLDEN_LAZULI_OREFURL,
+				AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT)
+			.setTargetPopulation(10)
 	);
 
 //	public static <T extends MobEntity & EcologicalEntity> EcosystemType<T> register(EcosystemType.Builder<T> builder) {

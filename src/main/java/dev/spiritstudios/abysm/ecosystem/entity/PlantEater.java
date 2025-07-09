@@ -6,7 +6,11 @@ import org.jetbrains.annotations.Nullable;
 public interface PlantEater extends EcologicalEntity {
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	boolean hasPlant();
+	default boolean hasPlant() {
+		return this.getPlantPos() != null;
+	}
+
+	void setPlantPos(@Nullable BlockPos pos);
 
 	void clearPlantPos();
 
@@ -27,9 +31,8 @@ public interface PlantEater extends EcologicalEntity {
 
 	int ticksUntilHunger();
 
-	@Override
-	default boolean isHungry() {
-		return EcologicalEntity.super.isHungry() || this.ticksUntilHunger() <= 0;
+	default boolean isHungryHerbivore() {
+		return this.ticksUntilHunger() <= 0;
 	}
 
 	default void setNotHungryAnymoreYay() {

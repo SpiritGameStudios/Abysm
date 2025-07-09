@@ -566,7 +566,7 @@ public final class AbysmBlocks {
 	);
 
 	// the random-ticked head of the plant
-	public static final Block GOLDEN_LAZULI_OREFURL = register(
+	public static final AbstractPlantStemBlock GOLDEN_LAZULI_OREFURL = register(
 		"golden_lazuli_orefurl",
 		OrefurlBlock::new,
 		AbstractBlock.Settings.create()

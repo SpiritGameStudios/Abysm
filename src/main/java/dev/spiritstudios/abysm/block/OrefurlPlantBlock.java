@@ -37,7 +37,7 @@ public class OrefurlPlantBlock extends AbstractPlantBlock implements FluidFillab
 
 	@Override
 	protected AbstractPlantStemBlock getStem() {
-		return (AbstractPlantStemBlock) AbysmBlocks.GOLDEN_LAZULI_OREFURL;
+		return AbysmBlocks.GOLDEN_LAZULI_OREFURL;
 	}
 
 	@Override

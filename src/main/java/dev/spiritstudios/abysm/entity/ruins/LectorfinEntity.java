@@ -12,6 +12,7 @@ import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -128,6 +129,7 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 	protected void initGoals() {
 		super.initGoals();
 		this.plantsGoal = new FindPlantsGoal(this);
+		this.plantsGoal.setRangeSupplier(() -> (int) Math.floor(this.getAttributeValue(EntityAttributes.FOLLOW_RANGE) * 0.8));
 		this.goalSelector.add(4, this.plantsGoal);
 	}
 
@@ -151,8 +153,8 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 	}
 
 	@Override
-	public boolean hasPlant() {
-		return this.plantPos != null;
+	public void setPlantPos(@Nullable BlockPos plantPos) {
+		this.plantPos = plantPos;
 	}
 
 	@Override
