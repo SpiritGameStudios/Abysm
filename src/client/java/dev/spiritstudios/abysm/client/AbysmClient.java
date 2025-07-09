@@ -15,9 +15,15 @@ import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRendere
 import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.networking.EntityFinishedEatingS2CPayload;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.entity.Entity;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 
 public class AbysmClient implements ClientModInitializer {
 	@Override
@@ -37,5 +43,21 @@ public class AbysmClient implements ClientModInitializer {
 		AbysmParticles.init();
 		AbysmRenderPipelines.init();
 		AbysmDebugRenderers.init();
+
+		ClientPlayNetworking.registerGlobalReceiver(EntityFinishedEatingS2CPayload.ID, (payload, context) -> {
+			World world = context.player().getWorld();
+			Entity entity = world.getEntityById(payload.entityId());
+			if (entity == null) {
+				return;
+			}
+			ParticleEffect parameters = payload.particleEffect();
+			Random random = entity.getRandom();
+			for (int i = 0; i < 5; i++) {
+				double d = random.nextGaussian() * 0.02;
+				double e = random.nextGaussian() * 0.02;
+				double f = random.nextGaussian() * 0.02;
+				world.addParticleClient(parameters, entity.getParticleX(1.0), entity.getRandomBodyY() + 0.5, entity.getParticleZ(1.0), d, e, f);
+			}
+		});
 	}
 }

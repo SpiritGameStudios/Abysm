@@ -1,12 +1,16 @@
 package dev.spiritstudios.abysm.entity.ai.goal.ecosystem;
 
 import dev.spiritstudios.abysm.ecosystem.entity.PlantEater;
+import dev.spiritstudios.abysm.networking.EntityFinishedEatingS2CPayload;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -141,6 +145,12 @@ public class FindPlantsGoal extends Goal {
 		PlantEater plantEater = (PlantEater) this.obj;
  		if (this.ate()) {
 			plantEater.setNotHungryAnymoreYay();
+			if (!this.obj.getWorld().isClient) {
+				EntityFinishedEatingS2CPayload payload = new EntityFinishedEatingS2CPayload(this.obj, ParticleTypes.HAPPY_VILLAGER);
+				PlayerLookup.tracking(this.obj).forEach(serverPlayerEntity -> {
+					ServerPlayNetworking.send(serverPlayerEntity, payload);
+				});
+			}
 		}
 
 		this.running = false;
