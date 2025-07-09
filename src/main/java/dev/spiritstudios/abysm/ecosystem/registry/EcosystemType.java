@@ -2,11 +2,15 @@ package dev.spiritstudios.abysm.ecosystem.registry;
 
 import com.google.common.collect.ImmutableSet;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.specter.api.registry.SpecterRegistryEvents;
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @param entityType                  This mob's EntityType - used for sorting/finding/tracking
@@ -23,8 +27,7 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 	ImmutableSet<Block> plants, int targetPopulation,
 	int populationChunkSearchRadius
 ) {
-
-	public static final Int2ObjectMap<EcosystemType<? extends MobEntity>> TYPES = new Int2ObjectOpenHashMap<>();
+	private static Map<EntityType<? extends MobEntity>, EcosystemType<? extends MobEntity>> ENTITY_TYPE_MAP;
 
 	public static class Builder<T extends MobEntity & EcologicalEntity> {
 		private final EntityType<T> entityType;
@@ -81,5 +84,19 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 		public EntityType<T> getEntityType() {
 			return entityType;
 		}
+	}
+
+	public static Optional<EcosystemType<? extends MobEntity>> get(EntityType<? extends MobEntity> type) {
+		return Optional.ofNullable(ENTITY_TYPE_MAP.getOrDefault(type, null));
+	}
+
+	public static void init() {
+		SpecterRegistryEvents.REGISTRIES_FROZEN.register(() -> {
+			ENTITY_TYPE_MAP = new Object2ObjectArrayMap<>(AbysmRegistries.ECOSYSTEM_TYPE_REGISTRY.size());
+
+			for (EcosystemType<?> ecosystemType : AbysmRegistries.ECOSYSTEM_TYPE_REGISTRY) {
+				ENTITY_TYPE_MAP.put(ecosystemType.entityType, ecosystemType);
+			}
+		});
 	}
 }

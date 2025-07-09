@@ -6,11 +6,8 @@ import dev.spiritstudios.abysm.duck.CarverContextDuckInterface;
 import dev.spiritstudios.abysm.duck.ChunkNoiseSamplerDuckInterface;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.densityfunction.DensityFunctionWrapper;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.BiomeCoords;
@@ -28,10 +25,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Optional;
-
 @Mixin(NoiseChunkGenerator.class)
-public class NoiseChunkGeneratorMixin {
+public abstract class NoiseChunkGeneratorMixin {
 
 	@Inject(method = "carve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/ProtoChunk;getOrCreateCarvingMask()Lnet/minecraft/world/gen/carver/CarvingMask;"))
 	private void setupContext(
@@ -64,11 +59,11 @@ public class NoiseChunkGeneratorMixin {
 		DensityFunction shellCaveFunction = ((ChunkNoiseSamplerDuckInterface)chunkNoiseSampler).abysm$getShellCaveFunction(noiseConfig);
 		if (shellCaveFunction != null) {
 			// get target biome
-			WorldAccess worldAccess = ((StructureAccessorAccessor)structureAccessor).getWorld();
-			Registry<Biome> biomeRegistry = worldAccess.getRegistryManager().getOrThrow(RegistryKeys.BIOME);
-			Optional<RegistryEntry.Reference<Biome>> biomeEntryOptional = biomeRegistry.getEntry(AbysmBiomes.DEEP_SEA_RUINS.getValue());
-			if(biomeEntryOptional.isPresent()) {
-				RegistryEntry<Biome> biomeEntry = biomeEntryOptional.get();
+			var deepSeaRuins = ((StructureAccessorAccessor)structureAccessor).getWorld().getRegistryManager()
+				.getOptionalEntry(AbysmBiomes.DEEP_SEA_RUINS);
+
+			if (deepSeaRuins.isPresent()) {
+				RegistryEntry<Biome> biomeEntry = deepSeaRuins.get();
 
 				// sample sdf, if inside shape then place target biome
 				DensityFunctionWrapper wrapper = new DensityFunctionWrapper(shellCaveFunction);

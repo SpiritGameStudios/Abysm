@@ -53,7 +53,7 @@ public abstract class Leviathan<L extends Leviathan<L>> extends MobEntity implem
 	@Override
 	public void onSpawnPacket(EntitySpawnS2CPacket packet) {
 		super.onSpawnPacket(packet);
-		var parts = this.parts();
+		var parts = this.getEntityParts();
 
 		for(int i = 0; i < parts.size(); ++i) {
 			parts.get(i).setId(i + packet.getEntityId() + 1);

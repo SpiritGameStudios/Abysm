@@ -1,8 +1,8 @@
 package dev.spiritstudios.abysm.ecosystem.entity;
 
+import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemChunk;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
@@ -10,7 +10,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -18,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.List;
+import java.util.Optional;
 
 // Contains methods for handling all entity-related logic that all Ecosystem-related classes may need to call(e.g. EcosystemChunk)
 public interface EcologicalEntity {
@@ -67,24 +67,22 @@ public interface EcologicalEntity {
 		this.getEcosystemLogic().onDeath();
 	}
 
-	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+	@SuppressWarnings({"BooleanMethodIsAlwaysInverted", "UnstableApiUsage"})
 	default boolean isHungryCarnivore() {
 		World world = ((MobEntity) this).getWorld();
 		Chunk chunk = world.getChunk(((MobEntity) this).getBlockPos());
+
 		EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
-		if (ecosystemChunk == null) {
-			return false;
-		}
+
+		if (ecosystemChunk == null) return false;
+
 		for (EntityType<? extends MobEntity> prey : this.getEcosystemType().prey()) {
-			int rawId = Registries.ENTITY_TYPE.getRawId(prey);
-			if (!EcosystemType.TYPES.containsKey(rawId)) {
-				continue;
-			}
-			EcosystemType<? extends MobEntity> ecosystemType = EcosystemType.TYPES.get(rawId);
-			if (ecosystemChunk.ecosystemTypeNearbyPopOkay(ecosystemType)) {
-				return true;
-			}
+			Optional<EcosystemType<? extends MobEntity>> ecosystemType = EcosystemType.get(prey);
+
+			if (ecosystemType.isEmpty()) continue;
+			if (ecosystemChunk.ecosystemTypeNearbyPopOkay(ecosystemType.get())) return true;
 		}
+
 		return false;
 	}
 

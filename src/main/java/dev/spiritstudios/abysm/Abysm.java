@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm;
 
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
+import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
@@ -37,11 +38,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Abysm implements ModInitializer {
-    public static final String MODID = "abysm";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
+	public static final String MODID = "abysm";
+	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
-    @Override
-    public void onInitialize() {
+	@Override
+	public void onInitialize() {
 		initRegistries();
 
 		registerNetworking();
@@ -54,7 +55,9 @@ public class Abysm implements ModInitializer {
 		AbysmSpawnRestrictions.init();
 
 		AbysmLootTableModifications.init();
-    }
+
+		EcosystemType.init();
+	}
 
 	private void initRegistries() {
 		AbysmRegistries.init();

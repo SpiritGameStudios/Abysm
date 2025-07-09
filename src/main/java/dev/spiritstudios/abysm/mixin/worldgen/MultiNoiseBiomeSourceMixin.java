@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Mixin(MultiNoiseBiomeSource.class)
-public class MultiNoiseBiomeSourceMixin {
+public abstract class MultiNoiseBiomeSourceMixin {
 
 	@Unique
 	@Nullable
