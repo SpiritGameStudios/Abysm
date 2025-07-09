@@ -80,6 +80,11 @@ public final class AbysmItems {
 		settings -> new SpawnEggItem(AbysmEntityTypes.MAN_O_WAR, settings)
 	);
 
+	public static final Item LECTORFIN_SPAWN_EGG = register(
+		"lectorfin_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.LECTORFIN, settings)
+	);
+
 	public static final Item MUSIC_DISC_RENAISSANCE = register(
 		"music_disc_renaissance",
 		new Item.Settings()

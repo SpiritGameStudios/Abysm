@@ -205,6 +205,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 			AbysmItems.BLOOMRAY_SPAWN_EGG,
 			AbysmItems.ELECTRIC_OOGLY_BOOGLY_SPAWN_EGG,
 			AbysmItems.MAN_O_WAR_SPAWN_EGG,
+			AbysmItems.LECTORFIN_SPAWN_EGG,
 
 			AbysmItems.MUSIC_DISC_RENAISSANCE
 		);
