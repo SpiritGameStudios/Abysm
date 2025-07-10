@@ -36,6 +36,16 @@
       }
     ]
   },
+  "music.overworld.pearlescent_sea": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/wake"
+      }
+    ]
+  },
   "records.renaissance": {
     "category": "record",
     "sounds": [
