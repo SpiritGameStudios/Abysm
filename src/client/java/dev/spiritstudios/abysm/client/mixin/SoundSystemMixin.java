@@ -2,27 +2,35 @@ package dev.spiritstudios.abysm.client.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import dev.spiritstudios.abysm.client.sound.AbysmEffects;
+import net.minecraft.client.sound.Channel;
+import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
 import net.minecraft.client.sound.Source;
+import net.minecraft.sound.SoundCategory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.function.Consumer;
+
 @Mixin(SoundSystem.class)
 public abstract class SoundSystemMixin {
-	@WrapOperation(method = {"method_19752", "method_19755"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/Source;play()V"))
-	private static void play(Source source, Operation<Void> original) {
-//		if (instance.getCategory() == SoundCategory.MUSIC) {
-//			original.call(sourceManager, action);
-//			return;
-//		}
+	@WrapOperation(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/Channel$SourceManager;run(Ljava/util/function/Consumer;)V"))
+	private static void play(Channel.SourceManager sourceManager, Consumer<Source> action, Operation<Void> original, @Local(argsOnly = true) SoundInstance instance) {
+		if (instance.getCategory() == SoundCategory.MUSIC || instance.getCategory() == SoundCategory.AMBIENT) {
+			original.call(sourceManager, action);
+			return;
+		}
 
+		sourceManager.run(source -> {
+			AbysmEffects.underwaterEffect().apply(source);
+			AbysmEffects.underwaterLowPass().applyDirect(source);
+		});
 
-		AbysmEffects.underwaterEffect().apply(source);
-		AbysmEffects.underwaterLowPass().applyDirect(source);
-		original.call(source);
+		original.call(sourceManager, action);
 	}
 
 	@Inject(method = "start", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundListener;init()V"))
