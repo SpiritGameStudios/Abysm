@@ -1,29 +1,31 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "dev.spiritstudios.abysm.client.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "client": [
-    "BackgroundRendererMixin",
-    "ChatScreenMixin",
-    "ClientPlayerEntityMixin",
-    "GlResourceManagerMixin",
-    "LightmapTextureManagerMixin",
-    "WaterSuspendParticleMixin",
-    "WorldRendererMixin",
-    "harpoon.DrawContextMixin",
-    "harpoon.HeldItemFeatureRendererMixin",
-    "harpoon.ItemModelManagerMixin",
-    "harpoon.ItemRendererMixin",
-    "harpoon.ItemRenderStateAccessor",
-    "harpoon.ItemRenderStateAccessor$LayerRenderStateAccessor",
-    "harpoon.ItemRenderStateMixin",
-    "harpoon.PlayerEntityRendererMixin",
-    "leviathan.ClientPlayNetworkHandlerMixin",
-    "manowar.EntityRenderDispatcherMixin",
-    "manowar.LivingEntityRendererMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
+	"required": true,
+	"minVersion": "0.8",
+	"package": "dev.spiritstudios.abysm.client.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"BackgroundRendererMixin",
+		"ChatScreenMixin",
+		"ClientPlayerEntityMixin",
+		"GlResourceManagerMixin",
+		"LightmapTextureManagerMixin",
+		"WaterSuspendParticleMixin",
+		"WorldRendererMixin",
+		"harpoon.DrawContextMixin",
+		"harpoon.HeldItemFeatureRendererMixin",
+		"harpoon.ItemModelManagerMixin",
+		"harpoon.ItemRendererMixin",
+		"harpoon.ItemRenderStateAccessor",
+		"harpoon.ItemRenderStateAccessor$LayerRenderStateAccessor",
+		"harpoon.ItemRenderStateMixin",
+		"harpoon.PlayerEntityRendererMixin",
+		"SoundSystemMixin",
+		"SourceAccessor",
+		"leviathan.ClientPlayNetworkHandlerMixin",
+		"manowar.EntityRenderDispatcherMixin",
+		"manowar.LivingEntityRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
 	}
 }
