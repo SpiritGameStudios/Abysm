@@ -3,15 +3,7 @@ package dev.spiritstudios.abysm.client;
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
 import dev.spiritstudios.abysm.client.render.AbysmDebugRenderers;
 import dev.spiritstudios.abysm.client.render.AbysmRenderPipelines;
-import dev.spiritstudios.abysm.client.render.entity.AbysmEntityLayers;
-import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
-import dev.spiritstudios.abysm.client.render.entity.FlippersRenderer;
-import dev.spiritstudios.abysm.client.render.entity.LectorfinEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.MysteriousBlobEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.*;
 import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
@@ -20,6 +12,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.render.entity.EnderDragonEntityRenderer;
+import net.minecraft.client.render.entity.MagmaCubeEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.random.Random;
@@ -36,6 +30,7 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.MAN_O_WAR, ManOWarEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.LECTORFIN, LectorfinEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.MYSTERIOUS_BLOB, MysteriousBlobEntityRenderer::new);
+		EntityRendererRegistry.register(AbysmEntityTypes.TEST_LEVIATHAN, LehydrathanEntityRenderer::new);
 
 		ArmorRenderer.register(new FlippersRenderer(), AbysmItems.FLIPPERS);
 

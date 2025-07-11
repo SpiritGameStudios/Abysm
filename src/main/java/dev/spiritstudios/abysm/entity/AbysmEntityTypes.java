@@ -4,6 +4,8 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
 import dev.spiritstudios.abysm.entity.floralreef.*;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
+import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
+import dev.spiritstudios.abysm.entity.leviathan.test.Lehydrathan;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.Entity;
@@ -83,6 +85,12 @@ public class AbysmEntityTypes {
 			.maxTrackingRange(4)
 	);
 
+	public static final EntityType<Lehydrathan> TEST_LEVIATHAN = register(
+		"lehydrathan",
+		EntityType.Builder.create(Lehydrathan::new, SpawnGroup.MISC)
+			.dimensions(0.7F, 0.7F)
+	);
+
 	private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
 		return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
 	}
@@ -103,6 +111,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());
 		FabricDefaultAttributeRegistry.register(LECTORFIN, LectorfinEntity.createPredatoryFishAttributes());
 		FabricDefaultAttributeRegistry.register(MYSTERIOUS_BLOB, MysteriousBlobEntity.createVaseAttributes());
+		FabricDefaultAttributeRegistry.register(TEST_LEVIATHAN, Leviathan.createLeviathanAttributes());
 	}
 
 }
