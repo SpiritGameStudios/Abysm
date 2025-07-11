@@ -3,8 +3,8 @@ package dev.spiritstudios.abysm.client.sound;
 import static org.lwjgl.openal.EXTEfx.*;
 
 public class HighPassFilter extends Filter {
-	public float gain = 1.0F;
-	public float gainLF = 1.0F;
+	public float gain = AL_HIGHPASS_DEFAULT_GAIN;
+	public float gainLF = AL_HIGHPASS_DEFAULT_GAINLF;
 
 
 	public HighPassFilter() {

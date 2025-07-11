@@ -11,21 +11,30 @@ import static org.lwjgl.openal.EXTEfx.*;
 
 public class AuxiliaryEffectSlot implements NativeResource {
 	private final @Nullable Filter filter;
+	private final Effect effect;
 	private final int id;
 
-	public AuxiliaryEffectSlot(@Nullable Filter filter) {
+	public AuxiliaryEffectSlot(@Nullable Filter filter, Effect effect) {
 		this.filter = filter;
+		this.effect = effect;
+
 		id = alGenAuxiliaryEffectSlots();
+		ALException.assertOk();
+
 		alAuxiliaryEffectSloti(id, AL_EFFECTSLOT_AUXILIARY_SEND_AUTO, AL_TRUE);
+		ALException.assertOk();
 	}
 
 	public void apply(Source soundSource) {
+		effect.apply();
+		alAuxiliaryEffectSloti(id, AL_EFFECTSLOT_EFFECT, effect.id);
+
 		if (filter != null) filter.apply();
 
 		alSource3i(
 			((SourceAccessor) soundSource).getPointer(),
 			AL_AUXILIARY_SEND_FILTER,
-			id, 1, filter == null ? AL_FILTER_NULL : filter.id
+			id, 0, filter == null ? AL_FILTER_NULL : filter.id
 		);
 	}
 
