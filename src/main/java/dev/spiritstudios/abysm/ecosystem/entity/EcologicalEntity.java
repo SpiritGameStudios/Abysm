@@ -11,9 +11,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.List;
@@ -73,17 +75,42 @@ public interface EcologicalEntity {
 		Chunk chunk = world.getChunk(((MobEntity) this).getBlockPos());
 
 		EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
-
-		if (ecosystemChunk == null) return false;
+		if (ecosystemChunk == null) {
+			return false;
+		}
 
 		for (EntityType<? extends MobEntity> prey : this.getEcosystemType().prey()) {
-			Optional<EcosystemType<? extends MobEntity>> ecosystemType = EcosystemType.get(prey);
+			Optional<EcosystemType<? extends MobEntity>> optional = EcosystemType.get(prey);
 
-			if (ecosystemType.isEmpty()) continue;
-			if (ecosystemChunk.ecosystemTypeNearbyPopOkay(ecosystemType.get())) return true;
+			if (optional.isEmpty()) {
+				continue;
+			}
+			if (ecosystemChunk.ecosystemTypeNearbyPopOkay(optional.get())) {
+				return true;
+			}
 		}
 
 		return false;
+	}
+
+	static <T extends MobEntity> boolean canSpawnInEcosystem(EntityType<T> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
+		Chunk chunk = world.getChunk(pos);
+
+		EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
+		if (ecosystemChunk == null) {
+			return true;
+		}
+
+		Optional<EcosystemType<? extends MobEntity>> optional = EcosystemType.get(type);
+
+		if (optional.isEmpty()) {
+			return true;
+		}
+
+		EcosystemType<? extends MobEntity> ecosystemType = optional.get();
+
+		int nearbyPopulation = ecosystemChunk.getNearbyEcosystemTypePopulation(ecosystemType);
+		return nearbyPopulation < ecosystemType.targetPopulation() * 1.2;
 	}
 
 	// Will probably commit crimes by casting self(this) to MobEntity for all of these
