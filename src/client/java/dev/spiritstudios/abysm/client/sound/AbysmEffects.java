@@ -6,31 +6,31 @@ import static org.lwjgl.openal.AL10.*;
 
 public class AbysmEffects {
 	private static AuxiliaryEffectSlot underwaterEffect;
-	private static Filter underwaterLowpass;
+	private static Filter underwaterLowPass;
 
 	public static AuxiliaryEffectSlot underwaterEffect() {
 		return underwaterEffect;
 	}
 
-	public static Filter underwaterLowpass() {
-		return underwaterLowpass;
+	public static Filter underwaterLowPass() {
+		return underwaterLowPass;
 	}
 
 	static {
 		ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
-			if (underwaterLowpass != null) underwaterLowpass.free();
+			if (underwaterLowPass != null) underwaterLowPass.free();
 		});
 	}
 
 	public static void init() {
-		if (underwaterLowpass != null) underwaterLowpass.free();
+		if (underwaterLowPass != null) underwaterLowPass.free();
 
 		// So basically, somewhere in the vanilla sound code, something is broken.
 		// I have no clue how, or where, but it throws an invalid name error.
 		// If I don't reset the error by calling alGetError, then the game will crash whenever I do any error handling.
 		alGetError();
 
-		underwaterLowpass = new LowPassFilter(
+		underwaterLowPass = new LowPassFilter(
 			1F,
 			0.05F
 		);

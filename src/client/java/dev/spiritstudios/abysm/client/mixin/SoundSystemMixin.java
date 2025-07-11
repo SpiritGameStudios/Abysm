@@ -21,7 +21,7 @@ public abstract class SoundSystemMixin {
 
 
 		AbysmEffects.underwaterEffect().apply(source);
-		AbysmEffects.underwaterLowpass().applyDirect(source);
+		AbysmEffects.underwaterLowPass().applyDirect(source);
 		original.call(source);
 	}
 
