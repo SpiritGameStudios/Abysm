@@ -25,8 +25,10 @@ import dev.spiritstudios.abysm.worldgen.tree.AbysmFoliagePlacerTypes;
 import dev.spiritstudios.abysm.worldgen.tree.AbysmTrunkPlacerTypes;
 import dev.spiritstudios.specter.api.registry.RegistryHelper;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -66,6 +68,10 @@ public class Abysm implements ModInitializer {
 		AbysmBlocks.init();
 		AbysmDataComponentTypes.init();
 		AbysmItems.init();
+
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {
+			content.add(AbysmItems.MUSIC_DISC_RENAISSANCE);
+		});
 
 		// register entities & related
 		AbysmEntityAttributes.init();
