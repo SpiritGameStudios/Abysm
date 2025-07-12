@@ -7,6 +7,7 @@ import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
 import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
@@ -80,6 +81,7 @@ public class Abysm implements ModInitializer {
 		AbysmEntityTypes.init();
 		AbysmTrackedDataHandlers.init();
 		AbysmEcosystemTypes.init();
+		AbysmSensorTypes.init();
 
 		// region worldgen
 		// structures

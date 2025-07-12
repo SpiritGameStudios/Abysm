@@ -4,6 +4,7 @@ import dev.spiritstudios.specter.api.entity.EntityPart;
 import dev.spiritstudios.specter.api.entity.PartHolder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.ServerBossBar;
@@ -17,8 +18,6 @@ import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +46,8 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 		return MobEntity.createMobAttributes().add(EntityAttributes.MAX_HEALTH, 32768)
 			.add(EntityAttributes.ARMOR, 100)
 			.add(EntityAttributes.ARMOR_TOUGHNESS, 100)
-			.add(EntityAttributes.ATTACK_DAMAGE, 10);
+			.add(EntityAttributes.ATTACK_DAMAGE, 10)
+			.add(EntityAttributes.MOVEMENT_SPEED, 1.1);
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 
 		var parts = this.getEntityParts();
 
-		Vec3d delta = Vec3d.ZERO;
+		Vec3d delta;
 		Vec3d pos = this.getPos();
 		Entity previousPart = this;
 		EntityPart<Leviathan> currentPart;
@@ -159,7 +159,14 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 		entityPart.setRelativePos(new Vec3d(dx, dy, dz));
 	}
 
-	public float wrapYawChange(double yawDegrees) {
-		return (float) MathHelper.wrapDegrees(yawDegrees);
+	@Override
+	public void travel(Vec3d movementInput) {
+		if (this.isTouchingWater()) {
+			this.updateVelocity(this.getMovementSpeed(), movementInput);
+			this.move(MovementType.SELF, this.getVelocity());
+			this.setVelocity(this.getVelocity().multiply(0.9));
+		} else {
+			super.travel(movementInput);
+		}
 	}
 }

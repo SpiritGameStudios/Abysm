@@ -569,7 +569,8 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
 					AbysmEntityTypes.MAN_O_WAR,
 					AbysmEntityTypes.LECTORFIN,
-					AbysmEntityTypes.MYSTERIOUS_BLOB
+					AbysmEntityTypes.MYSTERIOUS_BLOB,
+					AbysmEntityTypes.TEST_LEVIATHAN
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.AQUATIC)
@@ -580,7 +581,8 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
 					AbysmEntityTypes.MAN_O_WAR,
 					AbysmEntityTypes.LECTORFIN,
-					AbysmEntityTypes.MYSTERIOUS_BLOB
+					AbysmEntityTypes.MYSTERIOUS_BLOB,
+					AbysmEntityTypes.TEST_LEVIATHAN
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH)
@@ -594,6 +596,9 @@ public class AbysmTagProviders {
 				.add(
 					AbysmEntityTypes.FLYING_HARPOON
 				);
+
+			getOrCreateTagBuilder(ConventionalEntityTypeTags.BOSSES)
+				.add(AbysmEntityTypes.MYSTERIOUS_BLOB);
 			// endregion
 
 			// region abysm entity tags
@@ -623,8 +628,8 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.MYSTERIOUS_BLOB
 				);
 
-			getOrCreateTagBuilder(ConventionalEntityTypeTags.BOSSES)
-				.add(AbysmEntityTypes.MYSTERIOUS_BLOB);
+			getOrCreateTagBuilder(AbysmEntityTypeTags.LEHYDRATHAN_HUNT_TARGETS)
+				.add(EntityType.GLOW_SQUID);
 			// endregion
 		}
 	}
