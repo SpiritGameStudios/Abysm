@@ -1,19 +1,29 @@
 package dev.spiritstudios.abysm.client;
 
+import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.AbysmConfig;
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
 import dev.spiritstudios.abysm.client.render.AbysmDebugRenderers;
 import dev.spiritstudios.abysm.client.render.AbysmRenderPipelines;
-import dev.spiritstudios.abysm.client.render.entity.*;
+import dev.spiritstudios.abysm.client.render.entity.AbysmEntityLayers;
+import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
+import dev.spiritstudios.abysm.client.render.entity.FlippersRenderer;
+import dev.spiritstudios.abysm.client.render.entity.LectorfinEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.LehydrathanEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.MysteriousBlobEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.networking.EntityFinishedEatingS2CPayload;
+import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.render.entity.EnderDragonEntityRenderer;
-import net.minecraft.client.render.entity.MagmaCubeEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.random.Random;
@@ -54,5 +64,7 @@ public class AbysmClient implements ClientModInitializer {
 				world.addParticleClient(parameters, entity.getParticleX(1.0), entity.getRandomBodyY() + 0.5, entity.getParticleZ(1.0), d, e, f);
 			}
 		});
+
+		ModMenuHelper.addConfig(Abysm.MODID, AbysmConfig.HOLDER.id());
 	}
 }

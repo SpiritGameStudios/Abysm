@@ -45,6 +45,8 @@ public class Abysm implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		AbysmConfig.HOLDER.load();
+
 		initRegistries();
 
 		registerNetworking();

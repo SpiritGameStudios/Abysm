@@ -23,6 +23,7 @@ public class AbysmEffects {
 	}
 
 	public static void init() {
+		if (underwaterEffect != null) underwaterEffect.free();
 		if (underwaterLowPass != null) underwaterLowPass.free();
 
 		// So basically, somewhere in the vanilla sound code, something is broken.
@@ -30,6 +31,7 @@ public class AbysmEffects {
 		// If I don't reset the error by calling alGetError, then the game will crash whenever I do any error handling.
 		alGetError();
 
+		// TODO: Actually tune these values a bit
 		underwaterLowPass = new LowPassFilter(
 			1F,
 			0.05F

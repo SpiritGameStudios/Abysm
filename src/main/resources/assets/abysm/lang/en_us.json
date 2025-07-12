@@ -145,5 +145,7 @@
 	"tag.item.abysm.rosy_bloomshroom_stems": "Rosy Bloomshroom Stems",
 	"tag.item.abysm.scabiosas": "Scabiosas",
 	"tag.item.abysm.small_bloomshrooms": "Small Bloomshrooms",
-	"tag.item.abysm.sunny_bloomshroom_stems": "Sunny Bloomshroom Stems"
+	"tag.item.abysm.sunny_bloomshroom_stems": "Sunny Bloomshroom Stems",
+	"config.abysm.abysm.title": "Abysm",
+	"config.abysm.abysm.underwaterSoundFilters": "Underwater Sound Filters"
 }

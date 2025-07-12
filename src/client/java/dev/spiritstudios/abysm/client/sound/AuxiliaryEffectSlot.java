@@ -41,6 +41,7 @@ public class AuxiliaryEffectSlot implements NativeResource {
 	@Override
 	public void free() {
 		alDeleteAuxiliaryEffectSlots(id);
+		effect.free();
 		if (filter != null) filter.free();
 	}
 }
