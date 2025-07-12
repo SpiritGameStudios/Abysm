@@ -16,7 +16,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.ServerWorldAccess;
 
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
@@ -28,7 +27,7 @@ import java.util.stream.Stream;
  * @param baseTexture The base texture for the model - if empty, the default entity texture is used instead
  * @param colorable If the pattern is meant to be colored with code(default), or has pre-defined colors - if empty, defaults to true
  */
-public record EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, Optional<Identifier> baseTexture, Optional<Boolean> colorable) {
+public record EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, Optional<Identifier> baseTexture, boolean colorable) {
 	// TODO (unimportant) - Actually impl. base texture & colorable codec entries in required places
 	public static final Codec<EntityPatternVariant> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
@@ -36,29 +35,28 @@ public record EntityPatternVariant(EntityType<?> entityType, Text name, Identifi
 			TextCodecs.CODEC.fieldOf("name").forGetter(pattern -> pattern.name),
 			Identifier.CODEC.fieldOf("pattern").forGetter(pattern -> pattern.patternPath),
 			Identifier.CODEC.optionalFieldOf("base").forGetter(pattern -> pattern.baseTexture),
-			Codec.BOOL.optionalFieldOf("colorable").forGetter(pattern -> pattern.colorable)
+			Codec.BOOL.optionalFieldOf("colorable", true).forGetter(pattern -> pattern.colorable)
 		).apply(instance, EntityPatternVariant::new)
 	);
 
 	public static final PacketCodec<RegistryByteBuf, RegistryEntry<EntityPatternVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistries.ENTITY_PATTERN);
 
 	public EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath) {
-		this(entityType, name, patternPath, Optional.empty(), Optional.of(true));
+		this(entityType, name, patternPath, Optional.empty(), true);
 	}
 
 	public EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, Identifier baseTexture) {
-		this(entityType, name, patternPath, Optional.of(baseTexture), Optional.of(true));
+		this(entityType, name, patternPath, Optional.of(baseTexture), true);
 	}
 
 	public EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, boolean colorable) {
-		this(entityType, name, patternPath, Optional.empty(), Optional.of(colorable));
+		this(entityType, name, patternPath, Optional.empty(), colorable);
 	}
 
-	public static Stream<RegistryEntry<EntityPatternVariant>> getVariantsForEntityType(ServerWorldAccess world, EntityType<?> entityType) {
+	public static Stream<? extends RegistryEntry<EntityPatternVariant>> getVariantsForEntityType(ServerWorldAccess world, EntityType<?> entityType) {
 		DynamicRegistryManager registryManager = world.getRegistryManager();
 		Registry<EntityPatternVariant> registry = registryManager.getOrThrow(AbysmRegistries.ENTITY_PATTERN);
 		return registry.streamEntries()
-			.<RegistryEntry<EntityPatternVariant>>map(Function.identity())
 			.filter(patternVariant -> patternVariant.value().entityType.equals(entityType));
 	}
 

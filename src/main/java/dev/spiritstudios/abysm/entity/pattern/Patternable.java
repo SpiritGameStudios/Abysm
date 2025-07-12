@@ -125,7 +125,7 @@ public interface Patternable {
 	 * @see Patternable#getPatternForInitialize(ServerWorldAccess, Entity, EntityData)
 	 */
 	default EntityPattern getRandomPattern(ServerWorldAccess world, Entity self) {
-		List<RegistryEntry<EntityPatternVariant>> variants = EntityPatternVariant.getVariantsForEntityType(world, self.getType()).toList();
+		List<? extends RegistryEntry<EntityPatternVariant>> variants = EntityPatternVariant.getVariantsForEntityType(world, self.getType()).toList();
 
 		return new EntityPattern(
 			Util.getRandom(variants, self.getRandom()),
