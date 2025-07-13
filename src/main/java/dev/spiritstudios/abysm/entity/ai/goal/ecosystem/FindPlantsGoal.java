@@ -51,13 +51,15 @@ public class FindPlantsGoal extends Goal {
 	}
 
 	public FindPlantsGoal(PathAwareEntity mob, float navigationSpeed, float moveControlSpeed, boolean forceAquatic) {
+		if (!(mob instanceof PlantEater)) {
+			throw new IllegalArgumentException("Tried to create FindPlantsGoal for non PlantEater entity");
+		}
+
 		this.obj = mob;
 		this.navigationSpeed = navigationSpeed;
 		this.moveControlSpeed = moveControlSpeed;
 		this.forceAquatic = forceAquatic;
-		if (!(mob instanceof PlantEater)) {
-			throw new IllegalArgumentException("I don't feel like writing an actual error message");
-		}
+
 		this.setControls(EnumSet.of(Goal.Control.MOVE));
 	}
 
@@ -70,46 +72,43 @@ public class FindPlantsGoal extends Goal {
 		if (!this.testAquatic()) {
 			return false;
 		}
+
 		PlantEater plantEater = (PlantEater) this.obj;
 		if (!plantEater.isHungryHerbivore()) {
 			return false;
 		}
-		Optional<BlockPos> optional = this.getPlant();
-		if (optional.isPresent()) {
-			BlockPos pos = optional.get();
-			plantEater.setPlantPos(pos);
-			this.obj.getNavigation()
-				.startMovingTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, this.navigationSpeed);
-			return true;
-		} else {
-			plantEater.setTicksUntilHunger(MathHelper.nextInt(this.obj.getRandom(), 20, 60));
-			return false;
-		}
+
+		return this.getPlant()
+			.map(pos -> {
+				plantEater.setPlantPos(pos);
+				this.obj.getNavigation().startMovingTo(
+					pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+					this.navigationSpeed
+				);
+
+				return true;
+			}).orElseGet(() -> {
+				plantEater.setTicksUntilHunger(MathHelper.nextInt(this.obj.getRandom(), 20, 60));
+				return false;
+			});
 	}
 
 	/**
 	 * Ensures that the entity is in a valid position to start
+	 *
 	 * @return false if the test fails (is aquatic and not in water)
 	 */
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean testAquatic() {
-		if (this.forceAquatic) {
-			return this.obj.isTouchingWater();
-		}
-		return true;
+		return !this.forceAquatic || this.obj.isTouchingWater();
 	}
 
 	@Override
 	public boolean shouldContinue() {
-		if (!this.running) {
-			return false;
-		} else if (!((PlantEater) this.obj).hasPlant()) {
-			return false;
-		} else if (!this.testAquatic()) {
-			return false;
-		} else {
-			return !this.ate() || this.obj.getRandom().nextFloat() < 0.2F;
-		}
+		return this.running &&
+			((PlantEater) this.obj).hasPlant() &&
+			this.testAquatic() &&
+			(!this.ate() || this.obj.getRandom().nextFloat() < 0.2F);
 	}
 
 	protected boolean ate() {
@@ -125,6 +124,7 @@ public class FindPlantsGoal extends Goal {
 	/**
 	 * This method should be called when the entity takes damage from a source it is
 	 * (likely) not invulnerable to
+	 *
 	 * @see dev.spiritstudios.abysm.entity.ruins.LectorfinEntity#damage(ServerWorld, DamageSource, float)
 	 */
 	public void cancel() {
@@ -143,7 +143,7 @@ public class FindPlantsGoal extends Goal {
 	@Override
 	public void stop() {
 		PlantEater plantEater = (PlantEater) this.obj;
- 		if (this.ate()) {
+		if (this.ate()) {
 			plantEater.setNotHungryAnymoreYay();
 			if (!this.obj.getWorld().isClient) {
 				EntityFinishedEatingS2CPayload payload = new EntityFinishedEatingS2CPayload(this.obj, ParticleTypes.HAPPY_VILLAGER);
@@ -186,35 +186,34 @@ public class FindPlantsGoal extends Goal {
 			return;
 		}
 		//noinspection DataFlowIssue
-		Vec3d vec3d = Vec3d.ofBottomCenter(plantEater.getPlantPos()).add(0.0, 0.6F, 0.0);
-		if (vec3d.distanceTo(this.obj.getPos()) > 1.0) {
-			this.nextTarget = vec3d;
+		Vec3d potentialTarget = Vec3d.ofBottomCenter(plantEater.getPlantPos()).add(0.0, 0.6F, 0.0);
+		if (potentialTarget.distanceTo(this.obj.getPos()) > 1.0) {
+			this.nextTarget = potentialTarget;
 			this.moveToNextTarget();
 			return;
 		}
 		if (this.nextTarget == null) {
-			this.nextTarget = vec3d;
+			this.nextTarget = potentialTarget;
 		}
 		boolean veryClose = this.obj.getPos().distanceTo(this.nextTarget) <= 0.1;
-		boolean somethingNavigation = true; // I have no idea what to call this
+		boolean shouldStartMoving = true;
 		if (!veryClose && this.ticks > 600) {
 			plantEater.clearPlantPos();
 			return;
 		}
 
 		if (veryClose) {
-			boolean someRandom = this.obj.getRandom().nextInt(25) == 0;
-			if (someRandom) {
-				this.nextTarget = new Vec3d(vec3d.getX() + this.getRandomOffset(), vec3d.getY(), vec3d.getZ() + this.getRandomOffset());
+			if (this.obj.getRandom().nextInt(25) == 0) {
+				this.nextTarget = new Vec3d(potentialTarget.getX() + this.getRandomOffset(), potentialTarget.getY(), potentialTarget.getZ() + this.getRandomOffset());
 				this.obj.getNavigation().stop();
 			} else {
-				somethingNavigation = false;
+				shouldStartMoving = false;
 			}
 
-			this.obj.getLookControl().lookAt(vec3d.getX(), vec3d.getY(), vec3d.getZ());
+			this.obj.getLookControl().lookAt(potentialTarget.getX(), potentialTarget.getY(), potentialTarget.getZ());
 		}
 
-		if (somethingNavigation) {
+		if (shouldStartMoving) {
 			this.moveToNextTarget();
 		}
 
@@ -233,18 +232,18 @@ public class FindPlantsGoal extends Goal {
 	}
 
 	protected float getRandomOffset() {
-		return (this.obj.getRandom().nextFloat() * 2.0F - 1.0F) * 0.33333334F; // yay magic constants
+		return (this.obj.getRandom().nextFloat() * 2.0F - 1.0F) * (1.0F / 3.0F); // yay magic constants
 	}
 
 	protected Optional<BlockPos> getPlant() {
 		int range = this.rangeSupplier.get();
-		Iterable<BlockPos> iterable = BlockPos.iterateOutwards(this.obj.getBlockPos(), range, range, range);
-		Long2LongOpenHashMap long2LongOpenHashMap = new Long2LongOpenHashMap();
+		Long2LongOpenHashMap unreachableCache = new Long2LongOpenHashMap();
 
-		for (BlockPos blockPos : iterable) {
+		for (BlockPos blockPos : BlockPos.iterateOutwards(this.obj.getBlockPos(), range, range, range)) {
 			long l = this.unreachablePosCache.getOrDefault(blockPos.asLong(), Long.MIN_VALUE);
+
 			if (this.obj.getWorld().getTime() < l) {
-				long2LongOpenHashMap.put(blockPos.asLong(), l);
+				unreachableCache.put(blockPos.asLong(), l);
 			} else {
 				BlockState blockState = this.obj.getWorld().getBlockState(blockPos);
 				if (((PlantEater) this.obj).getEcosystemType().plants().contains(blockState.getBlock())) {
@@ -253,12 +252,12 @@ public class FindPlantsGoal extends Goal {
 						return Optional.of(blockPos);
 					}
 
-					long2LongOpenHashMap.put(blockPos.asLong(), this.obj.getWorld().getTime() + 600L);
+					unreachableCache.put(blockPos.asLong(), this.obj.getWorld().getTime() + 600L);
 				}
 			}
 		}
 
-		this.unreachablePosCache = long2LongOpenHashMap;
+		this.unreachablePosCache = unreachableCache;
 		return Optional.empty();
 	}
 }
