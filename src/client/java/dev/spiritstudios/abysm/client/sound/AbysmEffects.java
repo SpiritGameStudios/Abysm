@@ -18,6 +18,7 @@ public class AbysmEffects {
 
 	static {
 		ClientLifecycleEvents.CLIENT_STOPPING.register(client -> {
+			if (underwaterEffect != null) underwaterEffect.free();
 			if (underwaterLowPass != null) underwaterLowPass.free();
 		});
 	}
