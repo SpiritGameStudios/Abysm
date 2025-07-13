@@ -60,14 +60,15 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		Vec3d end = new Vec3d(state.x, state.y, state.z).add(anchorOffset);
 
 		Vec3d difference = start.subtract(end);
-		double distance = start.distanceTo(end) + 0.1;
 
-		float horizontalAngle = (float) MathHelper.atan2(end.z - start.z, end.x - start.x);
+		double distZ = end.z - start.z;
+		double distX = end.x - start.x;
+		float horizontalAngle = (float) MathHelper.atan2(distZ, distX);
 		horizontalAngle += MathHelper.ceil(-horizontalAngle / MathHelper.TAU) * MathHelper.TAU;
 
-		float verticalAngle = (float) Math.asin(difference.y / distance);
+		float verticalAngle = (float) MathHelper.atan2(difference.y, Math.sqrt(distZ * distZ + distX * distX));
 
-		float length = (float) (distance);
+		float length = (float) (start.distanceTo(end) + 0.1);
 
 		matrices.push();
 		matrices.translate(anchorOffset.x, anchorOffset.y, anchorOffset.z);
@@ -145,11 +146,12 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 			double cosYaw = MathHelper.cos(yaw);
 
 			float scale = player.getScale();
-			float horizontalScale = arm * 0.5F * scale;
-			float yOffset = player.isInSneakingPose() ? -0.1875F : 0.0F;
+			float sideOffset = arm * 0.35F * scale;
+			double forwardOffset = 0.3 * scale;
+			float verticalOffset = player.isInSneakingPose() ? -0.1875F : 0.0F;
 
 			return player.getCameraPosVec(tickProgress)
-				.add(-cosYaw * horizontalScale, yOffset - 0.75F * scale, -sinYaw * horizontalScale);
+				.add(-cosYaw * sideOffset - sinYaw * forwardOffset, verticalOffset - 0.45F * scale, -sinYaw * sideOffset + cosYaw * forwardOffset);
 		}
 	}
 
@@ -168,11 +170,15 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		super.updateRenderState(harpoon, state, tickProgress);
 		PlayerEntity player = harpoon.getPlayer();
 
-		state.handPos = player == null ? Vec3d.ZERO : this.getHandPos(
-			player,
-			MathHelper.sin(MathHelper.sqrt(player.getHandSwingProgress(tickProgress)) * MathHelper.PI),
-			tickProgress
-		);
+		if (player == null || harpoon.isRemoved()) {
+			state.handPos = Vec3d.ZERO;
+		} else {
+			state.handPos = this.getHandPos(
+				player,
+				MathHelper.sin(MathHelper.sqrt(player.getHandSwingProgress(tickProgress)) * MathHelper.PI),
+				tickProgress
+			);
+		}
 
 		BlockPos start = BlockPos.ofFloored(state.handPos);
 		state.startLight = LightmapTextureManager.pack(getBlockLight(harpoon, start), getSkyLight(harpoon, start));
