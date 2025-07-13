@@ -12,6 +12,7 @@ import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
 import net.minecraft.client.sound.Source;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,7 +29,12 @@ public abstract class SoundSystemMixin {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
 
-		if (player == null || !player.isSubmergedInWater() || instance.getCategory() == SoundCategory.MUSIC || instance.getCategory() == SoundCategory.AMBIENT || !AbysmConfig.INSTANCE.underwaterSoundFilters.get()) {
+		if (player == null ||
+			!player.isSubmergedInWater() ||
+			instance.getCategory() == SoundCategory.MUSIC ||
+			instance.getCategory() == SoundCategory.AMBIENT ||
+			instance.getCategory() == SoundCategory.MASTER ||
+			!AbysmConfig.INSTANCE.underwaterSoundFilters.get()) {
 			original.call(sourceManager, action);
 			return;
 		}
