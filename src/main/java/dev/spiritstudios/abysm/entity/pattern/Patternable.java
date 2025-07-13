@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.entity.pattern;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.data.TrackedData;
@@ -98,7 +98,7 @@ public interface Patternable {
 	 */
 	default EntityPattern getFallbackPattern(Entity self) {
 		if (this.getCommonPatterns().isEmpty())
-			return this.getDefaultPattern(self.getRegistryManager().getOrThrow(AbysmRegistries.ENTITY_PATTERN));
+			return this.getDefaultPattern(self.getRegistryManager().getOrThrow(AbysmRegistryKeys.ENTITY_PATTERN));
 
 		return Util.getRandom(this.getCommonPatterns(), self.getRandom());
 	}

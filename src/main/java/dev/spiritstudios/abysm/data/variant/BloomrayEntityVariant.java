@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.Block;
 import net.minecraft.network.RegistryByteBuf;
@@ -30,12 +30,12 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 		).apply(instance, BloomrayEntityVariant::new)
 	);
 
-	public static final Codec<RegistryEntry<BloomrayEntityVariant>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT);
+	public static final Codec<RegistryEntry<BloomrayEntityVariant>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
 
-	public static final PacketCodec<RegistryByteBuf, RegistryEntry<BloomrayEntityVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT);
+	public static final PacketCodec<RegistryByteBuf, RegistryEntry<BloomrayEntityVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
 
 	public static RegistryEntry<BloomrayEntityVariant> getDefaultEntry(DynamicRegistryManager registryManager) {
-		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT));
+		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT));
 	}
 
 	public static RegistryEntry<BloomrayEntityVariant> getDefaultEntry(RegistryEntryLookup<BloomrayEntityVariant> lookup) {

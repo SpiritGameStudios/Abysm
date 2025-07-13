@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.entity.pattern;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
@@ -69,6 +69,6 @@ public class AbysmEntityPatternVariants {
 	}
 
 	public static RegistryKey<EntityPatternVariant> of(String path) {
-		return RegistryKey.of(AbysmRegistries.ENTITY_PATTERN, Abysm.id(path));
+		return RegistryKey.of(AbysmRegistryKeys.ENTITY_PATTERN, Abysm.id(path));
 	}
 }

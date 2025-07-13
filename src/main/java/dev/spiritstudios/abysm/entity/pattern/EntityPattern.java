@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.entity.pattern;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.RegistryByteBuf;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public record EntityPattern(RegistryEntry<EntityPatternVariant> variant, int baseColor, int patternColor) {
 	public static final Codec<EntityPattern> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
-			RegistryFixedCodec.of(AbysmRegistries.ENTITY_PATTERN).fieldOf("pattern_variant").forGetter(pattern -> pattern.variant),
+			RegistryFixedCodec.of(AbysmRegistryKeys.ENTITY_PATTERN).fieldOf("pattern_variant").forGetter(pattern -> pattern.variant),
 			Codec.INT.fieldOf("base_color").forGetter(pattern -> pattern.baseColor),
 			Codec.INT.fieldOf("pattern_color").forGetter(pattern -> pattern.patternColor)
 		).apply(instance, EntityPattern::new)

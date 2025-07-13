@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.data.variant;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -25,12 +25,12 @@ public class ElectricOoglyBooglyVariant extends AbstractEntityVariant {
 		).apply(instance, ElectricOoglyBooglyVariant::new)
 	);
 
-	public static final Codec<RegistryEntry<ElectricOoglyBooglyVariant>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT);
+	public static final Codec<RegistryEntry<ElectricOoglyBooglyVariant>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
 
-	public static final PacketCodec<RegistryByteBuf, RegistryEntry<ElectricOoglyBooglyVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT);
+	public static final PacketCodec<RegistryByteBuf, RegistryEntry<ElectricOoglyBooglyVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
 
 	public static RegistryEntry<ElectricOoglyBooglyVariant> getDefaultEntry(DynamicRegistryManager registryManager) {
-		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT));
+		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT));
 	}
 
 	public static RegistryEntry<ElectricOoglyBooglyVariant> getDefaultEntry(RegistryEntryLookup<ElectricOoglyBooglyVariant> lookup) {

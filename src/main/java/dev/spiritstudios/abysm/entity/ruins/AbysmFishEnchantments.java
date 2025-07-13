@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.entity.ruins;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -18,7 +18,7 @@ public class AbysmFishEnchantments {
 	public static final RegistryKey<FishEnchantment> OBFUSCATED = of("obfuscated");
 
 	private static RegistryKey<FishEnchantment> of(String path) {
-		return RegistryKey.of(AbysmRegistries.FISH_ENCHANTMENT, Abysm.id(path));
+		return RegistryKey.of(AbysmRegistryKeys.FISH_ENCHANTMENT, Abysm.id(path));
 	}
 
 	private static void register(Registerable<FishEnchantment> registerable, RegistryKey<FishEnchantment> key, RegistryEntry<EntityAttribute> attribute, double value) {

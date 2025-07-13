@@ -1,13 +1,19 @@
 package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.datagen.*;
+import dev.spiritstudios.abysm.datagen.AbysmBlockLootTableProvider;
+import dev.spiritstudios.abysm.datagen.AbysmFishingLootTableProvider;
+import dev.spiritstudios.abysm.datagen.AbysmItemGroupProvider;
+import dev.spiritstudios.abysm.datagen.AbysmItemMetatagProvider;
+import dev.spiritstudios.abysm.datagen.AbysmRecipeProvider;
+import dev.spiritstudios.abysm.datagen.AbysmTagProviders;
+import dev.spiritstudios.abysm.datagen.AutomaticDynamicRegistryProvider;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctions;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
@@ -49,12 +55,12 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		addProvider(pack, RegistryKeys.ENCHANTMENT);
 
 		// abysm registries
-		addProvider(pack, AbysmRegistries.ENTITY_PATTERN);
+		addProvider(pack, AbysmRegistryKeys.ENTITY_PATTERN);
 
-		addProvider(pack, AbysmRegistries.BLOOMRAY_ENTITY_VARIANT);
-		addProvider(pack, AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT);
+		addProvider(pack, AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
+		addProvider(pack, AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
 
-		addProvider(pack, AbysmRegistries.FISH_ENCHANTMENT);
+		addProvider(pack, AbysmRegistryKeys.FISH_ENCHANTMENT);
 
 		// loot tables
 		pack.addProvider(AbysmBlockLootTableProvider::new);
@@ -113,11 +119,11 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 			.addRegistry(RegistryKeys.ENCHANTMENT, AbysmEnchantments::bootstrap)
 
 			// abysm
-			.addRegistry(AbysmRegistries.ENTITY_PATTERN, AbysmEntityPatternVariants::bootstrap)
+			.addRegistry(AbysmRegistryKeys.ENTITY_PATTERN, AbysmEntityPatternVariants::bootstrap)
 
-			.addRegistry(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, AbysmEntityVariants::bloomrayBootstrap)
-			.addRegistry(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT, AbysmEntityVariants::ooglyBooglyBootstrap)
+			.addRegistry(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT, AbysmEntityVariants::bloomrayBootstrap)
+			.addRegistry(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT, AbysmEntityVariants::ooglyBooglyBootstrap)
 
-			.addRegistry(AbysmRegistries.FISH_ENCHANTMENT, AbysmFishEnchantments::bootstrap);
+			.addRegistry(AbysmRegistryKeys.FISH_ENCHANTMENT, AbysmFishEnchantments::bootstrap);
 	}
 }

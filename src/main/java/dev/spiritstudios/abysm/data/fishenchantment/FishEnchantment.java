@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.network.RegistryByteBuf;
@@ -24,12 +24,12 @@ public record FishEnchantment(List<Entry> modifiers) {
 	public static final Codec<FishEnchantment> CODEC = Entry.CODEC.listOf()
 		.xmap(FishEnchantment::new, enchantment -> enchantment.modifiers);
 
-	public static final PacketCodec<RegistryByteBuf, RegistryEntry<FishEnchantment>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistries.FISH_ENCHANTMENT);
+	public static final PacketCodec<RegistryByteBuf, RegistryEntry<FishEnchantment>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistryKeys.FISH_ENCHANTMENT);
 
-	public static final Codec<RegistryEntry<FishEnchantment>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistries.FISH_ENCHANTMENT);
+	public static final Codec<RegistryEntry<FishEnchantment>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistryKeys.FISH_ENCHANTMENT);
 
 	public static RegistryEntry<FishEnchantment> getDefaultEntry(DynamicRegistryManager registryManager) {
-		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistries.FISH_ENCHANTMENT));
+		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistryKeys.FISH_ENCHANTMENT));
 	}
 
 	public static RegistryEntry<FishEnchantment> getDefaultEntry(RegistryEntryLookup<FishEnchantment> lookup) {
@@ -44,7 +44,7 @@ public record FishEnchantment(List<Entry> modifiers) {
 
 	@Nullable
 	public Identifier getId(DynamicRegistryManager drm) {
-		return drm.getOptional(AbysmRegistries.FISH_ENCHANTMENT)
+		return drm.getOptional(AbysmRegistryKeys.FISH_ENCHANTMENT)
 			.map(registry ->
 				registry.getId(this))
 			.orElse(null);

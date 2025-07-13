@@ -6,7 +6,7 @@ import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.particle.OoglyBooglyFumesParticleEffect;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -52,7 +52,7 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		this.getRegistryManager().getOrThrow(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT).getRandom(this.random)
+		this.getRegistryManager().getOrThrow(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT).getRandom(this.random)
 			.ifPresentOrElse(
 				this::setVariant,
 				() -> setVariant(ElectricOoglyBooglyVariant.getDefaultEntry(world.getRegistryManager()))

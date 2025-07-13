@@ -92,9 +92,9 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 
 	public static void init() {
 		SpecterRegistryEvents.REGISTRIES_FROZEN.register(() -> {
-			ENTITY_TYPE_MAP = new Object2ObjectArrayMap<>(AbysmRegistries.ECOSYSTEM_TYPE_REGISTRY.size());
+			ENTITY_TYPE_MAP = new Object2ObjectArrayMap<>(AbysmRegistries.ECOSYSTEM_TYPE.size());
 
-			for (EcosystemType<?> ecosystemType : AbysmRegistries.ECOSYSTEM_TYPE_REGISTRY) {
+			for (EcosystemType<?> ecosystemType : AbysmRegistries.ECOSYSTEM_TYPE) {
 				ENTITY_TYPE_MAP.put(ecosystemType.entityType, ecosystemType);
 			}
 		});

@@ -5,7 +5,7 @@ import dev.spiritstudios.abysm.data.variant.AbstractEntityVariant;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.Registry;
@@ -59,11 +59,11 @@ public class AbysmEntityVariants {
 	// endregion
 
 	private static RegistryKey<BloomrayEntityVariant> ofBloomray(String path) {
-		return of(AbysmRegistries.BLOOMRAY_ENTITY_VARIANT, path);
+		return of(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT, path);
 	}
 
 	private static RegistryKey<ElectricOoglyBooglyVariant> ofOoglyBoogly(String path) {
-		return of(AbysmRegistries.ELECTRIC_OOGLY_BOOGLY_VARIANT, path);
+		return of(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT, path);
 	}
 
 	private static <T extends AbstractEntityVariant> RegistryKey<T> of(RegistryKey<Registry<T>> key, String path) {

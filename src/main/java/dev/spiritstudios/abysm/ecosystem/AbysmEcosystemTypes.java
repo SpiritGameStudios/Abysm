@@ -10,13 +10,10 @@ import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-
-import java.util.HashMap;
 
 public class AbysmEcosystemTypes {
 
@@ -62,11 +59,11 @@ public class AbysmEcosystemTypes {
 	}
 
 	public static <T extends MobEntity & EcologicalEntity> EcosystemType<T> register(RegistryKey<EcosystemType<?>> key, EcosystemType.Builder<T> builder) {
-		return Registry.register(AbysmRegistries.ECOSYSTEM_TYPE_REGISTRY, key, builder.build());
+		return Registry.register(AbysmRegistries.ECOSYSTEM_TYPE, key, builder.build());
 	}
 
 	private static RegistryKey<EcosystemType<?>> keyOf(String id) {
-		return RegistryKey.of(AbysmRegistries.ECOSYSTEM_TYPE_KEY, Abysm.id(id));
+		return RegistryKey.of(AbysmRegistryKeys.ECOSYSTEM_TYPE, Abysm.id(id));
 	}
 
 	public static void init() {
