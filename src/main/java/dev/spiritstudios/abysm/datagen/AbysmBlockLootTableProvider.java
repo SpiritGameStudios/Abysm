@@ -14,6 +14,7 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.condition.TableBonusLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.entry.LootTableEntry;
 import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
@@ -92,7 +93,9 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.RED_SCABIOSA,
 			AbysmBlocks.BLACK_SCABIOSA,
 
-			AbysmBlocks.ANTENNAE_PLANT
+			AbysmBlocks.ANTENNAE_PLANT,
+
+			AbysmBlocks.DREGLOAM
 		);
 
 		forEach(this::addPottedPlantDrops,
@@ -123,6 +126,28 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 
 		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL, true);
 		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, false);
+
+		this.addDrop(AbysmBlocks.OOZING_DREGLOAM, block -> this.dropsWithSilkTouch(
+			AbysmBlocks.OOZING_DREGLOAM,
+			this.addSurvivesExplosionCondition(
+				AbysmBlocks.OOZING_DREGLOAM,
+				LootTableEntry.builder(
+					LootTable.builder()
+						.pool(
+							LootPool.builder().with(
+								ItemEntry.builder(AbysmBlocks.DREGLOAM)
+							)
+						).pool(
+							LootPool.builder().with(
+								ItemEntry.builder(AbysmItems.DREGLOAM_OOZEBALL)
+									.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 1.0F)))
+							)
+						)
+						.build()
+				)
+			)
+		));
+		this.addDrop(AbysmBlocks.DREGLOAM_OOZE, block -> this.drops(block, AbysmItems.DREGLOAM_OOZEBALL, UniformLootNumberProvider.create(2.0F, 4.0F)));
 	}
 
 	private void forEach(Consumer<Block> consumer, Block... blocks) {

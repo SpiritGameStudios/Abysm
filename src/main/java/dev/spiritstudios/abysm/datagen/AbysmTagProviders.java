@@ -86,7 +86,10 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE)
 				.add(
-					AbysmBlocks.BLOOMSHROOM_GOOP
+					AbysmBlocks.BLOOMSHROOM_GOOP,
+					AbysmBlocks.DREGLOAM,
+					AbysmBlocks.OOZING_DREGLOAM,
+					AbysmBlocks.DREGLOAM_OOZE
 				);
 
 			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
@@ -125,6 +128,22 @@ public class AbysmTagProviders {
 					AbysmBlocks.FLOROPUMICE
 				)
 				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
+
+			getOrCreateTagBuilder(BlockTags.SMALL_DRIPLEAF_PLACEABLE)
+				.add(
+					AbysmBlocks.DREGLOAM,
+					AbysmBlocks.OOZING_DREGLOAM,
+					AbysmBlocks.DREGLOAM_OOZE
+				);
+
+
+
+			getOrCreateTagBuilder(BlockTags.DIRT)
+				.add(
+					AbysmBlocks.DREGLOAM,
+					AbysmBlocks.OOZING_DREGLOAM,
+					AbysmBlocks.DREGLOAM_OOZE
+				);
 
 			getOrCreateTagBuilder(BlockTags.LEAVES)
 				.add(
@@ -403,6 +422,8 @@ public class AbysmTagProviders {
 			this.copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
 			this.copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES);
 			this.copy(BlockTags.WALLS, ItemTags.WALLS);
+
+			this.copy(BlockTags.DIRT, ItemTags.DIRT);
 
 			this.copy(BlockTags.LEAVES, ItemTags.LEAVES);
 			this.copy(BlockTags.FLOWERS, ItemTags.FLOWERS);

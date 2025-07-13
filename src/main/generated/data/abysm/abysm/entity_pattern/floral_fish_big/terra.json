@@ -3,6 +3,5 @@
   "name": {
     "translate": "abysm.entity_pattern.floral_fish_big.terra"
   },
-  "pattern": "abysm:textures/entity/pattern/floral_fish_big/terra.png",
-  "colorable": true
+  "pattern": "abysm:textures/entity/pattern/floral_fish_big/terra.png"
 }

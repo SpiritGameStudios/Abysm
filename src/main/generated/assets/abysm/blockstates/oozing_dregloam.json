@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "abysm:block/oozing_dregloam"
+      },
+      {
+        "model": "abysm:block/oozing_dregloam",
+        "y": 90
+      },
+      {
+        "model": "abysm:block/oozing_dregloam",
+        "y": 180
+      },
+      {
+        "model": "abysm:block/oozing_dregloam",
+        "y": 270
+      }
+    ]
+  }
+}

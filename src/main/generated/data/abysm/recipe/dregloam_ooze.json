@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": "abysm:dregloam_oozeball"
+  },
+  "result": {
+    "count": 1,
+    "id": "abysm:dregloam_ooze"
+  },
+  "pattern": [
+    "##",
+    "##"
+  ]
+}

@@ -87,4 +87,9 @@ public class AbysmClientBlockMetatagProvider extends MetatagProvider<Block> {
 			builder.put(block, renderLayer);
 		}
 	}
+
+	@Override
+	public String getName() {
+		return "Resourcepack " + super.getName();
+	}
 }

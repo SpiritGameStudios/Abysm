@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
+import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import dev.spiritstudios.abysm.worldgen.noise.AbysmNoiseParameters;
@@ -70,7 +71,7 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 	public void addToGenerator() {
 		// Deep Sea Ruins is not generated through typical biome gen, and is instead generated within the bounds of its structure
 
-		MaterialRule CLAY = block(Blocks.CLAY.getDefaultState());
+		MaterialRule DREGLOAM = block(AbysmBlocks.DREGLOAM.getDefaultState());
 		MaterialRule MUD = block(Blocks.MUD.getDefaultState());
 
 		MaterialRule rule = condition(
@@ -101,7 +102,7 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 						)
 					)
 				),
-				CLAY // fill rest with clay
+				DREGLOAM // fill rest with dregloam
 			)
 		);
 

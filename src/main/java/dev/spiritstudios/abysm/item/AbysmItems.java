@@ -32,6 +32,11 @@ public final class AbysmItems {
 		"gold_leaf"
 	);
 
+	public static Item DREGLOAM_OOZEBALL = register(
+		"dregloam_oozeball",
+		OozeballItem::new
+	);
+
     public static final Item FLIPPERS = register(
             "flippers",
             new Item.Settings()

@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dregloam": {
+      "conditions": {
+        "items": [
+          {
+            "items": "abysm:dregloam"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_oozeball": {
+      "conditions": {
+        "items": [
+          {
+            "items": "abysm:dregloam_oozeball"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "abysm:oozing_dregloam"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_oozeball",
+      "has_dregloam"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "abysm:oozing_dregloam"
+    ]
+  }
+}

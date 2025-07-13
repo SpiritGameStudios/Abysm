@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "abysm:block/dregloam",
+    "side": "abysm:block/oozing_dregloam_side",
+    "top": "abysm:block/oozing_dregloam"
+  }
+}

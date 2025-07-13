@@ -595,6 +595,37 @@ public final class AbysmBlocks {
 	);
 	// endregion misc plants
 
+	// region dregloam
+	public static final Block DREGLOAM = register(
+		"dregloam",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.strength(0.85F)
+			.mapColor(MapColor.TERRACOTTA_BROWN)
+			.sounds(BlockSoundGroup.MUD)
+	);
+
+	public static final Block OOZING_DREGLOAM = register(
+		"oozing_dregloam",
+		OozingDregloamBlock::new,
+		AbstractBlock.Settings.create()
+			.strength(0.95F)
+			.mapColor(MapColor.TERRACOTTA_CYAN)
+			.sounds(BlockSoundGroup.MUD)
+			.ticksRandomly()
+	);
+
+	public static final Block DREGLOAM_OOZE = register(
+		"dregloam_ooze",
+		DregloamOozeBlock::new,
+		AbstractBlock.Settings.create()
+			.strength(0.7F)
+			.mapColor(MapColor.TERRACOTTA_CYAN)
+			.sounds(BlockSoundGroup.MUD)
+			.ticksRandomly()
+	);
+	// endregion
+
 	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, @Nullable BiFunction<Block, Item.Settings, ? extends BlockItem> blockItemConstructor) {
 		T block = factory.apply(settings.registryKey(key));
 

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "abysm:dregloam_ooze"
+  ],
+  "result": {
+    "count": 4,
+    "id": "abysm:dregloam_oozeball"
+  }
+}

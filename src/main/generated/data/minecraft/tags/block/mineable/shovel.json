@@ -1,5 +1,8 @@
 {
   "values": [
-    "abysm:bloomshroom_goop"
+    "abysm:bloomshroom_goop",
+    "abysm:dregloam",
+    "abysm:oozing_dregloam",
+    "abysm:dregloam_ooze"
   ]
 }

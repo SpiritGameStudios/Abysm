@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.block.Block;
@@ -56,13 +57,30 @@ public class AbysmRecipeProvider extends FabricRecipeProvider {
 				offerBricklikeRecipe(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS, AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
 				offerPillarRecipe(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, AbysmBlocks.SMOOTH_FLOROPUMICE);
 
+				// bloomshroom bark recipes
 				offerBarkBlockRecipe(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE, AbysmBlocks.ROSY_BLOOMSHROOM_STEM);
 				offerBarkBlockRecipe(AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE, AbysmBlocks.SUNNY_BLOOMSHROOM_STEM);
 				offerBarkBlockRecipe(AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE, AbysmBlocks.MAUVE_BLOOMSHROOM_STEM);
 
+				// petaleaves recipes
 				offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, AbysmBlocks.ROSEBLOOM_PETALEAVES, AbysmBlocks.ROSEBLOOM_PETALS);
 				offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, AbysmBlocks.SUNBLOOM_PETALEAVES, AbysmBlocks.SUNBLOOM_PETALS);
 				offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, AbysmBlocks.MALLOWBLOOM_PETALEAVES, AbysmBlocks.MALLOWBLOOM_PETALS);
+
+				// dregloam recipes
+				offer2x2CompactingRecipe(RecipeCategory.BUILDING_BLOCKS, AbysmBlocks.DREGLOAM_OOZE, AbysmItems.DREGLOAM_OOZEBALL);
+
+				this.createShapeless(RecipeCategory.BUILDING_BLOCKS, AbysmItems.DREGLOAM_OOZEBALL, 4)
+					.input(AbysmBlocks.DREGLOAM_OOZE)
+					.criterion("has_ooze", this.conditionsFromItem(AbysmBlocks.DREGLOAM_OOZE))
+					.offerTo(this.exporter);
+
+				this.createShapeless(RecipeCategory.BUILDING_BLOCKS, AbysmBlocks.OOZING_DREGLOAM)
+					.input(AbysmItems.DREGLOAM_OOZEBALL)
+					.input(AbysmBlocks.DREGLOAM)
+					.criterion("has_oozeball", this.conditionsFromItem(AbysmItems.DREGLOAM_OOZEBALL))
+					.criterion("has_dregloam", this.conditionsFromItem(AbysmBlocks.DREGLOAM))
+					.offerTo(this.exporter);
 				// endregion crafting
 
 				// region smelting etc

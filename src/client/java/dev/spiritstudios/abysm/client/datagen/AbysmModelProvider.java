@@ -124,6 +124,14 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 		generator.registerPlantPart(AbysmBlocks.GOLDEN_LAZULI_OREFURL, AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, BlockStateModelGenerator.CrossType.NOT_TINTED);
 		// endregion
+
+		// region dregloam
+		doForMany(BlockStateModelGenerator::registerSimpleCubeAll, generator,
+			AbysmBlocks.DREGLOAM,
+			AbysmBlocks.DREGLOAM_OOZE
+		);
+		registerGrassLike(generator, AbysmBlocks.OOZING_DREGLOAM, AbysmBlocks.DREGLOAM);
+		// endregion
 	}
 
 	private void doForMany(BiConsumer<BlockStateModelGenerator, Block> consumer, BlockStateModelGenerator generator, Block... blocks) {
@@ -197,6 +205,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 		registerGenerated(generator,
 			AbysmItems.LAPIS_BULB,
 			AbysmItems.GOLD_LEAF,
+			AbysmItems.DREGLOAM_OOZEBALL,
 
 			AbysmItems.FLIPPERS,
 
