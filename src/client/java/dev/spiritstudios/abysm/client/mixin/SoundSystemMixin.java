@@ -3,7 +3,6 @@ package dev.spiritstudios.abysm.client.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.spiritstudios.abysm.AbysmConfig;
 import dev.spiritstudios.abysm.client.sound.AbysmEffects;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -12,7 +11,6 @@ import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
 import net.minecraft.client.sound.Source;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -33,16 +31,12 @@ public abstract class SoundSystemMixin {
 			!player.isSubmergedInWater() ||
 			instance.getCategory() == SoundCategory.MUSIC ||
 			instance.getCategory() == SoundCategory.AMBIENT ||
-			instance.getCategory() == SoundCategory.MASTER ||
-			!AbysmConfig.INSTANCE.underwaterSoundFilters.get()) {
+			instance.getCategory() == SoundCategory.MASTER) {
 			original.call(sourceManager, action);
 			return;
 		}
 
-		sourceManager.run(source -> {
-			AbysmEffects.underwaterEffect().apply(source);
-			AbysmEffects.underwaterLowPass().applyDirect(source);
-		});
+		sourceManager.run(AbysmEffects::applyUnderwater);
 
 		original.call(sourceManager, action);
 	}
