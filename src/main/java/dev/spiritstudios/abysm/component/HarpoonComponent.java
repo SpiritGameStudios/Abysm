@@ -19,9 +19,9 @@ import net.minecraft.util.math.ColorHelper;
 import java.awt.*;
 import java.util.function.Consumer;
 
-public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceShot) implements TooltipAppender {
+public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceShot) implements TooltipAppender {
 
-	public static final BlessedComponent EMPTY = new BlessedComponent.Builder().build();
+	public static final HarpoonComponent EMPTY = new HarpoonComponent.Builder().build();
 
 	private static final int LIGHT = ColorHelper.fullAlpha(new Color(52, 189, 235).getRGB());
 	private static final int DARK = ColorHelper.fullAlpha(new Color(48, 115, 171).getRGB());
@@ -29,20 +29,20 @@ public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 	public static final int SEVEN_HUNDRED = 700;
 	public static final float RECIPROCAL_OF_SEVEN_HUNDRED = 1f / SEVEN_HUNDRED;
 
-	public static final Codec<BlessedComponent> CODEC = RecordCodecBuilder.create(
+	public static final Codec<HarpoonComponent> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
 				ItemStack.OPTIONAL_CODEC.fieldOf("heart").forGetter(component -> component.stack),
 				Codec.BOOL.optionalFieldOf("loaded", true).forGetter(component -> component.loaded),
 				Codec.INT.optionalFieldOf("ticksSinceShot", 0).forGetter(component -> component.ticksSinceShot)
 			)
-			.apply(instance, BlessedComponent::new)
+			.apply(instance, HarpoonComponent::new)
 	);
 
-	public static final PacketCodec<RegistryByteBuf, BlessedComponent> PACKET_CODEC = PacketCodec.tuple(
+	public static final PacketCodec<RegistryByteBuf, HarpoonComponent> PACKET_CODEC = PacketCodec.tuple(
 		ItemStack.OPTIONAL_PACKET_CODEC, component -> component.stack,
 		PacketCodecs.BOOLEAN, component -> component.loaded,
 		PacketCodecs.VAR_INT, component -> component.ticksSinceShot,
-		BlessedComponent::new
+		HarpoonComponent::new
 	);
 
 	public boolean isBlessed() {
@@ -87,7 +87,7 @@ public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof BlessedComponent(ItemStack stack1, boolean loaded1, int sinceShot))) return false;
+		if (!(o instanceof HarpoonComponent(ItemStack stack1, boolean loaded1, int sinceShot))) return false;
 
 		return ItemStack.areItemsAndComponentsEqual(this.stack(), stack1) && this.loaded() == loaded1 && this.ticksSinceShot() == sinceShot;
 	}
@@ -112,8 +112,8 @@ public record BlessedComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 			return this;
 		}
 
-		public BlessedComponent build() {
-			return new BlessedComponent(this.heart, this.loaded, this.ticksSinceShot);
+		public HarpoonComponent build() {
+			return new HarpoonComponent(this.heart, this.loaded, this.ticksSinceShot);
 		}
 	}
 }

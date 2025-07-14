@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.serialization.Codec;
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.component.BlessedComponent;
+import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
@@ -34,7 +34,7 @@ public abstract class PersistentProjectileEntityMixin {
 				if (!invStack.isOf(AbysmItems.NOOPRAH)) {
 					return true;
 				}
-				BlessedComponent component = invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
+				HarpoonComponent component = invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY);
 				if (component.loaded()) {
 					return true;
 				}

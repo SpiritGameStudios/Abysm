@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.client.mixin.harpoon;
 
 import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
-import dev.spiritstudios.abysm.component.BlessedComponent;
+import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.minecraft.client.MinecraftClient;
@@ -33,7 +33,7 @@ public abstract class ItemRendererMixin {
 		if (!stack.isOf(AbysmItems.NOOPRAH)) {
 			return;
 		}
-		if (!stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY).loaded()) {
+		if (!stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).loaded()) {
 			return;
 		}
 		MinecraftClient client = MinecraftClient.getInstance();

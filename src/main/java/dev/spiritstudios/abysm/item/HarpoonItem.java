@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.item;
 
-import dev.spiritstudios.abysm.component.BlessedComponent;
+import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
@@ -45,7 +45,7 @@ public class HarpoonItem extends Item {
 	public ActionResult use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient()) {
 			ItemStack stack = user.getStackInHand(hand);
-			BlessedComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
+			HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY);
 			if (component.loaded()) {
 				int slot;
 				if (hand == Hand.OFF_HAND) {
@@ -82,7 +82,7 @@ public class HarpoonItem extends Item {
 				return;
 			}
 		}
-		BlessedComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
+		HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY);
 		int ticksSinceLastShot = component.ticksSinceShot();
 		if (ticksSinceLastShot >= 0 && ticksSinceLastShot < 200) {
 			stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().ticksSinceShot(ticksSinceLastShot + 1).build());
@@ -120,7 +120,7 @@ public class HarpoonItem extends Item {
 	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
 		if (clickType == ClickType.RIGHT) {
 			ItemStack slotStack = slot.getStack();
-			BlessedComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY);
+			HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY);
 			ItemStack componentStack = component.stack();
 			if (componentStack.isEmpty() && slotStack.isOf(Items.HEART_OF_THE_SEA)) {
 				stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().stack(slotStack.copyWithCount(1)).build());

@@ -3,7 +3,6 @@ package dev.spiritstudios.abysm.entity.leviathan.test;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
@@ -19,18 +18,10 @@ import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.LookTarget;
 import net.minecraft.entity.ai.brain.MemoryModuleState;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.brain.sensor.NearestLivingEntitiesSensor;
 import net.minecraft.entity.ai.brain.sensor.Sensor;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.entity.ai.brain.task.*;
-import net.minecraft.entity.ai.control.AquaticMoveControl;
-import net.minecraft.entity.ai.control.YawAdjustingLookControl;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.SwimNavigation;
-import net.minecraft.entity.boss.BossBar;
-import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.DebugInfoSender;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -39,23 +30,18 @@ import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.profiler.Profilers;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
 
 public class Lehydrathan extends Leviathan implements GeoEntity {
 
 	protected static final ImmutableList<? extends SensorType<? extends Sensor<? super Lehydrathan>>> SENSORS = ImmutableList.of(
-		SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY, AbysmSensorTypes.LEHYDRATHAN_ATTACKABLES
+		SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY, AbysmSensorTypes.LEVIATHAN_ATTACKABLES
 	);
 	protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(
 		MemoryModuleType.MOBS,
@@ -83,8 +69,6 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 
 	public Lehydrathan(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
-		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.1F, 0.5F, false);
-		this.lookControl = new YawAdjustingLookControl(this, 20);
 		ImmutableList.Builder<EntityPart<Leviathan>> builder = ImmutableList.builder();
 		float width = entityType.getWidth();
 		float height = entityType.getHeight();
@@ -118,6 +102,40 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 	}
 
 	@Override
+	protected void tickPartUpdates() {
+
+		var parts = this.getEntityParts();
+
+		Vec3d delta;
+		Vec3d pos = this.getPos();
+		Entity previousPart = this;
+		EntityPart<Leviathan> currentPart;
+		for (EntityPart<Leviathan> part : parts) {
+			currentPart = part;
+
+			final double posX = currentPart.getX();
+			final double posY = currentPart.getY();
+			final double posZ = currentPart.getZ();
+
+			if (!previousPart.getBoundingBox().intersects(currentPart.getBoundingBox())) {
+				// TODO: FIX ME, CREATE MORE NATURAL MOVEMENT
+				Vec3d last = new Vec3d(previousPart.lastX, previousPart.lastY, previousPart.lastZ);
+				delta = currentPart.getPos().lerp(last, 0.1F).subtract(pos);
+				movePart(currentPart, delta.x, delta.y, delta.z);
+			}
+
+			currentPart.lastX = posX;
+			currentPart.lastY = posY;
+			currentPart.lastZ = posZ;
+			currentPart.lastRenderX = posX;
+			currentPart.lastRenderY = posY;
+			currentPart.lastRenderZ = posZ;
+
+			previousPart = currentPart;
+		}
+	}
+
+	@Override
 	protected void mobTick(ServerWorld serverWorld) {
 		super.mobTick(serverWorld);
 		Profiler profiler = Profilers.get();
@@ -130,16 +148,6 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 	}
 
 	@Override
-	protected EntityNavigation createNavigation(World world) {
-		return new SwimNavigation(this, world);
-	}
-
-	@Override
-	protected @NotNull ServerBossBar createBossBar(EntityType<? extends WaterCreatureEntity> entityType, World world) {
-		return new ServerBossBar(this.getDisplayName(), BossBar.Color.PURPLE, BossBar.Style.PROGRESS);
-	}
-
-	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
 
 	}
@@ -149,51 +157,9 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 		return this.geoCache;
 	}
 
-	public boolean isValidTarget(@Nullable Entity entity) {
-		if (!(entity instanceof LivingEntity living)) {
-			return false;
-		}
-		World world = this.getWorld();
-		return world == living.getWorld() &&
-			EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.test(living) &&
-			!this.isTeammate(living) &&
-			living.getType() != EntityType.ARMOR_STAND &&
-			!(living instanceof Leviathan) &&
-			!living.isInvulnerable() &&
-			!living.isDead() &&
-			world.getWorldBorder().contains(living.getBoundingBox());
-	}
-
+	@Override
 	public boolean isValidNonPlayerTarget(LivingEntity living) {
-		EntityType<?> entityType = living.getType();
-		return entityType != EntityType.PLAYER && entityType.isIn(AbysmEntityTypeTags.LEHYDRATHAN_HUNT_TARGETS);
-	}
-
-	public static class AttackablesSensor extends NearestLivingEntitiesSensor<Lehydrathan> {
-		@Override
-		public Set<MemoryModuleType<?>> getOutputMemoryModules() {
-			return ImmutableSet.copyOf(Iterables.concat(super.getOutputMemoryModules(), List.of(MemoryModuleType.NEAREST_ATTACKABLE)));
-		}
-
-		protected void sense(ServerWorld serverWorld, Lehydrathan lehydrathan) {
-			super.sense(serverWorld, lehydrathan);
-			findNearestTarget(lehydrathan, living -> living.getType() == EntityType.PLAYER)
-				.or(() -> findNearestTarget(lehydrathan, lehydrathan::isValidNonPlayerTarget))
-				.ifPresentOrElse(
-					living -> lehydrathan.getBrain().remember(MemoryModuleType.NEAREST_ATTACKABLE, living),
-					() -> lehydrathan.getBrain().forget(MemoryModuleType.NEAREST_ATTACKABLE)
-				);
-		}
-
-		private static Optional<LivingEntity> findNearestTarget(Lehydrathan lehydrathan, Predicate<LivingEntity> targetPredicate) {
-			return lehydrathan.getBrain()
-				.getOptionalRegisteredMemory(MemoryModuleType.MOBS)
-				.stream()
-				.flatMap(Collection::stream)
-				.filter(lehydrathan::isValidTarget)
-				.filter(targetPredicate)
-				.findFirst();
-		}
+		return super.isValidNonPlayerTarget(living) && living.getType().isIn(AbysmEntityTypeTags.LEHYDRATHAN_HUNT_TARGETS);
 	}
 
 	public static class LehydrathanBrain {

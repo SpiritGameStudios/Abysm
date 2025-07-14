@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.entity.harpoon;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.component.BlessedComponent;
+import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
@@ -66,7 +66,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		if (weapon != null) {
 			this.haul = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.HAUL);
 			this.grappling = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.GRAPPLING);
-			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY).isBlessed();
+			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).isBlessed();
 		}
 
 		double d = velocity.horizontalLength();
@@ -110,7 +110,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			}
 			try {
 				ItemStack invStack = owner.getInventory().getStack(this.slot);
-				if (!invStack.isOf(AbysmItems.NOOPRAH) || invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY).loaded()) {
+				if (!invStack.isOf(AbysmItems.NOOPRAH) || invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).loaded()) {
 					this.discard();
 				}
 			} catch (IndexOutOfBoundsException indexOutOfBoundsException) {

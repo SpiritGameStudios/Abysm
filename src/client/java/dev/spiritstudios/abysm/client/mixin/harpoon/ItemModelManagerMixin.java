@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.client.mixin.harpoon;
 
 import dev.spiritstudios.abysm.client.duck.HarpoonItemRenderState;
-import dev.spiritstudios.abysm.component.BlessedComponent;
+import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.minecraft.client.item.ItemModelManager;
@@ -22,7 +22,7 @@ public abstract class ItemModelManagerMixin {
 	private void updateHarpoon(ItemRenderState renderState, ItemStack stack, ItemDisplayContext displayContext, World world, LivingEntity entity, int seed, CallbackInfo ci) {
 		boolean harpoon = false;
 		if (stack.isOf(AbysmItems.NOOPRAH)) {
-			if (stack.getOrDefault(AbysmDataComponentTypes.BLESSED, BlessedComponent.EMPTY).loaded()) {
+			if (stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).loaded()) {
 				harpoon = true;
 			}
 		}

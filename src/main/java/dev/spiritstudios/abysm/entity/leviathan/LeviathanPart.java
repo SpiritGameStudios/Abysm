@@ -24,9 +24,10 @@ public class LeviathanPart extends EntityPart<Leviathan> {
 		if (!(this.getWorld() instanceof ServerWorld)) {
 			return;
 		}
-		PlayerLookup.tracking(this.owner).forEach(serverPlayerEntity -> {
+		/*PlayerLookup.tracking(this.owner).forEach(serverPlayerEntity -> {
 			serverPlayerEntity.networkHandler.sendPacket(EntityPositionSyncS2CPacket.create(this));
 		});
+		 */
 	}
 
 	@SuppressWarnings("SimplifiableConditionalExpression")

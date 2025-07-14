@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.item;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.component.BlessedComponent;
+import dev.spiritstudios.abysm.component.HarpoonComponent;
 import net.fabricmc.fabric.api.item.v1.ComponentTooltipAppenderRegistry;
 import net.minecraft.component.ComponentType;
 import net.minecraft.registry.Registries;
@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 
 public class AbysmDataComponentTypes {
 
-	public static final ComponentType<BlessedComponent> BLESSED = register("blessed", ComponentType.<BlessedComponent>builder().codec(BlessedComponent.CODEC).packetCodec(BlessedComponent.PACKET_CODEC));
+	public static final ComponentType<HarpoonComponent> BLESSED = register("blessed", ComponentType.<HarpoonComponent>builder().codec(HarpoonComponent.CODEC).packetCodec(HarpoonComponent.PACKET_CODEC));
 
 	private static <T> ComponentType<T> register(String path, ComponentType.Builder<T> builder) {
 		return register(Abysm.id(path), builder);
