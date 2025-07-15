@@ -624,6 +624,15 @@ public final class AbysmBlocks {
 			.sounds(BlockSoundGroup.MUD)
 			.ticksRandomly()
 	);
+
+	public static final Block DREGLOAM_GOLDEN_LAZULI_ORE = register(
+		"dregloam_golden_lazuli_ore",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.strength(1.1F)
+			.mapColor(MapColor.TERRACOTTA_BROWN)
+			.sounds(BlockSoundGroup.MUD)
+	);
 	// endregion
 
 	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, @Nullable BiFunction<Block, Item.Settings, ? extends BlockItem> blockItemConstructor) {

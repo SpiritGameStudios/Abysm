@@ -128,7 +128,8 @@ public class AbysmModelProvider extends FabricModelProvider {
 		// region dregloam
 		doForMany(BlockStateModelGenerator::registerSimpleCubeAll, generator,
 			AbysmBlocks.DREGLOAM,
-			AbysmBlocks.DREGLOAM_OOZE
+			AbysmBlocks.DREGLOAM_OOZE,
+			AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 		);
 		registerGrassLike(generator, AbysmBlocks.OOZING_DREGLOAM, AbysmBlocks.DREGLOAM);
 		// endregion

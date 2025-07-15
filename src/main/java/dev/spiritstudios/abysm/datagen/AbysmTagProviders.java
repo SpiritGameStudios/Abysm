@@ -89,7 +89,8 @@ public class AbysmTagProviders {
 					AbysmBlocks.BLOOMSHROOM_GOOP,
 					AbysmBlocks.DREGLOAM,
 					AbysmBlocks.OOZING_DREGLOAM,
-					AbysmBlocks.DREGLOAM_OOZE
+					AbysmBlocks.DREGLOAM_OOZE,
+					AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 				);
 
 			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
@@ -133,7 +134,8 @@ public class AbysmTagProviders {
 				.add(
 					AbysmBlocks.DREGLOAM,
 					AbysmBlocks.OOZING_DREGLOAM,
-					AbysmBlocks.DREGLOAM_OOZE
+					AbysmBlocks.DREGLOAM_OOZE,
+					AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 				);
 
 
@@ -142,7 +144,8 @@ public class AbysmTagProviders {
 				.add(
 					AbysmBlocks.DREGLOAM,
 					AbysmBlocks.OOZING_DREGLOAM,
-					AbysmBlocks.DREGLOAM_OOZE
+					AbysmBlocks.DREGLOAM_OOZE,
+					AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 				);
 
 			getOrCreateTagBuilder(BlockTags.LEAVES)

@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
@@ -35,6 +36,8 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 
 	@Override
 	public void generate() {
+		RegistryWrapper.Impl<Enchantment> impl = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
+
 		addLootForFamilies(
 			AbysmBlockFamilies.FLOROPUMICE,
 			AbysmBlockFamilies.FLOROPUMICE_BRICKS,
@@ -147,7 +150,35 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 				)
 			)
 		));
-		this.addDrop(AbysmBlocks.DREGLOAM_OOZE, block -> this.drops(block, AbysmItems.DREGLOAM_OOZEBALL, UniformLootNumberProvider.create(2.0F, 4.0F)));
+		this.addDrop(AbysmBlocks.DREGLOAM_OOZE, block -> this.drops(
+				block, AbysmItems.DREGLOAM_OOZEBALL, UniformLootNumberProvider.create(2.0F, 4.0F)
+			)
+		);
+		this.addDrop(AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE, block -> this.dropsWithSilkTouch(
+				block,
+				this.applyExplosionDecay(
+					block,
+					LootTableEntry.builder(
+						LootTable.builder()
+							.pool(
+								LootPool.builder().with(
+									ItemEntry.builder(Items.GOLD_NUGGET)
+										.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F)))
+										.apply(ApplyBonusLootFunction.oreDrops(impl.getOrThrow(Enchantments.FORTUNE)))
+								)
+							)
+							.pool(
+								LootPool.builder().with(
+									ItemEntry.builder(Items.LAPIS_LAZULI)
+										.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))
+										.apply(ApplyBonusLootFunction.oreDrops(impl.getOrThrow(Enchantments.FORTUNE)))
+								)
+							)
+							.build()
+					)
+				)
+			)
+		);
 	}
 
 	private void forEach(Consumer<Block> consumer, Block... blocks) {
