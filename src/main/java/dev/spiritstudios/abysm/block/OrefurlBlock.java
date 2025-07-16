@@ -1,11 +1,7 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.AbstractPlantStemBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidFillable;
+import net.minecraft.block.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
@@ -23,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 public class OrefurlBlock extends AbstractPlantStemBlock implements FluidFillable {
 	public static final MapCodec<OrefurlBlock> CODEC = createCodec(OrefurlBlock::new);
 	private static final double GROWTH_CHANCE = 0.04;
-	private static final VoxelShape SHAPE = Block.createColumnShape(16.0, 0.0, 12.0);
+	private static final VoxelShape SHAPE = Block.createColumnShape(12.0, 0.0, 12.0);
 
 	@Override
 	public MapCodec<OrefurlBlock> getCodec() {
@@ -78,5 +74,10 @@ public class OrefurlBlock extends AbstractPlantStemBlock implements FluidFillabl
 	@Override
 	protected int getGrowthLength(Random random) {
 		return 1;
+	}
+
+	@Override
+	protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+		return SHAPE.offset(state.getModelOffset(pos));
 	}
 }

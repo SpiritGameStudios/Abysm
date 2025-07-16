@@ -573,6 +573,7 @@ public final class AbysmBlocks {
 			.mapColor(MapColor.GOLD)
 			.sounds(BlockSoundGroup.SWEET_BERRY_BUSH)
 			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
 			.luminance(state -> 2)
 			.noCollision()
 			.ticksRandomly()
@@ -588,6 +589,7 @@ public final class AbysmBlocks {
 			.mapColor(MapColor.GOLD)
 			.sounds(BlockSoundGroup.SWEET_BERRY_BUSH)
 			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
 			.luminance(state -> 2)
 			.noCollision()
 			.breakInstantly(),
