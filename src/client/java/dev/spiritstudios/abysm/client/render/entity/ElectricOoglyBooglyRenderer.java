@@ -76,7 +76,5 @@ public class ElectricOoglyBooglyRenderer<R extends LivingEntityRenderState & Geo
 				bone.setRotZ(bone.getRotZ() + rotZ);
 			}
 		}
-
-
 	}
 }

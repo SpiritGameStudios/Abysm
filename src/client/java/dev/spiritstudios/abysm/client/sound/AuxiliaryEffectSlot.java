@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.client.sound;
 
-import dev.spiritstudios.abysm.client.mixin.SourceAccessor;
+import dev.spiritstudios.abysm.client.mixin.sound.SourceAccessor;
 import net.minecraft.client.sound.Source;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.NativeResource;

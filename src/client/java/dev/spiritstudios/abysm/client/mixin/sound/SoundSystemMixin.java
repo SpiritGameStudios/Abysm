@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin;
+package dev.spiritstudios.abysm.client.mixin.sound;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;

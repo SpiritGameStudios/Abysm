@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin;
+package dev.spiritstudios.abysm.client.mixin.render;
 
 import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderSystem;

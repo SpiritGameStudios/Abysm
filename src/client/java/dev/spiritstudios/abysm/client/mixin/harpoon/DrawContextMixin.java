@@ -33,11 +33,10 @@ public abstract class DrawContextMixin {
 	@Final
 	private VertexConsumerProvider.Immediate vertexConsumers;
 
-	@Inject(method = "drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V", shift = At.Shift.BEFORE))
+	@Inject(method = "drawItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;IIII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;draw()V"))
 	private void renderHarpoonInGUI(LivingEntity entity, World world, ItemStack stack, int x, int y, int seed, int z, CallbackInfo ci) {
-		if (!((HarpoonItemRenderState) this.itemRenderState).abysm$shouldRenderHarpoon()) {
-			return;
-		}
+		if (!((HarpoonItemRenderState) this.itemRenderState).abysm$shouldRenderHarpoon()) return;
+
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientWorld clientWorld = client.world;
 		if (clientWorld == null) {

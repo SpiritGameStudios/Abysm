@@ -4,16 +4,16 @@
   "package": "dev.spiritstudios.abysm.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "BackgroundRendererMixin",
+    "render.BackgroundRendererMixin",
     "ChatScreenMixin",
     "ClientPlayerEntityMixin",
     "GeoEntityRendererMixin",
-    "GlResourceManagerMixin",
-    "LightmapTextureManagerMixin",
-    "SoundSystemMixin",
-    "SourceAccessor",
-    "WaterSuspendParticleMixin",
-    "WorldRendererMixin",
+    "render.GlResourceManagerMixin",
+    "render.LightmapTextureManagerMixin",
+    "sound.SoundSystemMixin",
+    "sound.SourceAccessor",
+    "render.WaterSuspendParticleMixin",
+    "render.WorldRendererMixin",
     "harpoon.DrawContextMixin",
     "harpoon.HeldItemFeatureRendererMixin",
     "harpoon.ItemModelManagerMixin",
@@ -23,8 +23,7 @@
     "harpoon.ItemRenderStateMixin",
     "harpoon.PlayerEntityRendererMixin",
     "leviathan.ClientPlayNetworkHandlerMixin",
-    "manowar.EntityRenderDispatcherMixin",
-    "manowar.LivingEntityRendererMixin"
+    "manowar.EntityRenderDispatcherMixin"
   ],
   "injectors": {
     "defaultRequire": 1

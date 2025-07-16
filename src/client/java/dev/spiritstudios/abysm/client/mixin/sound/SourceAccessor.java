@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin;
+package dev.spiritstudios.abysm.client.mixin.sound;
 
 import net.minecraft.client.sound.Source;
 import org.spongepowered.asm.mixin.Mixin;

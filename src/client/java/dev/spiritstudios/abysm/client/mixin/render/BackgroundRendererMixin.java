@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin;
+package dev.spiritstudios.abysm.client.mixin.render;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalFloatRef;

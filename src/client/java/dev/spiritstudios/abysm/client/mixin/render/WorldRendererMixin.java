@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin;
+package dev.spiritstudios.abysm.client.mixin.render;
 
 import net.minecraft.block.enums.CameraSubmersionType;
 import net.minecraft.client.render.Camera;
