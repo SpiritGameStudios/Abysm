@@ -10,7 +10,7 @@ import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
 import dev.spiritstudios.abysm.client.render.entity.FlippersRenderer;
-import dev.spiritstudios.abysm.client.render.entity.LectorfinEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.lectorfin.LectorfinEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.LehydrathanEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.MysteriousBlobEntityRenderer;

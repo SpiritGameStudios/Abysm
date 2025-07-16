@@ -20,9 +20,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public record FishEnchantment(List<Entry> modifiers) {
-	public static final Codec<FishEnchantment> CODEC = Entry.CODEC.listOf()
-		.xmap(FishEnchantment::new, enchantment -> enchantment.modifiers);
+public record FishEnchantment(List<Entry> modifiers, Identifier rendererId) {
+	public static final Codec<FishEnchantment> CODEC = RecordCodecBuilder.create(
+		instance -> instance.group(
+				Entry.CODEC.listOf().fieldOf("modifiers").forGetter(component -> component.modifiers),
+				Identifier.CODEC.fieldOf("rendererId").forGetter(component -> component.rendererId)
+			)
+			.apply(instance, FishEnchantment::new)
+	);
 
 	public static final PacketCodec<RegistryByteBuf, RegistryEntry<FishEnchantment>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistryKeys.FISH_ENCHANTMENT);
 
@@ -56,9 +61,15 @@ public record FishEnchantment(List<Entry> modifiers) {
 
 	public static class Builder {
 		private final ImmutableList.Builder<Entry> entries;
+		private Identifier rendererId = null;
 
 		Builder() {
 			entries = ImmutableList.builder();
+		}
+
+		public Builder id(Identifier rendererId) {
+			this.rendererId = rendererId;
+			return this;
 		}
 
 		public Builder add(RegistryEntry<EntityAttribute> attribute, EntityAttributeModifier modifier) {
@@ -67,7 +78,10 @@ public record FishEnchantment(List<Entry> modifiers) {
 		}
 
 		public FishEnchantment build() {
-			return new FishEnchantment(this.entries.build());
+			if (this.rendererId == null) {
+				throw new IllegalStateException("rendererId must not be null!");
+			}
+			return new FishEnchantment(this.entries.build(), rendererId);
 		}
 	}
 

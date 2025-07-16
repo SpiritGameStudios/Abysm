@@ -1,8 +1,11 @@
-[
-  {
-    "type": "minecraft:movement_speed",
-    "amount": 0.7,
-    "id": "abysm:jet",
-    "operation": "add_value"
-  }
-]
+{
+  "modifiers": [
+    {
+      "type": "minecraft:movement_speed",
+      "amount": 0.7,
+      "id": "abysm:jet",
+      "operation": "add_value"
+    }
+  ],
+  "rendererId": "abysm:jet"
+}
