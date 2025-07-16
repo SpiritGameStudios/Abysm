@@ -25,7 +25,7 @@
               },
               {
                 "type": "minecraft:matching_blocks",
-                "blocks": "minecraft:clay",
+                "blocks": "abysm:dregloam",
                 "offset": [
                   0,
                   -1,

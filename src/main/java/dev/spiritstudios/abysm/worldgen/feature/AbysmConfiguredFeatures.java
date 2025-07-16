@@ -12,6 +12,8 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.structure.processor.StructureProcessorList;
+import net.minecraft.structure.rule.BlockMatchRuleTest;
+import net.minecraft.structure.rule.RuleTest;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
@@ -58,6 +60,9 @@ public class AbysmConfiguredFeatures {
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> HANGING_LANTERN = ofKey("hanging_lantern");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_HANGING_LANTERN = ofKey("patch_hanging_lantern");
+
+	public static final RegistryKey<ConfiguredFeature<?, ?>> ORE_GOLDEN_LAZULI_DREGLOAM = ofKey("ore_golden_lazuli_dregloam");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> ORE_CLAY_DREGLOAM = ofKey("ore_clay_dregloam");
 
 	public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> registerable) {
 		RegistryEntryLookup<ConfiguredFeature<?, ?>> configuredFeatureLookup = registerable.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -177,7 +182,7 @@ public class AbysmConfiguredFeatures {
 				PlacedFeatures.createEntry(
 					Feature.SIMPLE_BLOCK,
 					new SimpleBlockFeatureConfig(BlockStateProvider.of(Blocks.SEAGRASS)),
-					createUnderwaterBlockPredicate(List.of(Blocks.CLAY))
+					createUnderwaterBlockPredicate(List.of(AbysmBlocks.DREGLOAM))
 				)
 			)
 		);
@@ -194,14 +199,14 @@ public class AbysmConfiguredFeatures {
 		helper.add(
 			PATCH_GOLDEN_LAZULI_OREFURL, Feature.RANDOM_PATCH,
 			new RandomPatchFeatureConfig(
-				24,
-				4,
-				2,
+				110,
+				6,
+				3,
 				PlacedFeatures.createEntry(
 					configuredFeatureLookup.getOrThrow(GOLDEN_LAZULI_OREFURL),
 					EnvironmentScanPlacementModifier.of(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.IS_AIR_OR_WATER, 3),
 					RandomOffsetPlacementModifier.vertically(ConstantIntProvider.create(1)),
-					BlockFilterPlacementModifier.of(createUnderwaterBlockPredicate(List.of(Blocks.CLAY)))
+					BlockFilterPlacementModifier.of(createUnderwaterBlockPredicate(List.of(AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE)))
 				)
 			)
 		);
@@ -227,6 +232,24 @@ public class AbysmConfiguredFeatures {
 					EnvironmentScanPlacementModifier.of(Direction.UP, BlockPredicate.hasSturdyFace(Direction.DOWN), BlockPredicate.IS_AIR_OR_WATER, 8),
 					RandomOffsetPlacementModifier.vertically(ConstantIntProvider.create(-1))
 				)
+			)
+		);
+
+		RuleTest ruleTestDregloam = new BlockMatchRuleTest(AbysmBlocks.DREGLOAM);
+		helper.add(
+			ORE_GOLDEN_LAZULI_DREGLOAM, Feature.ORE,
+			new OreFeatureConfig(
+				ruleTestDregloam,
+				AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE.getDefaultState(),
+				9
+			)
+		);
+		helper.add(
+			ORE_CLAY_DREGLOAM, Feature.ORE,
+			new OreFeatureConfig(
+				ruleTestDregloam,
+				Blocks.CLAY.getDefaultState(),
+				35
 			)
 		);
 	}

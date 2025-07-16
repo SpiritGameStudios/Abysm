@@ -73,7 +73,9 @@
       "minecraft:underwater_magma",
       "minecraft:disk_sand",
       "minecraft:disk_clay",
-      "minecraft:disk_gravel"
+      "minecraft:disk_gravel",
+      "abysm:ore_clay_dregloam",
+      "abysm:ore_golden_lazuli_dregloam"
     ],
     [
       "abysm:patch_hanging_lantern"

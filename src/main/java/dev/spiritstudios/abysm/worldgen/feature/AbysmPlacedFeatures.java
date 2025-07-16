@@ -40,6 +40,9 @@ public class AbysmPlacedFeatures {
 
 	public static final RegistryKey<PlacedFeature> PATCH_HANGING_LANTERN = ofKey("patch_hanging_lantern");
 
+	public static final RegistryKey<PlacedFeature> ORE_GOLDEN_LAZULI_DREGLOAM = ofKey("ore_golden_lazuli_dregloam");
+	public static final RegistryKey<PlacedFeature> ORE_CLAY_DREGLOAM = ofKey("ore_clay_dregloam");
+
 	public static final PlacementModifier RUINS_CAVE_RANGE = HeightRangePlacementModifier.uniform(YOffset.fixed(-56), YOffset.fixed(56));
 
 	public static void bootstrap(Registerable<PlacedFeature> registerable) {
@@ -121,7 +124,7 @@ public class AbysmPlacedFeatures {
 
 		helper.add(
 			PATCH_GOLDEN_LAZULI_OREFURL, AbysmConfiguredFeatures.PATCH_GOLDEN_LAZULI_OREFURL,
-			CountPlacementModifier.of(UniformIntProvider.create(3, 16)),
+			CountPlacementModifier.of(80),
 			SquarePlacementModifier.of(),
 			RUINS_CAVE_RANGE,
 			EnvironmentScanPlacementModifier.of(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.IS_AIR_OR_WATER, 20),
@@ -136,6 +139,22 @@ public class AbysmPlacedFeatures {
 			RUINS_CAVE_RANGE,
 			EnvironmentScanPlacementModifier.of(Direction.UP, BlockPredicate.solid(), BlockPredicate.IS_AIR_OR_WATER, 20),
 			RandomOffsetPlacementModifier.vertically(ConstantIntProvider.create(-1)),
+			BiomePlacementModifier.of()
+		);
+
+		helper.add(
+			ORE_GOLDEN_LAZULI_DREGLOAM, AbysmConfiguredFeatures.ORE_GOLDEN_LAZULI_DREGLOAM,
+			CountPlacementModifier.of(100),
+			SquarePlacementModifier.of(),
+			RUINS_CAVE_RANGE,
+			BiomePlacementModifier.of()
+		);
+
+		helper.add(
+			ORE_CLAY_DREGLOAM, AbysmConfiguredFeatures.ORE_CLAY_DREGLOAM,
+			CountPlacementModifier.of(22),
+			SquarePlacementModifier.of(),
+			RUINS_CAVE_RANGE,
 			BiomePlacementModifier.of()
 		);
 	}

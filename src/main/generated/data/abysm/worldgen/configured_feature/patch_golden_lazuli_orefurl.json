@@ -35,7 +35,7 @@
               },
               {
                 "type": "minecraft:matching_blocks",
-                "blocks": "minecraft:clay",
+                "blocks": "abysm:dregloam_golden_lazuli_ore",
                 "offset": [
                   0,
                   -1,
@@ -47,8 +47,8 @@
         }
       ]
     },
-    "tries": 24,
-    "xz_spread": 4,
-    "y_spread": 2
+    "tries": 110,
+    "xz_spread": 6,
+    "y_spread": 3
   }
 }

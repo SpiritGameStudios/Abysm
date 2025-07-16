@@ -1,0 +1,27 @@
+{
+  "feature": "abysm:ore_golden_lazuli_dregloam",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 100
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "max_inclusive": {
+          "absolute": 56
+        },
+        "min_inclusive": {
+          "absolute": -56
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}
