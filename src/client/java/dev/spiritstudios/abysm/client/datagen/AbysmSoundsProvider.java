@@ -38,6 +38,13 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 		);
 
 		exporter.add(
+			AbysmSoundEvents.MUSIC_OVERWORLD_THE_ENTWINED,
+			SoundTypeBuilder.of()
+				.sound(ofFile("music/game/abysm").stream(true).volume(0.4F))
+				.category(SoundCategory.MUSIC)
+		);
+
+		exporter.add(
 			AbysmSoundEvents.SOUND_ENTITY_BLOOMRAY,
 			SoundTypeBuilder.of()
 				.sound(ofFile("entity/bloomray/bloomray_1").volume(0.4F))
@@ -49,7 +56,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 		exporter.add(
 			AbysmSoundEvents.MUSIC_DISC_RENAISSANCE,
 			SoundTypeBuilder.of()
-				.sound(ofFile("records/renaissance").stream(true).volume(0.4F))
+				.sound(ofFile("records/renaissance").stream(true))
 				.category(SoundCategory.RECORDS)
 		);
 	}

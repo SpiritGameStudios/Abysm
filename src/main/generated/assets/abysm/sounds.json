@@ -46,12 +46,21 @@
       }
     ]
   },
+  "music.overworld.the_entwined": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/abysm"
+      }
+    ]
+  },
   "records.renaissance": {
     "category": "record",
     "sounds": [
       {
         "stream": true,
-        "volume": 0.4,
         "name": "abysm:records/renaissance"
       }
     ]
