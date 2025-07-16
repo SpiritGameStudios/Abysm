@@ -10,7 +10,12 @@ import net.minecraft.util.Identifier;
 
 public class AbysmDataComponentTypes {
 
-	public static final ComponentType<HarpoonComponent> BLESSED = register("blessed", ComponentType.<HarpoonComponent>builder().codec(HarpoonComponent.CODEC).packetCodec(HarpoonComponent.PACKET_CODEC));
+	public static final ComponentType<HarpoonComponent> HARPOON = register(
+		"harpoon",
+		ComponentType.<HarpoonComponent>builder()
+			.codec(HarpoonComponent.CODEC)
+			.packetCodec(HarpoonComponent.PACKET_CODEC)
+	);
 
 	private static <T> ComponentType<T> register(String path, ComponentType.Builder<T> builder) {
 		return register(Abysm.id(path), builder);
@@ -21,6 +26,9 @@ public class AbysmDataComponentTypes {
 	}
 
 	public static void init() {
-		ComponentTooltipAppenderRegistry.addFirst(BLESSED);
+		ComponentTooltipAppenderRegistry.addFirst(HARPOON);
+
+		// Component used to be called blessed in-dev, this is just so we don't break all of our dev worlds.
+		Registries.DATA_COMPONENT_TYPE.addAlias(Abysm.id("blessed"), Abysm.id("harpoon"));
 	}
 }

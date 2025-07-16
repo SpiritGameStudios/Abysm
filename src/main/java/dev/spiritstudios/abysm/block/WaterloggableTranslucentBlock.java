@@ -46,7 +46,9 @@ public class WaterloggableTranslucentBlock extends TranslucentBlock implements W
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
-		return super.getPlacementState(ctx).with(WATERLOGGED, fluidState.isOf(Fluids.WATER));
+		BlockState state = super.getPlacementState(ctx);
+
+		return state == null ? null : state.with(WATERLOGGED, fluidState.isOf(Fluids.WATER));
 	}
 
 	@Override

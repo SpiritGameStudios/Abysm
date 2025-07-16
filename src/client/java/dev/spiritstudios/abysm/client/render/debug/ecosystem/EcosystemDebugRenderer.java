@@ -129,6 +129,7 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 	}
 
 	private ChunkPos getPlayerChunkPos() {
+		assert this.client.player != null;
 		return this.client.player.getChunkPos();
 	}
 
@@ -142,9 +143,10 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 			// you can do that because this class isn't static
 			// - echo
 
+			assert clientWorld != null;
 			RegistryKey<World> worldKey = clientWorld.getRegistryKey();
 
-			// This is beyond cursed but it's what Minecraft does ¯\_(ツ)_/¯
+			// This is beyond cursed, but it's what Minecraft does ¯\_(ツ)_/¯
 			this.serverStates = server.submit(() -> {
 				ServerWorld serverWorld = server.getWorld(worldKey);
 				if (serverWorld == null) return ImmutableBiMap.of();

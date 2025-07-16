@@ -2,7 +2,6 @@ package dev.spiritstudios.abysm.entity.leviathan;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
-import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
 import dev.spiritstudios.specter.api.entity.EntityPart;
 import dev.spiritstudios.specter.api.entity.PartHolder;
 import net.minecraft.entity.Entity;

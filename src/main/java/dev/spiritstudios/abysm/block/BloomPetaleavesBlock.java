@@ -2,9 +2,9 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.LeavesBlock;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 public class BloomPetaleavesBlock extends LeavesBlock {
 	public static final MapCodec<BloomPetaleavesBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
-			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("particle").forGetter(block -> block.particle),
+			ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
 			Codecs.rangedInclusiveFloat(0.0F, 1.0F)
 				.fieldOf("leaf_particle_chance")
 				.forGetter(tintedParticleLeavesBlock -> tintedParticleLeavesBlock.leafParticleChance),
@@ -21,14 +21,14 @@ public class BloomPetaleavesBlock extends LeavesBlock {
 		).apply(instance, BloomPetaleavesBlock::new)
 	);
 
-	public final SimpleParticleType particle;
+	public final ParticleEffect particle;
 
 	@Override
 	public MapCodec<? extends LeavesBlock> getCodec() {
 		return CODEC;
 	}
 
-	public BloomPetaleavesBlock(SimpleParticleType particle, float leafParticleChance, Settings settings) {
+	public BloomPetaleavesBlock(ParticleEffect particle, float leafParticleChance, Settings settings) {
 		super(leafParticleChance, settings);
 		this.particle = particle;
 	}

@@ -2,9 +2,9 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.BlockState;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -16,22 +16,22 @@ import net.minecraft.world.World;
 public class BloomshroomCrownBlock extends RotatableWaterloggableFlowerBlock {
 	public static final MapCodec<BloomshroomCrownBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
-			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("glimmer").forGetter(block -> block.glimmerParticle),
-			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("thorns").forGetter(block -> block.thornsParticle),
+			ParticleTypes.TYPE_CODEC.fieldOf("glimmer").forGetter(block -> block.glimmerParticle),
+			ParticleTypes.TYPE_CODEC.fieldOf("thorns").forGetter(block -> block.thornsParticle),
 			createSettingsCodec()
 		).apply(instance, BloomshroomCrownBlock::new)
 	);
 	public static final EnumProperty<Direction> FACING = Properties.FACING;
 
-	public final SimpleParticleType glimmerParticle;
-	public final SimpleParticleType thornsParticle;
+	public final ParticleEffect glimmerParticle;
+	public final ParticleEffect thornsParticle;
 
 	@Override
 	public MapCodec<? extends RotatableWaterloggableFlowerBlock> getCodec() {
 		return CODEC;
 	}
 
-	public BloomshroomCrownBlock(SimpleParticleType glimmerParticle, SimpleParticleType thornsParticle, Settings settings) {
+	public BloomshroomCrownBlock(ParticleEffect glimmerParticle, ParticleEffect thornsParticle, Settings settings) {
 		super(settings);
 		this.glimmerParticle = glimmerParticle;
 		this.thornsParticle = thornsParticle;
@@ -55,7 +55,7 @@ public class BloomshroomCrownBlock extends RotatableWaterloggableFlowerBlock {
 		}
 	}
 
-	protected void spawnParticles(World world, BlockPos pos, Direction direction, boolean waterlogged, Random random, SimpleParticleType particle, float width, float orthogonalVelocityMultiplier, float normalVelocityMultiplier) {
+	protected void spawnParticles(World world, BlockPos pos, Direction direction, boolean waterlogged, Random random, ParticleEffect particle, float width, float orthogonalVelocityMultiplier, float normalVelocityMultiplier) {
 		double x = pos.getX() + 0.5 + width * (random.nextFloat() - 0.5);
 		double y = pos.getY() + 0.5 + width * (random.nextFloat() - 0.5);
 		double z = pos.getZ() + 0.5 + width * (random.nextFloat() - 0.5);

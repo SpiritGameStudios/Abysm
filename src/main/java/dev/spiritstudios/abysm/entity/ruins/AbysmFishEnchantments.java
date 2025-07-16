@@ -25,13 +25,6 @@ public class AbysmFishEnchantments {
 	public static final RegistryKey<FishEnchantment> JET = of(JET_ID);
 	public static final RegistryKey<FishEnchantment> OBFUSCATED = of(OBFUSCATED_ID);
 
-	/*
-	@SuppressWarnings("SameParameterValue")
-	private static RegistryKey<FishEnchantment> of(String path) {
-		return of(Abysm.id(path));
-	}
-	 */
-
 	private static RegistryKey<FishEnchantment> of(Identifier id) {
 		return RegistryKey.of(AbysmRegistryKeys.FISH_ENCHANTMENT, id);
 	}

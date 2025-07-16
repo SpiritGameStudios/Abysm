@@ -2,10 +2,10 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
@@ -14,19 +14,19 @@ import net.minecraft.world.World;
 public class BloomshroomCapBlock extends Block {
 	public static final MapCodec<BloomshroomCapBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
-			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("particle").forGetter(block -> block.particle),
+			ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
 			createSettingsCodec()
 		).apply(instance, BloomshroomCapBlock::new)
 	);
 
-	public final SimpleParticleType particle;
+	public final ParticleEffect particle;
 
 	@Override
 	public MapCodec<BloomshroomCapBlock> getCodec() {
 		return CODEC;
 	}
 
-	public BloomshroomCapBlock(SimpleParticleType particle, Settings settings) {
+	public BloomshroomCapBlock(ParticleEffect particle, Settings settings) {
 		super(settings);
 		this.particle = particle;
 	}

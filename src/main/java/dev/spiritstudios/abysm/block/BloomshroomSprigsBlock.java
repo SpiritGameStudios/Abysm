@@ -2,11 +2,11 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
@@ -18,19 +18,22 @@ import net.minecraft.world.World;
 
 public class BloomshroomSprigsBlock extends UnderwaterPlantBlock {
 	public static final MapCodec<BloomshroomSprigsBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("particle").forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomshroomSprigsBlock::new)
+		instance -> instance.group(
+			ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
+			createSettingsCodec()
+		).apply(instance, BloomshroomSprigsBlock::new)
 	);
 	private static final VoxelShape SHAPE = Block.createColumnShape(10.0, 0.0, 11.0);
 	private static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
-	public final SimpleParticleType particle;
+	public final ParticleEffect particle;
 
 	@Override
 	public MapCodec<BloomshroomSprigsBlock> getCodec() {
 		return CODEC;
 	}
 
-	public BloomshroomSprigsBlock(SimpleParticleType particle, Settings settings) {
+	public BloomshroomSprigsBlock(ParticleEffect particle, Settings settings) {
 		super(settings);
 		this.particle = particle;
 	}

@@ -17,7 +17,7 @@ import org.joml.Vector3f;
 
 public class OoglyBooglyFumesParticle extends SpriteBillboardParticle {
 	private final SpriteProvider provider;
-	private boolean deadly = false;
+	private final boolean deadly;
 	private final Quaternionf rotationStorage = new Quaternionf();
 
 	protected OoglyBooglyFumesParticle(ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ, OoglyBooglyFumesParticleEffect params, SpriteProvider provider) {

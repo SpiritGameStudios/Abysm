@@ -6,7 +6,7 @@
   "client": [
     "render.BackgroundRendererMixin",
     "ChatScreenMixin",
-    "ClientPlayerEntityMixin",
+	  "render.ClientPlayerEntityMixin",
     "GeoEntityRendererMixin",
     "render.GlResourceManagerMixin",
     "render.LightmapTextureManagerMixin",

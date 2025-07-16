@@ -17,6 +17,7 @@ import net.minecraft.world.gen.structure.Structure;
 public class AbysmStructureSets {
 	public static RegistryKey<StructureSet> DEEP_SEA_RUINS = keyOf("deep_sea_ruins");
 
+	@SuppressWarnings("deprecation")
 	public static void bootstrap(Registerable<StructureSet> structureSetRegisterable) {
 		RegistryEntryLookup<Structure> structureLookup = structureSetRegisterable.getRegistryLookup(RegistryKeys.STRUCTURE);
 		RegistryEntryLookup<StructureSet> structureSetLookup = structureSetRegisterable.getRegistryLookup(RegistryKeys.STRUCTURE_SET);

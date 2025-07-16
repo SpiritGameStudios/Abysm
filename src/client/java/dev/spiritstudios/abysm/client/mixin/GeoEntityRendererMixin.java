@@ -17,7 +17,7 @@ public abstract class GeoEntityRendererMixin {
 
 	@ModifyVariable(method = "actuallyRender(Lnet/minecraft/client/render/entity/state/EntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lsoftware/bernie/geckolib/cache/object/BakedGeoModel;Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/render/VertexConsumer;ZIII)V", at = @At("HEAD"), index = 7, argsOnly = true)
 	private boolean applyTransformsOnEnchantment(boolean value, @Local(argsOnly = true) EntityRenderState state, @Share("whatWasReRendering")LocalBooleanRef localBooleanRef) {
-		if (!((GeoEntityRenderer) (Object) this instanceof LectorfinEntityRenderer)) {
+		if (!((GeoEntityRenderer<?, ?>) (Object) this instanceof LectorfinEntityRenderer)) {
 			return value;
 		}
 		localBooleanRef.set(value);
@@ -34,7 +34,7 @@ public abstract class GeoEntityRendererMixin {
 
 	@ModifyVariable(method = "actuallyRender(Lnet/minecraft/client/render/entity/state/EntityRenderState;Lnet/minecraft/client/util/math/MatrixStack;Lsoftware/bernie/geckolib/cache/object/BakedGeoModel;Lnet/minecraft/client/render/RenderLayer;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/client/render/VertexConsumer;ZIII)V", at = @At(value = "INVOKE", target = "Lorg/joml/Matrix4f;<init>(Lorg/joml/Matrix4fc;)V"), index = 7, argsOnly = true, remap = false)
 	private boolean reset(boolean value, @Share("whatWasReRendering")LocalBooleanRef localBooleanRef) {
-		if (!((GeoEntityRenderer) (Object) this instanceof LectorfinEntityRenderer)) {
+		if (!((GeoEntityRenderer<?, ?>) (Object) this instanceof LectorfinEntityRenderer)) {
 			return value;
 		}
 		return localBooleanRef.get();

@@ -66,14 +66,14 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		if (weapon != null) {
 			this.haul = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.HAUL);
 			this.grappling = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.GRAPPLING);
-			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).isBlessed();
+			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).isBlessed();
 		}
 
 		double d = velocity.horizontalLength();
 
 		//noinspection SuspiciousNameCombination
-		this.setYaw((float)(MathHelper.atan2(velocity.x, velocity.z) * MathHelper.DEGREES_PER_RADIAN));
-		this.setPitch((float)(MathHelper.atan2(velocity.y, d) * MathHelper.DEGREES_PER_RADIAN));
+		this.setYaw((float) (MathHelper.atan2(velocity.x, velocity.z) * MathHelper.DEGREES_PER_RADIAN));
+		this.setPitch((float) (MathHelper.atan2(velocity.y, d) * MathHelper.DEGREES_PER_RADIAN));
 
 		this.lastYaw = this.getYaw();
 		this.lastPitch = this.getPitch();
@@ -96,6 +96,21 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
+	protected boolean tryPickup(PlayerEntity player) {
+		if (pickupType != PickupPermission.ALLOWED) return super.tryPickup(player);
+
+		ItemStack invStack = player.getInventory().getStack(this.getSlot());
+		if (!invStack.isOf(AbysmItems.NOOPRAH)) return true;
+
+		HarpoonComponent component = invStack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
+
+		if (component.loaded()) return true;
+
+		invStack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().loaded(true).build());
+		return true;
+	}
+
+	@Override
 	public void tick() {
 		ticksAlive++;
 		PlayerEntity owner = this.getPlayer();
@@ -110,7 +125,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			}
 			try {
 				ItemStack invStack = owner.getInventory().getStack(this.slot);
-				if (!invStack.isOf(AbysmItems.NOOPRAH) || invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).loaded()) {
+				if (!invStack.isOf(AbysmItems.NOOPRAH) || invStack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).loaded()) {
 					this.discard();
 				}
 			} catch (IndexOutOfBoundsException indexOutOfBoundsException) {

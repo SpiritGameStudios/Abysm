@@ -38,7 +38,7 @@ public abstract class AbstractFishEntityModel<T extends GeoAnimatable> extends D
 	public void setCustomAnimations(AnimationState<T> animationState) {
 		// Head turning animation
 		super.setCustomAnimations(animationState);
-		if(doNotAnimate) return;
+		if (doNotAnimate) return;
 
 		GeoBone tail = getAnimationProcessor().getBone(TAIL);
 		if (tail == null) return;
@@ -46,9 +46,9 @@ public abstract class AbstractFishEntityModel<T extends GeoAnimatable> extends D
 		float tailYaw = getTailYaw(animationState);
 		tail.setRotY(tailYaw);
 
-		if(animateBodyAndTail) {
+		if (animateBodyAndTail) {
 			GeoBone body = getAnimationProcessor().getBone(BODY);
-			if(body == null) return;
+			if (body == null) return;
 
 			float bodyYaw = getBodyYaw(animationState);
 			body.setRotY(bodyYaw);

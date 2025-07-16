@@ -2,13 +2,19 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.util.AbysmCodecs;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Fertilizable;
+import net.minecraft.block.PlantBlock;
+import net.minecraft.block.Segmented;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -29,20 +35,20 @@ import java.util.function.Function;
 
 public class BloomPetalsBlock extends PlantBlock implements Waterloggable, Fertilizable, Segmented {
 	public static final MapCodec<BloomPetalsBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("particle").forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomPetalsBlock::new)
+		instance -> instance.group(ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomPetalsBlock::new)
 	);
 	public static final EnumProperty<Direction> HORIZONTAL_FACING = Properties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
 	private final Function<BlockState, VoxelShape> shapeFunction;
-	public final SimpleParticleType particle;
+	public final ParticleEffect particle;
 
 	@Override
 	public MapCodec<BloomPetalsBlock> getCodec() {
 		return CODEC;
 	}
 
-	public BloomPetalsBlock(SimpleParticleType particle, Settings settings) {
+	public BloomPetalsBlock(ParticleEffect particle, Settings settings) {
 		super(settings);
 		this.particle = particle;
 		this.setDefaultState(this.stateManager.getDefaultState()

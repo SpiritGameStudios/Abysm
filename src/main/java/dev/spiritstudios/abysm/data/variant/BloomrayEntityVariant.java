@@ -5,12 +5,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
-import dev.spiritstudios.abysm.util.AbysmCodecs;
 import net.minecraft.block.Block;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -25,8 +25,8 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 			getNameCodec(),
 			getTextureCodec(),
 			HideableCrownType.CODEC.fieldOf("crown").forGetter(variant -> variant.hideableCrownType),
-			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("glimmer").forGetter(variant -> variant.glimmerParticle),
-			AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("thorns").forGetter(variant -> variant.thornsParticle)
+			ParticleTypes.TYPE_CODEC.fieldOf("glimmer").forGetter(variant -> variant.glimmerParticle),
+			ParticleTypes.TYPE_CODEC.fieldOf("thorns").forGetter(variant -> variant.thornsParticle)
 		).apply(instance, BloomrayEntityVariant::new)
 	);
 
@@ -43,10 +43,10 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 	}
 
 	public final HideableCrownType hideableCrownType;
-	public final SimpleParticleType glimmerParticle;
-	public final SimpleParticleType thornsParticle;
+	public final ParticleEffect glimmerParticle;
+	public final ParticleEffect thornsParticle;
 
-	public BloomrayEntityVariant(Text name, Identifier texture, HideableCrownType hideableCrownType, SimpleParticleType glimmerParticle, SimpleParticleType thornsParticle) {
+	public BloomrayEntityVariant(Text name, Identifier texture, HideableCrownType hideableCrownType, ParticleEffect glimmerParticle, ParticleEffect thornsParticle) {
 		super(name, texture);
 		this.hideableCrownType = hideableCrownType;
 		this.glimmerParticle = glimmerParticle;

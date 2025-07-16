@@ -33,7 +33,7 @@ public abstract class ItemRendererMixin {
 		if (!stack.isOf(AbysmItems.NOOPRAH)) {
 			return;
 		}
-		if (!stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).loaded()) {
+		if (!stack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).loaded()) {
 			return;
 		}
 		MinecraftClient client = MinecraftClient.getInstance();

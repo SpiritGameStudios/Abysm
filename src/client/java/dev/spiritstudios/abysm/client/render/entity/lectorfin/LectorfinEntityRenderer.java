@@ -29,9 +29,10 @@ import java.util.Map;
 public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends AbstractFishEntityRenderer<LectorfinEntity, R> {
 
 	public static final DataTicket<FishEnchantment> FISH_ENCHANTMENT = DataTicket.create("fish_enchantment", FishEnchantment.class);
-	public static final Map<Identifier, FishEnchantmentRenderer> ENCHANTMENT_RENDERERS = Util.make(new Object2ObjectOpenHashMap<>(), map -> {
-		map.put(AbysmFishEnchantments.SHELL_ID, new ShellRenderer());
-	});
+	public static final Map<Identifier, FishEnchantmentRenderer> ENCHANTMENT_RENDERERS = Util.make(
+		new Object2ObjectOpenHashMap<>(),
+		map -> map.put(AbysmFishEnchantments.SHELL_ID, new ShellRenderer())
+	);
 
 	public LectorfinEntityRenderer(EntityRendererFactory.Context context) {
 		super(context, new LectorfinEntityModel());

@@ -4,7 +4,6 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
-import dev.spiritstudios.abysm.entity.floralreef.ElectricOoglyBooglyEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricTrackedDataRegistry;
 import net.minecraft.entity.data.TrackedDataHandler;

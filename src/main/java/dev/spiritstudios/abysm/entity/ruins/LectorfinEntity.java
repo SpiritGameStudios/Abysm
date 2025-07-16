@@ -2,7 +2,6 @@ package dev.spiritstudios.abysm.entity.ruins;
 
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
-import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.entity.PlantEater;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;

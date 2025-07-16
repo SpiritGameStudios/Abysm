@@ -22,7 +22,7 @@ public abstract class ItemModelManagerMixin {
 	private void updateHarpoon(ItemRenderState renderState, ItemStack stack, ItemDisplayContext displayContext, World world, LivingEntity entity, int seed, CallbackInfo ci) {
 		boolean harpoon = false;
 		if (stack.isOf(AbysmItems.NOOPRAH)) {
-			if (stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).loaded()) {
+			if (stack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).loaded()) {
 				harpoon = true;
 			}
 		}

@@ -90,6 +90,7 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 		return LehydrathanBrain.create(this.createBrainProfile().deserialize(dynamic));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Brain<Lehydrathan> getBrain() {
 		return (Brain<Lehydrathan>) super.getBrain();

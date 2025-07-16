@@ -1,6 +1,10 @@
 {
-  "glimmer": "abysm:rosebloom_glimmer",
-  "thorns": "abysm:sodalite_thorns",
+  "glimmer": {
+    "type": "abysm:rosebloom_glimmer"
+  },
+  "thorns": {
+    "type": "abysm:sodalite_thorns"
+  },
   "name": {
     "translate": "abysm.entity.bloomray.rosy"
   },
