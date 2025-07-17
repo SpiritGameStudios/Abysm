@@ -55,14 +55,14 @@ public class ManOWarTentaclesFeatureRenderer extends FeatureRenderer<ManOWarRend
 		});
 	}
 
-	public static void drawVector(MatrixStack matrices, VertexConsumer vertexConsumers, Vector3f offset, Vec3d vec, int argb, int light) {
+	public static void drawVector(MatrixStack matrices, VertexConsumer vertexConsumer, Vector3f offset, Vec3d vec, int argb, int light) {
 		MatrixStack.Entry entry = matrices.peek();
-		vertexConsumers
+		vertexConsumer
 			.vertex(entry, offset)
 			.color(argb)
 			.normal(entry, (float) vec.x, (float) vec.y, (float) vec.z)
 			.light(light);
-		vertexConsumers
+		vertexConsumer
 			.vertex(entry, (float) (offset.x() + vec.x), (float) (offset.y() + vec.y), (float) (offset.z() + vec.z))
 			.color(argb)
 			.normal(entry, (float) vec.x, (float) vec.y, (float) vec.z)

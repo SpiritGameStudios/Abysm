@@ -7,13 +7,12 @@ import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.processing.AnimationState;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.constant.dataticket.DataTicket;
+import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public abstract class FishEnchantmentRenderer {
-
-	public static final DataTicket<Boolean> RENDERING_ENCHANTMENT = DataTicket.create("rendering_enchantment", Boolean.class);
 
 	protected ExtraModel model;
 
@@ -23,7 +22,7 @@ public abstract class FishEnchantmentRenderer {
 
 	@SuppressWarnings("unused")
 	public <R extends LivingEntityRenderState & GeoRenderState> void render(
-		R state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, int color, ReRenderer<R> reRenderer) {
+		R state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, int color, RecursiveRenderer<R> recursiveRenderer) {
 
 		RenderLayer renderLayer = this.model.getRenderType(state, this.model.getTextureResource(state));
 
@@ -34,14 +33,21 @@ public abstract class FishEnchantmentRenderer {
 			vertexConsumer = vertexConsumers.getBuffer(renderLayer);
 		}
 		BakedGeoModel bakedGeoModel = this.model.getBakedModel(this.model.getModelResource(state));
-		state.addGeckolibData(RENDERING_ENCHANTMENT, true);
-		reRenderer.render(state, matrices, bakedGeoModel, vertexConsumers, renderLayer, vertexConsumer, light, overlay, color);
-		state.addGeckolibData(RENDERING_ENCHANTMENT, false);
+		//noinspection UnstableApiUsage
+		this.model.handleAnimations(new AnimationState<>(state));
+
+		if (renderLayer == null || vertexConsumer == null) {
+			return;
+		}
+
+		for (GeoBone group : bakedGeoModel.topLevelBones()) {
+			recursiveRenderer.render(state, matrices, group, renderLayer, vertexConsumers, vertexConsumer, true, light, overlay, color);
+		}
 	}
 
 	@FunctionalInterface
-	public interface ReRenderer<R extends LivingEntityRenderState & GeoRenderState> {
-		void render(R state, MatrixStack matrices, BakedGeoModel model, VertexConsumerProvider vertexConsumers, @Nullable RenderLayer renderLayer, @Nullable VertexConsumer vertexConsumer, int light, int overlay, int color);
+	public interface RecursiveRenderer<R extends LivingEntityRenderState & GeoRenderState> {
+		void render(R state, MatrixStack matrices, GeoBone bone, @Nullable RenderLayer renderLayer, VertexConsumerProvider vertexConsumers, @Nullable VertexConsumer vertexConsumer, boolean isReRender, int light, int overlay, int color);
 	}
 
 	public static class ExtraModel extends LectorfinEntityRenderer.LectorfinEntityModel {

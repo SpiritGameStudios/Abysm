@@ -17,6 +17,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
@@ -31,7 +32,10 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 	public static final DataTicket<FishEnchantment> FISH_ENCHANTMENT = DataTicket.create("fish_enchantment", FishEnchantment.class);
 	public static final Map<Identifier, FishEnchantmentRenderer> ENCHANTMENT_RENDERERS = Util.make(
 		new Object2ObjectOpenHashMap<>(),
-		map -> map.put(AbysmFishEnchantments.SHELL_ID, new ShellRenderer())
+		map -> {
+			map.put(AbysmFishEnchantments.JAW_ID, JawRenderer.INSTANCE);
+			map.put(AbysmFishEnchantments.SHELL_ID, ShellRenderer.INSTANCE);
+		}
 	);
 
 	public LectorfinEntityRenderer(EntityRendererFactory.Context context) {
@@ -39,21 +43,16 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 	}
 
 	@Override
-	public void defaultRender(R state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, @Nullable RenderLayer renderLayer, @Nullable VertexConsumer vertexConsumer) {
-		super.defaultRender(state, matrices, vertexConsumers, renderLayer, vertexConsumer);
+	public void actuallyRender(R state, MatrixStack matrices, BakedGeoModel model, @Nullable RenderLayer renderLayer, VertexConsumerProvider vertexConsumers, @Nullable VertexConsumer vertexConsumer, boolean isReRender, int light, int overlay, int color) {
+		super.actuallyRender(state, matrices, model, renderLayer, vertexConsumers, vertexConsumer, isReRender, light, overlay, color);
 
 		FishEnchantment fishEnchantment = state.getGeckolibData(FISH_ENCHANTMENT);
 		if (fishEnchantment == null) {
 			return;
 		}
-		FishEnchantmentRenderer renderer = ENCHANTMENT_RENDERERS.get(fishEnchantment.rendererId());
+		FishEnchantmentRenderer renderer = /*ENCHANTMENT_RENDERERS.get(fishEnchantment.rendererId())*/ ENCHANTMENT_RENDERERS.values().stream().toList().getFirst();
 		if (renderer != null) {
-			//noinspection DataFlowIssue
-			renderer.render(state, matrices, vertexConsumers,
-				state.getGeckolibData(DataTickets.PACKED_OVERLAY),
-				state.getGeckolibData(DataTickets.PACKED_LIGHT),
-				state.getGeckolibData(DataTickets.RENDER_COLOR),
-				this::reRender);
+			renderer.render(state, matrices, vertexConsumers, light, overlay, color, this::renderRecursively);
 		}
 	}
 
@@ -62,8 +61,12 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 			this(Abysm.id("lectorfin"));
 		}
 
-		public LectorfinEntityModel(Identifier id) {
-			super(id, false);
+		protected LectorfinEntityModel(Identifier id) {
+			this(id, false);
+		}
+
+		protected LectorfinEntityModel(Identifier id, boolean animateBodyAndTail) {
+			super(id, animateBodyAndTail);
 		}
 
 		@Override
