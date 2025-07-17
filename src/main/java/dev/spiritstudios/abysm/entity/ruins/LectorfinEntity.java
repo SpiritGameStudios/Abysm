@@ -11,6 +11,8 @@ import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.AttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
@@ -31,6 +33,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 
+import java.util.Objects;
+
 @SuppressWarnings("unused")
 public class LectorfinEntity extends AbstractSchoolingFishEntity implements PlantEater {
 	// use nbt if sync is unnecessary
@@ -38,6 +42,7 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 	protected static final TrackedData<RegistryEntry<FishEnchantment>> ENCHANTMENT = DataTracker.registerData(LectorfinEntity.class, AbysmTrackedDataHandlers.FISH_ENCHANTMENT);
 
 	protected EcosystemLogic ecosystemLogic;
+	protected @Nullable RegistryEntry<FishEnchantment> previousEnchantment = null;
 
 	@Nullable
 	protected BlockPos plantPos;
@@ -91,6 +96,15 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 		return this.dataTracker.get(ENCHANTMENT);
 	}
 
+	public void setEnchantment(RegistryEntry<FishEnchantment> enchantment, int level) {
+		if (!Objects.equals(enchantment, this.getEnchantment())) {
+			this.dataTracker.set(ENCHANTMENT, enchantment);
+		}
+		if (level != this.getEnchantmentLevel()) {
+			this.dataTracker.set(ENCHANTMENT_LEVEL, level);
+		}
+	}
+
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 
@@ -106,6 +120,9 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 	public void tick() {
 		super.tick();
 		this.tickEcosystemLogic();
+		if (!this.getWorld().isClient) {
+			this.tickEnchantment();
+		}
 	}
 
 	@Override
@@ -179,5 +196,37 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 	@Override
 	public int ticksUntilHunger() {
 		return this.ticksUntilHunger;
+	}
+
+	@Override
+	public void setNotHungryAnymoreYay() {
+		PlantEater.super.setNotHungryAnymoreYay();
+		this.heal(this.getMaxHealth() * 0.4F);
+	}
+
+	public void tickEnchantment() {
+		final RegistryEntry<FishEnchantment> enchantment = this.getEnchantment();
+		if (Objects.equals(this.previousEnchantment, enchantment)) {
+			return;
+		}
+		final AttributeContainer attributes = this.getAttributes();
+		if (this.previousEnchantment != null) {
+			this.previousEnchantment.value().applyModifiers((attribute, modifier) -> {
+				EntityAttributeInstance entityAttributeInstance = attributes.getCustomInstance(attribute);
+				if (entityAttributeInstance != null) {
+					entityAttributeInstance.removeModifier(modifier);
+				}
+			});
+		}
+		if (enchantment != null) {
+			enchantment.value().applyModifiers((attribute, modifier) -> {
+				EntityAttributeInstance entityAttributeInstance = attributes.getCustomInstance(attribute);
+				if (entityAttributeInstance != null) {
+					entityAttributeInstance.removeModifier(modifier.id());
+					entityAttributeInstance.addTemporaryModifier(modifier);
+				}
+			});
+		}
+		this.previousEnchantment = enchantment;
 	}
 }

@@ -5,6 +5,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
+import net.minecraft.component.type.AttributeModifiersComponent;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.network.RegistryByteBuf;
@@ -19,6 +21,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public record FishEnchantment(List<Entry> modifiers, Identifier rendererId) {
 	public static final Codec<FishEnchantment> CODEC = RecordCodecBuilder.create(
@@ -53,6 +56,12 @@ public record FishEnchantment(List<Entry> modifiers, Identifier rendererId) {
 			.map(registry ->
 				registry.getId(this))
 			.orElse(null);
+	}
+
+	public void applyModifiers(BiConsumer<RegistryEntry<EntityAttribute>, EntityAttributeModifier> attributeConsumer) {
+		for (Entry entry : this.modifiers) {
+			attributeConsumer.accept(entry.attribute, entry.modifier);
+		}
 	}
 
 	public static Builder builder() {

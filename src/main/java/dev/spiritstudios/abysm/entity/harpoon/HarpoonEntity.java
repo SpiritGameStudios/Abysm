@@ -4,10 +4,12 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.mixin.harpoon.PersistentProjectileEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -209,6 +211,13 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			f = EnchantmentHelper.getDamage(serverWorld, weapon, entity, damageSource, f);
 		}
 		f = this.haul ? 0.01f : f;
+		if (this.blessed && entity instanceof LectorfinEntity lectorfin) {
+			f = 0.0001f;
+			world.getRegistryManager().getOrThrow(AbysmRegistryKeys.FISH_ENCHANTMENT)
+				.getRandom(this.random).ifPresent(enchantment ->
+					lectorfin.setEnchantment(enchantment, lectorfin.getEnchantmentLevel())
+				);
+		}
 		//noinspection deprecation
 		if (entity.sidedDamage(damageSource, f)) {
 			if (entity.getType() == EntityType.ENDERMAN) {
