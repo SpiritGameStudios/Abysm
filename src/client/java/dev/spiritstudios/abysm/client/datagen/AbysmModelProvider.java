@@ -152,6 +152,10 @@ public class AbysmModelProvider extends FabricModelProvider {
 		);
 		registerGrassLike(generator, AbysmBlocks.OOZING_DREGLOAM, AbysmBlocks.DREGLOAM);
 		// endregion
+
+		// region misc blocks
+		generator.registerSimpleCubeAll(AbysmBlocks.SILT);
+		// endregion
 	}
 
 	private void doForMany(BiConsumer<BlockStateModelGenerator, Block> consumer, BlockStateModelGenerator generator, Block... blocks) {

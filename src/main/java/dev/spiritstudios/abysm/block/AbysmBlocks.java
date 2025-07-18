@@ -635,6 +635,15 @@ public final class AbysmBlocks {
 			.mapColor(MapColor.TERRACOTTA_BROWN)
 			.sounds(BlockSoundGroup.MUD)
 	);
+
+	public static final Block SILT = register(
+		"silt",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.strength(1.0F)
+			.mapColor(MapColor.OAK_TAN)
+			.sounds(BlockSoundGroup.MUD)
+	);
 	// endregion
 
 	public static <T extends Block> T register(RegistryKey<Block> key, Function<AbstractBlock.Settings, T> factory, AbstractBlock.Settings settings, @Nullable BiFunction<Block, Item.Settings, ? extends BlockItem> blockItemConstructor) {
