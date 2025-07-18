@@ -87,7 +87,7 @@ public class BloomPetalsBlock extends PlantBlock implements Waterloggable, Ferti
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
 		BlockState placementState = this.getPlacementState(ctx, this, this.getAmountProperty(), HORIZONTAL_FACING);
-		if(placementState == null) {
+		if (placementState == null) {
 			return null;
 		} else {
 			FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
@@ -107,7 +107,7 @@ public class BloomPetalsBlock extends PlantBlock implements Waterloggable, Ferti
 		Random random
 	) {
 		BlockState newState = super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
-		if(!newState.isAir()) {
+		if (!newState.isAir()) {
 			if (state.get(WATERLOGGED)) {
 				tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
@@ -123,7 +123,7 @@ public class BloomPetalsBlock extends PlantBlock implements Waterloggable, Ferti
 
 	@Override
 	protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-		if(floor.isSideSolidFullSquare(world, pos, Direction.UP)) {
+		if (floor.isSideSolidFullSquare(world, pos, Direction.UP)) {
 			return true;
 		} else {
 			FluidState fluidState = world.getFluidState(pos);
@@ -169,7 +169,7 @@ public class BloomPetalsBlock extends PlantBlock implements Waterloggable, Ferti
 		BlockPos downPos = pos.down();
 		BlockState downState = world.getBlockState(downPos);
 
-		if(!downState.isSideSolidFullSquare(world, pos, Direction.UP)) {
+		if (!downState.isSideSolidFullSquare(world, pos, Direction.UP)) {
 			if (random.nextInt(10) == 0) {
 				double x = pos.getX() + 0.05 + 0.9 * random.nextFloat();
 				double y = pos.getY() - 0.1 + 0.1 * random.nextFloat();

@@ -37,21 +37,21 @@ public final class AbysmItems {
 		OozeballItem::new
 	);
 
-    public static final Item FLIPPERS = register(
-            "flippers",
-            new Item.Settings()
-				.maxCount(1)
-				.armor(ArmorMaterials.TURTLE_SCUTE, EquipmentType.BOOTS)
-				.attributeModifiers(AttributeModifiersComponent.builder().add(
-						AbysmEntityAttributes.SWIMMING_SPEED,
-						new EntityAttributeModifier(
-							Abysm.id("flippers_swimming_speed_multiplier"),
-							0.05,
-							EntityAttributeModifier.Operation.ADD_VALUE
-						),
-						AttributeModifierSlot.FEET
-					).build())
-    );
+	public static final Item FLIPPERS = register(
+		"flippers",
+		new Item.Settings()
+			.maxCount(1)
+			.armor(ArmorMaterials.TURTLE_SCUTE, EquipmentType.BOOTS)
+			.attributeModifiers(AttributeModifiersComponent.builder().add(
+				AbysmEntityAttributes.SWIMMING_SPEED,
+				new EntityAttributeModifier(
+					Abysm.id("flippers_swimming_speed_multiplier"),
+					0.05,
+					EntityAttributeModifier.Operation.ADD_VALUE
+				),
+				AttributeModifierSlot.FEET
+			).build())
+	);
 
 	public static final Item HARPOON = register(
 		"harpoon",
@@ -98,9 +98,9 @@ public final class AbysmItems {
 			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("renaissance")))
 	);
 
-    private static RegistryKey<Item> keyOf(String id) {
-        return RegistryKey.of(RegistryKeys.ITEM, Abysm.id(id));
-    }
+	private static RegistryKey<Item> keyOf(String id) {
+		return RegistryKey.of(RegistryKeys.ITEM, Abysm.id(id));
+	}
 
 	private static Item register(String id, Function<Item.Settings, Item> factory) {
 		return register(keyOf(id), factory, new Item.Settings());
@@ -135,7 +135,7 @@ public final class AbysmItems {
 		return settings -> new BlockItem(block, settings.useItemPrefixedTranslationKey());
 	}
 
-    public static void init() {
-        // NO-OP
-    }
+	public static void init() {
+		// NO-OP
+	}
 }

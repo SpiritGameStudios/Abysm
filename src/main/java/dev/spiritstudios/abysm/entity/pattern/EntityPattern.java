@@ -43,6 +43,6 @@ public record EntityPattern(RegistryEntry<EntityPatternVariant> variant, int bas
 	}
 
 	public void writeNbt(RegistryOps<NbtElement> ops, NbtCompound nbt) {
-		nbt.put("entity_pattern", CODEC, ops,this);
+		nbt.put("entity_pattern", CODEC, ops, this);
 	}
 }

@@ -38,7 +38,7 @@ public class DeepSeaRuinsStructure extends Structure {
 		ChunkPos chunkPos = context.chunkPos();
 		ChunkRandom random = context.random();
 
-		for(int i = 0; i < 85; i++) {
+		for (int i = 0; i < 85; i++) {
 			int rad = random.nextBetween(10, 40);
 			int spread = 120 - rad;
 			DeepSeaRuinsGenerator.SphereCave room = new DeepSeaRuinsGenerator.SphereCave(

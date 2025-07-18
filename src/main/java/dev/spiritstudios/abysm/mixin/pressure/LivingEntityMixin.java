@@ -16,6 +16,7 @@ public abstract class LivingEntityMixin {
 
 	@Shadow
 	public abstract float getScale();
+
 	@WrapOperation(method = "getDimensions", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityDimensions;scaled(F)Lnet/minecraft/entity/EntityDimensions;"))
 	private EntityDimensions scale(EntityDimensions instance, float ratio, Operation<EntityDimensions> original) {
 		instance = original.call(instance, ratio);

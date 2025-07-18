@@ -38,7 +38,7 @@ public class BloomshroomCapBlock extends Block {
 		BlockPos downPos = pos.down();
 		BlockState downState = world.getBlockState(downPos);
 
-		if(!downState.isSideSolidFullSquare(world, pos, Direction.UP)) {
+		if (!downState.isSideSolidFullSquare(world, pos, Direction.UP)) {
 			if (random.nextFloat() < 0.05F) {
 				double x = pos.getX() + 0.05 + 0.9 * random.nextFloat();
 				double y = pos.getY() - 0.1 + 0.1 * random.nextFloat();

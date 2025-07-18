@@ -20,11 +20,11 @@ public class AbysmStructurePieceTypes {
 	}
 
 	private static StructurePieceType register(StructurePieceType.Simple type, String id) {
-		return register((StructurePieceType)type, id);
+		return register((StructurePieceType) type, id);
 	}
 
 	private static StructurePieceType register(StructurePieceType.ManagerAware type, String id) {
-		return register((StructurePieceType)type, id);
+		return register((StructurePieceType) type, id);
 	}
 
 	public static void init() {

@@ -33,7 +33,7 @@ public class OozeballItem extends Item {
 		BlockState newState = AbysmBlocks.OOZING_DREGLOAM.getDefaultState();
 		if (context.getSide() != Direction.DOWN && state.isOf(AbysmBlocks.DREGLOAM) && OozingDregloamBlock.stayAlive(newState, world, pos)) {
 			stack.decrement(1);
-			if(player != null) {
+			if (player != null) {
 				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
 			}
 			world.setBlockState(pos, newState);

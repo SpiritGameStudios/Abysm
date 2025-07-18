@@ -295,7 +295,7 @@ public final class AbysmBlocks {
 			.sounds(BlockSoundGroup.WOOD)
 			.strength(0.7F, 0.9F)
 	);
-	public static final	Block ROSEBLOOM_PETALEAVES = register(
+	public static final Block ROSEBLOOM_PETALEAVES = register(
 		"rosebloom_petaleaves",
 		settings -> new BloomPetaleavesBlock(AbysmParticleTypes.ROSEBLOOM_PETALS, 0.25F, settings),
 		AbstractBlock.Settings.create()

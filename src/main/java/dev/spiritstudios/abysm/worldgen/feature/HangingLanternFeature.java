@@ -32,17 +32,17 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 		Random random = context.getRandom();
 
 		// do not place if supporting block cannot actually support
-		if(!stateCanSupportChain(world.getBlockState(pos.up()), world, pos.up())) {
+		if (!stateCanSupportChain(world.getBlockState(pos.up()), world, pos.up())) {
 			return false;
 		}
 
 		// check how far down the lantern can hang
 		int maxLength = config.maxLength.get(random);
 		int length = 0;
-		for(int i = 0; i < maxLength; i++) {
+		for (int i = 0; i < maxLength; i++) {
 			BlockPos checkPos = pos.down(i);
 			BlockState checkState = world.getBlockState(checkPos);
-			if(canReplaceState(checkState)) {
+			if (canReplaceState(checkState)) {
 				length++;
 			} else {
 				break;
@@ -51,10 +51,10 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 
 		int emptySpaceBelowLantern = 0;
 		int requiredSpaceBelowLantern = config.spaceToFloor.get(random);
-		for(int i = 0; i < requiredSpaceBelowLantern; i++) {
+		for (int i = 0; i < requiredSpaceBelowLantern; i++) {
 			BlockPos checkPos = pos.down(length + i);
 			BlockState checkState = world.getBlockState(checkPos);
-			if(!checkState.isSolidBlock(world, checkPos)) {
+			if (!checkState.isSolidBlock(world, checkPos)) {
 				emptySpaceBelowLantern++;
 			} else {
 				break;
@@ -63,12 +63,12 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 		length -= (requiredSpaceBelowLantern - emptySpaceBelowLantern);
 
 		// do not place if no blocks would get placed
-		if(length == 0) {
+		if (length == 0) {
 			return false;
 		}
 
 		// place lantern with chain
-		for(int i = 0; i < length; i++) {
+		for (int i = 0; i < length; i++) {
 			BlockPos placePos = pos.down(i);
 			BlockStateProvider provider = (i + 1 == length) ? (config.lanternStateProvider) : (config.chainStateProvider);
 			BlockState placeState = provider.get(context.getRandom(), pos);
@@ -88,13 +88,14 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 
 	private void placeWithWaterIfPresent(BlockState state, BlockPos pos, StructureWorldAccess world) {
 		FluidState fluidState = world.getFluidState(pos);
-		if(fluidState.isIn(FluidTags.WATER)) {
+		if (fluidState.isIn(FluidTags.WATER)) {
 			state = state.withIfExists(Properties.WATERLOGGED, true);
 		}
 		world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
 	}
 
-	public record Config(BlockStateProvider lanternStateProvider, BlockStateProvider chainStateProvider, IntProvider maxLength, IntProvider spaceToFloor) implements FeatureConfig {
+	public record Config(BlockStateProvider lanternStateProvider, BlockStateProvider chainStateProvider,
+						 IntProvider maxLength, IntProvider spaceToFloor) implements FeatureConfig {
 		public static final Codec<Config> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
 					BlockStateProvider.TYPE_CODEC.fieldOf("lantern_provider").forGetter(Config::lanternStateProvider),

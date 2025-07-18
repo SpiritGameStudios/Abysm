@@ -68,7 +68,7 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 			int xDistAbs = MathHelper.abs(xDistance);
 			int zDistAbs = MathHelper.abs(zDistance);
 
-			if(xDistAbs == radius && zDistAbs == radius) continue;
+			if (xDistAbs == radius && zDistAbs == radius) continue;
 			placeFoliageBlock(world, placer, random, config, offsetPos);
 		}
 	}
@@ -82,9 +82,9 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 			int xDistAbs = MathHelper.abs(xDistance);
 			int zDistAbs = MathHelper.abs(zDistance);
 
-			if(xDistAbs == radius && zDistAbs == radius) continue;
-			if(xDistAbs == 0 && zDistAbs == radius) continue;
-			if(xDistAbs == radius && zDistAbs == 0) continue;
+			if (xDistAbs == radius && zDistAbs == radius) continue;
+			if (xDistAbs == 0 && zDistAbs == radius) continue;
+			if (xDistAbs == radius && zDistAbs == 0) continue;
 
 			placeFoliageBlock(world, placer, random, config, offsetPos);
 		}
@@ -134,9 +134,9 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 		int r = radius + treeNode.getFoliageRadius();
 
 		// place goop
-		for(int dx = -1; dx <= 1; dx++) {
-			for(int dz = -1; dz <= 1; dz++) {
-				if(dx == 0 || dz == 0) {
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dz = -1; dz <= 1; dz++) {
+				if (dx == 0 || dz == 0) {
 					fillCuboid(world, placer, random, pos.add(dx, y - 1, dz), this.goopProvider, 0, -3, 0);
 				}
 			}
@@ -162,37 +162,37 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 		placeCrownBlock(world, placer, random, pos.up(y + 1));
 
 		// place lower leaves
-		for(int i = -3; i <= 3; i += 2) {
-			for(int j = -3; j <= 3; j += 2) {
+		for (int i = -3; i <= 3; i += 2) {
+			for (int j = -3; j <= 3; j += 2) {
 				int xDistAbs = MathHelper.abs(i);
 				int zDistAbs = MathHelper.abs(j);
 
-				if(xDistAbs == 3 && zDistAbs == 3) continue;
-				if(xDistAbs != 3 && zDistAbs != 3) continue;
+				if (xDistAbs == 3 && zDistAbs == 3) continue;
+				if (xDistAbs != 3 && zDistAbs != 3) continue;
 
 				placeLeavesBlock(world, placer, random, pos.add(i, y - 2, j));
 			}
 		}
 
-		for(int i = -2; i <= 2; i += 2) {
-			for(int j = -2; j <= 2; j += 2) {
+		for (int i = -2; i <= 2; i += 2) {
+			for (int j = -2; j <= 2; j += 2) {
 				int xDistAbs = MathHelper.abs(i);
 				int zDistAbs = MathHelper.abs(j);
 
-				if(xDistAbs != 2 && zDistAbs != 2) continue;
+				if (xDistAbs != 2 && zDistAbs != 2) continue;
 
 				fillCuboid(world, placer, random, pos.add(i, y - 3, j), this.leavesProvider, 0, 2, 0);
 			}
 		}
 
-		for(int i = -1; i <= 1; i += 2) {
-			for(int j = -1; j <= 1; j += 2) {
+		for (int i = -1; i <= 1; i += 2) {
+			for (int j = -1; j <= 1; j += 2) {
 				fillCuboid(world, placer, random, pos.add(i, y - 4, j), this.leavesProvider, 0, 2, 0);
 			}
 		}
 
 		// place upper leaves
-		if(random.nextFloat() < this.horizontalTopPetalChance) {
+		if (random.nextFloat() < this.horizontalTopPetalChance) {
 			// horizontal leaves
 			for (Direction direction : SpecterMath.HORIZONTAL_DIRECTIONS) {
 				BlockPos p = pos.add(0, y - 1, 0).offset(direction, radius);
@@ -204,7 +204,7 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 			}
 		}
 
-		if(random.nextFloat() < this.diagonalTopPetalChance) {
+		if (random.nextFloat() < this.diagonalTopPetalChance) {
 			// corner leaves
 			for (Direction direction : SpecterMath.HORIZONTAL_DIRECTIONS) {
 				Direction perpDir = direction.rotateClockwise(Direction.Axis.Y);

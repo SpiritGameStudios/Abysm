@@ -60,7 +60,7 @@ public abstract class UnderwaterPlantBlock extends PlantBlock {
 		Random random
 	) {
 		BlockState newState = super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
-		if(!newState.isAir()) {
+		if (!newState.isAir()) {
 			if (state.get(WATERLOGGED)) {
 				tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}

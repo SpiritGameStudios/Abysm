@@ -4,8 +4,8 @@ import dev.spiritstudios.abysm.data.variant.AbstractEntityVariant;
 import net.minecraft.registry.entry.RegistryEntry;
 
 /**
- * @see AbstractEntityVariant
  * @param <T> Child of {@link AbstractEntityVariant} type for your entity
+ * @see AbstractEntityVariant
  */
 public interface Variantable<T extends AbstractEntityVariant> {
 	// TODO - possible DRY by accepting datatracker in get/set variant int ids?

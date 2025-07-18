@@ -28,12 +28,12 @@ public class BloomshroomGoopBlock extends WaterloggableTranslucentBlock {
 
 		boolean waterlogged = state.get(WATERLOGGED, false);
 
-		for(Direction direction : DIRECTIONS) {
+		for (Direction direction : DIRECTIONS) {
 			BlockPos adjPos = pos.offset(direction);
 			BlockState adjState = world.getBlockState(adjPos);
 
-			if(!adjState.isSideSolid(world, adjPos, direction.getOpposite(), SideShapeType.FULL)) {
-				if(random.nextInt(waterlogged ? 2 : 4) == 0) {
+			if (!adjState.isSideSolid(world, adjPos, direction.getOpposite(), SideShapeType.FULL)) {
+				if (random.nextInt(waterlogged ? 2 : 4) == 0) {
 					double x = pos.getX() + random.nextFloat();
 					double y = pos.getY() + random.nextFloat();
 					double z = pos.getZ() + random.nextFloat();
@@ -43,7 +43,7 @@ public class BloomshroomGoopBlock extends WaterloggableTranslucentBlock {
 					double vz = random.nextGaussian() * (waterlogged ? 0.015 : 0.008);
 
 					Vec3i vector = direction.getVector();
-					switch(direction.getAxis()) {
+					switch (direction.getAxis()) {
 						case X -> {
 							x = pos.getX() + 0.5F + 0.5F * vector.getX();
 							vx *= 0.1F;

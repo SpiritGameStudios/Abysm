@@ -95,8 +95,8 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 				float g = 6.0F / height;
 
 				for (float theta = 0.0F; theta < MathHelper.PI * 2; theta += g) {
-					int i = (int)(MathHelper.cos(theta) * height);
-					int j = (int)(MathHelper.sin(theta) * height);
+					int i = (int) (MathHelper.cos(theta) * height);
+					int j = (int) (MathHelper.sin(theta) * height);
 					if (canGenerateOrLava(world, pos.add(i, 0, j))) {
 						return false;
 					}

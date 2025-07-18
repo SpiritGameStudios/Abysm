@@ -31,7 +31,7 @@ public class AbysmItemGroupProvider extends SpecterItemGroupProvider {
 		).forEach(pair -> {
 			ItemStack stack = new ItemStack(pair.value().asItem());
 			if (!stack.isEmpty()) {
-				if(stack.isOf(AbysmItems.LAPIS_BULB)) return; // avoid registering this item twice.
+				if (stack.isOf(AbysmItems.LAPIS_BULB)) return; // avoid registering this item twice.
 				items.add(stack);
 			}
 		});

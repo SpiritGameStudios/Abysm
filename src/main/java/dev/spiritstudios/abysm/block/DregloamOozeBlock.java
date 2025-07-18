@@ -23,7 +23,7 @@ public class DregloamOozeBlock extends Block {
 	protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
 		BlockPos downPos = pos.down();
 		BlockState downState = world.getBlockState(downPos);
-		if(downState.isOf(AbysmBlocks.DREGLOAM)) {
+		if (downState.isOf(AbysmBlocks.DREGLOAM)) {
 			world.setBlockState(downPos, AbysmBlocks.OOZING_DREGLOAM.getDefaultState());
 		}
 	}

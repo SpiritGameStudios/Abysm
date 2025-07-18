@@ -30,7 +30,7 @@ public class OrefurlFeature extends Feature<OrefurlFeature.Config> {
 
 		BlockPos targetPos = originPos;
 
-		if(!world.getBlockState(targetPos).isOf(Blocks.WATER)) {
+		if (!world.getBlockState(targetPos).isOf(Blocks.WATER)) {
 			return false;
 		}
 
@@ -68,7 +68,8 @@ public class OrefurlFeature extends Feature<OrefurlFeature.Config> {
 		return placed > 0;
 	}
 
-	public record Config(BlockStateProvider orefurlStateProvider, BlockStateProvider orefurlPlantStateProvider, IntProvider maxHeightProvider) implements FeatureConfig {
+	public record Config(BlockStateProvider orefurlStateProvider, BlockStateProvider orefurlPlantStateProvider,
+						 IntProvider maxHeightProvider) implements FeatureConfig {
 		public static final Codec<OrefurlFeature.Config> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
 					BlockStateProvider.TYPE_CODEC.fieldOf("orefurl_provider").forGetter(OrefurlFeature.Config::orefurlStateProvider),

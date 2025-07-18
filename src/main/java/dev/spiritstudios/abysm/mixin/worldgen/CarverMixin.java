@@ -24,13 +24,13 @@ public abstract class CarverMixin<C extends CarverConfig> {
 
 	@Inject(method = "carveAtPoint", at = @At("HEAD"), cancellable = true)
 	private void blockCarving(CarverContext context, C config, Chunk chunk, Function<BlockPos, RegistryEntry<Biome>> posToBiome, CarvingMask mask, BlockPos.Mutable pos, BlockPos.Mutable tmp, AquiferSampler aquiferSampler, MutableBoolean replacedGrassy, CallbackInfoReturnable<Boolean> cir) {
-		DensityFunctionWrapper sampler = ((CarverContextDuckInterface)context).abysm$getSampler();
+		DensityFunctionWrapper sampler = ((CarverContextDuckInterface) context).abysm$getSampler();
 		// only sample if needed (i.e. if the sampler has been set for this chunk's CarverContext)
-		if(sampler != null) {
+		if (sampler != null) {
 			double density = sampler.sample(pos);
 
 			// do not carve inside of shell caves
-			if(density >= 1.0) {
+			if (density >= 1.0) {
 				cir.setReturnValue(false);
 
 				// DEBUG: place glass

@@ -49,7 +49,7 @@ public class BloomshroomSprigsBlock extends UnderwaterPlantBlock {
 
 		boolean waterlogged = state.get(WATERLOGGED, false);
 
-		if(random.nextInt(waterlogged ? 2 : 5) == 0) {
+		if (random.nextInt(waterlogged ? 2 : 5) == 0) {
 			Vec3d offset = state.getModelOffset(pos);
 			double x = pos.getX() + offset.x + 0.1 + 0.8 * random.nextFloat();
 			double y = pos.getY() + offset.y + 0.15 + 0.25 * random.nextFloat();

@@ -41,7 +41,7 @@ public class AbysmLootTableModifications {
 			RegistryWrapper.Impl<Biome> impl = wrapperLookup.getOrThrow(RegistryKeys.BIOME);
 
 			// find the pool containing lily pads (by default this is the only pool, but check anyway just in case other mods add bonus pools)
-			if(poolContainsItemAsDirectChild(pool, ID_LILY_PAD)) {
+			if (poolContainsItemAsDirectChild(pool, ID_LILY_PAD)) {
 				// add items to pool
 				pool.with(biomeDependantLootTable(impl, FLORAL_REEF_JUNK, 50, AbysmBiomes.FLORAL_REEF));
 			}
@@ -51,7 +51,7 @@ public class AbysmLootTableModifications {
 	@SafeVarargs
 	public static LootTableEntry.Builder<?> biomeDependantLootTable(RegistryWrapper.Impl<Biome> impl, RegistryKey<LootTable> lootTableKey, int weight, RegistryKey<Biome>... biomeKeys) {
 		ImmutableList.Builder<RegistryEntry.Reference<Biome>> biomes = ImmutableList.builder();
-		for(RegistryKey<Biome> biomeKey : biomeKeys) {
+		for (RegistryKey<Biome> biomeKey : biomeKeys) {
 			impl.getOptional(biomeKey).ifPresent(biomes::add);
 		}
 
@@ -69,13 +69,13 @@ public class AbysmLootTableModifications {
 	}
 
 	public static boolean poolContainsItemAsDirectChild(LootPool.Builder pool, Identifier itemIdentifier) {
-		List<LootPoolEntry> currentEntries = ((LootPoolBuilderAccessor)pool).abysm$getEntries().build();
+		List<LootPoolEntry> currentEntries = ((LootPoolBuilderAccessor) pool).abysm$getEntries().build();
 
-		for(LootPoolEntry entry : currentEntries) {
-			if(entry instanceof ItemEntry itemEntry) {
-				RegistryEntry<Item> ire = ((ItemEntryAccessor)itemEntry).abysm$getItem();
+		for (LootPoolEntry entry : currentEntries) {
+			if (entry instanceof ItemEntry itemEntry) {
+				RegistryEntry<Item> ire = ((ItemEntryAccessor) itemEntry).abysm$getItem();
 
-				if(ire.matchesId(itemIdentifier)) {
+				if (ire.matchesId(itemIdentifier)) {
 					return true;
 				}
 			}
@@ -86,7 +86,7 @@ public class AbysmLootTableModifications {
 
 	public static void registerModify(RegistryKey<LootTable> registryKey, ModifyNoKey modifyNoKey) {
 		registerModify((key, builder, source, wrapperLookup) -> {
-			if(registryKey.equals(key)) {
+			if (registryKey.equals(key)) {
 				modifyNoKey.modify(builder, source, wrapperLookup);
 			}
 		});

@@ -58,7 +58,7 @@ public class BloomedFloropumiceBlock extends Block implements Fertilizable {
 	private static boolean stayAlive(BlockState state, WorldView world, BlockPos pos) {
 		BlockPos upPos = pos.up();
 		FluidState fluidState = world.getFluidState(upPos);
-		if(fluidState.isIn(FluidTags.WATER)) {
+		if (fluidState.isIn(FluidTags.WATER)) {
 			return true;
 		} else {
 			BlockState blockState = world.getBlockState(upPos);

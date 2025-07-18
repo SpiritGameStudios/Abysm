@@ -34,12 +34,12 @@ public class DensitySphere implements DensityBlob {
 	public double sampleDensity(int x, int y, int z) {
 		// return 0 if outside outer radius, 1 if inside inner radius, and a smooth gradient between
 		double innerSd = this.sampleSdf(x, y, z);
-		if(innerSd <= 0.0) {
+		if (innerSd <= 0.0) {
 			// return greater than 1.0 further within inner radius
 			return 1.0 - innerSd;
 		} else {
 			double outerSd = innerSd - this.thickness;
-			if(outerSd >= 0.0) {
+			if (outerSd >= 0.0) {
 				// return 0.0 if outside outer radius
 				return 0.0;
 			} else {

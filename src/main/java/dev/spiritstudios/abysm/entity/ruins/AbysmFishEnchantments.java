@@ -47,7 +47,7 @@ public class AbysmFishEnchantments {
 
 		register(registerable, JAW, JAW_ID, EntityAttributes.ATTACK_DAMAGE, 2);
 		register(registerable, SHELL, SHELL_ID, EntityAttributes.ARMOR, 10);
-		register(registerable, JET, JET_ID,  EntityAttributes.MOVEMENT_SPEED, 0.7);
+		register(registerable, JET, JET_ID, EntityAttributes.MOVEMENT_SPEED, 0.7);
 		register(registerable, OBFUSCATED, OBFUSCATED_ID, EntityAttributes.LUCK, 1);
 	}
 }

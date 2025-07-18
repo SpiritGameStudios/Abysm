@@ -65,19 +65,19 @@ public class BloomshroomTrunkPlacer extends TrunkPlacer {
 			this.getAndSetState(world, replacer, random, startPos.up(i), config);
 		}
 
-		for(Direction direction : SpecterMath.HORIZONTAL_DIRECTIONS) {
+		for (Direction direction : SpecterMath.HORIZONTAL_DIRECTIONS) {
 			BlockPos p = startPos.offset(direction);
-			if(this.getAndSetState(world, replacer, random, p, config)) {
+			if (this.getAndSetState(world, replacer, random, p, config)) {
 				int downAmount = 1 + random.nextInt(2);
-				for(int i = 1; i <= downAmount; i++) {
+				for (int i = 1; i <= downAmount; i++) {
 					boolean placed = this.getAndSetState(world, replacer, random, p.down(i), config);
-					if(!placed) break;
+					if (!placed) break;
 				}
 
 				int upAmount = random.nextInt(2);
-				for(int i = 1; i <= upAmount; i++) {
+				for (int i = 1; i <= upAmount; i++) {
 					boolean placed = this.getAndSetState(world, replacer, random, p.up(i), config);
-					if(!placed) break;
+					if (!placed) break;
 				}
 			}
 		}
@@ -85,15 +85,15 @@ public class BloomshroomTrunkPlacer extends TrunkPlacer {
 		// leaves
 		BlockPos petalStart = startPos.up(height - petalOffset.get(random));
 
-		for(int dx = -1; dx <= 1; dx ++) {
-			for(int dz = -1; dz <= 1; dz++) {
-				if(dx == 0 && dz == 0) continue;
+		for (int dx = -1; dx <= 1; dx++) {
+			for (int dz = -1; dz <= 1; dz++) {
+				if (dx == 0 && dz == 0) continue;
 
 				boolean isCorner = dx != 0 && dz != 0;
-				if(!isCorner || random.nextFloat() < 0.4F) {
+				if (!isCorner || random.nextFloat() < 0.4F) {
 					this.getAndSetPetal(world, replacer, random, petalStart.add(dx, 0, dz));
 				}
-				if(!isCorner && random.nextFloat() < 0.3F) {
+				if (!isCorner && random.nextFloat() < 0.3F) {
 					this.getAndSetPetal(world, replacer, random, petalStart.add(dx, -1, dz));
 				}
 			}

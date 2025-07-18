@@ -9,7 +9,8 @@ import net.minecraft.world.biome.Biome;
 public class PressureFinder {
 	/**
 	 * Gets the pressure at the given position according to the biome
-	 * @param world the world
+	 *
+	 * @param world    the world
 	 * @param blockPos the blockPos
 	 * @return a float for the pressure, 0 being "no pressure" (most biomes) and 200 being "the player will die now"
 	 */

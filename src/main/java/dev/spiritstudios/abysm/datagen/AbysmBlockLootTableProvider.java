@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 
 public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 
-	protected static final float[] SAPLING_DROP_CHANCE = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
+	protected static final float[] SAPLING_DROP_CHANCE = new float[] {0.05F, 0.0625F, 0.083333336F, 0.1F};
 
 	public AbysmBlockLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
 		super(dataOutput, registryLookup);
@@ -182,7 +182,7 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 	}
 
 	private void forEach(Consumer<Block> consumer, Block... blocks) {
-		for(Block block : blocks) {
+		for (Block block : blocks) {
 			consumer.accept(block);
 		}
 	}
@@ -227,7 +227,7 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 		RegistryWrapper.Impl<Enchantment> impl = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
 		LootTable.Builder builder = LootTable.builder();
 
-		if(isHead) {
+		if (isHead) {
 			// add guaranteed bulb drop
 			builder = builder.pool(LootPool.builder()
 				.with(
@@ -272,27 +272,27 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 	}
 
 	private void addLootForFamilies(BlockFamily... families) {
-		for(BlockFamily family : families) {
+		for (BlockFamily family : families) {
 			addLootForFamily(family);
 		}
 	}
 
 	private void addLootForFamily(BlockFamily family) {
 		this.dropSelf(family.getBaseBlock());
-		for(BlockFamily.Variant variant : BlockFamily.Variant.values()) {
-			if(variant != BlockFamily.Variant.DOOR && variant != BlockFamily.Variant.SLAB) {
+		for (BlockFamily.Variant variant : BlockFamily.Variant.values()) {
+			if (variant != BlockFamily.Variant.DOOR && variant != BlockFamily.Variant.SLAB) {
 				Block block = family.getVariant(variant);
-				if(block != null) {
+				if (block != null) {
 					this.dropSelf(block);
 				}
 			}
 		}
 		Block door = family.getVariant(BlockFamily.Variant.DOOR);
-		if(door != null) {
+		if (door != null) {
 			this.addDrop(door, this.doorDrops(door));
 		}
 		Block slab = family.getVariant(BlockFamily.Variant.SLAB);
-		if(slab != null) {
+		if (slab != null) {
 			this.addDrop(slab, this.slabDrops(slab));
 		}
 	}

@@ -57,6 +57,6 @@ public abstract class ServerChunkLoadingManagerMixin extends VersionedChunkStora
 		boolean dsync,
 		CallbackInfo ci
 	) {
-		((NoiseConfigDuckInterface)(Object)this.noiseConfig).abysm$attachBonusFunctions(world);
+		((NoiseConfigDuckInterface) (Object) this.noiseConfig).abysm$attachBonusFunctions(world);
 	}
 }

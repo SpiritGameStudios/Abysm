@@ -86,7 +86,7 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 	}
 
 	private void putBlocks(MetatagBuilder<Item, Float> builder, float value, Block... blocks) {
-		for(Block block : blocks) {
+		for (Block block : blocks) {
 			putBlock(builder, block, value);
 		}
 	}

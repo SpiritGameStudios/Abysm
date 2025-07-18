@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
  *     </ul>
  *     </li>
  * </ul>
+ *
  * @see dev.spiritstudios.abysm.registry.AbysmRegistries
  * @see AbysmEntityVariants
  * @see BloomrayEntityVariant

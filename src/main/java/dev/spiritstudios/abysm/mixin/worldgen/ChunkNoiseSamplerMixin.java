@@ -44,11 +44,10 @@ public abstract class ChunkNoiseSamplerMixin implements ChunkNoiseSamplerDuckInt
 		AquiferSampler.FluidLevelSampler fluidLevelSampler,
 		Blender blender,
 		CallbackInfo ci,
-		@Local(ordinal = 0) List<ChunkNoiseSampler.BlockStateSampler> stateSamplerList)
-	{
+		@Local(ordinal = 0) List<ChunkNoiseSampler.BlockStateSampler> stateSamplerList) {
 		ShellCaveSampler shellCaveSampler = ShellCaveSampler.get(beardifying);
 		// only add block state sampler if there are shell caves to be sampling
-		if(shellCaveSampler != null) {
+		if (shellCaveSampler != null) {
 			NoiseConfigAttachment noiseConfigAttachment = NoiseConfigAttachment.get(noiseConfig);
 			// add a block state sampler to the start of the list
 			stateSamplerList.add(ShellCaveSampler.createBlockStateSampler(noiseConfigAttachment, this::getActualDensityFunction, this.beardifying, chunkGeneratorSettings));
@@ -74,7 +73,7 @@ public abstract class ChunkNoiseSamplerMixin implements ChunkNoiseSamplerDuckInt
 
 		NoiseConfigAttachment noiseConfigAttachment = NoiseConfigAttachment.get(noiseConfig);
 		DensityFunction function = noiseConfigAttachment.getBeardifierAddition();
-		if(function == null) {
+		if (function == null) {
 			return ogFunction;
 		} else {
 			return DensityFunctionTypes.add(ogFunction, function);
@@ -84,9 +83,9 @@ public abstract class ChunkNoiseSamplerMixin implements ChunkNoiseSamplerDuckInt
 	@Inject(method = "getActualDensityFunctionImpl", at = @At("HEAD"), cancellable = true)
 	private void getShellCaveFunction(DensityFunction function, CallbackInfoReturnable<DensityFunction> cir) {
 		// replace the dummy shell cave function with its actual implementation
-		if(function == AbysmDensityFunctionTypes.ShellCaveDummy.INSTANCE) {
+		if (function == AbysmDensityFunctionTypes.ShellCaveDummy.INSTANCE) {
 			ShellCaveSampler sampler = ShellCaveSampler.get(this.beardifying);
-			if(sampler != null) {
+			if (sampler != null) {
 				cir.setReturnValue(sampler);
 			}
 		}
@@ -96,7 +95,7 @@ public abstract class ChunkNoiseSamplerMixin implements ChunkNoiseSamplerDuckInt
 	public @Nullable DensityFunction abysm$getShellCaveFunction(NoiseConfig noiseConfig) {
 		NoiseConfigAttachment noiseConfigAttachment = NoiseConfigAttachment.get(noiseConfig);
 		DensityFunction densityFunction = noiseConfigAttachment.getRuinsShellCave();
-		if(densityFunction == null) {
+		if (densityFunction == null) {
 			return null;
 		} else {
 			return densityFunction.apply(this::getActualDensityFunction);

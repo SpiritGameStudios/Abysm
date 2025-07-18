@@ -30,7 +30,7 @@ public class ShellCaveSampler implements AbysmDensityFunctionTypes.ShellCave, De
 		).forEach(structureStart -> structureStart.getChildren().forEach(piece -> {
 			// get each relevant piece
 			if (piece instanceof DeepSeaRuinsGenerator.SphereCave sphereCave) {
-				if(piece.getBoundingBox().intersectsXZ(
+				if (piece.getBoundingBox().intersectsXZ(
 					pos.getStartX(),
 					pos.getStartZ(),
 					pos.getEndX(),
@@ -58,12 +58,12 @@ public class ShellCaveSampler implements AbysmDensityFunctionTypes.ShellCave, De
 	@Override
 	public double sampleDensity(int x, int y, int z) {
 		// sample a density from the objects. when far from objects, this will be 0.0
-		if(this.densityBlobs.isEmpty()) {
+		if (this.densityBlobs.isEmpty()) {
 			return 0.0;
 		}
 
 		double totalDensity = 0.0;
-		for(DensityBlob object : this.densityBlobs) {
+		for (DensityBlob object : this.densityBlobs) {
 			totalDensity += object.sampleDensity(x, y, z);
 		}
 		return totalDensity;
@@ -85,7 +85,7 @@ public class ShellCaveSampler implements AbysmDensityFunctionTypes.ShellCave, De
 
 	@Nullable
 	public static ShellCaveSampler get(DensityFunctionTypes.Beardifying structureWeightSampler) {
-		if(structureWeightSampler instanceof StructureWeightSamplerDuckInterface duck) {
+		if (structureWeightSampler instanceof StructureWeightSamplerDuckInterface duck) {
 			return duck.abysm$getShellCaveSampler();
 		} else {
 			return null;
@@ -99,7 +99,7 @@ public class ShellCaveSampler implements AbysmDensityFunctionTypes.ShellCave, De
 		DensityFunction ruinsSediment = appliedNCA.getRuinsSedimentNoise();
 		DensityFunction ruinsCavePillars = appliedNCA.getRuinsShellCaveWithPillars();
 
-		if(ruinsSediment == null || ruinsCavePillars == null) {
+		if (ruinsSediment == null || ruinsCavePillars == null) {
 			return pos -> null;
 		} else {
 			BlockState water = Blocks.WATER.getDefaultState();
@@ -109,15 +109,15 @@ public class ShellCaveSampler implements AbysmDensityFunctionTypes.ShellCave, De
 			return pos -> {
 				double amountInsideShell = ruinsCavePillars.sample(pos) - 1.0;
 
-				if(amountInsideShell <= 0.0) {
+				if (amountInsideShell <= 0.0) {
 					return null;
 				} else {
 					double amountPastShell = amountInsideShell - 3.5;
-					if(amountPastShell <= 0.0) {
+					if (amountPastShell <= 0.0) {
 						return shell;
 					} else {
 						double beard = beardifying.sample(pos);
-						if(beard > 0.5) {
+						if (beard > 0.5) {
 							return shell;
 						} else {
 							double d = ruinsSediment.sample(pos) + beard;

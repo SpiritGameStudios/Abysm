@@ -60,7 +60,7 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 
 	// Hiding crown type
 	// Uses this hard-coded enum instead of a block codec to hopefully reduce lag with the block finding AI
-	public enum HideableCrownType implements StringIdentifiable{
+	public enum HideableCrownType implements StringIdentifiable {
 		SODALITE_CROWN(AbysmBlocks.BLOOMING_SODALITE_CROWN, "sodalite"),
 		ANYOLITE_CROWN(AbysmBlocks.BLOOMING_ANYOLITE_CROWN, "anyolite"),
 		MELILITE_CROWN(AbysmBlocks.BLOOMING_MELILITE_CROWN, "melilite");

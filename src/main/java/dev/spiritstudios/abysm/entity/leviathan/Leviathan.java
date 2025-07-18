@@ -97,7 +97,7 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 		super.onSpawnPacket(packet);
 		var parts = this.getEntityParts();
 
-		for(int i = 0; i < parts.size(); ++i) {
+		for (int i = 0; i < parts.size(); ++i) {
 			parts.get(i).setId(i + packet.getEntityId() + 1);
 		}
 	}

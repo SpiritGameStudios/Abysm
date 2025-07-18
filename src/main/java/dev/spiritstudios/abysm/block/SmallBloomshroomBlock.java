@@ -102,7 +102,7 @@ public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, W
 		Random random
 	) {
 		BlockState newState = super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
-		if(!newState.isAir()) {
+		if (!newState.isAir()) {
 			if (state.get(WATERLOGGED)) {
 				tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
 			}
@@ -136,7 +136,7 @@ public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, W
 
 		boolean waterlogged = state.get(WATERLOGGED, false);
 
-		if(random.nextInt(waterlogged ? 1 : 4) == 0) {
+		if (random.nextInt(waterlogged ? 1 : 4) == 0) {
 			Vec3d offset = state.getModelOffset(pos);
 			double x = pos.getX() + offset.x + 0.45 + 0.1 * random.nextFloat();
 			double y = pos.getY() + offset.y + 0.6 + 0.1 * random.nextFloat();

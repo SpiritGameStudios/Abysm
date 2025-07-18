@@ -131,41 +131,41 @@ public class AbysmRecipeProvider extends FabricRecipeProvider {
 
 			private void scFamily(BlockFamily family, int multiplier, ItemConvertible... materials) {
 				Block stairs = family.getVariant(BlockFamily.Variant.STAIRS);
-				if(stairs != null) {
+				if (stairs != null) {
 					scBlocks(stairs, multiplier, materials);
 				}
 				Block slab = family.getVariant(BlockFamily.Variant.SLAB);
-				if(slab != null) {
+				if (slab != null) {
 					scBlocks(slab, 2 * multiplier, materials);
 				}
 				Block wall = family.getVariant(BlockFamily.Variant.WALL);
-				if(wall != null) {
+				if (wall != null) {
 					scWalls(wall, multiplier, materials);
 				}
 				Block polished = family.getVariant(BlockFamily.Variant.POLISHED);
-				if(polished != null) {
+				if (polished != null) {
 					scBlocks(polished, multiplier, materials);
 				}
 				Block cut = family.getVariant(BlockFamily.Variant.CUT);
-				if(cut != null) {
+				if (cut != null) {
 					scBlocks(cut, multiplier, materials);
 				}
 				Block chiseled = family.getVariant(BlockFamily.Variant.CHISELED);
-				if(chiseled != null) {
+				if (chiseled != null) {
 					scBlocks(chiseled, multiplier, materials);
 				}
 			}
 
 			private void scBlocks(ItemConvertible result, int amount, ItemConvertible... materials) {
 				// use this for non-walls
-				for(ItemConvertible material : materials) {
+				for (ItemConvertible material : materials) {
 					scBuildingBlock(result, material, amount);
 				}
 			}
 
 			private void scWalls(ItemConvertible result, int amount, ItemConvertible... materials) {
 				// use this for walls
-				for(ItemConvertible material : materials) {
+				for (ItemConvertible material : materials) {
 					scDecoration(result, material, amount);
 				}
 			}

@@ -139,7 +139,6 @@ public class AbysmTagProviders {
 				);
 
 
-
 			getOrCreateTagBuilder(BlockTags.DIRT)
 				.add(
 					AbysmBlocks.DREGLOAM,
@@ -286,7 +285,7 @@ public class AbysmTagProviders {
 
 
 		public void addFamiliesToTag(TagKey<Block> tag, BlockFamily... families) {
-			for(BlockFamily family : families) {
+			for (BlockFamily family : families) {
 				addFamilyToTag(family, tag);
 			}
 		}
@@ -303,13 +302,13 @@ public class AbysmTagProviders {
 			}).toList();
 
 			builder.add(family.getBaseBlock());
-			for(Block block : blocksSorted) {
+			for (Block block : blocksSorted) {
 				builder.add(block);
 			}
 		}
 
 		public void addTagsForFamilies(boolean isWooden, boolean isStone, BlockFamily... families) {
-			for(BlockFamily family : families) {
+			for (BlockFamily family : families) {
 				addTagsForFamily(family, isWooden, isStone);
 			}
 		}
@@ -332,7 +331,7 @@ public class AbysmTagProviders {
 
 		public void addBlockToTags(BlockFamily family, BlockFamily.Variant variant, TagKey<Block> tag) {
 			Block block = family.getVariant(variant);
-			if(block != null) {
+			if (block != null) {
 				getOrCreateTagBuilder(tag).add(block);
 			}
 		}
@@ -342,7 +341,7 @@ public class AbysmTagProviders {
 		}
 
 		public void addBlockToTags(@Nullable Block block, boolean isWooden, TagKey<Block> baseTag, TagKey<Block> woodTag) {
-			if(block != null) {
+			if (block != null) {
 				getOrCreateTagBuilder(baseTag).add(block);
 				if (isWooden) {
 					getOrCreateTagBuilder(woodTag).add(block);
@@ -355,12 +354,12 @@ public class AbysmTagProviders {
 		}
 
 		public void addBlockToTags(@Nullable Block block, boolean isWooden, boolean isStone, TagKey<Block> baseTag, TagKey<Block> woodTag, TagKey<Block> stoneTag) {
-			if(block != null) {
+			if (block != null) {
 				getOrCreateTagBuilder(baseTag).add(block);
 				if (isWooden) {
 					getOrCreateTagBuilder(woodTag).add(block);
 				}
-				if(isStone) {
+				if (isStone) {
 					getOrCreateTagBuilder(stoneTag).add(block);
 				}
 			}

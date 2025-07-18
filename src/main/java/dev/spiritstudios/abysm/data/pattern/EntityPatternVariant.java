@@ -21,13 +21,13 @@ import java.util.stream.Stream;
 /**
  * The data-drivable record which contains texture path information for Entity Patterns/entity renderers to use.
  *
- * @see dev.spiritstudios.abysm.entity.pattern.EntityPattern
- *
  * @param patternPath The pattern(texture to overlay on the model) path
  * @param baseTexture The base texture for the model - if empty, the default entity texture is used instead
- * @param colorable If the pattern is meant to be colored with code(default), or has pre-defined colors - if empty, defaults to true
+ * @param colorable   If the pattern is meant to be colored with code(default), or has pre-defined colors - if empty, defaults to true
+ * @see dev.spiritstudios.abysm.entity.pattern.EntityPattern
  */
-public record EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, Optional<Identifier> baseTexture, boolean colorable) {
+public record EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath,
+								   Optional<Identifier> baseTexture, boolean colorable) {
 	// TODO (unimportant) - Actually impl. base texture & colorable codec entries in required places
 	public static final Codec<EntityPatternVariant> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(

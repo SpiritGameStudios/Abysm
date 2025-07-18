@@ -34,11 +34,11 @@ public class OozingDregloamBlock extends Block {
 	public static boolean stayAlive(BlockState state, WorldView world, BlockPos pos) {
 		BlockPos upPos = pos.up();
 		FluidState fluidState = world.getFluidState(upPos);
-		if(fluidState.isIn(FluidTags.WATER)) {
+		if (fluidState.isIn(FluidTags.WATER)) {
 			return true;
 		} else {
 			BlockState blockState = world.getBlockState(upPos);
-			if(blockState.isOf(AbysmBlocks.DREGLOAM_OOZE)) {
+			if (blockState.isOf(AbysmBlocks.DREGLOAM_OOZE)) {
 				return true;
 			} else {
 				int i = ChunkLightProvider.getRealisticOpacity(state, blockState, Direction.UP, blockState.getOpacity());

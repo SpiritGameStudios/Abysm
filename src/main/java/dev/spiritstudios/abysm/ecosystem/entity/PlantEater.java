@@ -23,6 +23,7 @@ public interface PlantEater extends EcologicalEntity {
 
 	/**
 	 * It is recommended for implementations to take a maximum of the current ticks until hunger and the provided value
+	 *
 	 * @param ticks Minecraft ticks
 	 * @see dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal
 	 * @see dev.spiritstudios.abysm.entity.ruins.LectorfinEntity#setTicksUntilHunger(int)
