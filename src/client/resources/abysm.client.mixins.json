@@ -21,8 +21,7 @@
     "harpoon.ItemRenderStateAccessor$LayerRenderStateAccessor",
     "harpoon.ItemRenderStateMixin",
     "harpoon.PlayerEntityRendererMixin",
-    "leviathan.ClientPlayNetworkHandlerMixin",
-    "manowar.EntityRenderDispatcherMixin"
+    "leviathan.ClientPlayNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,18 +1,17 @@
 package dev.spiritstudios.abysm.client.render.entity;
 
+import com.google.common.collect.ImmutableList;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.feature.ManOWarTentaclesFeatureRenderer;
 import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
 import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
 import net.minecraft.client.render.Frustum;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.render.entity.state.EntityHitbox;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Box;
 
 public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManOWarRenderState, GarbageBagModel> {
 
@@ -52,13 +51,16 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 		return super.shouldRender(entity, frustum, x, y, z) || frustum.isVisible(entity.getTentacleBox());
 	}
 
-	public static void renderTentacleBox(MatrixStack matrices, VertexConsumer lines, ManOWarRenderState state) {
-		matrices.push();
-		{
-			Vec3d center = state.centerBoxPos;
-			matrices.translate(-center.x, -center.y, -center.z);
-			VertexRendering.drawBox(matrices, lines, state.tentacleBox, 0, 1, 0, 1);
-		}
-		matrices.pop();
+	@Override
+	protected void appendHitboxes(ManOWarEntity entity, ImmutableList.Builder<EntityHitbox> builder, float f) {
+		super.appendHitboxes(entity, builder, f);
+
+		Box tentacleBox = entity.getTentacleBox();
+
+		builder.add(new EntityHitbox(
+			tentacleBox.minX - entity.getX(), tentacleBox.minY - entity.getY(), tentacleBox.minZ - entity.getZ(),
+			tentacleBox.maxX - entity.getX(), tentacleBox.maxY - entity.getY(), tentacleBox.maxZ - entity.getZ(),
+			0, 1, 0
+		));
 	}
 }

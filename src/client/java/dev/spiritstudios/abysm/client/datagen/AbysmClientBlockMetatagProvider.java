@@ -83,7 +83,7 @@ public class AbysmClientBlockMetatagProvider extends MetatagProvider<Block> {
 	}
 
 	private void addBlocksToLayer(MetatagBuilder<Block, BlockRenderLayer> builder, BlockRenderLayer renderLayer, Block... blocks) {
-		for(Block block : blocks) {
+		for (Block block : blocks) {
 			builder.put(block, renderLayer);
 		}
 	}

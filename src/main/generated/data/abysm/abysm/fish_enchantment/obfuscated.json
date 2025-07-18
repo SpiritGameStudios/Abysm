@@ -7,5 +7,5 @@
       "operation": "add_value"
     }
   ],
-  "rendererId": "abysm:obfuscated"
+  "renderer_id": "abysm:obfuscated"
 }

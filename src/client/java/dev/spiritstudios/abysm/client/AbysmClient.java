@@ -58,10 +58,10 @@ public class AbysmClient implements ClientModInitializer {
 			ParticleEffect parameters = payload.particleEffect();
 			Random random = entity.getRandom();
 			for (int i = 0; i < 5; i++) {
-				double d = random.nextGaussian() * 0.02;
-				double e = random.nextGaussian() * 0.02;
-				double f = random.nextGaussian() * 0.02;
-				world.addParticleClient(parameters, entity.getParticleX(1.0), entity.getRandomBodyY() + 0.5, entity.getParticleZ(1.0), d, e, f);
+				double velocityX = random.nextGaussian() * 0.02;
+				double velocityY = random.nextGaussian() * 0.02;
+				double velocityZ = random.nextGaussian() * 0.02;
+				world.addParticleClient(parameters, entity.getParticleX(1.0), entity.getRandomBodyY() + 0.5, entity.getParticleZ(1.0), velocityX, velocityY, velocityZ);
 			}
 		});
 

@@ -5,8 +5,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
-import net.minecraft.component.type.AttributeModifiersComponent;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.network.RegistryByteBuf;
@@ -27,7 +25,7 @@ public record FishEnchantment(List<Entry> modifiers, Identifier rendererId) {
 	public static final Codec<FishEnchantment> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
 				Entry.CODEC.listOf().fieldOf("modifiers").forGetter(component -> component.modifiers),
-				Identifier.CODEC.fieldOf("rendererId").forGetter(component -> component.rendererId)
+				Identifier.CODEC.fieldOf("renderer_id").forGetter(component -> component.rendererId)
 			)
 			.apply(instance, FishEnchantment::new)
 	);
