@@ -67,9 +67,9 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 			AbysmSoundEvents.ENTITY_BLOOMRAY_AMBIENT,
 			SoundTypeBuilder.of()
 				.subtitle("subtitles.abysm.entity.bloomray.ambient")
-				.sound(ofFile("entity/bloomray/ambient_1").volume(0.4F))
-				.sound(ofFile("entity/bloomray/ambient_2").volume(0.4F))
-				.sound(ofFile("entity/bloomray/ambient_3").volume(0.4F))
+				.sound(ofFile("entity/bloomray/ambient1").volume(0.4F))
+				.sound(ofFile("entity/bloomray/ambient2").volume(0.4F))
+				.sound(ofFile("entity/bloomray/ambient3").volume(0.4F))
 				.category(SoundCategory.NEUTRAL)
 		);
 
@@ -82,6 +82,52 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("liquid/splash"))
 				.sound(ofVanillaFile("liquid/splash2"))
 				.category(SoundCategory.BLOCKS)
+		);
+
+		// TODO: Needs custom sounds
+		exporter.add(
+			AbysmSoundEvents.ITEM_HARPOON_LAUNCH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.item.harpoon.launch")
+				.sound(ofVanillaFile("item/trident/throw1"))
+				.sound(ofVanillaFile("item/trident/throw2"))
+		);
+
+		// TODO: Needs custom sounds
+		exporter.add(
+			AbysmSoundEvents.ITEM_HARPOON_HIT_GROUND,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.item.harpoon.hit_ground")
+				.sound(ofVanillaFile("item/trident/ground_impact1").volume(0.9F))
+				.sound(ofVanillaFile("item/trident/ground_impact2").volume(0.9F))
+				.sound(ofVanillaFile("item/trident/ground_impact3").volume(0.9F))
+				.sound(ofVanillaFile("item/trident/ground_impact4").volume(0.9F))
+		);
+
+		// TODO: Needs custom sounds
+		exporter.add(
+			AbysmSoundEvents.ITEM_HARPOON_HIT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.item.harpoon.hit")
+				.sound(ofVanillaFile("item/trident/pierce1"))
+				.sound(ofVanillaFile("item/trident/pierce2"))
+				.sound(ofVanillaFile("item/trident/pierce3"))
+		);
+
+		// TODO: Needs custom sounds
+		exporter.add(
+			AbysmSoundEvents.ITEM_HARPOON_RETURN,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.item.harpoon.return")
+				.sound(ofVanillaFile("item/trident/return1").volume(0.8F))
+				.sound(ofVanillaFile("item/trident/return2").volume(0.8F))
+				.sound(ofVanillaFile("item/trident/return2").volume(0.8F).pitch(0.8F))
+				.sound(ofVanillaFile("item/trident/return2").volume(0.8F).pitch(1.2F))
+				.sound(ofVanillaFile("item/trident/return3").volume(0.8F))
+				// yes, vanilla has these duplicate entries
+				.sound(ofVanillaFile("item/trident/return3").volume(0.8F).pitch(0.8F))
+				.sound(ofVanillaFile("item/trident/return3").volume(0.8F).pitch(0.8F))
+				.sound(ofVanillaFile("item/trident/return3").volume(0.8F).pitch(1.2F))
 		);
 	}
 

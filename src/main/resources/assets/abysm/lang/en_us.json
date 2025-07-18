@@ -154,5 +154,7 @@
 	"config.abysm.abysm.title": "Abysm",
 	"config.abysm.abysm.underwaterSoundFilters": "Underwater Sound Filters",
 	"subtitles.abysm.item.oozeball.apply": "Oozeball splats",
-	"subtitles.abysm.entity.bloomray.ambient": "Bloomray bloops"
+	"subtitles.abysm.entity.bloomray.ambient": "Bloomray bloops",
+	"subtitles.abysm.item.harpoon.launch": "Harpoon launches",
+	"subtitles.abysm.item.harpoon.hit_ground": "Harpoon hits ground"
 }
