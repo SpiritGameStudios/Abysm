@@ -242,7 +242,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			((PersistentProjectileEntityAccessor) this).abysm$invokeSetPierceLevel((byte) (pierceLevel - 1));
 			IntOpenHashSet intOpenHashSet = ((PersistentProjectileEntityAccessor) this).abysm$getPiercedEntities();
 			if (intOpenHashSet == null) {
-				intOpenHashSet = new IntOpenHashSet(5);
+				intOpenHashSet = new IntOpenHashSet(pierceLevel);
 				intOpenHashSet.add(entity.getId());
 				((PersistentProjectileEntityAccessor) this).abysm$setPiercedEntities(intOpenHashSet);
 			} else {
