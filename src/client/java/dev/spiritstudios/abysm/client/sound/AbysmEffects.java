@@ -56,11 +56,12 @@ public class AbysmEffects {
 			new ReverbEffect.Builder()
 				.density(0.5F)
 				.diffusion(1.0F)
-				.gain(0.8F)
+				.gain(0.6F)
+				.gainHF(0.3F)
 				.decayTime(20)
-				.reflectionsGain(1.0F)
+				.reflectionsGain(0.5F)
 				.echoDepth(0.6F)
-				.airAbsorptionGainHF(0.9F)
+				.airAbsorptionGainHF(0.98F)
 				.build()
 		);
 
