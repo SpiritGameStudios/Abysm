@@ -14,11 +14,11 @@ public abstract class PlayerEntityRendererMixin {
 
 	@WrapOperation(method = "getArmPose(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/Hand;)Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"))
 	private static boolean holdHarpoon(ItemStack instance, Item item, Operation<Boolean> original) {
-		return original.call(instance, item) || original.call(instance, AbysmItems.NOOPRAH);
+		return original.call(instance, item) || original.call(instance, AbysmItems.HARPOON);
 	}
 
 	@WrapOperation(method = "getArmPose(Lnet/minecraft/entity/player/PlayerEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/Hand;)Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/CrossbowItem;isCharged(Lnet/minecraft/item/ItemStack;)Z"))
 	private static boolean harpoonAlwaysCharged(ItemStack stack, Operation<Boolean> original) {
-		return stack.isOf(AbysmItems.NOOPRAH) || original.call(stack);
+		return stack.isOf(AbysmItems.HARPOON) || original.call(stack);
 	}
 }

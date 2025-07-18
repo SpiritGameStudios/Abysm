@@ -102,7 +102,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		if (pickupType != PickupPermission.ALLOWED) return super.tryPickup(player);
 
 		ItemStack invStack = player.getInventory().getStack(this.getSlot());
-		if (!invStack.isOf(AbysmItems.NOOPRAH)) return true;
+		if (!invStack.isOf(AbysmItems.HARPOON)) return true;
 
 		HarpoonComponent component = invStack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
 
@@ -127,7 +127,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			}
 			try {
 				ItemStack invStack = owner.getInventory().getStack(this.slot);
-				if (!invStack.isOf(AbysmItems.NOOPRAH) || invStack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).loaded()) {
+				if (!invStack.isOf(AbysmItems.HARPOON) || invStack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).loaded()) {
 					this.discard();
 				}
 			} catch (IndexOutOfBoundsException indexOutOfBoundsException) {

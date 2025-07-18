@@ -3,6 +3,7 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
 	"textures": {
+		"1": "abysm:item/harpoon_arrow",
 		"particle": "abysm:item/harpoon",
 		"main": "abysm:item/harpoon"
 	},
@@ -84,6 +85,32 @@
 				"up": {"uv": [5, 3, 3.75, 1.5], "texture": "#main"},
 				"down": {"uv": [5.75, 3, 4.5, 4.5], "texture": "#main"}
 			}
+		},
+		{
+			"from": [8, 6.5, -12],
+			"to": [11, 6.5, 1],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 5, 9]},
+			"faces": {
+				"north": {"uv": [6.25, 5, 7, 5.75], "texture": "#main"},
+				"east": {"uv": [2.73438, 0, 6.25, 0.75], "texture": "#main"},
+				"south": {"uv": [5.25, 6.25, 6, 7], "texture": "#main"},
+				"west": {"uv": [0, 0.75, 3.51563, 1.5], "texture": "#main"},
+				"up": {"uv": [8, 0, 0, 2.5], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [16, 0, 8, 2.5], "rotation": 90, "texture": "#1"}
+			}
+		},
+		{
+			"from": [9.5, 5, -12],
+			"to": [9.5, 8, 1],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 5, 9]},
+			"faces": {
+				"north": {"uv": [6.25, 5, 7, 5.75], "texture": "#main"},
+				"east": {"uv": [0, 0, 8, 2.5], "texture": "#1"},
+				"south": {"uv": [5.25, 6.25, 6, 7], "texture": "#main"},
+				"west": {"uv": [8, 0, 16, 2.5], "texture": "#1"},
+				"up": {"uv": [0.75, 7.75, 0, 4.23438], "texture": "#main"},
+				"down": {"uv": [1.5, 4.23438, 0.75, 7.75], "texture": "#main"}
+			}
 		}
 	],
 	"gui_light": "front",
@@ -121,6 +148,12 @@
 			"origin": [7, 6, -15],
 			"color": 0,
 			"children": [0, 1, 2, 3, 4, 5]
+		},
+		{
+			"name": "arrow",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [6, 7]
 		}
 	]
 }

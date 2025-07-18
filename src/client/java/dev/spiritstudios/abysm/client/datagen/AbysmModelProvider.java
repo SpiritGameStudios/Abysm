@@ -2,11 +2,22 @@ package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.client.render.HarpoonLoadedProperty;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.client.data.*;
+import net.minecraft.client.data.BlockStateModelGenerator;
+import net.minecraft.client.data.BlockStateVariantMap;
+import net.minecraft.client.data.ItemModelGenerator;
+import net.minecraft.client.data.ItemModels;
+import net.minecraft.client.data.Model;
+import net.minecraft.client.data.ModelIds;
+import net.minecraft.client.data.Models;
+import net.minecraft.client.data.TextureKey;
+import net.minecraft.client.data.TextureMap;
+import net.minecraft.client.data.TexturedModel;
+import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.data.family.BlockFamily;
@@ -17,7 +28,15 @@ import net.minecraft.util.math.Direction;
 
 import java.util.function.BiConsumer;
 
-import static net.minecraft.client.data.BlockStateModelGenerator.*;
+import static net.minecraft.client.data.BlockStateModelGenerator.CrossType;
+import static net.minecraft.client.data.BlockStateModelGenerator.NO_OP;
+import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_180;
+import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_90;
+import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_180;
+import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_270;
+import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_90;
+import static net.minecraft.client.data.BlockStateModelGenerator.createSingletonBlockState;
+import static net.minecraft.client.data.BlockStateModelGenerator.createWeightedVariant;
 
 public class AbysmModelProvider extends FabricModelProvider {
 	// Note - by default, the spore blossom model(used for scabiosa) is upside, which is why this is flipped
@@ -219,7 +238,13 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 			AbysmItems.MUSIC_DISC_RENAISSANCE
 		);
-		generator.register(AbysmItems.NOOPRAH);
+
+		generator.registerCondition(
+			AbysmItems.HARPOON,
+			new HarpoonLoadedProperty(),
+			ItemModels.basic(ModelIds.getItemSubModelId(AbysmItems.HARPOON, "_loaded")),
+			ItemModels.basic(ModelIds.getItemModelId(AbysmItems.HARPOON))
+		);
 	}
 
 	private void registerGenerated(ItemModelGenerator generator, Item... items) {

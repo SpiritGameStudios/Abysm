@@ -13,13 +13,6 @@
     "sound.SourceAccessor",
     "render.WaterSuspendParticleMixin",
     "render.WorldRendererMixin",
-    "harpoon.DrawContextMixin",
-    "harpoon.HeldItemFeatureRendererMixin",
-    "harpoon.ItemModelManagerMixin",
-    "harpoon.ItemRendererMixin",
-    "harpoon.ItemRenderStateAccessor",
-    "harpoon.ItemRenderStateAccessor$LayerRenderStateAccessor",
-    "harpoon.ItemRenderStateMixin",
     "harpoon.PlayerEntityRendererMixin",
     "leviathan.ClientPlayNetworkHandlerMixin"
   ],

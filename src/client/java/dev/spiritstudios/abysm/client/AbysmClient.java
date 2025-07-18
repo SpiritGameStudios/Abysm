@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.AbysmConfig;
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
 import dev.spiritstudios.abysm.client.render.AbysmDebugRenderers;
 import dev.spiritstudios.abysm.client.render.AbysmRenderPipelines;
+import dev.spiritstudios.abysm.client.render.HarpoonLoadedProperty;
 import dev.spiritstudios.abysm.client.render.entity.AbysmEntityLayers;
 import dev.spiritstudios.abysm.client.render.entity.BigFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
@@ -24,6 +25,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.render.item.property.bool.BooleanProperties;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.util.math.random.Random;
@@ -32,6 +34,8 @@ import net.minecraft.world.World;
 public class AbysmClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
+		BooleanProperties.ID_MAPPER.put(Abysm.id("harpoon_loaded"), HarpoonLoadedProperty.CODEC);
+
 		EntityRendererRegistry.register(AbysmEntityTypes.SMALL_FLORAL_FISH, SmallFloralFishEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.BIG_FLORAL_FISH, BigFloralFishEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.BLOOMRAY, BloomrayEntityRenderer::new);

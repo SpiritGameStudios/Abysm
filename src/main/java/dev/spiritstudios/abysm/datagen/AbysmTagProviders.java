@@ -397,14 +397,14 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE)
 				.add(
-					AbysmItems.NOOPRAH
+					AbysmItems.HARPOON
 				);
 			// endregion
 
 			// region abysm item tags
 			getOrCreateTagBuilder(AbysmItemTags.HARPOON_ENCHANTABLE)
 				.add(
-					AbysmItems.NOOPRAH
+					AbysmItems.HARPOON
 				);
 			// endregion
 

@@ -1,11 +1,9 @@
 package dev.spiritstudios.abysm.client.render.entity.harpoon;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.client.mixin.harpoon.ItemRenderStateAccessor;
 import dev.spiritstudios.abysm.client.render.entity.state.HarpoonEntityRenderState;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.item.HarpoonItem;
-import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Frustum;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -13,14 +11,9 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.ProjectileEntityRenderer;
-import net.minecraft.client.render.item.ItemRenderState;
-import net.minecraft.client.render.model.json.Transformation;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Identifier;
@@ -28,11 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Vector3f;
 
 public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntity, HarpoonEntityRenderState> {
 
-	protected static final Identifier TEXTURE = Abysm.id("textures/entity/harpoon.png");
+	protected static final Identifier TEXTURE = Abysm.id("textures/item/harpoon_arrow.png");
 	public static final Identifier CHAINS = Abysm.id("textures/entity/chains.png");
 
 	private static final RenderLayer RENDER_LAYER = RenderLayer.getEntityCutoutNoCull(CHAINS);
@@ -181,51 +173,8 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		}
 
 		BlockPos start = BlockPos.ofFloored(state.handPos);
+
 		state.startLight = LightmapTextureManager.pack(getBlockLight(harpoon, start), getSkyLight(harpoon, start));
-
-		BlockPos end = BlockPos.ofFloored(state.x, state.y, state.z);
-		state.endLight = LightmapTextureManager.pack(getBlockLight(harpoon, end), getSkyLight(harpoon, end));
-	}
-
-	public static void renderInStack(ItemRenderState state, MinecraftClient client, ClientWorld clientWorld, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-		HarpoonEntity harpoon = AbysmEntityTypes.FLYING_HARPOON.create(clientWorld, SpawnReason.COMMAND);
-		if (harpoon == null) {
-			return;
-		}
-		matrices.push();
-
-		applyTransforms(state, matrices);
-		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
-		matrices.translate(0, -0.05, 1.7);
-		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45));
-
-		EntityRenderDispatcher dispatcher = client.getEntityRenderDispatcher();
-		boolean hitboxes = dispatcher.shouldRenderHitboxes();
-		dispatcher.setRenderHitboxes(false);
-		dispatcher.setRenderShadows(false);
-
-		dispatcher.render(harpoon, 0, 0, 0, 1.0F, matrices, vertexConsumers, light);
-
-		if (hitboxes) {
-			dispatcher.setRenderHitboxes(true);
-		}
-		dispatcher.setRenderShadows(true);
-
-		matrices.pop();
-	}
-
-	private static void applyTransforms(ItemRenderState state, MatrixStack matrices) {
-		if (state.isEmpty()) {
-			return;
-		}
-		ItemRenderState.LayerRenderState layerRenderState = ((ItemRenderStateAccessor) state).abysm$invokeGetFirstLayer();
-		Transformation transformation = ((ItemRenderStateAccessor.LayerRenderStateAccessor) layerRenderState).abysm$getTransform();
-		if (transformation == Transformation.IDENTITY) {
-			return;
-		}
-		transformation = new Transformation(transformation.rotation(), transformation.translation().mul(1, new Vector3f()), transformation.scale());
-		boolean leftHand = ((ItemRenderStateAccessor) state).abysm$getDisplayContext().isLeftHand();
-		transformation.apply(leftHand, matrices.peek());
-		matrices.peek().translate(0.5F, 0.5F, 0.5F);
+		state.endLight = getLight(harpoon, tickProgress);
 	}
 }
