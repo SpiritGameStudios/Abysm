@@ -122,7 +122,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		}
 		World world = this.getWorld();
 		if (!world.isClient()) {
-			if (this.inGroundTime <= 0 && this.age % 4 == 0) {
+			if (this.inGroundTime <= 0 && this.age % 2 == 0) {
 				this.playSound(CHAIN_SOUND, 10.0F, 1.05F);
 			}
 			try {
