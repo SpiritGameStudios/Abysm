@@ -4,7 +4,16 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.item.PlaceableOnWaterOrBlockItem;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
-import net.minecraft.block.*;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.AbstractPlantStemBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowerPotBlock;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.PillarBlock;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -177,7 +186,7 @@ public final class AbysmBlocks {
 	// region bloomshroom blocks
 	public static final Block ROSEBLOOMED_FLOROPUMICE = register(
 		"rosebloomed_floropumice",
-		settings -> new BloomedFloropumiceBlock(AbysmConfiguredFeatures.ROSY_BLOOMSHROOM_VEGETATION_BONEMEAL, settings),
+		settings -> new BloomedFloropumiceBlock(AbysmConfiguredFeatures.ROSEBLOOMED_PATCH_BONEMEAL, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.RED)
 			.instrument(NoteBlockInstrument.BASS)
@@ -187,13 +196,13 @@ public final class AbysmBlocks {
 	);
 	public static final Block SUNBLOOMED_FLOROPUMICE = register(
 		"sunbloomed_floropumice",
-		settings -> new BloomedFloropumiceBlock(AbysmConfiguredFeatures.SUNNY_BLOOMSHROOM_VEGETATION_BONEMEAL, settings),
+		settings -> new BloomedFloropumiceBlock(AbysmConfiguredFeatures.SUNBLOOMED_PATCH_BONEMEAL, settings),
 		AbstractBlock.Settings.copy(ROSEBLOOMED_FLOROPUMICE)
 			.mapColor(DyeColor.YELLOW)
 	);
 	public static final Block MALLOWBLOOMED_FLOROPUMICE = register(
 		"mallowbloomed_floropumice",
-		settings -> new BloomedFloropumiceBlock(AbysmConfiguredFeatures.MAUVE_BLOOMSHROOM_VEGETATION_BONEMEAL, settings),
+		settings -> new BloomedFloropumiceBlock(AbysmConfiguredFeatures.MALLOWBLOOMED_PATCH_BONEMEAL, settings),
 		AbstractBlock.Settings.copy(ROSEBLOOMED_FLOROPUMICE)
 			.mapColor(DyeColor.PURPLE)
 	);

@@ -24,7 +24,12 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.*;
+import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.registry.tag.EntityTypeTags;
+import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
@@ -195,6 +200,17 @@ public class AbysmTagProviders {
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.add(AbysmBlocks.BLOOMSHROOM_GOOP);
+
+			getOrCreateTagBuilder(AbysmBlockTags.IS_AIR_OR_WATER)
+				.addOptionalTag(BlockTags.AIR)
+				.add(Blocks.WATER);
+
+			getOrCreateTagBuilder(AbysmBlockTags.OOZE_REPLACEABLE)
+				.add(AbysmBlocks.DREGLOAM);
+
+			getOrCreateTagBuilder(AbysmBlockTags.BLOOMED_FLOROPUMICE_REPLACEABLE)
+				.add(AbysmBlocks.FLOROPUMICE);
+
 
 			getOrCreateTagBuilder(AbysmBlockTags.BLOOMED_FLOROPUMICE)
 				.add(

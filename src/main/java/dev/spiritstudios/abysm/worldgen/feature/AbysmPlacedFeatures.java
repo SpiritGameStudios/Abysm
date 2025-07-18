@@ -18,7 +18,16 @@ import net.minecraft.world.gen.blockpredicate.BlockPredicate;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.feature.PlacedFeatures;
-import net.minecraft.world.gen.placementmodifier.*;
+import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.BlockFilterPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.EnvironmentScanPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.HeightmapPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.PlacementModifier;
+import net.minecraft.world.gen.placementmodifier.RandomOffsetPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.SurfaceThresholdFilterPlacementModifier;
 
 import java.util.List;
 
@@ -42,6 +51,9 @@ public class AbysmPlacedFeatures {
 
 	public static final RegistryKey<PlacedFeature> ORE_GOLDEN_LAZULI_DREGLOAM = ofKey("ore_golden_lazuli_dregloam");
 	public static final RegistryKey<PlacedFeature> ORE_CLAY_DREGLOAM = ofKey("ore_clay_dregloam");
+
+	public static final RegistryKey<PlacedFeature> OOZE_PATCH = ofKey("ooze_patch");
+	public static final RegistryKey<PlacedFeature> MIXED_BLOOMED_PATCH = ofKey("mixed_bloomed_patch");
 
 	public static final PlacementModifier RUINS_CAVE_RANGE = HeightRangePlacementModifier.uniform(YOffset.fixed(-56), YOffset.fixed(56));
 
@@ -155,6 +167,24 @@ public class AbysmPlacedFeatures {
 			CountPlacementModifier.of(22),
 			SquarePlacementModifier.of(),
 			RUINS_CAVE_RANGE,
+			BiomePlacementModifier.of()
+		);
+
+		helper.add(
+			OOZE_PATCH, AbysmConfiguredFeatures.OOZE_PATCH,
+			CountPlacementModifier.of(95),
+			SquarePlacementModifier.of(),
+			RUINS_CAVE_RANGE,
+			EnvironmentScanPlacementModifier.of(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.IS_AIR_OR_WATER, 12),
+			RandomOffsetPlacementModifier.vertically(ConstantIntProvider.create(1)),
+			BiomePlacementModifier.of()
+		);
+
+		helper.add(
+			MIXED_BLOOMED_PATCH, AbysmConfiguredFeatures.MIXED_BLOOMED_PATCH,
+			CountPlacementModifier.of(8),
+			SquarePlacementModifier.of(),
+			HeightmapPlacementModifier.of(Heightmap.Type.OCEAN_FLOOR_WG),
 			BiomePlacementModifier.of()
 		);
 	}

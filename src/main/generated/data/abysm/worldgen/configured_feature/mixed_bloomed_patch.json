@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": {
+      "feature": "abysm:rosebloomed_patch",
+      "placement": []
+    },
+    "features": [
+      {
+        "chance": 0.33333334,
+        "feature": {
+          "feature": "abysm:rosebloomed_patch",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.33333334,
+        "feature": {
+          "feature": "abysm:sunbloomed_patch",
+          "placement": []
+        }
+      },
+      {
+        "chance": 0.33333334,
+        "feature": {
+          "feature": "abysm:mallowbloomed_patch",
+          "placement": []
+        }
+      }
+    ]
+  }
+}

@@ -9,6 +9,9 @@ public final class AbysmBlockTags {
 	public static final TagKey<Block> BLOOMSHROOM_PLANTABLE_ON = of("bloomshroom_plantable_on");
 	// blocks that preserve leaves (like logs), but are not logs themselves. e.g. bloomshroom caps, stems, goop
 	public static final TagKey<Block> ALSO_PRESERVES_LEAVES = of("also_preserves_leaves");
+	public static final TagKey<Block> IS_AIR_OR_WATER = of("is_air_or_water");
+	public static final TagKey<Block> OOZE_REPLACEABLE = of("ooze_replaceable");
+	public static final TagKey<Block> BLOOMED_FLOROPUMICE_REPLACEABLE = of("bloomed_floropumice_replaceable");
 
 	public static final TagKey<Block> BLOOMED_FLOROPUMICE = of("bloomed_floropumice");
 	public static final TagKey<Block> FLOWERY_SPRIGS = of("flowery_sprigs");

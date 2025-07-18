@@ -2,9 +2,15 @@ package dev.spiritstudios.abysm.worldgen.feature;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import dev.spiritstudios.abysm.worldgen.tree.BloomshroomFoliagePlacer;
 import dev.spiritstudios.abysm.worldgen.tree.BloomshroomTrunkPlacer;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LanternBlock;
+import net.minecraft.block.LeafLitterBlock;
+import net.minecraft.block.PillarBlock;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKey;
@@ -16,12 +22,24 @@ import net.minecraft.structure.rule.BlockMatchRuleTest;
 import net.minecraft.structure.rule.RuleTest;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.VerticalSurfaceType;
 import net.minecraft.util.math.floatprovider.UniformFloatProvider;
 import net.minecraft.util.math.intprovider.BiasedToBottomIntProvider;
 import net.minecraft.util.math.intprovider.ConstantIntProvider;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.gen.blockpredicate.BlockPredicate;
-import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.ConfiguredFeatures;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.world.gen.feature.NetherForestVegetationFeatureConfig;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.PlacedFeatures;
+import net.minecraft.world.gen.feature.RandomFeatureConfig;
+import net.minecraft.world.gen.feature.RandomFeatureEntry;
+import net.minecraft.world.gen.feature.RandomPatchFeatureConfig;
+import net.minecraft.world.gen.feature.SimpleBlockFeatureConfig;
+import net.minecraft.world.gen.feature.TreeFeatureConfig;
 import net.minecraft.world.gen.feature.size.TwoLayersFeatureSize;
 import net.minecraft.world.gen.placementmodifier.BlockFilterPlacementModifier;
 import net.minecraft.world.gen.placementmodifier.EnvironmentScanPlacementModifier;
@@ -48,9 +66,9 @@ public class AbysmConfiguredFeatures {
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> BLOOMSHROOM_VEGETATION = ofKey("bloomshroom_vegetation");
 
-	public static final RegistryKey<ConfiguredFeature<?, ?>> ROSY_BLOOMSHROOM_VEGETATION_BONEMEAL = ofKey("rosy_bloomshroom_vegetation_bonemeal");
-	public static final RegistryKey<ConfiguredFeature<?, ?>> SUNNY_BLOOMSHROOM_VEGETATION_BONEMEAL = ofKey("sunny_bloomshroom_vegetation_bonemeal");
-	public static final RegistryKey<ConfiguredFeature<?, ?>> MAUVE_BLOOMSHROOM_VEGETATION_BONEMEAL = ofKey("mauve_bloomshroom_vegetation_bonemeal");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> ROSY_BLOOMSHROOM_VEGETATION = ofKey("rosy_bloomshroom_vegetation");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> SUNNY_BLOOMSHROOM_VEGETATION = ofKey("sunny_bloomshroom_vegetation");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> MAUVE_BLOOMSHROOM_VEGETATION = ofKey("mauve_bloomshroom_vegetation");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
 
@@ -63,6 +81,15 @@ public class AbysmConfiguredFeatures {
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> ORE_GOLDEN_LAZULI_DREGLOAM = ofKey("ore_golden_lazuli_dregloam");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> ORE_CLAY_DREGLOAM = ofKey("ore_clay_dregloam");
+
+	public static final RegistryKey<ConfiguredFeature<?, ?>> OOZE_PATCH = ofKey("ooze_patch");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> ROSEBLOOMED_PATCH = ofKey("rosebloomed_patch");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> ROSEBLOOMED_PATCH_BONEMEAL = ofKey("rosebloomed_patch_bonemeal");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> SUNBLOOMED_PATCH = ofKey("sunbloomed_patch");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> SUNBLOOMED_PATCH_BONEMEAL = ofKey("sunbloomed_patch_bonemeal");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> MALLOWBLOOMED_PATCH = ofKey("mallowbloomed_patch");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> MALLOWBLOOMED_PATCH_BONEMEAL = ofKey("mallowbloomed_patch_bonemeal");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> MIXED_BLOOMED_PATCH = ofKey("mixed_bloomed_patch");
 
 	public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> registerable) {
 		RegistryEntryLookup<ConfiguredFeature<?, ?>> configuredFeatureLookup = registerable.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
@@ -158,9 +185,9 @@ public class AbysmConfiguredFeatures {
 			new NetherForestVegetationFeatureConfig(bloomshroomVegetationProvider, 8, 4)
 		);
 
-		registerBloomshroomVegetation(registerable, AbysmBlocks.ROSY_SPRIGS, AbysmBlocks.ROSY_BLOOMSHROOM, ROSY_BLOOMSHROOM_VEGETATION_BONEMEAL);
-		registerBloomshroomVegetation(registerable, AbysmBlocks.SUNNY_SPRIGS, AbysmBlocks.SUNNY_BLOOMSHROOM, SUNNY_BLOOMSHROOM_VEGETATION_BONEMEAL);
-		registerBloomshroomVegetation(registerable, AbysmBlocks.MAUVE_SPRIGS, AbysmBlocks.MAUVE_BLOOMSHROOM, MAUVE_BLOOMSHROOM_VEGETATION_BONEMEAL);
+		registerBloomshroomVegetation(registerable, AbysmBlocks.ROSY_SPRIGS, AbysmBlocks.ROSY_BLOOMSHROOM, ROSY_BLOOMSHROOM_VEGETATION);
+		registerBloomshroomVegetation(registerable, AbysmBlocks.SUNNY_SPRIGS, AbysmBlocks.SUNNY_BLOOMSHROOM, SUNNY_BLOOMSHROOM_VEGETATION);
+		registerBloomshroomVegetation(registerable, AbysmBlocks.MAUVE_SPRIGS, AbysmBlocks.MAUVE_BLOOMSHROOM, MAUVE_BLOOMSHROOM_VEGETATION);
 
 		helper.add(
 			FLOROPUMICE_STALAGMITES, AbysmFeatures.STALAGMITE,
@@ -252,6 +279,35 @@ public class AbysmConfiguredFeatures {
 				35
 			)
 		);
+
+		helper.add(
+			OOZE_PATCH, AbysmFeatures.UNDERWATER_VEGETATION_PATCH,
+			new UnderwaterVegetationPatchFeature.Config(
+				AbysmBlockTags.IS_AIR_OR_WATER,
+				AbysmBlockTags.OOZE_REPLACEABLE,
+				BlockStateProvider.of(AbysmBlocks.OOZING_DREGLOAM),
+				PlacedFeatures.createEntry(configuredFeatureLookup.getOrThrow(PATCH_SEAGRASS_CAVE)), // TODO add ooze decoration, swap this feature, increase vegetation chance
+				VerticalSurfaceType.FLOOR,
+				ConstantIntProvider.create(1),
+				0.6F,
+				3,
+				0.0F,
+				UniformIntProvider.create(1, 2),
+				0.3F,
+				true
+			)
+		);
+
+		registerBloomedFloropumicePatches(helper, configuredFeatureLookup, ROSEBLOOMED_PATCH, ROSEBLOOMED_PATCH_BONEMEAL, AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, ROSY_BLOOMSHROOM_VEGETATION);
+		registerBloomedFloropumicePatches(helper, configuredFeatureLookup, SUNBLOOMED_PATCH, SUNBLOOMED_PATCH_BONEMEAL, AbysmBlocks.SUNBLOOMED_FLOROPUMICE, SUNNY_BLOOMSHROOM_VEGETATION);
+		registerBloomedFloropumicePatches(helper, configuredFeatureLookup, MALLOWBLOOMED_PATCH, MALLOWBLOOMED_PATCH_BONEMEAL, AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE, MAUVE_BLOOMSHROOM_VEGETATION);
+
+		helper.add(
+			MIXED_BLOOMED_PATCH, Feature.RANDOM_SELECTOR,
+			helper.entry(ROSEBLOOMED_PATCH, 1.0F / 3.0F),
+			helper.entry(SUNBLOOMED_PATCH, 1.0F / 3.0F),
+			helper.entry(MALLOWBLOOMED_PATCH, 1.0F / 3.0F)
+		);
 	}
 
 	public static RegistryKey<ConfiguredFeature<?, ?>> ofKey(String id) {
@@ -296,6 +352,45 @@ public class AbysmConfiguredFeatures {
 			new ConfiguredFeature<>(
 				AbysmFeatures.BLOOMSHROOM_VEGETATION,
 				new NetherForestVegetationFeatureConfig(blockStateProvider, 3, 1)
+			)
+		);
+	}
+
+	private static void registerBloomedFloropumicePatches(
+		ConfiguredFeatureHelper helper,
+		RegistryEntryLookup<ConfiguredFeature<?, ?>> configuredFeatureLookup,
+		RegistryKey<ConfiguredFeature<?, ?>> featureKey,
+		RegistryKey<ConfiguredFeature<?, ?>> bonemealFeatureKey,
+		Block bloomedFloropumice,
+		RegistryKey<ConfiguredFeature<?, ?>> vegetationFeatureKey
+	) {
+		registerBloomedFloropumicePatch(helper, configuredFeatureLookup, featureKey, bloomedFloropumice, vegetationFeatureKey, false);
+		registerBloomedFloropumicePatch(helper, configuredFeatureLookup, bonemealFeatureKey, bloomedFloropumice, vegetationFeatureKey, true);
+	}
+
+	private static void registerBloomedFloropumicePatch(
+		ConfiguredFeatureHelper helper,
+		RegistryEntryLookup<ConfiguredFeature<?, ?>> configuredFeatureLookup,
+		RegistryKey<ConfiguredFeature<?, ?>> featureKey,
+		Block bloomedFloropumice,
+		RegistryKey<ConfiguredFeature<?, ?>> vegetationFeatureKey,
+		boolean bonemeal
+	) {
+		helper.add(
+			featureKey, AbysmFeatures.UNDERWATER_VEGETATION_PATCH,
+			new UnderwaterVegetationPatchFeature.Config(
+				AbysmBlockTags.IS_AIR_OR_WATER,
+				AbysmBlockTags.BLOOMED_FLOROPUMICE_REPLACEABLE,
+				BlockStateProvider.of(bloomedFloropumice),
+				PlacedFeatures.createEntry(configuredFeatureLookup.getOrThrow(vegetationFeatureKey)),
+				VerticalSurfaceType.FLOOR,
+				ConstantIntProvider.create(1),
+				0.2F,
+				5,
+				bonemeal ? 0.6F : 0.3F,
+				bonemeal ? UniformIntProvider.create(1, 3) : UniformIntProvider.create(1, 2),
+				0.8F,
+				true
 			)
 		);
 	}

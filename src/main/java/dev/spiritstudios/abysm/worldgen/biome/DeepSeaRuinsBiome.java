@@ -55,6 +55,7 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 			.feature(GenerationStep.Feature.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_CLAY_DREGLOAM)
 			.feature(GenerationStep.Feature.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_GOLDEN_LAZULI_DREGLOAM)
 			.feature(GenerationStep.Feature.UNDERGROUND_DECORATION, AbysmPlacedFeatures.PATCH_HANGING_LANTERN)
+			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.OOZE_PATCH)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SEAGRASS_CAVE)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_GOLDEN_LAZULI_OREFURL);
 

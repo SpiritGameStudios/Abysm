@@ -1,0 +1,29 @@
+{
+  "type": "abysm:underwater_vegetation_patch",
+  "config": {
+    "depth": 1,
+    "extra_bottom_block_chance": 0.2,
+    "extra_edge_column_chance": 0.8,
+    "ground_state": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "abysm:mallowbloomed_floropumice"
+      }
+    },
+    "only_place_when_exposed": true,
+    "replaceable": "#abysm:bloomed_floropumice_replaceable",
+    "surface": "floor",
+    "treat_as_air": "#abysm:is_air_or_water",
+    "vegetation_chance": 0.6,
+    "vegetation_feature": {
+      "feature": "abysm:mauve_bloomshroom_vegetation",
+      "placement": []
+    },
+    "vertical_range": 5,
+    "xz_radius": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 3,
+      "min_inclusive": 1
+    }
+  }
+}

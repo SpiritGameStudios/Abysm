@@ -9,7 +9,11 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicType;
-import net.minecraft.world.biome.*;
+import net.minecraft.world.biome.BiomeEffects;
+import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.world.biome.GenerationSettings;
+import net.minecraft.world.biome.OverworldBiomeCreator;
+import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
@@ -17,7 +21,15 @@ import net.minecraft.world.gen.feature.OceanPlacedFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
 import net.minecraft.world.gen.surfacebuilder.MaterialRules;
 
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.*;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.MaterialRule;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_CEILING;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_FLOOR;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH_RANGE_6;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.block;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.condition;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.surface;
 
 public final class FloralReefBiome extends AbysmBiome {
 
@@ -53,6 +65,7 @@ public final class FloralReefBiome extends AbysmBiome {
 
 		builder
 			.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.FLOROPUMICE_STALAGMITES)
+			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.MIXED_BLOOMED_PATCH)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SPRIGS)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, OceanPlacedFeatures.SEAGRASS_WARM)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_PETALS_UNDERWATER)
