@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.client.render;
 
 import com.mojang.serialization.MapCodec;
 import dev.spiritstudios.abysm.component.HarpoonComponent;
-import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import net.minecraft.client.render.item.property.bool.BooleanProperty;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;

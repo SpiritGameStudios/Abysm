@@ -1,15 +1,19 @@
 package dev.spiritstudios.abysm.entity.floralreef;
 
+import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
+import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.entity.pattern.Patternable;
-import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
+import net.minecraft.component.ComponentType;
+import net.minecraft.component.ComponentsAccess;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.passive.SchoolingFishEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -27,7 +31,6 @@ import software.bernie.geckolib.animation.PlayState;
 import java.util.List;
 
 // TODO - Dropped fish item & bucket item
-// TODO - Something something component magic to allow for commands to spawn specific pattern variant combos (see TropicalFishEntity)
 public abstract class AbstractFloralFishEntity extends AbstractSchoolingFishEntity implements GeoEntity, Patternable {
 	public static final List<Integer> PATTERN_COLORS = List.of(
 		DyeColor.WHITE.getEntityColor(), DyeColor.BLACK.getEntityColor(),
@@ -77,6 +80,36 @@ public abstract class AbstractFloralFishEntity extends AbstractSchoolingFishEnti
 		RegistryOps<NbtElement> ops = getRegistryManager().getOps(NbtOps.INSTANCE);
 
 		this.readEntityPatternNbt(this, ops, nbt);
+	}
+
+	@Nullable
+	@Override
+	public <T> T get(ComponentType<? extends T> type) {
+		return type == AbysmDataComponentTypes.ENTITY_PATTERN ?
+			castComponentValue(type, this.getEntityPattern()) :
+			super.get(type);
+	}
+
+	@Override
+	protected void copyComponentsFrom(ComponentsAccess from) {
+		this.copyComponentFrom(from, AbysmDataComponentTypes.ENTITY_PATTERN);
+		super.copyComponentsFrom(from);
+	}
+
+	@Override
+	protected <T> boolean setApplicableComponent(ComponentType<T> type, T value) {
+		if (type == AbysmDataComponentTypes.ENTITY_PATTERN) {
+			this.setEntityPattern(castComponentValue(AbysmDataComponentTypes.ENTITY_PATTERN, value));
+			return true;
+		} else {
+			return super.setApplicableComponent(type, value);
+		}
+	}
+
+	@Override
+	public void copyDataToStack(ItemStack stack) {
+		super.copyDataToStack(stack);
+		stack.copy(AbysmDataComponentTypes.ENTITY_PATTERN, this);
 	}
 
 	@Override

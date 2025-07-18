@@ -5,7 +5,7 @@ import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
-import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.mixin.harpoon.PersistentProjectileEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;

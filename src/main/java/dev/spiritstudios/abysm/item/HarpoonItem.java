@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm.item;
 
+import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;

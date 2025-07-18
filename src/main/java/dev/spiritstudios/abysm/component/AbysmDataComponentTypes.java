@@ -1,7 +1,7 @@
-package dev.spiritstudios.abysm.item;
+package dev.spiritstudios.abysm.component;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.component.HarpoonComponent;
+import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import net.fabricmc.fabric.api.item.v1.ComponentTooltipAppenderRegistry;
 import net.minecraft.component.ComponentType;
 import net.minecraft.registry.Registries;
@@ -15,6 +15,13 @@ public class AbysmDataComponentTypes {
 		ComponentType.<HarpoonComponent>builder()
 			.codec(HarpoonComponent.CODEC)
 			.packetCodec(HarpoonComponent.PACKET_CODEC)
+	);
+
+	public static final ComponentType<EntityPattern> ENTITY_PATTERN = register(
+		"entity_pattern",
+		ComponentType.<EntityPattern>builder()
+			.codec(EntityPattern.CODEC)
+			.packetCodec(EntityPattern.PACKET_CODEC)
 	);
 
 	private static <T> ComponentType<T> register(String path, ComponentType.Builder<T> builder) {
