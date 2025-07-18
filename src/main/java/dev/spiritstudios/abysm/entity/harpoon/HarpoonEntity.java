@@ -4,10 +4,12 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.item.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.mixin.harpoon.PersistentProjectileEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
+import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -66,14 +68,14 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		if (weapon != null) {
 			this.haul = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.HAUL);
 			this.grappling = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.GRAPPLING);
-			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).isBlessed();
+			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).isBlessed();
 		}
 
 		double d = velocity.horizontalLength();
 
 		//noinspection SuspiciousNameCombination
-		this.setYaw((float)(MathHelper.atan2(velocity.x, velocity.z) * MathHelper.DEGREES_PER_RADIAN));
-		this.setPitch((float)(MathHelper.atan2(velocity.y, d) * MathHelper.DEGREES_PER_RADIAN));
+		this.setYaw((float) (MathHelper.atan2(velocity.x, velocity.z) * MathHelper.DEGREES_PER_RADIAN));
+		this.setPitch((float) (MathHelper.atan2(velocity.y, d) * MathHelper.DEGREES_PER_RADIAN));
 
 		this.lastYaw = this.getYaw();
 		this.lastPitch = this.getPitch();
@@ -96,6 +98,21 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
+	protected boolean tryPickup(PlayerEntity player) {
+		if (pickupType != PickupPermission.ALLOWED) return super.tryPickup(player);
+
+		ItemStack invStack = player.getInventory().getStack(this.getSlot());
+		if (!invStack.isOf(AbysmItems.HARPOON)) return true;
+
+		HarpoonComponent component = invStack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
+
+		if (component.loaded()) return true;
+
+		invStack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().loaded(true).build());
+		return true;
+	}
+
+	@Override
 	public void tick() {
 		ticksAlive++;
 		PlayerEntity owner = this.getPlayer();
@@ -110,7 +127,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			}
 			try {
 				ItemStack invStack = owner.getInventory().getStack(this.slot);
-				if (!invStack.isOf(AbysmItems.NOOPRAH) || invStack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY).loaded()) {
+				if (!invStack.isOf(AbysmItems.HARPOON) || invStack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).loaded()) {
 					this.discard();
 				}
 			} catch (IndexOutOfBoundsException indexOutOfBoundsException) {
@@ -194,6 +211,13 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			f = EnchantmentHelper.getDamage(serverWorld, weapon, entity, damageSource, f);
 		}
 		f = this.haul ? 0.01f : f;
+		if (this.blessed && entity instanceof LectorfinEntity lectorfin) {
+			f = 0.0001f;
+			world.getRegistryManager().getOrThrow(AbysmRegistryKeys.FISH_ENCHANTMENT)
+				.getRandom(this.random).ifPresent(enchantment ->
+					lectorfin.setEnchantment(enchantment, lectorfin.getEnchantmentLevel())
+				);
+		}
 		//noinspection deprecation
 		if (entity.sidedDamage(damageSource, f)) {
 			if (entity.getType() == EntityType.ENDERMAN) {
@@ -218,7 +242,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			((PersistentProjectileEntityAccessor) this).abysm$invokeSetPierceLevel((byte) (pierceLevel - 1));
 			IntOpenHashSet intOpenHashSet = ((PersistentProjectileEntityAccessor) this).abysm$getPiercedEntities();
 			if (intOpenHashSet == null) {
-				intOpenHashSet = new IntOpenHashSet(5);
+				intOpenHashSet = new IntOpenHashSet(pierceLevel);
 				intOpenHashSet.add(entity.getId());
 				((PersistentProjectileEntityAccessor) this).abysm$setPiercedEntities(intOpenHashSet);
 			} else {

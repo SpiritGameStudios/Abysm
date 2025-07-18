@@ -1,10 +1,8 @@
 package dev.spiritstudios.abysm.entity.leviathan;
 
 import dev.spiritstudios.specter.api.entity.EntityPart;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.network.packet.s2c.play.EntityPositionSyncS2CPacket;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 

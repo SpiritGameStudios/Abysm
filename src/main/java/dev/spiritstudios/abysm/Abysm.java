@@ -72,9 +72,8 @@ public class Abysm implements ModInitializer {
 		AbysmDataComponentTypes.init();
 		AbysmItems.init();
 
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {
-			content.add(AbysmItems.MUSIC_DISC_RENAISSANCE);
-		});
+		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
+			.register(content -> content.add(AbysmItems.MUSIC_DISC_RENAISSANCE));
 
 		// register entities & related
 		AbysmEntityAttributes.init();

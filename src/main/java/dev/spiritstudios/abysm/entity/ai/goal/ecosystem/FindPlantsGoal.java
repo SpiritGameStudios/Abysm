@@ -147,9 +147,8 @@ public class FindPlantsGoal extends Goal {
 			plantEater.setNotHungryAnymoreYay();
 			if (!this.obj.getWorld().isClient) {
 				EntityFinishedEatingS2CPayload payload = new EntityFinishedEatingS2CPayload(this.obj, ParticleTypes.HAPPY_VILLAGER);
-				PlayerLookup.tracking(this.obj).forEach(serverPlayerEntity -> {
-					ServerPlayNetworking.send(serverPlayerEntity, payload);
-				});
+				PlayerLookup.tracking(this.obj)
+					.forEach(player -> ServerPlayNetworking.send(player, payload));
 			}
 		}
 

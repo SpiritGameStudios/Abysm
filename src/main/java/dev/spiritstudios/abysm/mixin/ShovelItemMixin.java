@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ShovelItem.class)
-public class ShovelItemMixin {
+public abstract class ShovelItemMixin {
 
 	@Inject(method = "useOnBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;emitGameEvent(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/world/event/GameEvent$Emitter;)V"))
 	private void dropBonusItems(
@@ -28,7 +28,7 @@ public class ShovelItemMixin {
 		@Local(ordinal = 0) BlockState oldState,
 		@Nullable @Local(ordinal = 2) BlockState newState
 	) {
-		if(newState != null && newState.isOf(AbysmBlocks.DREGLOAM) && oldState.isOf(AbysmBlocks.OOZING_DREGLOAM)) {
+		if (newState != null && newState.isOf(AbysmBlocks.DREGLOAM) && oldState.isOf(AbysmBlocks.OOZING_DREGLOAM)) {
 			Block.dropStack(world, blockPos, AbysmItems.DREGLOAM_OOZEBALL.getDefaultStack());
 		}
 	}

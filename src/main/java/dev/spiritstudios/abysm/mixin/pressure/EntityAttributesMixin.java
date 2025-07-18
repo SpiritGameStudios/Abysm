@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(value = EntityAttributes.class, priority = 500)
-public class EntityAttributesMixin {
+public abstract class EntityAttributesMixin {
 
 	// this was a great idea with zero total drawbacks
 	@ModifyVariable(method = "register", at = @At("HEAD"), index = 1, argsOnly = true)

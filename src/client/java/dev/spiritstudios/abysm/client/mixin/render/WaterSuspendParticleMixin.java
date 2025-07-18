@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin;
+package dev.spiritstudios.abysm.client.mixin.render;
 
 import dev.spiritstudios.specter.api.core.math.Easing;
 import net.minecraft.client.particle.SpriteBillboardParticle;

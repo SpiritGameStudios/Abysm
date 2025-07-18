@@ -53,7 +53,7 @@ public final class AbysmItems {
 					).build())
     );
 
-	public static final Item NOOPRAH = register( // you can change the field name lol
+	public static final Item HARPOON = register(
 		"harpoon",
 		HarpoonItem::new,
 		new Item.Settings()

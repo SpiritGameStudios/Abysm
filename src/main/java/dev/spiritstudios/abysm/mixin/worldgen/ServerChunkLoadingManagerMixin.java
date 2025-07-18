@@ -10,6 +10,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureTemplateManager;
 import net.minecraft.util.thread.ThreadExecutor;
 import net.minecraft.world.ChunkLoadingManager;
+import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.chunk.ChunkProvider;
 import net.minecraft.world.chunk.ChunkStatusChangeListener;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
@@ -45,12 +46,12 @@ public abstract class ServerChunkLoadingManagerMixin extends VersionedChunkStora
 		DataFixer dataFixer,
 		StructureTemplateManager structureTemplateManager,
 		Executor executor,
-		ThreadExecutor mainThreadExecutor,
+		ThreadExecutor<Runnable> mainThreadExecutor,
 		ChunkProvider chunkProvider,
 		ChunkGenerator chunkGenerator,
 		WorldGenerationProgressListener worldGenerationProgressListener,
 		ChunkStatusChangeListener chunkStatusChangeListener,
-		Supplier persistentStateManagerFactory,
+		Supplier<PersistentStateManager> persistentStateManagerFactory,
 		ChunkTicketManager ticketManager,
 		int viewDistance,
 		boolean dsync,

@@ -15,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(StructureWeightSampler.class)
 public abstract class StructureWeightSamplerMixin implements DensityFunctionTypes.Beardifying, StructureWeightSamplerDuckInterface {
 
-	@Unique @Nullable
+	@Unique
+	@Nullable
 	private ShellCaveSampler shellCaveSampler;
 
 	@ModifyReturnValue(method = "createStructureWeightSampler", at = @At("RETURN"))
@@ -23,9 +24,8 @@ public abstract class StructureWeightSamplerMixin implements DensityFunctionType
 		ShellCaveSampler caveSampler = ShellCaveSampler.create(world, pos);
 
 		// if sdf objects isn't empty, store it
-		if(!caveSampler.isEmpty()) {
-			StructureWeightSamplerMixin sampler = (StructureWeightSamplerMixin) (Object) original;
-			sampler.shellCaveSampler = caveSampler;
+		if (!caveSampler.isEmpty()) {
+			((StructureWeightSamplerMixin) (Object) original).shellCaveSampler = caveSampler;
 		}
 
 		return original;

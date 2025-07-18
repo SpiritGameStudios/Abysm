@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 // Contains methods for handling all entity-related logic that all Ecosystem-related classes may need to call(e.g. EcosystemChunk)
+@SuppressWarnings("UnstableApiUsage")
 public interface EcologicalEntity {
 
 	/**
@@ -69,7 +70,7 @@ public interface EcologicalEntity {
 		this.getEcosystemLogic().onDeath();
 	}
 
-	@SuppressWarnings({"BooleanMethodIsAlwaysInverted", "UnstableApiUsage"})
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	default boolean isHungryCarnivore() {
 		World world = ((MobEntity) this).getWorld();
 		Chunk chunk = world.getChunk(((MobEntity) this).getBlockPos());

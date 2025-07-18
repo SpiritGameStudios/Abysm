@@ -3,12 +3,18 @@ package dev.spiritstudios.abysm.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
-import dev.spiritstudios.abysm.util.AbysmCodecs;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.Fertilizable;
+import net.minecraft.block.PlantBlock;
+import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -33,7 +39,7 @@ public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, W
 	public static final MapCodec<SmallBloomshroomBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
 				RegistryKey.createCodec(RegistryKeys.CONFIGURED_FEATURE).fieldOf("feature").forGetter(block -> block.featureKey),
-				AbysmCodecs.SIMPLE_PARTICLE_TYPE.fieldOf("particle").forGetter(block -> block.particle),
+				ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
 				createSettingsCodec()
 			)
 			.apply(instance, SmallBloomshroomBlock::new)
@@ -42,14 +48,14 @@ public class SmallBloomshroomBlock extends PlantBlock implements Fertilizable, W
 	private static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
 
 	private final RegistryKey<ConfiguredFeature<?, ?>> featureKey;
-	public final SimpleParticleType particle;
+	public final ParticleEffect particle;
 
 	@Override
 	protected MapCodec<? extends SmallBloomshroomBlock> getCodec() {
 		return CODEC;
 	}
 
-	public SmallBloomshroomBlock(RegistryKey<ConfiguredFeature<?, ?>> featureKey, SimpleParticleType particle, Settings settings) {
+	public SmallBloomshroomBlock(RegistryKey<ConfiguredFeature<?, ?>> featureKey, ParticleEffect particle, Settings settings) {
 		super(settings);
 		this.featureKey = featureKey;
 		this.particle = particle;

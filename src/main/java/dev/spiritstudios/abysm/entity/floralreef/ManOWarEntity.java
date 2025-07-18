@@ -222,6 +222,7 @@ public class ManOWarEntity extends WaterCreatureEntity {
 		this.setBreedingAge(baby ? -24000 : 0);
 	}
 
+
 	@Override
 	protected void loot(ServerWorld world, ItemEntity itemEntity) {
 		super.loot(world, itemEntity);

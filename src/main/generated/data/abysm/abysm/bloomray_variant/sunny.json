@@ -1,6 +1,10 @@
 {
-  "glimmer": "abysm:sunbloom_glimmer",
-  "thorns": "abysm:anyolite_thorns",
+  "glimmer": {
+    "type": "abysm:sunbloom_glimmer"
+  },
+  "thorns": {
+    "type": "abysm:anyolite_thorns"
+  },
   "name": {
     "translate": "abysm.entity.bloomray.sunny"
   },

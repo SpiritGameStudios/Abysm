@@ -45,7 +45,7 @@ public class HarpoonItem extends Item {
 	public ActionResult use(World world, PlayerEntity user, Hand hand) {
 		if (!world.isClient()) {
 			ItemStack stack = user.getStackInHand(hand);
-			HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY);
+			HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
 			if (component.loaded()) {
 				int slot;
 				if (hand == Hand.OFF_HAND) {
@@ -55,7 +55,7 @@ public class HarpoonItem extends Item {
 				}
 				HarpoonEntity harpoon = new HarpoonEntity(world, user, slot, stack);
 				world.spawnEntity(harpoon);
-				stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().loaded(false).ticksSinceShot(0).build());
+				stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().loaded(false).ticksSinceShot(0).build());
 				world.playSoundFromEntity(null, harpoon, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
 				if (AbysmEnchantments.hasEnchantment(stack, world, AbysmEnchantments.HAUL)) {
 					user.getItemCooldownManager().set(stack, 120);
@@ -82,12 +82,12 @@ public class HarpoonItem extends Item {
 				return;
 			}
 		}
-		HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY);
+		HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
 		int ticksSinceLastShot = component.ticksSinceShot();
 		if (ticksSinceLastShot >= 0 && ticksSinceLastShot < 200) {
-			stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().ticksSinceShot(ticksSinceLastShot + 1).build());
+			stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().ticksSinceShot(ticksSinceLastShot + 1).build());
 		} else if (ticksSinceLastShot >= 200 && !component.loaded()) {
-			stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().loaded(true).build());
+			stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().loaded(true).build());
 		}
 		super.inventoryTick(stack, world, entity, slot);
 	}
@@ -102,10 +102,10 @@ public class HarpoonItem extends Item {
 		if (!ItemStack.areItemsEqual(oldStack, newStack)) {
 			return super.allowContinuingBlockBreaking(player, oldStack, newStack);
 		}
-		if (!oldStack.contains(AbysmDataComponentTypes.BLESSED) || !newStack.contains(AbysmDataComponentTypes.BLESSED)) {
+		if (!oldStack.contains(AbysmDataComponentTypes.HARPOON) || !newStack.contains(AbysmDataComponentTypes.HARPOON)) {
 			return super.allowContinuingBlockBreaking(player, oldStack, newStack);
 		}
-		if (!Objects.equals(oldStack.get(AbysmDataComponentTypes.BLESSED), newStack.get(AbysmDataComponentTypes.BLESSED))) {
+		if (!Objects.equals(oldStack.get(AbysmDataComponentTypes.HARPOON), newStack.get(AbysmDataComponentTypes.HARPOON))) {
 			return true;
 		}
 		return super.allowContinuingBlockBreaking(player, oldStack, newStack);
@@ -120,16 +120,16 @@ public class HarpoonItem extends Item {
 	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
 		if (clickType == ClickType.RIGHT) {
 			ItemStack slotStack = slot.getStack();
-			HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.BLESSED, HarpoonComponent.EMPTY);
+			HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
 			ItemStack componentStack = component.stack();
 			if (componentStack.isEmpty() && slotStack.isOf(Items.HEART_OF_THE_SEA)) {
-				stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().stack(slotStack.copyWithCount(1)).build());
+				stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().stack(slotStack.copyWithCount(1)).build());
 				slotStack.decrement(1);
 				return true;
 			}
 			if (slotStack.isEmpty() && !componentStack.isEmpty()) {
 				slot.setStack(componentStack.copy());
-				stack.set(AbysmDataComponentTypes.BLESSED, component.buildNew().stack(ItemStack.EMPTY).build());
+				stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().stack(ItemStack.EMPTY).build());
 				return true;
 			}
 			final int maxCount = slotStack.getMaxCount();

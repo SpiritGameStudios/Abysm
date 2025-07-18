@@ -70,6 +70,8 @@ public class SpiralingParticle extends SpriteBillboardParticle {
 
 		this.velocityX = MathHelper.cos(this.age * this.speed) * this.radius;
 		this.velocityZ = MathHelper.sin(this.age * this.speed) * this.radius;
+
+		//noinspection SuspiciousNameCombination
 		this.angle = (float) MathHelper.atan2(this.velocityX, this.velocityZ) + MathHelper.HALF_PI;
 
 		this.setSpriteForAge(this.provider);

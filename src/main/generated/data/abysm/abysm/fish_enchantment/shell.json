@@ -1,8 +1,11 @@
-[
-  {
-    "type": "minecraft:armor",
-    "amount": 10.0,
-    "id": "abysm:shell",
-    "operation": "add_value"
-  }
-]
+{
+  "modifiers": [
+    {
+      "type": "minecraft:armor",
+      "amount": 10.0,
+      "id": "abysm:shell",
+      "operation": "add_value"
+    }
+  ],
+  "renderer_id": "abysm:shell"
+}

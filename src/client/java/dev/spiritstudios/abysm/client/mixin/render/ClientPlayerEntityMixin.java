@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin;
+package dev.spiritstudios.abysm.client.mixin.render;
 
 import com.mojang.authlib.GameProfile;
 import dev.spiritstudios.abysm.client.duck.ClientPlayerEntityDuckInterface;

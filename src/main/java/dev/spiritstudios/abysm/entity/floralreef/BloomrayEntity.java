@@ -24,7 +24,7 @@ import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.Vec3d;
@@ -157,7 +157,7 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		}
 	}
 
-	protected void spawnParticles(World world, Vec3d pos, Random random, SimpleParticleType particle, float width, float orthogonalVelocityMultiplier, float normalVelocityMultiplier) {
+	protected void spawnParticles(World world, Vec3d pos, Random random, ParticleEffect particle, float width, float orthogonalVelocityMultiplier, float normalVelocityMultiplier) {
 		double x = pos.getX() + width * (random.nextFloat() - 0.5);
 		double y = pos.getY() + 0.5F - 0.45F;
 		double z = pos.getZ() + width * (random.nextFloat() - 0.5);

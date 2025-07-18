@@ -6,7 +6,6 @@ public class DensitySphere implements DensityBlob {
 	private double y;
 	private double z;
 	private final double radius;
-	private final double outerRadius;
 	private final double thickness;
 
 	public DensitySphere(double x, double y, double z, double radius, double outerRadius) {
@@ -14,8 +13,7 @@ public class DensitySphere implements DensityBlob {
 		this.y = y;
 		this.z = z;
 		this.radius = radius;
-		this.outerRadius = outerRadius;
-		this.thickness = this.outerRadius - this.radius;
+		this.thickness = outerRadius - this.radius;
 	}
 
 	public void translate(double x, double y, double z) {
