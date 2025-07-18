@@ -10,6 +10,7 @@ import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.mixin.harpoon.PersistentProjectileEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -29,7 +30,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -193,7 +193,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		this.setNoClip(true);
 		this.dataTracker.set(RETURNING, true);
 		if (playSound) {
-			this.playSound(SoundEvents.ITEM_TRIDENT_RETURN, 10.0F, 1.0F);
+			this.playSound(AbysmSoundEvents.ITEM_HARPOON_RETURN, 10.0F, 1.0F);
 		}
 	}
 
@@ -253,7 +253,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			this.deflect(ProjectileDeflection.SIMPLE, entity, this.getOwner(), false);
 			this.setVelocity(this.getVelocity().multiply(0.02, 0.2, 0.02));
 		}
-		this.playSound(SoundEvents.ITEM_TRIDENT_HIT, 1.0F, 1.0F);
+		this.playSound(AbysmSoundEvents.ITEM_HARPOON_HIT, 1.0F, 1.0F);
 	}
 
 	@Override
@@ -263,7 +263,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 	@Override
 	protected SoundEvent getHitSound() {
-		return SoundEvents.ITEM_TRIDENT_HIT_GROUND;
+		return AbysmSoundEvents.ITEM_HARPOON_HIT_GROUND;
 	}
 
 	@Override

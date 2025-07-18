@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.item;
 import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.component.type.AttributeModifierSlot;
@@ -22,7 +23,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
@@ -56,7 +56,7 @@ public class HarpoonItem extends Item {
 				HarpoonEntity harpoon = new HarpoonEntity(world, user, slot, stack);
 				world.spawnEntity(harpoon);
 				stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().loaded(false).ticksSinceShot(0).build());
-				world.playSoundFromEntity(null, harpoon, SoundEvents.ITEM_TRIDENT_THROW.value(), SoundCategory.PLAYERS, 1.0F, 1.0F);
+				world.playSoundFromEntity(null, harpoon, AbysmSoundEvents.ITEM_HARPOON_LAUNCH, SoundCategory.PLAYERS, 1.0F, 1.0F);
 				if (AbysmEnchantments.hasEnchantment(stack, world, AbysmEnchantments.HAUL)) {
 					user.getItemCooldownManager().set(stack, 120);
 				}
