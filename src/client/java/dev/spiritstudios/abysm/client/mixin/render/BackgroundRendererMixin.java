@@ -25,8 +25,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class BackgroundRendererMixin {
 	@Shadow
 	private static long lastWaterFogColorUpdateTime;
-	@Unique private static float underwaterVisibilityMultiplier = 1.0F;
-	@Unique private static float nextUnderwaterVisibilityMultiplier = 1.0F;
+	@Unique
+	private static float underwaterVisibilityMultiplier = 1.0F;
+	@Unique
+	private static float nextUnderwaterVisibilityMultiplier = 1.0F;
 
 	@ModifyVariable(method = "getFogColor", at = @At("STORE"), ordinal = 1)
 	private static int adjustWaterFogColor(int value, Camera camera, float tickProgress, ClientWorld world, int clampedViewDistance, float skyDarkness) {
@@ -39,9 +41,9 @@ public abstract class BackgroundRendererMixin {
 			float visibilityMultiplier;
 			if (biome.matchesKey(AbysmBiomes.FLORAL_REEF)) {
 				visibilityMultiplier = 0.3F + 0.7F * lightness;
-			} else if(biome.matchesKey(AbysmBiomes.DEEP_SEA_RUINS)) {
+			} else if (biome.matchesKey(AbysmBiomes.DEEP_SEA_RUINS)) {
 				visibilityMultiplier = 0.13F;
-			}else {
+			} else {
 				visibilityMultiplier = 1.0F;
 			}
 
@@ -66,13 +68,12 @@ public abstract class BackgroundRendererMixin {
 	}
 
 	@Inject(method = "getFogColor", at = @At(value = "INVOKE", target = "Ljava/lang/Math;min(FF)F", ordinal = 0))
-	private static void reduceUnderwaterVisiblity(Camera camera, float tickProgress, ClientWorld world, int clampedViewDistance, float skyDarkness, CallbackInfoReturnable<Vector4f> cir, @Local(ordinal = 5) LocalFloatRef underwaterVisibilityRef) {
-		CameraSubmersionType cameraSubmersionType = camera.getSubmersionType();
-		if (cameraSubmersionType == CameraSubmersionType.WATER) {
+	private static void reduceUnderwaterVisibility(Camera camera, float tickProgress, ClientWorld world, int clampedViewDistance, float skyDarkness, CallbackInfoReturnable<Vector4f> cir, @Local(ordinal = 5) LocalFloatRef underwaterVisibilityRef) {
+		if (camera.getSubmersionType() == CameraSubmersionType.WATER) {
 			// adjust underwater visibility
 			float visibilityMultiplier = MathHelper.lerp(tickProgress, underwaterVisibilityMultiplier, nextUnderwaterVisibilityMultiplier);
 
-			if (visibilityMultiplier < 0.999F) {
+			if (visibilityMultiplier < (1.0F - MathHelper.EPSILON)) {
 				underwaterVisibilityRef.set(underwaterVisibilityRef.get() * visibilityMultiplier);
 			}
 		}

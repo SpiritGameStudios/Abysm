@@ -16,7 +16,7 @@ import dev.spiritstudios.abysm.client.render.entity.LehydrathanEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.MysteriousBlobEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.harpoon.HarpoonEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.networking.EntityFinishedEatingS2CPayload;

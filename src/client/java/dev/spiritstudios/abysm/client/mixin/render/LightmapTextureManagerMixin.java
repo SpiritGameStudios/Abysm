@@ -32,7 +32,7 @@ public abstract class LightmapTextureManagerMixin {
 		GpuDevice gpuDevice = RenderSystem.getDevice();
 		this.secondaryGlTexture = gpuDevice.createTexture("Light Texture", TextureFormat.RGBA8, 16, 16, 1);
 		this.secondaryGlTexture.setTextureFilter(FilterMode.LINEAR, false);
-		gpuDevice.createCommandEncoder().clearColorTexture(this.secondaryGlTexture, -1);
+		gpuDevice.createCommandEncoder().clearColorTexture(this.secondaryGlTexture, 0xFFFFFFFF);
 	}
 
 	@Inject(method = "close", at = @At("RETURN"))

@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.render.entity.harpoon;
+package dev.spiritstudios.abysm.client.render.entity;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.state.HarpoonEntityRenderState;
