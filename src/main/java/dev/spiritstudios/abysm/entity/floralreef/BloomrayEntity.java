@@ -9,6 +9,7 @@ import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -27,6 +28,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
@@ -132,6 +134,11 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	@Override
 	public EcosystemType<?> getEcosystemType() {
 		return AbysmEcosystemTypes.BLOOMRAY;
+	}
+
+	@Override
+	protected @Nullable SoundEvent getAmbientSound() {
+		return AbysmSoundEvents.ENTITY_BLOOMRAY_AMBIENT;
 	}
 
 	@Override

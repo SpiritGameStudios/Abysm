@@ -15,7 +15,9 @@ public class AbysmSoundEvents {
 
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_RENAISSANCE = registerReference("records.renaissance");
 
-	public static final RegistryEntry.Reference<SoundEvent> SOUND_ENTITY_BLOOMRAY = registerReference("entity.bloomray");
+	public static final SoundEvent ENTITY_BLOOMRAY_AMBIENT = register("entity.bloomray.ambient");
+
+	public static final SoundEvent ITEM_OOZEBALL_APPLY = register("item.oozeball.apply");
 
 	private static SoundEvent register(String path) {
 		Identifier id = Abysm.id(path);

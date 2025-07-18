@@ -57,19 +57,31 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 		);
 
 		exporter.add(
-			AbysmSoundEvents.SOUND_ENTITY_BLOOMRAY,
-			SoundTypeBuilder.of()
-				.sound(ofFile("entity/bloomray/bloomray_1").volume(0.4F))
-				.sound(ofFile("entity/bloomray/bloomray_2").volume(0.4F))
-				.sound(ofFile("entity/bloomray/bloomray_3").volume(0.4F))
-				.category(SoundCategory.NEUTRAL)
-		);
-
-		exporter.add(
 			AbysmSoundEvents.MUSIC_DISC_RENAISSANCE,
 			SoundTypeBuilder.of()
 				.sound(ofFile("records/renaissance").stream(true))
 				.category(SoundCategory.RECORDS)
+		);
+
+		exporter.add(
+			AbysmSoundEvents.ENTITY_BLOOMRAY_AMBIENT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.bloomray.ambient")
+				.sound(ofFile("entity/bloomray/ambient_1").volume(0.4F))
+				.sound(ofFile("entity/bloomray/ambient_2").volume(0.4F))
+				.sound(ofFile("entity/bloomray/ambient_3").volume(0.4F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+
+		// TODO: Needs custom sounds
+		exporter.add(
+			AbysmSoundEvents.ITEM_OOZEBALL_APPLY,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.item.oozeball.apply")
+				.sound(ofVanillaFile("liquid/splash"))
+				.sound(ofVanillaFile("liquid/splash2"))
+				.category(SoundCategory.BLOCKS)
 		);
 	}
 

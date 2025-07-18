@@ -152,5 +152,7 @@
 	"tag.item.abysm.small_bloomshrooms": "Small Bloomshrooms",
 	"tag.item.abysm.sunny_bloomshroom_stems": "Sunny Bloomshroom Stems",
 	"config.abysm.abysm.title": "Abysm",
-	"config.abysm.abysm.underwaterSoundFilters": "Underwater Sound Filters"
+	"config.abysm.abysm.underwaterSoundFilters": "Underwater Sound Filters",
+	"subtitles.abysm.item.oozeball.apply": "Oozeball splats",
+	"subtitles.abysm.entity.bloomray.ambient": "Bloomray bloops"
 }

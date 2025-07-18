@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -18,7 +19,6 @@ import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 // Handles all entities within a specific chunk, accounting for adjacent chunks too.
@@ -121,9 +121,10 @@ public class EcosystemChunk {
 		ChunkPos.stream(this.pos, chunkSearchRadius).forEach(chunkPos -> {
 			// Don't create new EcosystemChunk during search to possibly help reduce created data
 			Chunk chunk = this.world.getChunk(chunkPos.x, chunkPos.z);
-			if (!accountChunkForPopCount(chunk)) return;
 
 			if (!chunk.hasAttached(AbysmAttachments.ECOSYSTEM_CHUNK)) return;
+			if (!accountChunkForPopCount(chunk)) return;
+
 			EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
 			if (ecosystemChunk == null) return;
 			PopInfo info = ecosystemChunk.getPopInfo(ecosystemType, false);
@@ -168,8 +169,8 @@ public class EcosystemChunk {
 
 	public static class PopInfo {
 		public final EcosystemType<?> type;
-		public final Set<Integer> entityIds = new IntOpenHashSet();
-		// TODO - Don't respawn namtagged entities
+		public final IntSet entityIds = new IntOpenHashSet();
+		// TODO - Don't respawn nametagged entities
 
 		public PopInfo(EcosystemType<?> type) {
 			this.type = type;

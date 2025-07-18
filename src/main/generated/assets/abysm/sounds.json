@@ -1,20 +1,29 @@
 {
-  "entity.bloomray": {
+  "entity.bloomray.ambient": {
     "category": "neutral",
     "sounds": [
       {
         "volume": 0.4,
-        "name": "abysm:entity/bloomray/bloomray_1"
+        "name": "abysm:entity/bloomray/ambient_1"
       },
       {
         "volume": 0.4,
-        "name": "abysm:entity/bloomray/bloomray_2"
+        "name": "abysm:entity/bloomray/ambient_2"
       },
       {
         "volume": 0.4,
-        "name": "abysm:entity/bloomray/bloomray_3"
+        "name": "abysm:entity/bloomray/ambient_3"
       }
-    ]
+    ],
+    "subtitle": "subtitles.abysm.entity.bloomray.ambient"
+  },
+  "item.oozeball.apply": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:liquid/splash",
+      "minecraft:liquid/splash2"
+    ],
+    "subtitle": "subtitles.abysm.item.oozeball.apply"
   },
   "music.overworld.deep_sea_ruins": {
     "category": "music",
