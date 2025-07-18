@@ -98,7 +98,9 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 
 			AbysmBlocks.ANTENNAE_PLANT,
 
-			AbysmBlocks.DREGLOAM
+			AbysmBlocks.DREGLOAM,
+
+			AbysmBlocks.SILT
 		);
 
 		forEach(this::addPottedPlantDrops,

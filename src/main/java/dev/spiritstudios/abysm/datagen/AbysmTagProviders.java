@@ -95,7 +95,8 @@ public class AbysmTagProviders {
 					AbysmBlocks.DREGLOAM,
 					AbysmBlocks.OOZING_DREGLOAM,
 					AbysmBlocks.DREGLOAM_OOZE,
-					AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
+					AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE,
+					AbysmBlocks.SILT
 				);
 
 			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
