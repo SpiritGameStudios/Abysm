@@ -153,8 +153,10 @@ public class AbysmModelProvider extends FabricModelProvider {
 		registerGrassLike(generator, AbysmBlocks.OOZING_DREGLOAM, AbysmBlocks.DREGLOAM);
 		// endregion
 
-		// region misc blocks
+		// region silt
 		generator.registerSimpleCubeAll(AbysmBlocks.SILT);
+		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SILT);
+		generator.registerSimpleCubeAll(AbysmBlocks.CUT_SILT);
 		// endregion
 	}
 

@@ -34,6 +34,8 @@
     "abysm:polished_smooth_floropumice",
     "abysm:chiseled_smooth_floropumice",
     "abysm:smooth_floropumice_pillar",
+    "abysm:chiseled_silt",
+    "abysm:cut_silt",
     {
       "id": "#abysm:bloomed_floropumice",
       "required": false

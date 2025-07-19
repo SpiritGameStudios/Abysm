@@ -81,7 +81,9 @@ public class AbysmTagProviders {
 					AbysmBlocks.CHISLED_FLOROPUMICE,
 					AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE,
 					AbysmBlocks.CHISELED_SMOOTH_FLOROPUMICE,
-					AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR
+					AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR,
+					AbysmBlocks.CHISELED_SILT,
+					AbysmBlocks.CUT_SILT
 				)
 				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
 

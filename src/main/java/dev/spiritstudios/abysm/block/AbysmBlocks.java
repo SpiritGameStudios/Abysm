@@ -644,14 +644,32 @@ public final class AbysmBlocks {
 			.mapColor(MapColor.TERRACOTTA_BROWN)
 			.sounds(BlockSoundGroup.MUD)
 	);
+	// endregion
 
+	// region silt
 	public static final Block SILT = register(
 		"silt",
 		Block::new,
 		AbstractBlock.Settings.create()
-			.strength(1.0F)
+			.strength(0.6F)
 			.mapColor(MapColor.OAK_TAN)
 			.sounds(BlockSoundGroup.MUD)
+	);
+
+	public static final Block CHISELED_SILT = register(
+		"chiseled_silt",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.strength(0.8F)
+			.mapColor(MapColor.OAK_TAN)
+	);
+
+	public static final Block CUT_SILT = register(
+		"cut_silt",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.strength(0.8F)
+			.mapColor(MapColor.OAK_TAN)
 	);
 	// endregion
 
