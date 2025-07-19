@@ -58,7 +58,7 @@ public abstract class FishEnchantmentRenderer {
 
 		@Override
 		protected String subtype() {
-			return "fishenchantment";
+			return "fish_enchantment";
 		}
 	}
 }
