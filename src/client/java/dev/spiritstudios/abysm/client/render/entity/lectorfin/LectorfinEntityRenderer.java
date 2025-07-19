@@ -50,7 +50,7 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 		if (fishEnchantment == null) {
 			return;
 		}
-		FishEnchantmentRenderer renderer = /*ENCHANTMENT_RENDERERS.get(fishEnchantment.rendererId())*/ ENCHANTMENT_RENDERERS.values().stream().toList().getFirst();
+		FishEnchantmentRenderer renderer = ENCHANTMENT_RENDERERS.get(fishEnchantment.rendererId());
 		if (renderer != null) {
 			renderer.render(state, matrices, vertexConsumers, light, overlay, color, this::renderRecursively);
 		}
