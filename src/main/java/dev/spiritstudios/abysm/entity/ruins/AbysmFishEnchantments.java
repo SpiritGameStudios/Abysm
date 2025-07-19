@@ -9,29 +9,21 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
 
 public class AbysmFishEnchantments {
+	public static final RegistryKey<FishEnchantment> NONE = ofKey("none");
+	public static final RegistryKey<FishEnchantment> JAW = ofKey("jaw");
+	public static final RegistryKey<FishEnchantment> SHELL = ofKey("shell");
+	public static final RegistryKey<FishEnchantment> JET = ofKey("jet");
+	public static final RegistryKey<FishEnchantment> OBFUSCATED = ofKey("obfuscated");
 
-	public static final Identifier NONE_ID = Abysm.id("none");
-	public static final Identifier JAW_ID = Abysm.id("jaw");
-	public static final Identifier SHELL_ID = Abysm.id("shell");
-	public static final Identifier JET_ID = Abysm.id("jet");
-	public static final Identifier OBFUSCATED_ID = Abysm.id("obfuscated");
-
-	public static final RegistryKey<FishEnchantment> NONE = of(NONE_ID);
-	public static final RegistryKey<FishEnchantment> JAW = of(JAW_ID);
-	public static final RegistryKey<FishEnchantment> SHELL = of(SHELL_ID);
-	public static final RegistryKey<FishEnchantment> JET = of(JET_ID);
-	public static final RegistryKey<FishEnchantment> OBFUSCATED = of(OBFUSCATED_ID);
-
-	private static RegistryKey<FishEnchantment> of(Identifier id) {
-		return RegistryKey.of(AbysmRegistryKeys.FISH_ENCHANTMENT, id);
+	private static RegistryKey<FishEnchantment> ofKey(String key) {
+		return RegistryKey.of(AbysmRegistryKeys.FISH_ENCHANTMENT, Abysm.id(key));
 	}
 
-	private static void register(Registerable<FishEnchantment> registerable, RegistryKey<FishEnchantment> key, Identifier id, RegistryEntry<EntityAttribute> attribute, double value) {
+	private static void register(Registerable<FishEnchantment> registerable, RegistryKey<FishEnchantment> key,RegistryEntry<EntityAttribute> attribute, double value) {
 		registerable.register(key, FishEnchantment.builder()
-			.id(id)
+			.id(key.getValue())
 			.add(
 				attribute,
 				new EntityAttributeModifier(
@@ -43,11 +35,11 @@ public class AbysmFishEnchantments {
 	}
 
 	public static void bootstrap(Registerable<FishEnchantment> registerable) {
-		registerable.register(NONE, FishEnchantment.builder().id(NONE_ID).build());
+		registerable.register(NONE, FishEnchantment.builder().id(NONE.getValue()).build());
 
-		register(registerable, JAW, JAW_ID, EntityAttributes.ATTACK_DAMAGE, 2);
-		register(registerable, SHELL, SHELL_ID, EntityAttributes.ARMOR, 10);
-		register(registerable, JET, JET_ID, EntityAttributes.MOVEMENT_SPEED, 0.7);
-		register(registerable, OBFUSCATED, OBFUSCATED_ID, EntityAttributes.LUCK, 1);
+		register(registerable, JAW, EntityAttributes.ATTACK_DAMAGE, 2);
+		register(registerable, SHELL, EntityAttributes.ARMOR, 10);
+		register(registerable, JET, EntityAttributes.MOVEMENT_SPEED, 0.7);
+		register(registerable, OBFUSCATED, EntityAttributes.LUCK, 1);
 	}
 }

@@ -18,7 +18,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
@@ -33,8 +32,9 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 	public static final Map<Identifier, FishEnchantmentRenderer> ENCHANTMENT_RENDERERS = Util.make(
 		new Object2ObjectOpenHashMap<>(),
 		map -> {
-			map.put(AbysmFishEnchantments.JAW_ID, JawRenderer.INSTANCE);
-			map.put(AbysmFishEnchantments.SHELL_ID, ShellRenderer.INSTANCE);
+			map.put(AbysmFishEnchantments.JAW.getValue(), JawRenderer.INSTANCE);
+			map.put(AbysmFishEnchantments.SHELL.getValue(), ShellRenderer.INSTANCE);
+			map.put(AbysmFishEnchantments.JET.getValue(), JetRenderer.INSTANCE);
 		}
 	);
 

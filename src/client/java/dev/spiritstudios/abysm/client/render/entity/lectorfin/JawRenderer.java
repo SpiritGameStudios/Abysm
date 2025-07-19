@@ -14,7 +14,7 @@ public class JawRenderer extends FishEnchantmentRenderer {
 	public static final JawRenderer INSTANCE = new JawRenderer();
 
 	protected JawRenderer() {
-		super(new JawModel(AbysmFishEnchantments.JAW_ID));
+		super(new JawModel(AbysmFishEnchantments.JAW.getValue()));
 	}
 
 	public static class JawModel extends ExtraModel {
