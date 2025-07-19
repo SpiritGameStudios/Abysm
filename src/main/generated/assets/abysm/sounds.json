@@ -102,8 +102,9 @@
   "item.oozeball.apply": {
     "category": "block",
     "sounds": [
-      "minecraft:liquid/splash",
-      "minecraft:liquid/splash2"
+      "abysm:item/oozeball/sticky1",
+      "abysm:item/oozeball/sticky2",
+      "abysm:item/oozeball/sticky3"
     ],
     "subtitle": "subtitles.abysm.item.oozeball.apply"
   },

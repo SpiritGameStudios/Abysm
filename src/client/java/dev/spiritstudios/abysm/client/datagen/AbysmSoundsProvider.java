@@ -74,13 +74,13 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 		);
 
 
-		// TODO: Needs custom sounds
 		exporter.add(
 			AbysmSoundEvents.ITEM_OOZEBALL_APPLY,
 			SoundTypeBuilder.of()
 				.subtitle("subtitles.abysm.item.oozeball.apply")
-				.sound(ofVanillaFile("liquid/splash"))
-				.sound(ofVanillaFile("liquid/splash2"))
+				.sound(ofFile("item/oozeball/sticky1"))
+				.sound(ofFile("item/oozeball/sticky2"))
+				.sound(ofFile("item/oozeball/sticky3"))
 				.category(SoundCategory.BLOCKS)
 		);
 
