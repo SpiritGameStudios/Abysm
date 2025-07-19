@@ -4,12 +4,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.spiritstudios.abysm.client.sound.AbysmEffects;
+import dev.spiritstudios.abysm.registry.tags.AbysmSoundEventTags;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.sound.Channel;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.client.sound.SoundSystem;
 import net.minecraft.client.sound.Source;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.SoundCategory;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,8 +24,6 @@ import java.util.function.Consumer;
 public abstract class SoundSystemMixin {
 	@WrapOperation(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/Channel$SourceManager;run(Ljava/util/function/Consumer;)V"))
 	private static void play(Channel.SourceManager sourceManager, Consumer<Source> action, Operation<Void> original, @Local(argsOnly = true) SoundInstance instance) {
-		// TODO: Tag for excluding certain sounds (swimming effects, sounds for vanilla underwater mobs)
-
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
 
@@ -31,7 +31,10 @@ public abstract class SoundSystemMixin {
 			!player.isSubmergedInWater() ||
 			instance.getCategory() == SoundCategory.MUSIC ||
 			instance.getCategory() == SoundCategory.AMBIENT ||
-			instance.getCategory() == SoundCategory.MASTER) {
+			instance.getCategory() == SoundCategory.MASTER ||
+			Registries.SOUND_EVENT.getEntry(instance.getId())
+				.map(entry -> entry.isIn(AbysmSoundEventTags.UNEFFECTED_BY_WATER))
+				.orElse(false)) {
 			original.call(sourceManager, action);
 			return;
 		}

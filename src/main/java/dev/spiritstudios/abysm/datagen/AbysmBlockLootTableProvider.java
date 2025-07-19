@@ -20,6 +20,7 @@ import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
+import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 
@@ -36,7 +37,7 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 
 	@Override
 	public void generate() {
-		RegistryWrapper.Impl<Enchantment> impl = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
+		RegistryEntryLookup<Enchantment> enchantmentLookup = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
 
 		addLootForFamilies(
 			AbysmBlockFamilies.FLOROPUMICE,
@@ -168,14 +169,14 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 								LootPool.builder().with(
 									ItemEntry.builder(Items.GOLD_NUGGET)
 										.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F)))
-										.apply(ApplyBonusLootFunction.oreDrops(impl.getOrThrow(Enchantments.FORTUNE)))
+										.apply(ApplyBonusLootFunction.oreDrops(enchantmentLookup.getOrThrow(Enchantments.FORTUNE)))
 								)
 							)
 							.pool(
 								LootPool.builder().with(
 									ItemEntry.builder(Items.LAPIS_LAZULI)
 										.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))
-										.apply(ApplyBonusLootFunction.oreDrops(impl.getOrThrow(Enchantments.FORTUNE)))
+										.apply(ApplyBonusLootFunction.oreDrops(enchantmentLookup.getOrThrow(Enchantments.FORTUNE)))
 								)
 							)
 							.build()

@@ -9,6 +9,7 @@ import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmItemTags;
+import dev.spiritstudios.abysm.registry.tags.AbysmSoundEventTags;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -30,6 +31,7 @@ import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,6 +47,7 @@ public class AbysmTagProviders {
 		pack.addProvider(BiomeTagProvider::new);
 		pack.addProvider(EntityTypeTagProvider::new);
 		pack.addProvider(DamageTypeTagProvider::new);
+		pack.addProvider(SoundEventTagProvider::new);
 	}
 
 	private static class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
@@ -691,6 +694,18 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ARMOR).add(AbysmDamageTypes.CNIDOCYTE_STING).add(AbysmDamageTypes.PRESSURE);
 			getOrCreateTagBuilder(DamageTypeTags.BYPASSES_EFFECTS).add(AbysmDamageTypes.PRESSURE);
 			getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(AbysmDamageTypes.CNIDOCYTE_STING).add(AbysmDamageTypes.PRESSURE);
+		}
+	}
+
+	private static class SoundEventTagProvider extends FabricTagProvider<SoundEvent> {
+
+		public SoundEventTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+			super(output, RegistryKeys.SOUND_EVENT, registriesFuture);
+		}
+
+		@Override
+		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+			getOrCreateTagBuilder(AbysmSoundEventTags.UNEFFECTED_BY_WATER);
 		}
 	}
 }
