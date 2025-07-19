@@ -2,7 +2,7 @@
   "modifiers": [
     {
       "type": "minecraft:movement_speed",
-      "amount": 0.7,
+      "amount": 0.4,
       "id": "abysm:jet",
       "operation": "add_value"
     }

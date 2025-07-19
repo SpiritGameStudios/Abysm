@@ -32,7 +32,7 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 	public static final Map<Identifier, FishEnchantmentRenderer> ENCHANTMENT_RENDERERS = Util.make(
 		new Object2ObjectOpenHashMap<>(),
 		map -> {
-			map.put(AbysmFishEnchantments.JAW.getValue(), JawRenderer.INSTANCE);
+			//map.put(AbysmFishEnchantments.JAW.getValue(), JawRenderer.INSTANCE);
 			map.put(AbysmFishEnchantments.SHELL.getValue(), ShellRenderer.INSTANCE);
 			map.put(AbysmFishEnchantments.JET.getValue(), JetRenderer.INSTANCE);
 		}
