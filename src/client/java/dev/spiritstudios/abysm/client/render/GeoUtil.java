@@ -4,9 +4,16 @@ import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
+@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class GeoUtil {
 	public static <T, R extends GeoRenderState> @NotNull T getOrDefaultGeoData(R state, DataTicket<T> dataTicket, T defaultValue) {
 		T value = state.getOrDefaultGeckolibData(dataTicket, defaultValue);
+		if (value == null) value = defaultValue;
+		return value;
+	}
+
+	public static <R extends GeoRenderState> boolean getOrDefaultGeoData(R state, DataTicket<Boolean> dataTicket, boolean defaultValue) {
+		Boolean value = state.getOrDefaultGeckolibData(dataTicket, defaultValue);
 		if (value == null) value = defaultValue;
 		return value;
 	}

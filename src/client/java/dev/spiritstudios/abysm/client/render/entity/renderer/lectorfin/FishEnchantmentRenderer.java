@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.render.entity.lectorfin;
+package dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin;
 
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;

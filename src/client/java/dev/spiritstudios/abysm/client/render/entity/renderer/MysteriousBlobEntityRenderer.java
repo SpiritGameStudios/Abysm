@@ -1,6 +1,7 @@
-package dev.spiritstudios.abysm.client.render.entity;
+package dev.spiritstudios.abysm.client.render.entity.renderer;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.client.render.GeoUtil;
 import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
 import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -22,8 +23,7 @@ public class MysteriousBlobEntityRenderer<R extends LivingEntityRenderState & Ge
 	@Override
 	public Identifier getTextureLocation(R renderState) {
 		Identifier original = super.getTextureLocation(renderState);
-		Boolean happy = renderState.getGeckolibData(HAPPY_BLOB);
-		if (happy != null && !happy) {
+		if (!GeoUtil.getOrDefaultGeoData(renderState, HAPPY_BLOB, true)) {
 			return original.withPath(string -> {
 				int extension = string.indexOf('.');
 				return string.substring(0, extension) + "_unhappy" + string.substring(extension);

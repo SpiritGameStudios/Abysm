@@ -1,7 +1,7 @@
-package dev.spiritstudios.abysm.client.render.entity.feature;
+package dev.spiritstudios.abysm.client.render.entity.renderer.feature;
 
 import dev.spiritstudios.abysm.client.render.GeoUtil;
-import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.ElectricOoglyBooglyRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;

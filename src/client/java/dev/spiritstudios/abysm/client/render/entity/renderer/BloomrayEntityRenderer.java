@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.render.entity;
+package dev.spiritstudios.abysm.client.render.entity.renderer;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;

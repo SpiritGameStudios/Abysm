@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.render.entity.lectorfin;
+package dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin;
 
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;

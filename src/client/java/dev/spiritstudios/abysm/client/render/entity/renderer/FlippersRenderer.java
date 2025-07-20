@@ -1,6 +1,7 @@
-package dev.spiritstudios.abysm.client.render.entity;
+package dev.spiritstudios.abysm.client.render.entity.renderer;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.client.render.entity.AbysmEntityLayers;
 import dev.spiritstudios.abysm.client.render.entity.model.FlippersModel;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.client.MinecraftClient;

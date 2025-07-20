@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.client.render.entity.model;
 
-import dev.spiritstudios.abysm.client.render.entity.AbstractFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.AbstractFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEntityRenderer;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
@@ -14,7 +15,7 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
  * You can also tell GeckoLib to turn the models head bone using the entity's pitch and yaw with the third constructor param.
  *
  * @see AbstractFishEntityRenderer
- * @see dev.spiritstudios.abysm.client.render.entity.SmallFloralFishEntityRenderer.SmallFloralFishEntityModel
+ * @see SmallFloralFishEntityRenderer.SmallFloralFishEntityModel
  */
 public abstract class AbstractFishEntityModel<T extends GeoAnimatable> extends DefaultedEntityGeoModel<T> {
 	// The names of the bones groups (the folders in BlockBench) to animate the swimming animation

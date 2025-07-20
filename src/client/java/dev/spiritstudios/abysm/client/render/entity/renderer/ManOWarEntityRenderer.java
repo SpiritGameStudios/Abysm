@@ -1,8 +1,9 @@
-package dev.spiritstudios.abysm.client.render.entity;
+package dev.spiritstudios.abysm.client.render.entity.renderer;
 
 import com.google.common.collect.ImmutableList;
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.client.render.entity.feature.ManOWarTentaclesFeatureRenderer;
+import dev.spiritstudios.abysm.client.render.entity.AbysmEntityLayers;
+import dev.spiritstudios.abysm.client.render.entity.renderer.feature.ManOWarTentaclesFeatureRenderer;
 import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
 import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;

@@ -1,7 +1,7 @@
-package dev.spiritstudios.abysm.client.render.entity.lectorfin;
+package dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.client.render.entity.AbstractFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.AbstractFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;

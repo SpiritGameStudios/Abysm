@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.render.entity;
+package dev.spiritstudios.abysm.client.render.entity.renderer;
 
 import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
 import net.minecraft.client.render.entity.EntityRendererFactory;

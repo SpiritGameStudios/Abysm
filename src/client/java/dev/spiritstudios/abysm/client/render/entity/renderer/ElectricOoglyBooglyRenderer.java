@@ -1,7 +1,7 @@
-package dev.spiritstudios.abysm.client.render.entity;
+package dev.spiritstudios.abysm.client.render.entity.renderer;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.client.render.entity.feature.ElectricOoglyBooglyBlowingUpWithMindFeatureRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.feature.ElectricOoglyBooglyBlowingUpWithMindFeatureRenderer;
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.entity.floralreef.ElectricOoglyBooglyEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;

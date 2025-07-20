@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.render.entity.feature;
+package dev.spiritstudios.abysm.client.render.entity.renderer.feature;
 
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import net.minecraft.client.render.RenderLayer;
