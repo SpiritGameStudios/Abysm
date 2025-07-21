@@ -140,8 +140,6 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 		// region misc plants
 		generator.registerRoots(AbysmBlocks.ANTENNAE_PLANT, AbysmBlocks.POTTED_ANTENNAE_PLANT);
-
-		generator.registerPlantPart(AbysmBlocks.GOLDEN_LAZULI_OREFURL, AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, BlockStateModelGenerator.CrossType.NOT_TINTED);
 		// endregion
 
 		// region dregloam
@@ -153,6 +151,13 @@ public class AbysmModelProvider extends FabricModelProvider {
 		registerGrassLike(generator, AbysmBlocks.OOZING_DREGLOAM, AbysmBlocks.DREGLOAM);
 		// endregion
 
+		// region dregloam plants
+		generator.registerPlantPart(AbysmBlocks.GOLDEN_LAZULI_OREFURL, AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, BlockStateModelGenerator.CrossType.NOT_TINTED);
+
+		generator.registerRoots(AbysmBlocks.OOZETRICKLE_FILAMENTS, AbysmBlocks.POTTED_OOZETRICKLE_FILAMENTS);
+		generator.registerDoubleBlockAndItem(AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS, CrossType.NOT_TINTED);
+		// endregion
+
 		// region silt
 		generator.registerSimpleCubeAll(AbysmBlocks.SILT);
 		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SILT);
@@ -161,7 +166,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 	}
 
 	private void doForMany(BiConsumer<BlockStateModelGenerator, Block> consumer, BlockStateModelGenerator generator, Block... blocks) {
-		for(Block block : blocks) {
+		for (Block block : blocks) {
 			consumer.accept(generator, block);
 		}
 	}
@@ -254,7 +259,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 	}
 
 	private void registerGenerated(ItemModelGenerator generator, Item... items) {
-		for(Item item : items) {
+		for (Item item : items) {
 			registerGenerated(generator, item);
 		}
 	}

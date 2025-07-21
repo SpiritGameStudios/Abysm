@@ -115,7 +115,9 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM,
 			AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM,
 
-			AbysmBlocks.POTTED_ANTENNAE_PLANT
+			AbysmBlocks.POTTED_ANTENNAE_PLANT,
+
+			AbysmBlocks.POTTED_OOZETRICKLE_FILAMENTS
 		);
 
 		this.addSilkTouchOrElseDrop(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE, AbysmBlocks.FLOROPUMICE);
@@ -131,9 +133,6 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.SUNBLOOM_PETALS,
 			AbysmBlocks.MALLOWBLOOM_PETALS
 		);
-
-		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL, true);
-		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, false);
 
 		this.addDrop(AbysmBlocks.OOZING_DREGLOAM, block -> this.dropsWithSilkTouch(
 			AbysmBlocks.OOZING_DREGLOAM,
@@ -184,6 +183,12 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 				)
 			)
 		);
+
+		this.addDrop(AbysmBlocks.OOZETRICKLE_FILAMENTS, this::dropsWithShears);
+		this.addDrop(AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS, block -> this.tallPlantDrops(block, AbysmBlocks.OOZETRICKLE_FILAMENTS));
+
+		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL, true);
+		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, false);
 	}
 
 	private void forEach(Consumer<Block> consumer, Block... blocks) {

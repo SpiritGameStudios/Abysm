@@ -18,6 +18,7 @@ import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.TallBlockItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -573,37 +574,6 @@ public final class AbysmBlocks {
 		AbstractBlock.Settings.copy(POTTED_ROSY_SPRIGS),
 		false
 	);
-
-	// the random-ticked head of the plant
-	public static final AbstractPlantStemBlock GOLDEN_LAZULI_OREFURL = register(
-		"golden_lazuli_orefurl",
-		OrefurlBlock::new,
-		AbstractBlock.Settings.create()
-			.mapColor(MapColor.GOLD)
-			.sounds(BlockSoundGroup.SWEET_BERRY_BUSH)
-			.pistonBehavior(PistonBehavior.DESTROY)
-			.offset(AbstractBlock.OffsetType.XZ)
-			.luminance(state -> 2)
-			.noCollision()
-			.ticksRandomly()
-			.breakInstantly(),
-		false
-	);
-
-	// the not-random-ticked body of the plant
-	public static final Block GOLDEN_LAZULI_OREFURL_PLANT = register(
-		"golden_lazuli_orefurl_plant",
-		OrefurlPlantBlock::new,
-		AbstractBlock.Settings.create()
-			.mapColor(MapColor.GOLD)
-			.sounds(BlockSoundGroup.SWEET_BERRY_BUSH)
-			.pistonBehavior(PistonBehavior.DESTROY)
-			.offset(AbstractBlock.OffsetType.XZ)
-			.luminance(state -> 2)
-			.noCollision()
-			.breakInstantly(),
-		false
-	);
 	// endregion misc plants
 
 	// region dregloam
@@ -643,6 +613,78 @@ public final class AbysmBlocks {
 			.strength(1.1F)
 			.mapColor(MapColor.TERRACOTTA_BROWN)
 			.sounds(BlockSoundGroup.MUD)
+	);
+	// endregion
+
+	// region dregloam plants
+	public static final Block OOZETRICKLE_FILAMENTS = register(
+		"oozetrickle_filaments",
+		OozetrickleFilamentsBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.LIGHT_BLUE)
+			.sounds(BlockSoundGroup.ROOTS)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
+			.luminance(state -> 2)
+			.breakInstantly()
+			.noCollision()
+			.replaceable()
+	);
+
+	public static final Block POTTED_OOZETRICKLE_FILAMENTS = register(
+		"potted_oozetrickle_filaments",
+		settings -> new FlowerPotBlock(OOZETRICKLE_FILAMENTS, settings),
+		AbstractBlock.Settings.create()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 2)
+			.breakInstantly()
+			.nonOpaque(),
+		false
+	);
+
+	public static final Block TALL_OOZETRICKLE_FILAMENTS = register(
+		"tall_oozetrickle_filaments",
+		TallOozetrickleFilamentsBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(DyeColor.LIGHT_BLUE)
+			.sounds(BlockSoundGroup.ROOTS)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
+			.luminance(state -> 3)
+			.breakInstantly()
+			.noCollision(),
+		TallBlockItem::new
+	);
+
+	// the random-ticked head of the plant
+	public static final AbstractPlantStemBlock GOLDEN_LAZULI_OREFURL = register(
+		"golden_lazuli_orefurl",
+		OrefurlBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.GOLD)
+			.sounds(BlockSoundGroup.SWEET_BERRY_BUSH)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
+			.luminance(state -> 2)
+			.noCollision()
+			.ticksRandomly()
+			.breakInstantly(),
+		false
+	);
+
+	// the not-random-ticked body of the plant
+	public static final Block GOLDEN_LAZULI_OREFURL_PLANT = register(
+		"golden_lazuli_orefurl_plant",
+		OrefurlPlantBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.GOLD)
+			.sounds(BlockSoundGroup.SWEET_BERRY_BUSH)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
+			.luminance(state -> 2)
+			.noCollision()
+			.breakInstantly(),
+		false
 	);
 	// endregion
 

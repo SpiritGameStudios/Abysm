@@ -7,6 +7,7 @@ import net.minecraft.registry.tag.TagKey;
 
 public final class AbysmBlockTags {
 	public static final TagKey<Block> BLOOMSHROOM_PLANTABLE_ON = of("bloomshroom_plantable_on");
+	public static final TagKey<Block> OOZE_VEGETATION_PLANTABLE_ON = of("ooze_vegetation_plantable_on");
 	// blocks that preserve leaves (like logs), but are not logs themselves. e.g. bloomshroom caps, stems, goop
 	public static final TagKey<Block> ALSO_PRESERVES_LEAVES = of("also_preserves_leaves");
 	public static final TagKey<Block> IS_AIR_OR_WATER = of("is_air_or_water");

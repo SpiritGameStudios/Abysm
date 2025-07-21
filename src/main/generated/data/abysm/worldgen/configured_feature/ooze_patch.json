@@ -14,9 +14,9 @@
     "replaceable": "#abysm:ooze_replaceable",
     "surface": "floor",
     "treat_as_air": "#abysm:is_air_or_water",
-    "vegetation_chance": 0.0,
+	  "vegetation_chance": 0.1,
     "vegetation_feature": {
-      "feature": "abysm:patch_seagrass_cave",
+		"feature": "abysm:patch_ooze_vegetation",
       "placement": []
     },
     "vertical_range": 3,

@@ -65,6 +65,10 @@ public class AbysmClientBlockMetatagProvider extends MetatagProvider<Block> {
 			AbysmBlocks.ANTENNAE_PLANT,
 			AbysmBlocks.POTTED_ANTENNAE_PLANT,
 
+			AbysmBlocks.OOZETRICKLE_FILAMENTS,
+			AbysmBlocks.POTTED_OOZETRICKLE_FILAMENTS,
+			AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS,
+
 			AbysmBlocks.GOLDEN_LAZULI_OREFURL,
 			AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT
 		);

@@ -32,7 +32,6 @@ import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.ConfiguredFeatures;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.FeatureConfig;
-import net.minecraft.world.gen.feature.NetherForestVegetationFeatureConfig;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.PlacedFeatures;
 import net.minecraft.world.gen.feature.RandomFeatureConfig;
@@ -75,6 +74,7 @@ public class AbysmConfiguredFeatures {
 	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_SEAGRASS_CAVE = ofKey("patch_seagrass_cave");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> GOLDEN_LAZULI_OREFURL = ofKey("golden_lazuli_orefurl");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_GOLDEN_LAZULI_OREFURL = ofKey("patch_golden_lazuli_orefurl");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_OOZE_VEGETATION = ofKey("patch_ooze_vegetation");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> HANGING_LANTERN = ofKey("hanging_lantern");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_HANGING_LANTERN = ofKey("patch_hanging_lantern");
@@ -159,7 +159,12 @@ public class AbysmConfiguredFeatures {
 
 		helper.add(
 			PATCH_PETALS_UNDERWATER, AbysmFeatures.BLOOMSHROOM_VEGETATION,
-			new NetherForestVegetationFeatureConfig(petalProvider, 3, 2)
+			new UnderwaterVegetationFeature.Config(
+				AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON,
+				petalProvider,
+				3,
+				2
+			)
 		);
 
 		helper.add(
@@ -182,7 +187,12 @@ public class AbysmConfiguredFeatures {
 
 		helper.add(
 			BLOOMSHROOM_VEGETATION, AbysmFeatures.BLOOMSHROOM_VEGETATION,
-			new NetherForestVegetationFeatureConfig(bloomshroomVegetationProvider, 8, 4)
+			new UnderwaterVegetationFeature.Config(
+				AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON,
+				bloomshroomVegetationProvider,
+				8,
+				4
+			)
 		);
 
 		registerBloomshroomVegetation(registerable, AbysmBlocks.ROSY_SPRIGS, AbysmBlocks.ROSY_BLOOMSHROOM, ROSY_BLOOMSHROOM_VEGETATION);
@@ -239,6 +249,20 @@ public class AbysmConfiguredFeatures {
 		);
 
 		helper.add(
+			PATCH_OOZE_VEGETATION, AbysmFeatures.BLOOMSHROOM_VEGETATION,
+			new UnderwaterVegetationFeature.Config(
+				AbysmBlockTags.OOZE_VEGETATION_PLANTABLE_ON,
+				new WeightedBlockStateProvider(
+					Pool.<BlockState>builder()
+						.add(AbysmBlocks.OOZETRICKLE_FILAMENTS.getDefaultState(), 5)
+						.add(AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS.getDefaultState(), 3)
+				),
+				3,
+				1
+			)
+		);
+
+		helper.add(
 			HANGING_LANTERN, AbysmFeatures.HANGING_LANTERN,
 			new HangingLanternFeature.Config(
 				BlockStateProvider.of(Blocks.SOUL_LANTERN.getDefaultState().with(LanternBlock.HANGING, true)),
@@ -286,12 +310,12 @@ public class AbysmConfiguredFeatures {
 				AbysmBlockTags.IS_AIR_OR_WATER,
 				AbysmBlockTags.OOZE_REPLACEABLE,
 				BlockStateProvider.of(AbysmBlocks.OOZING_DREGLOAM),
-				PlacedFeatures.createEntry(configuredFeatureLookup.getOrThrow(PATCH_SEAGRASS_CAVE)), // TODO add ooze decoration, swap this feature, increase vegetation chance
+				PlacedFeatures.createEntry(configuredFeatureLookup.getOrThrow(PATCH_OOZE_VEGETATION)),
 				VerticalSurfaceType.FLOOR,
 				ConstantIntProvider.create(1),
 				0.6F,
 				3,
-				0.0F,
+				0.1F,
 				UniformIntProvider.create(1, 2),
 				0.3F,
 				true
@@ -351,7 +375,12 @@ public class AbysmConfiguredFeatures {
 			vegetationBonemeal,
 			new ConfiguredFeature<>(
 				AbysmFeatures.BLOOMSHROOM_VEGETATION,
-				new NetherForestVegetationFeatureConfig(blockStateProvider, 3, 1)
+				new UnderwaterVegetationFeature.Config(
+					AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON,
+					blockStateProvider,
+					3,
+					1
+				)
 			)
 		);
 	}

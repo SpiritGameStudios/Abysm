@@ -113,21 +113,35 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_TREES)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
-				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS);
+				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS)
+				.add(
+					AbysmBlocks.OOZETRICKLE_FILAMENTS,
+					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS
+				);
 
 			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_MUSHROOMS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
-				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS);
+				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS)
+				.add(
+					AbysmBlocks.OOZETRICKLE_FILAMENTS,
+					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS
+				);
 
 			getOrCreateTagBuilder(BlockTags.COMBINATION_STEP_SOUND_BLOCKS)
-				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
+				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
+				.add(
+					AbysmBlocks.OOZETRICKLE_FILAMENTS
+				);
 
 			getOrCreateTagBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS);
 
 			getOrCreateTagBuilder(BlockTags.ENDERMAN_HOLDABLE)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
-				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS);
+				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
+				.add(
+					AbysmBlocks.OOZETRICKLE_FILAMENTS
+				);
 
 			getOrCreateTagBuilder(BlockTags.SCULK_REPLACEABLE)
 				.add(
@@ -182,7 +196,11 @@ public class AbysmTagProviders {
 
 					AbysmBlocks.POTTED_ROSY_BLOOMSHROOM,
 					AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM,
-					AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM
+					AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM,
+
+					AbysmBlocks.POTTED_ANTENNAE_PLANT,
+
+					AbysmBlocks.POTTED_OOZETRICKLE_FILAMENTS
 				);
 
 			// conventional tags
@@ -201,6 +219,12 @@ public class AbysmTagProviders {
 					Blocks.SAND
 				)
 				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
+
+			getOrCreateTagBuilder(AbysmBlockTags.OOZE_VEGETATION_PLANTABLE_ON)
+				.add(
+					AbysmBlocks.OOZING_DREGLOAM,
+					AbysmBlocks.DREGLOAM_OOZE
+				);
 
 			getOrCreateTagBuilder(AbysmBlockTags.ALSO_PRESERVES_LEAVES)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)

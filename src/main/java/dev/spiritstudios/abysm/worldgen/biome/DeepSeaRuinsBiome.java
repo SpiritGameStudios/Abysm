@@ -18,7 +18,13 @@ import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.feature.PlacedFeature;
 
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.*;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.MaterialRule;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.block;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.condition;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.noiseThreshold;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.not;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
+import static net.minecraft.world.gen.surfacebuilder.MaterialRules.stoneDepth;
 
 public final class DeepSeaRuinsBiome extends AbysmBiome {
 	public DeepSeaRuinsBiome() {
