@@ -10,6 +10,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib.animatable.processing.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -20,7 +21,7 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 
 	public BloomrayEntityRenderer(EntityRendererFactory.Context context) {
 		super(context, new BloomrayEntityModel());
-		this.withScale(3f);
+		this.withScale(2.0f);
 	}
 
 	@Override
@@ -33,6 +34,7 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 
 	public static class BloomrayEntityModel extends DefaultedEntityGeoModel<BloomrayEntity> {
 		public static final String BODY = "body";
+		public static final String HEAD = "head";
 		public static final String TAIL = "tail";
 		public static final String LEFT_FIN = "left";
 		public static final String RIGHT_FIN = "right";
@@ -55,15 +57,37 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 
 		@Override
 		public void setCustomAnimations(AnimationState<BloomrayEntity> animationState) {
-			super.setCustomAnimations(animationState);
-
 			if (this.doNotAnimate) return;
+
+			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
+
+			GeoBone head = getAnimationProcessor().getBone(HEAD);
+			if (head == null) return;
+
+			float pitch = -animationState.getData(DataTickets.ENTITY_PITCH);
+
+
+			GeoBone body = getAnimationProcessor().getBone(BODY);
+			if (body == null) return;
+
+
+			float theta = renderState.age * 0.33F;
+			float sineTheta = MathHelper.sin(theta);
+			float cosTheta = MathHelper.cos(theta);
+
+			head.setRotX(-(0.13F * sineTheta) * 1.2F);
+
+			float yaw = -animationState.getData(DataTickets.ENTITY_YAW);
+
+			body.setRotX(pitch * MathHelper.RADIANS_PER_DEGREE + 0.05F * sineTheta);
+			body.setRotY(-yaw * MathHelper.RADIANS_PER_DEGREE);
 
 			// animate tail
 			GeoBone tail = getAnimationProcessor().getBone(TAIL);
 			if (tail == null) return;
 
 			float tailYaw = getTailYaw(animationState);
+			tail.setRotX(-(0.13F * sineTheta) * 1.8F);
 			tail.setRotY(tailYaw);
 
 			// animate fins
@@ -71,9 +95,14 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 			GeoBone rightFin = getAnimationProcessor().getBone(RIGHT_FIN);
 			if (leftFin == null || rightFin == null) return;
 
-			float finPitch = getFinPitch(animationState);
-			leftFin.setRotZ(finPitch);
-			rightFin.setRotZ(-finPitch);
+			leftFin.setRotY((0.13F * cosTheta) * 0.5F);
+			rightFin.setRotY(-(0.13F * cosTheta) * 0.5F);
+
+			leftFin.setRotX(-(0.13F * sineTheta) * 0.5F);
+			rightFin.setRotX(-(0.13F * sineTheta) * 0.5F);
+
+			leftFin.setRotZ((0.13F * sineTheta) * 1.25F);
+			rightFin.setRotZ(-(0.13F * sineTheta) * 1.25F);
 
 			// animate... antennas? What do you call the things on top of them that are based on the crown flowers?
 			GeoBone leftAntenna = getAnimationProcessor().getBone(LEFT_ANTENNA);
@@ -99,10 +128,22 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 			return -yawMultiplier * MathHelper.sin(0.2f * renderState.age);
 		}
 
+		private float getFinRoll(AnimationState<BloomrayEntity> animationState) {
+			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
+			if (!renderState.touchingWater) return 0f;
+			return 0.25f * MathHelper.sin(0.2f * renderState.age);
+		}
+
 		private float getFinPitch(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
 			if (!renderState.touchingWater) return 0f;
-			return 0.25f * MathHelper.sin(0.1f * renderState.age);
+			return 0.05f * MathHelper.sin(0.2f * renderState.age);
+		}
+
+		private float getFinYaw(AnimationState<BloomrayEntity> animationState) {
+			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
+			if (!renderState.touchingWater) return 0f;
+			return 0.05f * MathHelper.sin(0.2f * renderState.age);
 		}
 
 		private float getAntennaPitch(AnimationState<BloomrayEntity> animationState) {

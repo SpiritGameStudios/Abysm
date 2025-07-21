@@ -7,6 +7,8 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
@@ -14,14 +16,18 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.brain.task.TargetUtil;
+import net.minecraft.entity.ai.control.AquaticMoveControl;
+import net.minecraft.entity.ai.control.YawAdjustingLookControl;
+import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.ai.goal.WanderAroundGoal;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
+import net.minecraft.entity.ai.pathing.SwimNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.passive.SchoolingFishEntity;
+import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -36,19 +42,30 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEntity, Variantable<BloomrayEntityVariant>, EcologicalEntity {
+public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Variantable<BloomrayEntityVariant>, EcologicalEntity {
+	public static final String ANIM_CONTROLLER_STRING = "default";
+	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+
 	public static final TrackedData<RegistryEntry<BloomrayEntityVariant>> VARIANT = DataTracker.registerData(BloomrayEntity.class, AbysmTrackedDataHandlers.BLOOMRAY_VARIANT);
 
 	protected EcosystemLogic ecosystemLogic;
 
 	// TODO - Custom AI for hiding in Bloomshroom crowns when scared(player nearby? Bigger bloomray/TBD enemy nearby?)
-	public BloomrayEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
+	public BloomrayEntity(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
+		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+		this.lookControl = new YawAdjustingLookControl(this, 20);
+	}
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return this.geoCache;
 	}
 
 	@Override
@@ -90,13 +107,18 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 
 	public static DefaultAttributeContainer.Builder createRayAttributes() {
 		return AbstractSchoolingFishEntity.createPredatoryFishAttributes()
-			.add(EntityAttributes.MOVEMENT_SPEED, 0.85)
+			.add(EntityAttributes.MOVEMENT_SPEED, 1.0F)
 			.add(EntityAttributes.MAX_HEALTH, 14)
 			.add(EntityAttributes.ATTACK_DAMAGE, 1.5);
 	}
 
-	public WanderAroundGoal createWanderGoal() {
-		return new GlideToRandomPlaceGoal(this);
+	@Override
+	protected void initGoals() {
+		this.goalSelector.add(4, new SwimAroundGoal(this, 1.0, 10));
+		this.goalSelector.add(4, new LookAroundGoal(this));
+		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
+		this.targetSelector.add(1, new HuntPreyGoal(this, false));
 	}
 
 	@Override
@@ -139,6 +161,11 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 	@Override
 	protected @Nullable SoundEvent getAmbientSound() {
 		return AbysmSoundEvents.ENTITY_BLOOMRAY_AMBIENT;
+	}
+
+	@Override
+	protected EntityNavigation createNavigation(World world) {
+		return new SwimNavigation(this, world);
 	}
 
 	@Override
@@ -196,23 +223,8 @@ public class BloomrayEntity extends AbstractSchoolingFishEntity implements GeoEn
 		this.dataTracker.set(VARIANT, variant);
 	}
 
-	public static class GlideToRandomPlaceGoal extends SwimAroundGoal {
-		private final BloomrayEntity bloomray;
-
-		public GlideToRandomPlaceGoal(BloomrayEntity bloomray) {
-			super(bloomray, 1.0, 10);
-			this.bloomray = bloomray;
-		}
-
-		@Override
-		public boolean canStart() {
-			return this.bloomray.hasSelfControl() && super.canStart();
-		}
-
-		@Nullable
-		@Override
-		protected Vec3d getWanderTarget() {
-			return TargetUtil.find(this.mob, 17, 2);
-		}
+	@Override
+	public int getMaxLookPitchChange() {
+		return 1;
 	}
 }

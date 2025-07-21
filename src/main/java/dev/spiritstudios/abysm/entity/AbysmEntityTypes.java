@@ -39,7 +39,7 @@ public class AbysmEntityTypes {
 		"bloomray",
 		EntityType.Builder
 			.create(BloomrayEntity::new, SpawnGroup.WATER_CREATURE)
-			.dimensions(3.35f, 1f)
+			.dimensions(1.5f, 0.5f)
 			.maxTrackingRange(4)
 	);
 

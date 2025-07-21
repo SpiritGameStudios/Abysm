@@ -6,7 +6,6 @@
 	"mixins": [
 		"LeavesBlockMixin",
 		"ShovelItemMixin",
-		"bloomray.FishEntityMixin",
 		"harpoon.LivingEntityMixin",
 		"harpoon.PersistentProjectileEntityAccessor",
 		"harpoon.PersistentProjectileEntityMixin",
