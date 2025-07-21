@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.client.mixin.sound;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.spiritstudios.abysm.client.sound.AbysmEffects;
+import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.registry.tags.AbysmSoundEventTags;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -39,13 +39,13 @@ public abstract class SoundSystemMixin {
 			return;
 		}
 
-		sourceManager.run(AbysmEffects::applyUnderwater);
+		sourceManager.run(AbysmAL::applyUnderwater);
 
 		original.call(sourceManager, action);
 	}
 
 	@Inject(method = "start", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/SoundListener;init()V"))
 	private void start(CallbackInfo ci) {
-		AbysmEffects.init();
+		AbysmAL.init();
 	}
 }

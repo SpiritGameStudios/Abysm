@@ -8,7 +8,7 @@ import net.minecraft.client.sound.Source;
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.ALC10.*;
 
-public class AbysmEffects {
+public class AbysmAL {
 	private static boolean enabled = false;
 
 	private static AuxiliaryEffectSlot underwaterEffect;
