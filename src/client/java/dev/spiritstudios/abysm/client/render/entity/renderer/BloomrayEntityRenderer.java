@@ -66,10 +66,8 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 
 			float pitch = -animationState.getData(DataTickets.ENTITY_PITCH);
 
-
 			GeoBone body = getAnimationProcessor().getBone(BODY);
 			if (body == null) return;
-
 
 			float theta = renderState.age * 0.33F;
 			float sineTheta = MathHelper.sin(theta);
@@ -77,10 +75,10 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 
 			head.setRotX(-(0.13F * sineTheta) * 1.2F);
 
-			float yaw = -animationState.getData(DataTickets.ENTITY_YAW);
+			float yaw = animationState.getData(DataTickets.ENTITY_YAW);
 
 			body.setRotX(pitch * MathHelper.RADIANS_PER_DEGREE + 0.05F * sineTheta);
-			body.setRotY(-yaw * MathHelper.RADIANS_PER_DEGREE);
+			body.setRotY(yaw * MathHelper.RADIANS_PER_DEGREE);
 
 			// animate tail
 			GeoBone tail = getAnimationProcessor().getBone(TAIL);
