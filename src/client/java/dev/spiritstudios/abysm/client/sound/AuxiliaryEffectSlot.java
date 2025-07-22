@@ -24,9 +24,17 @@ public class AuxiliaryEffectSlot implements NativeResource {
 		ALException.assertOk();
 	}
 
+	public void disable() {
+		alAuxiliaryEffectSloti(id, AL_EFFECTSLOT_EFFECT, AL_EFFECT_NULL);
+	}
+
+	public void enable() {
+		alAuxiliaryEffectSloti(id, AL_EFFECTSLOT_EFFECT, effect.id);
+	}
+
 	public void apply(Source soundSource) {
 		effect.apply();
-		alAuxiliaryEffectSloti(id, AL_EFFECTSLOT_EFFECT, effect.id);
+
 
 		if (filter != null) filter.apply();
 
