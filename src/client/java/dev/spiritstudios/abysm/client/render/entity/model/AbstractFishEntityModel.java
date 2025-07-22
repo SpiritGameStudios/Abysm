@@ -7,7 +7,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.processing.AnimationState;
-import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
 /**
@@ -22,6 +21,7 @@ public abstract class AbstractFishEntityModel<T extends GeoAnimatable> extends D
 	// The body animation is optional, defined in the constructor
 	public static final String TAIL = "tail";
 	public static final String BODY = "body";
+	public static final String HEAD = "head";
 
 	public boolean doNotAnimate = false;
 	public boolean animateBodyAndTail;
@@ -40,20 +40,35 @@ public abstract class AbstractFishEntityModel<T extends GeoAnimatable> extends D
 		// Head turning animation
 		super.setCustomAnimations(animationState);
 		if (doNotAnimate) return;
-
-		GeoBone tail = getAnimationProcessor().getBone(TAIL);
-		if (tail == null) return;
-
-		float tailYaw = getTailYaw(animationState);
-		tail.setRotY(tailYaw);
-
-		if (animateBodyAndTail) {
-			GeoBone body = getAnimationProcessor().getBone(BODY);
-			if (body == null) return;
-
-			float bodyYaw = getBodyYaw(animationState);
-			body.setRotY(bodyYaw);
-		}
+//
+//		LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
+//
+//		GeoBone tail = getAnimationProcessor().getBone(TAIL);
+//		if (tail == null) return;
+//
+//		float tailYaw = getTailYaw(animationState);
+//		tail.setRotY(tailYaw);
+//
+//		if (animateBodyAndTail) {
+//			GeoBone body = getAnimationProcessor().getBone(BODY);
+//			if (body == null) return;
+//
+//			GeoBone head = getAnimationProcessor().getBone(HEAD);
+//			if (head == null) return;
+//
+//			float yawMultiplier = renderState.touchingWater ? 1f : 1.5f;
+//
+//			float theta = renderState.age * 0.33F;
+//			float sineTheta = MathHelper.sin(theta);
+//
+//			float pitch = -animationState.getData(DataTickets.ENTITY_PITCH);
+//			float yaw = animationState.getData(DataTickets.ENTITY_YAW);
+//
+//			head.setRotX(pitch * MathHelper.RADIANS_PER_DEGREE + 0.05F * sineTheta);
+//
+//			float bodyYaw = getBodyYaw(animationState);
+//			body.setRotY(bodyYaw);
+//		}
 	}
 
 	protected float getTailYaw(AnimationState<T> animationState) {
