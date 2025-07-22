@@ -8,9 +8,11 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal;
+import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -32,6 +34,8 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animatable.processing.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
 
 import java.util.Objects;
 
@@ -106,8 +110,10 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 	}
 
 	@Override
-	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+	public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
+		AnimationController<LectorfinEntity> animController = new AnimationController<>(ANIM_CONTROLLER_STRING, 5, event -> PlayState.STOP);
 
+		registrar.add(animController);
 	}
 
 	@Override
@@ -147,6 +153,7 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 		this.plantsGoal = new FindPlantsGoal(this);
 		this.plantsGoal.setRangeSupplier(() -> (int) Math.floor(this.getAttributeValue(EntityAttributes.FOLLOW_RANGE) * 0.8));
 		this.goalSelector.add(4, this.plantsGoal);
+		this.targetSelector.add(2, new RevengeGoal(this).setGroupRevenge());
 	}
 
 	@Override
