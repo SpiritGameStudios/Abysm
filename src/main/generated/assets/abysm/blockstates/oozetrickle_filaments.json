@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "abysm:block/oozetrickle_filaments"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "abysm:block/oozetrickle_filaments"
+    }
+  }
 }

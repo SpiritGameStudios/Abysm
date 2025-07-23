@@ -61,7 +61,7 @@
           "weight": 3
         }
       ]
-	},
-	  "valid_surface": "#abysm:bloomshroom_plantable_on"
+    },
+    "valid_surface": "#abysm:bloomshroom_plantable_on"
   }
 }

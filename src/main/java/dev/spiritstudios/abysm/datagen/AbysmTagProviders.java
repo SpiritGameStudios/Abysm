@@ -627,13 +627,15 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
-					AbysmEntityTypes.BIG_FLORAL_FISH
+					AbysmEntityTypes.BIG_FLORAL_FISH,
+					AbysmEntityTypes.PADDLEFISH
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
+					AbysmEntityTypes.PADDLEFISH,
 					AbysmEntityTypes.BLOOMRAY,
 					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
 					AbysmEntityTypes.MAN_O_WAR,
@@ -646,6 +648,7 @@ public class AbysmTagProviders {
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
+					AbysmEntityTypes.PADDLEFISH,
 					AbysmEntityTypes.BLOOMRAY,
 					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
 					AbysmEntityTypes.MAN_O_WAR,
@@ -658,6 +661,7 @@ public class AbysmTagProviders {
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
+					AbysmEntityTypes.PADDLEFISH,
 					AbysmEntityTypes.LECTORFIN
 				);
 

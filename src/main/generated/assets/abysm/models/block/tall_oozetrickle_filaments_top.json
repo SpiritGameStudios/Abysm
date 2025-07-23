@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:block/cross",
-	"textures": {
-		"cross": "abysm:block/tall_oozetrickle_filaments_top"
-	}
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "abysm:block/tall_oozetrickle_filaments_top"
+  }
 }

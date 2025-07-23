@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:block/flower_pot_cross",
-	"textures": {
-		"plant": "abysm:block/oozetrickle_filaments_pot"
-	}
+  "parent": "minecraft:block/flower_pot_cross",
+  "textures": {
+    "plant": "abysm:block/oozetrickle_filaments_pot"
+  }
 }

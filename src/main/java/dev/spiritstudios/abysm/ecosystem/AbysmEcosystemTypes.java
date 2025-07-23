@@ -7,6 +7,7 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
+import dev.spiritstudios.abysm.entity.floralreef.PaddlefishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
@@ -35,6 +36,16 @@ public class AbysmEcosystemTypes {
 			.setPrey(AbysmEntityTypes.SMALL_FLORAL_FISH)
 			.setTargetPopulation(7)
 	);
+
+	public static final EcosystemType<PaddlefishEntity> PADDLEFISH = register(
+		"paddlefish",
+		EcosystemType.Builder
+			.create(AbysmEntityTypes.PADDLEFISH)
+			.setPredators(AbysmEntityTypes.BLOOMRAY)
+			.setPlants(AbysmBlocks.ROSY_BLOOMSHROOM, AbysmBlocks.MAUVE_BLOOMSHROOM, AbysmBlocks.SUNNY_BLOOMSHROOM)
+			.setTargetPopulation(7)
+	);
+
 	public static final EcosystemType<BloomrayEntity> BLOOMRAY = register(
 		"bloomray",
 		EcosystemType.Builder.create(AbysmEntityTypes.BLOOMRAY)

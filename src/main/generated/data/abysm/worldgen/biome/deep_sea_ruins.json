@@ -174,7 +174,14 @@
         "weight": 10
       }
     ],
-    "water_ambient": [],
+    "water_ambient": [
+      {
+        "type": "abysm:lectorfin",
+        "maxCount": 16,
+        "minCount": 8,
+        "weight": 50
+      }
+    ],
     "water_creature": []
   },
   "temperature": 0.5

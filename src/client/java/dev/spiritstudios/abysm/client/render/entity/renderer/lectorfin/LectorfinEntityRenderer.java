@@ -2,7 +2,6 @@ package dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.renderer.AbstractFishEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
@@ -19,6 +18,7 @@ import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
+import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 import java.util.Map;
@@ -53,7 +53,7 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 		}
 	}
 
-	public static class LectorfinEntityModel extends AbstractFishEntityModel<LectorfinEntity> {
+	public static class LectorfinEntityModel extends DefaultedEntityGeoModel<LectorfinEntity> {
 		public LectorfinEntityModel() {
 			this(Abysm.id("lectorfin"));
 		}

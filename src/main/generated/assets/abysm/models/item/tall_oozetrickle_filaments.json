@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": {
-		"layer0": "abysm:block/tall_oozetrickle_filaments_top"
-	}
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "abysm:block/tall_oozetrickle_filaments_top"
+  }
 }
