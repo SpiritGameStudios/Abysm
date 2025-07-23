@@ -17,8 +17,12 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animatable.processing.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 
 public class SmallFloralFishEntity extends AbstractFloralFishEntity implements EcologicalEntity {
+	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.floral_fish_small.idle");
 	protected EcosystemLogic ecosystemLogic;
 
 	public SmallFloralFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
@@ -67,4 +71,12 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 		return AbysmEcosystemTypes.SMALL_FLORAL_FISH;
 	}
 
+	@Override
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		AnimationController<ElectricOoglyBooglyEntity> animController = new AnimationController<>(ANIM_CONTROLLER_STRING, 5, event -> {
+			return event.setAndContinue(IDLE_ANIM);
+		});
+
+		controllers.add(animController);
+	}
 }
