@@ -62,6 +62,6 @@ public class PaddlefishEntity extends AbstractSchoolingFishEntity implements Eco
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>(5, event -> event.setAndContinue(IDLE_ANIM)));
+		controllers.add(new AnimationController<>(0, event -> event.setAndContinue(IDLE_ANIM)));
 	}
 }
