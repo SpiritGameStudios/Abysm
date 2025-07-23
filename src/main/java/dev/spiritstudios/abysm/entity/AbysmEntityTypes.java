@@ -21,7 +21,7 @@ public class AbysmEntityTypes {
 		"floral_fish_small",
 		EntityType.Builder
 			.create(SmallFloralFishEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(0.4f, 0.5f)
+			.dimensions(0.4f, 0.4f)
 			.eyeHeight(0.35f)
 			.maxTrackingRange(4)
 	);

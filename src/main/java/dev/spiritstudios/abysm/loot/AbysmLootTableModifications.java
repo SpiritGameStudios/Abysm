@@ -38,12 +38,12 @@ public class AbysmLootTableModifications {
 
 	public static void init() {
 		registerModify(FISHING_JUNK_GAMEPLAY, ((builder, source, wrapperLookup) -> builder.modifyPools(pool -> {
-			RegistryWrapper.Impl<Biome> impl = wrapperLookup.getOrThrow(RegistryKeys.BIOME);
+			RegistryWrapper.Impl<Biome> biomeLookup = wrapperLookup.getOrThrow(RegistryKeys.BIOME);
 
 			// find the pool containing lily pads (by default this is the only pool, but check anyway just in case other mods add bonus pools)
 			if (poolContainsItemAsDirectChild(pool, ID_LILY_PAD)) {
 				// add items to pool
-				pool.with(biomeDependantLootTable(impl, FLORAL_REEF_JUNK, 50, AbysmBiomes.FLORAL_REEF));
+				pool.with(biomeDependantLootTable(biomeLookup, FLORAL_REEF_JUNK, 50, AbysmBiomes.FLORAL_REEF));
 			}
 		})));
 	}

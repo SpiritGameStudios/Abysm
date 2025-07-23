@@ -13,49 +13,49 @@
 			"bones": [
 				{
 					"name": "body",
-					"pivot": [0, 0, 0],
+					"pivot": [0, 3, 0],
 					"cubes": [
-						{"origin": [-1, -2.29289, -3.70711], "size": [2, 6, 6], "pivot": [0, 0.70711, -0.70711], "rotation": [45, 0, 0], "uv": [0, 10]}
+						{"origin": [-1, 0.70711, -3.70711], "size": [2, 6, 6], "pivot": [0, 3.70711, -0.70711], "rotation": [45, 0, 0], "uv": [0, 10]}
 					]
 				},
 				{
 					"name": "top_left_fin",
 					"parent": "body",
-					"pivot": [-1, 2, -0.5],
+					"pivot": [-1, 5, -0.5],
 					"rotation": [45, -0.00004, 0],
 					"cubes": [
-						{"origin": [-1, 1.5, -0.5], "size": [0, 1, 9], "uv": [0, -9]},
-						{"origin": [-1, -2.5, 8.5], "size": [0, 5, 9], "uv": [9, -9]}
+						{"origin": [-1, 4.5, -0.5], "size": [0, 1, 9], "uv": [0, -9]},
+						{"origin": [-1, 0.5, 8.5], "size": [0, 5, 9], "uv": [9, -9]}
 					]
 				},
 				{
 					"name": "bottom_left_fin",
 					"parent": "body",
-					"pivot": [-1, -1, -0.5],
+					"pivot": [-1, 2, -0.5],
 					"rotation": [-45, -0.00004, 0],
 					"cubes": [
-						{"origin": [-1, -1.5, -0.5], "size": [0, 1, 9], "uv": [0, -4]},
-						{"origin": [-1, -1.5, 8.5], "size": [0, 5, 9], "uv": [9, -4]}
+						{"origin": [-1, 1.5, -0.5], "size": [0, 1, 9], "uv": [0, -4]},
+						{"origin": [-1, 1.5, 8.5], "size": [0, 5, 9], "uv": [9, -4]}
 					]
 				},
 				{
 					"name": "top_right_fin",
 					"parent": "body",
-					"pivot": [1, 2, -0.5],
+					"pivot": [1, 5, -0.5],
 					"rotation": [45, 0.00004, 0],
 					"cubes": [
-						{"origin": [1, 1.5, -0.5], "size": [0, 1, 9], "uv": [0, -9], "mirror": true},
-						{"origin": [1, -2.5, 8.5], "size": [0, 5, 9], "uv": [9, -9], "mirror": true}
+						{"origin": [1, 4.5, -0.5], "size": [0, 1, 9], "uv": [0, -9], "mirror": true},
+						{"origin": [1, 0.5, 8.5], "size": [0, 5, 9], "uv": [9, -9], "mirror": true}
 					]
 				},
 				{
 					"name": "bottom_right_fin",
 					"parent": "body",
-					"pivot": [1, -1, -0.5],
+					"pivot": [1, 2, -0.5],
 					"rotation": [-45, 0.00004, 0],
 					"cubes": [
-						{"origin": [1, -1.5, -0.5], "size": [0, 1, 9], "uv": [0, -4], "mirror": true},
-						{"origin": [1, -1.5, 8.5], "size": [0, 5, 9], "uv": [9, -4], "mirror": true}
+						{"origin": [1, 1.5, -0.5], "size": [0, 1, 9], "uv": [0, -4], "mirror": true},
+						{"origin": [1, 1.5, 8.5], "size": [0, 5, 9], "uv": [9, -4], "mirror": true}
 					]
 				}
 			]
