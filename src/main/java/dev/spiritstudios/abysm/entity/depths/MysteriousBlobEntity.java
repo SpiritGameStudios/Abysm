@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.entity.depths;
 
-import dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
 import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
 import dev.spiritstudios.abysm.util.PressureFinder;

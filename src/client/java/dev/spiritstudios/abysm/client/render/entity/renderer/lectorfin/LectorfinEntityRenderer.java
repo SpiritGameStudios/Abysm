@@ -23,16 +23,13 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 import java.util.Map;
 
-/*
- * Note to my fellow developers: if you would like to fix this abomination, go ahead
- */
 public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends AbstractFishEntityRenderer<LectorfinEntity, R> {
 
 	public static final DataTicket<FishEnchantment> FISH_ENCHANTMENT = DataTicket.create("fish_enchantment", FishEnchantment.class);
 	public static final Map<Identifier, FishEnchantmentRenderer> ENCHANTMENT_RENDERERS = Util.make(
 		new Object2ObjectOpenHashMap<>(),
 		map -> {
-			//map.put(AbysmFishEnchantments.JAW.getValue(), JawRenderer.INSTANCE);
+			map.put(AbysmFishEnchantments.JAW.getValue(), JawRenderer.INSTANCE);
 			map.put(AbysmFishEnchantments.SHELL.getValue(), ShellRenderer.INSTANCE);
 			map.put(AbysmFishEnchantments.JET.getValue(), JetRenderer.INSTANCE);
 		}

@@ -1,0 +1,69 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "head",
+					"pivot": [0, 3, -7]
+				},
+				{
+					"name": "upperJaw",
+					"parent": "head",
+					"pivot": [0, 3, -7],
+					"cubes": [
+						{"origin": [-1.6, 3, -10.5], "size": [3.2, 2.5, 3.5], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "upperteeth0",
+					"parent": "upperJaw",
+					"pivot": [0, 3, -7],
+					"cubes": [
+						{"origin": [1.6, 1, -10.5], "size": [0, 2, 3.5], "uv": [0, 10]}
+					]
+				},
+				{
+					"name": "upperteeth1",
+					"parent": "upperJaw",
+					"pivot": [0, 3, -7],
+					"cubes": [
+						{"origin": [-1.6, 1, -10.5], "size": [0, 2, 3.5], "uv": [6, 10]}
+					]
+				},
+				{
+					"name": "lowerJaw",
+					"parent": "head",
+					"pivot": [0, 3, -7],
+					"cubes": [
+						{"origin": [-1.55, 0.5, -10.5], "size": [3.1, 2.5, 3.5], "uv": [0, 5]}
+					]
+				},
+				{
+					"name": "lowerteeth0",
+					"parent": "lowerJaw",
+					"pivot": [0, 3, -7],
+					"cubes": [
+						{"origin": [1.55, 3, -10.5], "size": [0, 2, 3.5], "uv": [12, 0]}
+					]
+				},
+				{
+					"name": "lowerteeth1",
+					"parent": "lowerJaw",
+					"pivot": [0, 3, -7],
+					"cubes": [
+						{"origin": [-1.55, 3, -10.5], "size": [0, 2, 3.5], "uv": [12, 5]}
+					]
+				}
+			]
+		}
+	]
+}
