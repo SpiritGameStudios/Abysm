@@ -3,7 +3,7 @@
 	"id": "${mod_id}",
 	"version": "${mod_version}",
 	"name": "Abysm",
-	"description": "The depths are calling. Do you answer?",
+	"description": "Something stirs in the depths. Its call demands an answer.",
 	"authors": [
 		"CallMeEcho",
 		"DivineInversion",
