@@ -52,17 +52,7 @@
 				},
 				"tail": {
 					"rotation": {
-						"0.0": {
-							"vector": [0, 25, 0]
-						},
-						"0.5": {
-							"vector": [0, -25, 0],
-							"easing": "easeInOutSine"
-						},
-						"1.0": {
-							"vector": [0, 25, 0],
-							"easing": "easeInOutSine"
-						}
+						"vector": [0, "math.sin(query.anim_time * 720) * 15", 0]
 					}
 				},
 				"right": {
