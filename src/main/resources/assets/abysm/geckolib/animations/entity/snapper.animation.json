@@ -1,0 +1,24 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.snapper.idle": {
+			"loop": true,
+			"animation_length": 1,
+			"bones": {
+				"body": {
+					"rotation": {
+						"vector": ["math.sin(query.anim_time * 360) * 4", 0, "math.cos(query.anim_time * 360) * 3"]
+					},
+					"position": {
+						"vector": [0, "math.sin(query.anim_time * 360) * 0.5", 0]
+					}
+				},
+				"tail": {
+					"rotation": {
+						"vector": [0, "math.sin(query.anim_time * (360*10)) * 25", 0]
+					}
+				}
+			}
+		}
+	}
+}
