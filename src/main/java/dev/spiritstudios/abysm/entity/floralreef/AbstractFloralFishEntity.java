@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
-import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.entity.pattern.Patternable;
@@ -12,7 +11,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.passive.SchoolingFishEntity;
+import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -24,14 +23,18 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
 // TODO - Dropped fish item & bucket item
-public abstract class AbstractFloralFishEntity extends AbstractSchoolingFishEntity implements GeoEntity, Patternable {
+public abstract class AbstractFloralFishEntity extends FishEntity implements GeoEntity, Patternable {
+	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+
 	public static final List<Integer> PATTERN_COLORS = List.of(
 		DyeColor.WHITE.getEntityColor(), DyeColor.BLACK.getEntityColor(),
 		DyeColor.BLUE.getEntityColor(), DyeColor.LIGHT_BLUE.getEntityColor(), DyeColor.CYAN.getEntityColor(),
@@ -41,7 +44,7 @@ public abstract class AbstractFloralFishEntity extends AbstractSchoolingFishEnti
 
 	public static final TrackedData<EntityPattern> ENTITY_PATTERN = DataTracker.registerData(AbstractFloralFishEntity.class, AbysmTrackedDataHandlers.ENTITY_PATTERN);
 
-	public AbstractFloralFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
+	public AbstractFloralFishEntity(EntityType<? extends AbstractFloralFishEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
@@ -53,7 +56,7 @@ public abstract class AbstractFloralFishEntity extends AbstractSchoolingFishEnti
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-		AnimationController<AbstractFloralFishEntity> animController = new AnimationController<>(ANIM_CONTROLLER_STRING, 5, event -> PlayState.STOP);
+		AnimationController<AbstractFloralFishEntity> animController = new AnimationController<>(5, event -> PlayState.STOP);
 
 		controllerRegistrar.add(animController);
 	}
@@ -130,5 +133,10 @@ public abstract class AbstractFloralFishEntity extends AbstractSchoolingFishEnti
 	@Override
 	public List<Integer> getPatternColors() {
 		return PATTERN_COLORS;
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return geoCache;
 	}
 }
