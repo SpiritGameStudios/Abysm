@@ -8,9 +8,9 @@ import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 
-// I got this idea from looking at @Tomate0613s mod, i also referenced their code a bit
+// I got this idea from looking at @Tomate0613's mod, I also referenced their code a bit
 public class SwimAroundBoidGoal extends Goal {
-	private static final float NEARBY_RANGE = 8.0F;
+	private static final float NEARBY_RANGE = 6.0F;
 
 	protected final PathAwareEntity entity;
 

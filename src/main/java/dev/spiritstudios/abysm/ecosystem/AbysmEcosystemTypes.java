@@ -23,7 +23,6 @@ public class AbysmEcosystemTypes {
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.SMALL_FLORAL_FISH)
 			.setPredators(AbysmEntityTypes.BIG_FLORAL_FISH, AbysmEntityTypes.BLOOMRAY)
-			.setPrey(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY)
 			.setPlants(AbysmBlocks.PURPLE_SCABIOSA, AbysmBlocks.PINK_SCABIOSA, AbysmBlocks.RED_SCABIOSA)
 			.setTargetPopulation(10)
 	);
@@ -33,7 +32,6 @@ public class AbysmEcosystemTypes {
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.BIG_FLORAL_FISH)
 			.setPredators(AbysmEntityTypes.BLOOMRAY)
-			.setPrey(AbysmEntityTypes.SMALL_FLORAL_FISH)
 			.setTargetPopulation(7)
 	);
 
