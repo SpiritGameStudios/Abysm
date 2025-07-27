@@ -10,6 +10,8 @@
 		"harpoon.PersistentProjectileEntityAccessor",
 		"harpoon.PersistentProjectileEntityMixin",
 		"harpoon.ServerPlayNetworkHandlerMixin",
+		"lectorfin.goal.FishEntityMixin",
+		"lectorfin.goal.SchoolingFishEntityMixin",
 		"loottable.ItemEntryAccessor",
 		"loottable.LootPoolBuilderAccessor",
 		"manowar.LivingEntityMixin",

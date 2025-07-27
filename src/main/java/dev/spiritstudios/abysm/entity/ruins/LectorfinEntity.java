@@ -8,24 +8,30 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal;
-import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.EscapeDangerGoal;
+import net.minecraft.entity.ai.goal.FleeEntityGoal;
+import net.minecraft.entity.ai.goal.FollowGroupLeaderGoal;
 import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -38,6 +44,8 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
 public class LectorfinEntity extends AbstractSchoolingFishEntity implements PlantEater {
@@ -128,6 +136,9 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 		this.tickEcosystemLogic();
 		if (!this.getWorld().isClient) {
 			this.tickEnchantment();
+			if (this.age % 200 == 0) {
+				this.heal(0.34F * this.getMaxHealth());
+			}
 		}
 	}
 
@@ -153,7 +164,7 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 		this.plantsGoal = new FindPlantsGoal(this);
 		this.plantsGoal.setRangeSupplier(() -> (int) Math.floor(this.getAttributeValue(EntityAttributes.FOLLOW_RANGE) * 0.8));
 		this.goalSelector.add(4, this.plantsGoal);
-		this.targetSelector.add(2, new RevengeGoal(this).setGroupRevenge());
+		this.targetSelector.add(2, new LectorfinRevengeGoal(this));
 	}
 
 	@Override
@@ -173,6 +184,10 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 				this.ticksUntilHunger--;
 			}
 		}
+	}
+
+	public boolean isAggressive() {
+		return this.getEnchantment() != null && this.getEnchantmentLevel() > 0 && (this.getHealth() / this.getMaxHealth()) > 0.2;
 	}
 
 	@Override
@@ -233,7 +248,98 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 					entityAttributeInstance.addTemporaryModifier(modifier);
 				}
 			});
+			if (this.previousEnchantment == null) {
+				this.clearGoalsAndTasks();
+				this.initGoals();
+			}
 		}
 		this.previousEnchantment = enchantment;
+	}
+
+	public static class LectorfinRevengeGoal extends RevengeGoal {
+
+		public LectorfinRevengeGoal(LectorfinEntity mob, Class<?>... noRevengeTypes) {
+			super(mob, noRevengeTypes);
+		}
+
+		@Override
+		public boolean canStart() {
+			return ((LectorfinEntity) this.mob).isAggressive() && super.canStart();
+		}
+
+		@Override
+		public boolean shouldContinue() {
+			return ((LectorfinEntity) this.mob).isAggressive() && super.shouldContinue();
+		}
+	}
+
+	public static class EscapeWhenNearDeathGoal extends EscapeDangerGoal {
+
+		public EscapeWhenNearDeathGoal(LectorfinEntity mob, double speed) {
+			super(mob, speed);
+		}
+
+		public EscapeWhenNearDeathGoal(LectorfinEntity mob, double speed, TagKey<DamageType> dangerousDamageTypes) {
+			super(mob, speed, dangerousDamageTypes);
+		}
+
+		public EscapeWhenNearDeathGoal(LectorfinEntity mob, double speed, Function<PathAwareEntity, TagKey<DamageType>> entityToDangerousDamageTypes) {
+			super(mob, speed, entityToDangerousDamageTypes);
+		}
+
+		@Override
+		public boolean canStart() {
+			return !((LectorfinEntity) this.mob).isAggressive() && super.canStart();
+		}
+
+		@Override
+		public boolean shouldContinue() {
+			return !((LectorfinEntity) this.mob).isAggressive() && super.shouldContinue();
+		}
+	}
+
+	public static class FleeWhenWeakGoal<T extends LivingEntity> extends FleeEntityGoal<T> {
+
+		public FleeWhenWeakGoal(LectorfinEntity mob, Class<T> fleeFromType, float distance, double slowSpeed, double fastSpeed) {
+			super(mob, fleeFromType, distance, slowSpeed, fastSpeed);
+		}
+
+		public FleeWhenWeakGoal(LectorfinEntity mob, Class<T> fleeFromType, Predicate<LivingEntity> extraInclusionSelector, float distance, double slowSpeed, double fastSpeed, Predicate<LivingEntity> inclusionSelector) {
+			super(mob, fleeFromType, extraInclusionSelector, distance, slowSpeed, fastSpeed, inclusionSelector);
+		}
+
+		public FleeWhenWeakGoal(LectorfinEntity fleeingEntity, Class<T> classToFleeFrom, float fleeDistance, double fleeSlowSpeed, double fleeFastSpeed, Predicate<LivingEntity> inclusionSelector) {
+			super(fleeingEntity, classToFleeFrom, fleeDistance, fleeSlowSpeed, fleeFastSpeed, inclusionSelector);
+		}
+
+		@Override
+		public boolean canStart() {
+			return !((LectorfinEntity) this.mob).isAggressive() && super.canStart();
+		}
+
+		@Override
+		public boolean shouldContinue() {
+			return !((LectorfinEntity) this.mob).isAggressive() && super.shouldContinue();
+		}
+	}
+
+	public static class FollowGroupWhenWeakGoal extends FollowGroupLeaderGoal {
+
+		protected final LectorfinEntity lectorfin;
+
+		public FollowGroupWhenWeakGoal(LectorfinEntity fish) {
+			super(fish);
+			this.lectorfin = fish;
+		}
+
+		@Override
+		public boolean canStart() {
+			return !this.lectorfin.isAggressive() && super.canStart();
+		}
+
+		@Override
+		public boolean shouldContinue() {
+			return !this.lectorfin.isAggressive() && super.shouldContinue();
+		}
 	}
 }
