@@ -6,10 +6,12 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
@@ -70,6 +72,100 @@ public interface EcologicalEntity {
 		this.getEcosystemLogic().onDeath();
 	}
 
+	default boolean canBreed() {
+		return this.getEcosystemLogic().canBreed();
+	}
+
+	/**
+	 * Main method called for breeding this entity with another.<br><br>
+	 *
+	 * This accounts for the {@link EcosystemType#minEntitiesPerBreed()} & {@link EcosystemType#maxEntitiesPerBreed()} numbers, spawning in a random amount of entities between those two numbers.
+	 */
+	default void breed(ServerWorld world, MobEntity other) {
+		this.breed(world, other, false);
+	}
+
+	default void breed(ServerWorld world, MobEntity other, boolean overrideCanBreed) {
+		if(!overrideCanBreed && !canBreed()) return;
+
+		EcosystemType<?> ecosystemType = this.getEcosystemType();
+		MobEntity self = (MobEntity) this;
+		int amount = self.getRandom().nextBetween(ecosystemType.minEntitiesPerBreed(), ecosystemType.maxEntitiesPerBreed());
+		for (int i = 0; i < amount; i++) {
+			spawnChildEntity(world, other);
+		}
+		this.setBreedTicks(0);
+		world.sendEntityStatus(self, EntityStatuses.ADD_BREEDING_PARTICLES);
+	}
+
+
+	/**
+	 * Creates and spawns a child entity into the world.
+	 *
+	 * @param world The world to spawn the entity into (assumed to be the same world as this entity)
+	 * @param other The other entity this entity is breeding with - given to {@link EcologicalEntity#createChildEntity(ServerWorld, MobEntity, BlockPos)}.
+	 */
+	default void spawnChildEntity(ServerWorld world, MobEntity other) {
+		MobEntity self = (MobEntity) this;
+		MobEntity child = this.createChildEntity(world, other, self.getBlockPos());
+		if(child == null) return;
+
+		// TODO - Should we have any entities that can be bred by the player,
+		//  advancement/statistic credit needs to be given here
+		child.setBaby(true);
+		child.refreshPositionAndAngles(self.getX(), self.getY(), self.getZ(), 0f, 0f);
+		world.spawnEntity(child);
+	}
+
+	/**
+	 * Overridable method for creating the MobEntity used for spawning children. <br><br>
+	 *
+	 * Use the "other" param entity for mixing and matching whatever data wanted(e.g. choosing between one of the two parent's variants)
+	 *
+	 * @param world The world the child is spawning into
+	 * @param other The other parent entity - use to mix and match whatever data wanted
+	 * @return The created child entity
+	 */
+	default MobEntity createChildEntity(ServerWorld world, MobEntity other, BlockPos spawnPos) {
+		MobEntity child = this.getEcosystemType().entityType().create(world, SpawnReason.BREEDING);
+		if(child == null) return null;
+		child.refreshPositionAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0f, 0f);
+		child.initialize(world, world.getLocalDifficulty(spawnPos), SpawnReason.BREEDING, null);
+		return child;
+	}
+
+	default int getBreedTicks() {
+		return this.getEcosystemLogic().getBreedTicks();
+	}
+
+	default void setBreedTicks(int breedTicks) {
+		this.getEcosystemLogic().setBreedTicks(breedTicks);
+	}
+
+	default boolean isHungry() {
+		return this.getEcosystemLogic().isHungry();
+	}
+
+	default void setHungry(boolean hungry) {
+		this.getEcosystemLogic().setHungry(hungry);
+	}
+
+	default boolean isFleeing() {
+		return this.getEcosystemLogic().isFleeing();
+	}
+
+	default void setFleeing(boolean fleeing) {
+		this.getEcosystemLogic().setFleeing(fleeing);
+	}
+
+	default boolean shouldRepopulate() {
+		return this.getEcosystemLogic().shouldRepopulate();
+	}
+
+	default void setShouldRepopulate(boolean shouldRepopulate) {
+		this.getEcosystemLogic().setShouldRepopulate(shouldRepopulate);
+	}
+
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	default boolean isHungryCarnivore() {
 		World world = ((MobEntity) this).getWorld();
@@ -124,6 +220,12 @@ public interface EcologicalEntity {
 	}
 
 	default List<? extends MobEntity> getNearbySameType() {
+		return List.of();
+	}
+
+	private List<? extends MobEntity> getNearbyEntityType(EntityType<?> type, int searchRadius) {
+		World world = ((MobEntity) this).getWorld();
+
 		return List.of();
 	}
 

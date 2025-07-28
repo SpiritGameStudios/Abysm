@@ -27,7 +27,6 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("JavadocReference")
 public class FindPlantsGoal extends Goal {
-
 	protected final PathAwareEntity obj;
 	protected final boolean forceAquatic;
 	protected final float navigationSpeed;

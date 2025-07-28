@@ -37,7 +37,7 @@ public class EcologicalEntityChunkTracker {
 		if (world.isClient) return;
 
 		EcosystemChunk chunk = getEcosystemChunk(world, pos);
-		chunk.onEntityEnter(this.entity);
+		chunk.addEntity(this.entity);
 	}
 
 	public void onChunkLeave(ChunkPos pos) {
@@ -45,7 +45,7 @@ public class EcologicalEntityChunkTracker {
 		if (world.isClient) return;
 
 		EcosystemChunk chunk = getEcosystemChunk(world, pos);
-		chunk.onEntityLeave(this.entity);
+		chunk.removeEntity(this.entity);
 	}
 
 	@SuppressWarnings("UnstableApiUsage")

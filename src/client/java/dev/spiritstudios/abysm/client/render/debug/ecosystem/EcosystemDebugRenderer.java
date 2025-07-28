@@ -7,6 +7,7 @@ import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.debug.DebugRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -36,6 +37,7 @@ import java.util.concurrent.CompletableFuture;
 // Dark red = No nearby population (extinct)
 
 // Hold a spyglass in main hand to have text rendering stay a few blocks beneath sea level instead of following you
+// Hold a heart of the sea to see only the current and nearby chunks(changes depending on EcosystemType)
 public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 	private static final int DARK_RED = 0x640000;
 
@@ -62,12 +64,17 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 		Map<ChunkPos, EcosystemChunk> ecosystemChunkMap = this.loadingStatus.serverStates.getNow(null);
 		if (ecosystemChunkMap == null) return;
 
+		ClientPlayerEntity player = this.client.player;
 		double initY = this.client.gameRenderer.getCamera().getPos().y * 0.95;
-		assert this.client.player != null;
+		assert player != null;
 
-		if (this.client.player.isHolding(Items.SPYGLASS)) {
-			initY = this.client.player.getWorld().getSeaLevel() - 3;
+		if (player.isHolding(Items.SPYGLASS)) {
+			initY = player.getWorld().getSeaLevel() - 3;
 		}
+
+		ChunkPos playerChunk = player.getChunkPos();
+		boolean onlyNearbyChunks = player.isHolding(Items.HEART_OF_THE_SEA);
+		int emptyMaxDistance = 2;
 
 		for (Map.Entry<ChunkPos, EcosystemChunk> entry : ecosystemChunkMap.entrySet()) {
 			ChunkPos chunkPos = entry.getKey();
@@ -75,6 +82,10 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 			int yOffset = 0;
 
 			if (ecosystemChunk instanceof EmptyEcosystemChunk || ecosystemChunk.entityPopulation.isEmpty()) {
+				if(onlyNearbyChunks) {
+					if(chunkPos.getChebyshevDistance(playerChunk) > emptyMaxDistance) continue;
+				}
+
 				String empty = "Empty!";
 				int color = Colors.LIGHT_GRAY;
 				drawString(matrices, vertexConsumers, empty, chunkPos, initY, yOffset, color);
@@ -85,6 +96,10 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 				EcosystemType<?> ecosystemType = popEntry.getKey();
 				EcosystemChunk.PopInfo popInfo = popEntry.getValue();
 				Text typeName = ecosystemType.entityType().getName();
+
+				if(onlyNearbyChunks) {
+					if(chunkPos.getChebyshevDistance(playerChunk) > ecosystemType.populationChunkSearchRadius()) continue;
+				}
 
 				int chunkPopulation = popInfo.getEntityCount();
 				int nearbyPopulation = ecosystemChunk.getNearbyEcosystemTypePopulation(ecosystemType);

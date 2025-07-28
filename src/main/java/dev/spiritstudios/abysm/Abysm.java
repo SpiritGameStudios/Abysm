@@ -1,6 +1,8 @@
 package dev.spiritstudios.abysm;
 
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.command.AbysmCommands;
+import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
@@ -8,7 +10,6 @@ import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
-import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
 import dev.spiritstudios.abysm.networking.EntityFinishedEatingS2CPayload;
@@ -98,6 +99,7 @@ public class Abysm implements ModInitializer {
 		// misc
 		AbysmSoundEvents.init();
 		AbysmParticleTypes.init();
+		AbysmCommands.init();
 	}
 
 	private <T> void registerFields(Registry<T> registry, Class<?> toRegister, Class<?> clazz) {

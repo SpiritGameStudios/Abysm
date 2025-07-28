@@ -6,15 +6,12 @@ import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +19,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 // Handles all entities within a specific chunk, accounting for adjacent chunks too.
-// This class will tell entities how they should be feeling based on the data available.
+// This class keeps track of how many EcologicalEntities are within a chunk,
+// tells them how to feel & what to do based on available data(accounts for adjacent chunks),
+// as well as keep that data persistent across world reloads.
 
 // If there's plenty of common prey available, common predators will be told to feel hungry and start hunting,
 // and if there's too little common prey, the prey will be told to start repopulating and common predators will be less hungry.
@@ -31,13 +30,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 // Each EcologicalEntity can then use those signals as desired, either with a brain or AI goals.
 // Or, ignore them completely(the giant leviathans probably won't care about their EntityType population)
 
-// As it stands, I'm unsure how much of this data will be persistent upon world close & rejoin.
-// All of this data is pretty easy to regain very quickly after reloading without persistence,
-// but it could help to have some numbers retained (e.g. EcosystemType population numbers per chunk)
-// just to help reduce false alarms(e.g. possibly throwing off the ecosystem because of a fake low number of x entity)
+// Persistence handling:
+// Persistent EcosystemChunks will keep track of the number of each EcosystemType in it,
+// and will respawn that number of entities upon that chunk being reloaded by a player.
+// This replaces having each individual entity persistent. But, we must account for entities that would normally
+// be persistent, e.g. nametagged entities and entities near players upon world leave.
 
-// TODO - look over this code for performance/optimizations once we're happy with a system,
-//  because I've really struggled mentally breaking this system down into smaller problems
+// Each EcosystemChunk will be checked for the biome (likely by checking the center block of the chunk).
+// If it is an Abysm biome, the EcosystemChunk will be persistent.
+// If not, the closest persistent EcosystemChunk will be found and given all the entity counts instead.
+
 public class EcosystemChunk {
 	public final World world;
 	public final ChunkPos pos;
@@ -48,32 +50,14 @@ public class EcosystemChunk {
 		this.pos = pos;
 	}
 
-	public void onEntityEnter(MobEntity entity) {
-		this.addEntity(entity);
-	}
-
-	public void onEntityLeave(MobEntity entity) {
-		this.removeEntity(entity);
-	}
-
-	// Assumed to happen before the chunk enter method - this entity technically gets added twice but PopInfo uses a Set so whatever
-	public void onEntitySpawn(MobEntity entity) {
-		this.addEntity(entity);
-		this.handlePopIncrease(entity);
-	}
-
-	// Assumed to happen before the chunk leave method, and to be the last method called by the entity(meaning no chunk leave)
-	public void onEntityDeath(MobEntity entity) {
-		this.removeEntity(entity);
-		this.handlePopDecrease(entity);
-	}
-
 	public void addEntity(MobEntity entity) {
 		if (!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 
 		EcosystemType<?> type = ecologicalEntity.getEcosystemType();
 		PopInfo popInfo = getPopInfo(type);
 		popInfo.addEntity(entity);
+
+		this.onPopChange(entity);
 	}
 
 	public void removeEntity(MobEntity entity) {
@@ -82,25 +66,28 @@ public class EcosystemChunk {
 		EcosystemType<?> type = ecologicalEntity.getEcosystemType();
 		PopInfo popInfo = getPopInfo(type);
 		popInfo.removeEntity(entity);
+
+		this.onPopChange(entity);
 	}
 
-	public void handlePopIncrease(MobEntity entity) {
+	public void onPopChange(MobEntity entity) {
+		if (!(this.world instanceof ServerWorld serverWorld)) return;
 		if (!(entity instanceof EcologicalEntity ecologicalEntity)) return;
-		boolean popOkay = this.entityNearbyPopOkay(ecologicalEntity);
+		EcosystemType<?> ecosystemType = ecologicalEntity.getEcosystemType();
+		boolean popOkay = this.ecosystemTypeNearbyPopOkay(ecosystemType);
 
 		if (popOkay) {
-			// Choose random (closet?) predator to start hunting
-
+			// A random nearby entity with the same EcosystemType should be hunted
 		} else {
-			// Notify self type to repopulate
-
+			// A random nearby entity with the same EcosystemType should repopulate
+//			MobEntity repopulateTaskedEntity = getRandomNearbyEcologicalEntity(ecosystemType);
+			ecologicalEntity.breed(serverWorld, entity);
 		}
 	}
 
-	public void handlePopDecrease(MobEntity entity) {
-
+	public MobEntity getRandomNearbyEcologicalEntity(EcosystemType<?> ecosystemType) {
+		return null;
 	}
-
 
 	public boolean entityNearbyPopOkay(EcologicalEntity entity) {
 		EcosystemType<?> ecosystemType = entity.getEcosystemType();
@@ -123,7 +110,6 @@ public class EcosystemChunk {
 			Chunk chunk = this.world.getChunk(chunkPos.x, chunkPos.z);
 
 			if (!chunk.hasAttached(AbysmAttachments.ECOSYSTEM_CHUNK)) return;
-			if (!accountChunkForPopCount(chunk)) return;
 
 			EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
 			if (ecosystemChunk == null) return;
@@ -136,14 +122,7 @@ public class EcosystemChunk {
 		return totalAmount.get();
 	}
 
-	private boolean accountChunkForPopCount(Chunk chunk) {
-		int seaLevel = world.getSeaLevel();
-		BlockPos centerPos = chunk.getPos().getCenterAtY(seaLevel - 5);
-		RegistryEntry<Biome> biome = world.getBiome(centerPos);
 
-		// Don't include vanilla biomes for now because it's safe to assume we're only checking for Abysm entities
-		return biome.isIn(ConventionalBiomeTags.IS_OCEAN) || biome.isIn(ConventionalBiomeTags.IS_DEEP_OCEAN) || biome.isIn(ConventionalBiomeTags.IS_SHALLOW_OCEAN);
-	}
 
 	public PopInfo getPopInfo(EcosystemType<?> type) {
 		return this.getPopInfo(type, true);

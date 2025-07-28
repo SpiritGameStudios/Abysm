@@ -12,6 +12,8 @@ import net.minecraft.entity.mob.MobEntity;
 import java.util.Map;
 import java.util.Optional;
 
+// FIXME - there's an actual name for multiple entities per breed at once but I can't remember it for the life of me
+
 /**
  * @param entityType                  This mob's EntityType - used for sorting/finding/tracking
  * @param predators                   The predators of this mob
@@ -19,13 +21,16 @@ import java.util.Optional;
  * @param plants                      The plants of this mob
  * @param targetPopulation            The target population across the chunkSearchRadius amount of chunks
  * @param populationChunkSearchRadius The chunk search radius for any chunk to maintain the targetPopulation amount (1 = 3x3 chunks, 2 = 4x4, etc.) If the current population from the chunk area equals or exceeds the targetPopulation, the population is considered okay and can be hunted, otherwise it is considered not okay and needs repopulating
+ * @param minEntitiesPerBreed         The minimum amount of babies that can spawn upon breeding
+ * @param maxEntitiesPerBreed         The maximum amount of babies that can spawn upon breeding
  */
 public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 	EntityType<T> entityType,
 	ImmutableSet<EntityType<? extends MobEntity>> predators,
 	ImmutableSet<EntityType<? extends MobEntity>> prey,
-	ImmutableSet<Block> plants, int targetPopulation,
-	int populationChunkSearchRadius
+	ImmutableSet<Block> plants,
+	int targetPopulation, int populationChunkSearchRadius,
+	int minEntitiesPerBreed, int maxEntitiesPerBreed
 ) {
 	private static Map<EntityType<? extends MobEntity>, EcosystemType<? extends MobEntity>> ENTITY_TYPE_MAP;
 
@@ -37,7 +42,9 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 		private ImmutableSet<Block> plants = ImmutableSet.of();
 
 		private int targetPopulation = 7;
-		private int populationChunkSearchRadius = 1;
+		private int populationChunkSearchRadius = 2;
+		private int minEntitiesPerBreed = 1;
+		private int maxEntitiesPerBreed = 1;
 
 		private Builder(EntityType<T> entityType) {
 			this.entityType = entityType;
@@ -74,10 +81,17 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 			return this;
 		}
 
+		public Builder<T> setEntitiesPerBreed(int minEntitiesPerBreed, int maxEntitiesPerBreed) {
+			this.minEntitiesPerBreed = minEntitiesPerBreed;
+			this.maxEntitiesPerBreed = maxEntitiesPerBreed;
+			return this;
+		}
+
 		public EcosystemType<T> build() {
 			return new EcosystemType<>(
 				this.entityType, this.predators, this.prey, this.plants,
-				this.targetPopulation, this.populationChunkSearchRadius
+				this.targetPopulation, this.populationChunkSearchRadius,
+				this.minEntitiesPerBreed, this.maxEntitiesPerBreed
 			);
 		}
 
