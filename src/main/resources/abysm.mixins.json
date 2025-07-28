@@ -30,6 +30,7 @@
 		"worldgen.NoiseChunkGeneratorMixin",
 		"worldgen.NoiseConfigMixin",
 		"worldgen.ServerChunkLoadingManagerMixin",
+		"worldgen.StructureAccessor",
 		"worldgen.StructureAccessorAccessor",
 		"worldgen.StructureWeightSamplerMixin"
 	],
