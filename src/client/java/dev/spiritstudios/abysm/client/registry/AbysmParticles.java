@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.client.particle.BloomPetalParticle;
 import dev.spiritstudios.abysm.client.particle.OoglyBooglyElectricityParticle;
 import dev.spiritstudios.abysm.client.particle.OoglyBooglyFumesParticle;
 import dev.spiritstudios.abysm.client.particle.OoglyBooglySparkleParticle;
+import dev.spiritstudios.abysm.client.particle.PoggdrygllSporesParticle;
 import dev.spiritstudios.abysm.client.particle.SpiralingParticle;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
@@ -34,6 +35,8 @@ public class AbysmParticles {
 		register(AbysmParticleTypes.OOGLY_BOOGLY_FUMES, OoglyBooglyFumesParticle.Factory::new);
 		register(AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY_SPIRAL, SpiralingParticle.ElectricitySpiral::new);
 		register(AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY_SPECK, SpiralingParticle.ElectricitySpeck::new);
+
+		register(AbysmParticleTypes.POGGDRYGLL_SPORES, PoggdrygllSporesParticle.Factory::new);
 	}
 
 	public static <T extends ParticleEffect> void register(ParticleType<T> type, ParticleFactory<T> provider) {

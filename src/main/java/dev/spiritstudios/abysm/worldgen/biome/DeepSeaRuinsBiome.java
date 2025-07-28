@@ -1,10 +1,12 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import dev.spiritstudios.abysm.worldgen.noise.AbysmNoiseParameters;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicType;
@@ -70,7 +72,12 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 
 	@Override
 	public SpawnSettings.Builder createSpawnSettings() {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder();
+		SpawnSettings.Builder builder = new SpawnSettings.Builder()
+			.spawn(
+				SpawnGroup.WATER_AMBIENT,
+				50,
+				new SpawnSettings.SpawnEntry(AbysmEntityTypes.LECTORFIN, 8, 16)
+			);
 
 		DefaultBiomeFeatures.addBatsAndMonsters(builder);
 		return builder;

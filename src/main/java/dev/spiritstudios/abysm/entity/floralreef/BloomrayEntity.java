@@ -63,6 +63,7 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.1F, true);
 		this.lookControl = new YawAdjustingLookControl(this, 20);
 	}
+
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
 		return this.geoCache;
@@ -114,10 +115,10 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 
 	@Override
 	protected void initGoals() {
-		this.goalSelector.add(4, new SwimAroundGoal(this, 1.0, 10));
-		this.goalSelector.add(4, new LookAroundGoal(this));
 		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
 		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
+		this.goalSelector.add(4, new SwimAroundGoal(this, 1.0, 10));
+		this.goalSelector.add(4, new LookAroundGoal(this));
 		this.targetSelector.add(1, new HuntPreyGoal(this, false));
 	}
 
@@ -131,13 +132,6 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 
 	@Override
 	public void tick() {
-		/*
-		// for some reason, the bloomray's yaw temporarily desyncs (sometimes) when moving to a new location
-		float diff = Math.abs(this.bodyYaw - this.lastBodyYaw);
-		if (diff > 1) {
-			Abysm.LOGGER.info("Change in bodyYaw was {}, bodyYaw was {}, lastBodyYaw was {}", diff, this.bodyYaw, this.lastBodyYaw);
-		}
-		 */
 		super.tick();
 		this.tickEcosystemLogic();
 	}

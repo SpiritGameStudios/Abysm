@@ -2,7 +2,6 @@ package dev.spiritstudios.abysm.client.render.entity.renderer;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.GeoUtil;
-import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
 import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
@@ -10,6 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.RotationAxis;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
+import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public class MysteriousBlobEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends AbstractFishEntityRenderer<MysteriousBlobEntity, R> {
@@ -46,7 +46,7 @@ public class MysteriousBlobEntityRenderer<R extends LivingEntityRenderState & Ge
 		this.scaleHeight = blob.lerpScaleY(partialTick);
 	}
 
-	public static class EntityModel extends AbstractFishEntityModel<MysteriousBlobEntity> {
+	public static class EntityModel extends DefaultedEntityGeoModel<MysteriousBlobEntity> {
 		public EntityModel() {
 			super(Abysm.id("mysterious_blob"), true);
 		}

@@ -1,6 +1,6 @@
 {
-	"model": {
-		"type": "minecraft:model",
-		"model": "abysm:item/tall_oozetrickle_filaments"
-	}
+  "model": {
+    "type": "minecraft:model",
+    "model": "abysm:item/tall_oozetrickle_filaments"
+  }
 }

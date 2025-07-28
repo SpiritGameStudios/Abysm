@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:floropumice_tile_stairs_from_floropumice_tiles_stonecutting"
+        "recipe": "abysm:floropumice_tile_stairs_from_floropumice_tiles_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:floropumice_tile_stairs_from_floropumice_tiles_stonecutting"
+      "abysm:floropumice_tile_stairs_from_floropumice_tiles_stonecutting"
     ]
   }
 }

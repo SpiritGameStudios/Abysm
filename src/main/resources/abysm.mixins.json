@@ -10,6 +10,8 @@
 		"harpoon.PersistentProjectileEntityAccessor",
 		"harpoon.PersistentProjectileEntityMixin",
 		"harpoon.ServerPlayNetworkHandlerMixin",
+		"lectorfin.goal.FishEntityMixin",
+		"lectorfin.goal.SchoolingFishEntityMixin",
 		"loottable.ItemEntryAccessor",
 		"loottable.LootPoolBuilderAccessor",
 		"manowar.LivingEntityMixin",
@@ -28,6 +30,7 @@
 		"worldgen.NoiseChunkGeneratorMixin",
 		"worldgen.NoiseConfigMixin",
 		"worldgen.ServerChunkLoadingManagerMixin",
+		"worldgen.StructureAccessor",
 		"worldgen.StructureAccessorAccessor",
 		"worldgen.StructureWeightSamplerMixin"
 	],

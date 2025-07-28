@@ -3,8 +3,16 @@
 	"id": "${mod_id}",
 	"version": "${mod_version}",
 	"name": "Abysm",
-	"description": "",
-	"authors": [],
+	"description": "Something stirs in the depths. Its call demands an answer.",
+	"authors": [
+		"CallMeEcho",
+		"DivineInversion",
+		"hama",
+		"Phanastrae",
+		"SkyNotTheLimit",
+		"Superkat32",
+		"WorldWidePixel"
+	],
 	"contact": {
 		"repo": "https://github.com/SpiritGameStudios/Abysm",
 		"issues": "https://github.com/SpiritGameStudios/Abysm/issues"

@@ -313,14 +313,14 @@
       "id": "abysm:dregloam_golden_lazuli_ore"
     },
     {
-		"count": 1,
-		"id": "abysm:oozetrickle_filaments"
-	},
-	  {
-		  "count": 1,
-		  "id": "abysm:tall_oozetrickle_filaments"
-	  },
-	  {
+      "count": 1,
+      "id": "abysm:oozetrickle_filaments"
+    },
+    {
+      "count": 1,
+      "id": "abysm:tall_oozetrickle_filaments"
+    },
+    {
       "count": 1,
       "id": "abysm:silt"
     },
@@ -359,6 +359,10 @@
     {
       "count": 1,
       "id": "abysm:floral_fish_big_spawn_egg"
+    },
+    {
+      "count": 1,
+      "id": "abysm:paddlefish_spawn_egg"
     },
     {
       "count": 1,

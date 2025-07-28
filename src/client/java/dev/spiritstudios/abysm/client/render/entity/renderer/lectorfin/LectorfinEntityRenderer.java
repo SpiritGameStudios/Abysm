@@ -2,7 +2,6 @@ package dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.renderer.AbstractFishEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
@@ -19,20 +18,18 @@ import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
+import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 import java.util.Map;
 
-/*
- * Note to my fellow developers: if you would like to fix this abomination, go ahead
- */
 public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends AbstractFishEntityRenderer<LectorfinEntity, R> {
 
 	public static final DataTicket<FishEnchantment> FISH_ENCHANTMENT = DataTicket.create("fish_enchantment", FishEnchantment.class);
 	public static final Map<Identifier, FishEnchantmentRenderer> ENCHANTMENT_RENDERERS = Util.make(
 		new Object2ObjectOpenHashMap<>(),
 		map -> {
-			//map.put(AbysmFishEnchantments.JAW.getValue(), JawRenderer.INSTANCE);
+			map.put(AbysmFishEnchantments.JAW.getValue(), JawRenderer.INSTANCE);
 			map.put(AbysmFishEnchantments.SHELL.getValue(), ShellRenderer.INSTANCE);
 			map.put(AbysmFishEnchantments.JET.getValue(), JetRenderer.INSTANCE);
 		}
@@ -56,7 +53,7 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 		}
 	}
 
-	public static class LectorfinEntityModel extends AbstractFishEntityModel<LectorfinEntity> {
+	public static class LectorfinEntityModel extends DefaultedEntityGeoModel<LectorfinEntity> {
 		public LectorfinEntityModel() {
 			this(Abysm.id("lectorfin"));
 		}

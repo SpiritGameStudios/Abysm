@@ -1,0 +1,12 @@
+{
+  "music.under_water": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/tilapia"
+      }
+    ]
+  }
+}

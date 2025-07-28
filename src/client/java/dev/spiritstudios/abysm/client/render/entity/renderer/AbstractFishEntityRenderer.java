@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.client.render.entity.renderer;
 
-import dev.spiritstudios.abysm.client.render.entity.model.AbstractFishEntityModel;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.state.LivingEntityRenderState;
 import net.minecraft.client.render.entity.state.TropicalFishEntityRenderState;
@@ -16,7 +15,6 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 /**
  * Basic GeckoLib Entity Renderer for fish entities. Handles things like body rotation while swimming, and rotating sideways while on land.
  *
- * @see AbstractFishEntityModel
  * @see SmallFloralFishEntityRenderer
  */
 public abstract class AbstractFishEntityRenderer<T extends Entity & GeoAnimatable, R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<T, R> {

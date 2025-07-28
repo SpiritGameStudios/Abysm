@@ -21,7 +21,7 @@ public class AbysmEntityTypes {
 		"floral_fish_small",
 		EntityType.Builder
 			.create(SmallFloralFishEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(0.8f, 0.6f)
+			.dimensions(0.4f, 0.4f)
 			.eyeHeight(0.35f)
 			.maxTrackingRange(4)
 	);
@@ -30,10 +30,20 @@ public class AbysmEntityTypes {
 		"floral_fish_big",
 		EntityType.Builder
 			.create(BigFloralFishEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(1.2f, 0.8f)
+			.dimensions(0.6f, 0.5f)
 			.eyeHeight(0.375f)
 			.maxTrackingRange(4)
 	);
+
+	public static final EntityType<PaddlefishEntity> PADDLEFISH = register(
+		"paddlefish",
+		EntityType.Builder
+			.create(PaddlefishEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(0.4f, 0.5f)
+			.eyeHeight(0.35f)
+			.maxTrackingRange(4)
+	);
+
 
 	public static final EntityType<BloomrayEntity> BLOOMRAY = register(
 		"bloomray",
@@ -103,8 +113,9 @@ public class AbysmEntityTypes {
 	}
 
 	public static void init() {
-		FabricDefaultAttributeRegistry.register(SMALL_FLORAL_FISH, SmallFloralFishEntity.createPredatoryFishAttributes());
-		FabricDefaultAttributeRegistry.register(BIG_FLORAL_FISH, BigFloralFishEntity.createPredatoryFishAttributes());
+		FabricDefaultAttributeRegistry.register(SMALL_FLORAL_FISH, SmallFloralFishEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(BIG_FLORAL_FISH, BigFloralFishEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(PADDLEFISH, PaddlefishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createRayAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());

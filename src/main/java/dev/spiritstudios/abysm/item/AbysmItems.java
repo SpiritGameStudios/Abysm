@@ -70,6 +70,11 @@ public final class AbysmItems {
 		settings -> new SpawnEggItem(AbysmEntityTypes.BIG_FLORAL_FISH, settings)
 	);
 
+	public static final Item PADDLEFISH_SPAWN_EGG = register(
+		"paddlefish_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.PADDLEFISH, settings)
+	);
+
 	public static final Item BLOOMRAY_SPAWN_EGG = register(
 		"bloomray_spawn_egg",
 		settings -> new SpawnEggItem(AbysmEntityTypes.BLOOMRAY, settings)

@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.entity.depths;
 
-import dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
 import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
 import dev.spiritstudios.abysm.util.PressureFinder;
@@ -42,7 +41,7 @@ import static dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity.ANIM_CO
 public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEntity {
 
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-	protected final ServerBossBar bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.BLUE, BossBar.Style.NOTCHED_6);
+	protected final ServerBossBar bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.BLUE, BossBar.Style.NOTCHED_20);
 
 	protected int inverseHurtTime = 0;
 	protected float scaleXZ = 1f;
@@ -207,7 +206,7 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
-		AnimationController<AbstractFloralFishEntity> animController = new AnimationController<>(ANIM_CONTROLLER_STRING, 5, event -> PlayState.STOP);
+		AnimationController<MysteriousBlobEntity> animController = new AnimationController<>(ANIM_CONTROLLER_STRING, 5, event -> PlayState.STOP);
 
 		registrar.add(animController);
 	}

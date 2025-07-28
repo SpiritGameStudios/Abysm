@@ -7,8 +7,8 @@
     {
       "id": "#abysm:bloom_petals",
       "required": false
-	},
-	  "abysm:oozetrickle_filaments",
-	  "abysm:tall_oozetrickle_filaments"
+    },
+    "abysm:oozetrickle_filaments",
+    "abysm:tall_oozetrickle_filaments"
   ]
 }

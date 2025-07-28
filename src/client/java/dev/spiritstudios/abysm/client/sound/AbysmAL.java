@@ -11,13 +11,13 @@ import static org.lwjgl.openal.ALC10.*;
 public class AbysmAL {
 	private static boolean enabled = false;
 
-	private static AuxiliaryEffectSlot underwaterEffect;
-	private static Filter underwaterLowPass;
+	private static AuxiliaryEffectSlot underwaterEffectSlot;
+	private static LowPassFilter underwaterLowPass;
 
 	public static void applyUnderwater(Source source) {
 		if (!enabled) return;
 
-		underwaterEffect.apply(source);
+		underwaterEffectSlot.apply(source);
 		underwaterLowPass.applyDirect(source);
 	}
 
@@ -46,29 +46,55 @@ public class AbysmAL {
 		// If I don't reset the error by calling alGetError, then the game will crash whenever I do any error handling.
 		alGetError();
 
-		underwaterLowPass = new LowPassFilter(
-			1F,
-			0.05F
-		);
+		underwaterLowPass = new LowPassFilter();
 
-		underwaterEffect = new AuxiliaryEffectSlot(null,
-			new ReverbEffect.Builder()
-				.density(0.5F)
-				.diffusion(1.0F)
-				.gain(0.6F)
-				.gainHF(0.3F)
-				.decayTime(20)
-				.reflectionsGain(0.5F)
-				.echoDepth(0.6F)
-				.airAbsorptionGainHF(0.98F)
-				.build()
-		);
+		underwaterEffectSlot = new AuxiliaryEffectSlot(null, new ReverbEffect.Builder()
+			.density(0.5F)
+			.diffusion(1.0F)
+			.gain(0.6F)
+			.gainHF(0.3F)
+			.decayTime(20)
+			.reflectionsGain(0.5F)
+			.echoDepth(0.6F)
+			.airAbsorptionGainHF(0.98F)
+			.build());
+	}
+
+	public static void disable() {
+		if (!enabled) return;
+
+		if (underwaterLowPass != null) {
+			underwaterLowPass.gain = 0.0F;
+			underwaterLowPass.gainHF = 0.0F;
+			underwaterLowPass.apply();
+		}
+
+		if (underwaterEffectSlot != null) {
+			underwaterEffectSlot.disable();
+		}
+
+		enabled = false;
+	}
+
+	public static void enable() {
+		if (enabled) return;
+
+		if (underwaterLowPass != null) {
+			underwaterLowPass.gain = 1.0F;
+			underwaterLowPass.gainHF = 0.05F;
+			underwaterLowPass.apply();
+		}
+
+		if (underwaterEffectSlot != null) {
+			underwaterEffectSlot.enable();
+		}
 
 		enabled = true;
 	}
 
+
 	private static void cleanup() {
-		if (underwaterEffect != null) underwaterEffect.free();
+		if (underwaterEffectSlot != null) underwaterEffectSlot.free();
 		if (underwaterLowPass != null) underwaterLowPass.free();
 
 		enabled = false;

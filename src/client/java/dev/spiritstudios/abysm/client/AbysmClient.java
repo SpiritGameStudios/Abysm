@@ -11,23 +11,28 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.BigFloralFishEntity
 import dev.spiritstudios.abysm.client.render.entity.renderer.BloomrayEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.ElectricOoglyBooglyRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.FlippersRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.LehydrathanEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.ManOWarEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.MysteriousBlobEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.PaddlefishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.HarpoonEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
+import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.networking.EntityFinishedEatingS2CPayload;
 import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.item.property.bool.BooleanProperties;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
@@ -45,6 +50,7 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.LECTORFIN, LectorfinEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.MYSTERIOUS_BLOB, MysteriousBlobEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.TEST_LEVIATHAN, LehydrathanEntityRenderer::new);
+		EntityRendererRegistry.register(AbysmEntityTypes.PADDLEFISH, PaddlefishEntityRenderer::new);
 
 		ArmorRenderer.register(new FlippersRenderer(), AbysmItems.FLIPPERS);
 
@@ -67,6 +73,14 @@ public class AbysmClient implements ClientModInitializer {
 				double velocityZ = random.nextGaussian() * 0.02;
 				world.addParticleClient(parameters, entity.getParticleX(1.0), entity.getRandomBodyY() + 0.5, entity.getParticleZ(1.0), velocityX, velocityY, velocityZ);
 			}
+		});
+
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			ClientPlayerEntity player = client.player;
+			if (player == null) return;
+
+			if (player.isSubmergedIn(FluidTags.WATER)) AbysmAL.enable();
+			else AbysmAL.disable();
 		});
 
 		ModMenuHelper.addConfig(Abysm.MODID, AbysmConfig.HOLDER.id());
