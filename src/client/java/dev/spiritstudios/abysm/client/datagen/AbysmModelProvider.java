@@ -143,8 +143,9 @@ public class AbysmModelProvider extends FabricModelProvider {
 		// endregion
 
 		// region dregloam
+		generator.registerRandomHorizontalRotations(TexturedModel.CUBE_ALL, AbysmBlocks.DREGLOAM);
+
 		doForMany(BlockStateModelGenerator::registerSimpleCubeAll, generator,
-			AbysmBlocks.DREGLOAM,
 			AbysmBlocks.DREGLOAM_OOZE,
 			AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 		);
