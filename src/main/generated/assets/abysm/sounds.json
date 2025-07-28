@@ -126,6 +126,11 @@
         "stream": true,
         "volume": 0.4,
         "name": "minecraft:music/game/water/shuniji"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/tilapia"
       }
     ]
   },
@@ -147,6 +152,11 @@
         "stream": true,
         "volume": 0.4,
         "name": "minecraft:music/game/water/dragon_fish"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/tilapia"
       }
     ]
   },
@@ -168,6 +178,11 @@
         "stream": true,
         "volume": 0.4,
         "name": "minecraft:music/game/water/shuniji"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/tilapia"
       }
     ]
   },
