@@ -34,6 +34,8 @@ public class AbysmParticleTypes {
 	public static final SimpleParticleType OOGLY_BOOGLY_ELECTRICITY_SPIRAL = registerSimple("oogly_boogly_electricity_spiral", false);
 	public static final SimpleParticleType OOGLY_BOOGLY_ELECTRICITY_SPECK = registerSimple("oogly_boogly_electricity_speck", false);
 
+	public static final SimpleParticleType POGGDRYGLL_SPORES = registerSimple("poggdrygll_spores", false);
+
 	public static void init() {
 		// NO-OP
 	}

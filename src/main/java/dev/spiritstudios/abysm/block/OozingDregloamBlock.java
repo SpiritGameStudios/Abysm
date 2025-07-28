@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
+import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -83,5 +84,11 @@ public class OozingDregloamBlock extends Block implements Fertilizable {
 		ChunkGenerator chunkGenerator = world.getChunkManager().getChunkGenerator();
 		this.getFeatureEntry(world)
 			.ifPresent(featureEntry -> featureEntry.value().generate(world, chunkGenerator, random, upPos));
+	}
+
+	@Override
+	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+		super.randomDisplayTick(state, world, pos, random);
+		world.addParticleClient(AbysmParticleTypes.POGGDRYGLL_SPORES, pos.getX() + random.nextDouble(), pos.getY() + 1.1, pos.getZ() + random.nextDouble(), 0.0, 0.0, 0.0);
 	}
 }
