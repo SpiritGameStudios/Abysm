@@ -8,6 +8,7 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.ai.goal.SwimAroundBoidGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import net.minecraft.entity.EntityData;
@@ -62,8 +63,10 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 	@Override
 	protected void initGoals() {
 		this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25));
+		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
 		this.goalSelector.add(2, new FleeEntityGoal<>(this, PlayerEntity.class, 8.0F, 1.6, 1.4, EntityPredicates.EXCEPT_SPECTATOR::test));
-
+		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
+		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
 		this.goalSelector.add(4, new SwimAroundBoidGoal(
 			this,
 			1.5F,
@@ -73,8 +76,6 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 			0.05F, 0.15F
 		));
 
-		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
-		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
 		this.targetSelector.add(1, new HuntPreyGoal(this, false));
 	}
 

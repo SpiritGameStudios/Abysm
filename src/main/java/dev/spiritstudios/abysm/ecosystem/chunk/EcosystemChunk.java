@@ -3,6 +3,8 @@ package dev.spiritstudios.abysm.ecosystem.chunk;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 // Handles all entities within a specific chunk, accounting for adjacent chunks too.
 // This class keeps track of how many EcologicalEntities are within a chunk,
@@ -74,18 +77,58 @@ public class EcosystemChunk {
 		if (!(this.world instanceof ServerWorld serverWorld)) return;
 		if (!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 		EcosystemType<?> ecosystemType = ecologicalEntity.getEcosystemType();
+		// TODO - replace this with PopResult enum (EXTINCT, UNDERPOPULATED, MAINTAINED, OVERPOPULATED) for more control
 		boolean popOkay = this.ecosystemTypeNearbyPopOkay(ecosystemType);
 
+
 		if (popOkay) {
-			// A random nearby entity with the same EcosystemType should be hunted
+			// A random predator of this ecosystem type is tasked with hunting a nearby entity of this type
 		} else {
-			// A random nearby entity with the same EcosystemType should repopulate
-//			MobEntity repopulateTaskedEntity = getRandomNearbyEcologicalEntity(ecosystemType);
-			ecologicalEntity.breed(serverWorld, entity);
+			// A random entity of this ecosystem type is tasked with breeding with a nearby entity
+			MobEntity repopulateEntity = getRandomNearbyEcologicalEntity(ecosystemType);
+			if(!(repopulateEntity instanceof EcologicalEntity repopulateEcologicalEntity)) return;
+			repopulateEcologicalEntity.setShouldRepopulate(true);
 		}
 	}
 
+	@Nullable
 	public MobEntity getRandomNearbyEcologicalEntity(EcosystemType<?> ecosystemType) {
+		return getRandomNearbyEcologicalEntity(ecosystemType, 5);
+	}
+
+	@Nullable
+	@SuppressWarnings("UnstableApiUsage")
+	public MobEntity getRandomNearbyEcologicalEntity(EcosystemType<?> ecosystemType, int searchAttempts) {
+		int chunkSearchRadius = ecosystemType.populationChunkSearchRadius();
+		AtomicReference<IntList> atomicEntityIds = new AtomicReference<>(new IntArrayList());
+
+		ChunkPos.stream(this.pos, chunkSearchRadius).forEach(chunkPos -> {
+			// Don't create new EcosystemChunk during search to possibly help reduce created data
+			Chunk chunk = this.world.getChunk(chunkPos.x, chunkPos.z);
+
+			if (!chunk.hasAttached(AbysmAttachments.ECOSYSTEM_CHUNK)) return;
+
+			EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
+			if (ecosystemChunk == null) return;
+			PopInfo info = ecosystemChunk.getPopInfo(ecosystemType, false);
+			if (info == null) return;
+
+			atomicEntityIds.get().addAll(info.getEntityIds());
+		});
+
+		IntList entityIds = atomicEntityIds.get();
+		if (entityIds.isEmpty()) return null;
+
+		int size = entityIds.size();
+		for (int i = 0; i < searchAttempts; i++) {
+			int index = this.world.getRandom().nextInt(size);
+			int entityId = entityIds.getInt(index);
+			MobEntity entity = (MobEntity) this.world.getEntityById(entityId);
+			if(entity == null || entity.isDead()) continue;
+
+			return entity;
+		}
+
 		return null;
 	}
 
@@ -149,7 +192,7 @@ public class EcosystemChunk {
 	public static class PopInfo {
 		public final EcosystemType<?> type;
 		public final IntSet entityIds = new IntOpenHashSet();
-		// TODO - Don't respawn nametagged entities
+		// TODO - Don't respawn already persistent entities
 
 		public PopInfo(EcosystemType<?> type) {
 			this.type = type;
@@ -169,6 +212,10 @@ public class EcosystemChunk {
 
 		public boolean populationOkay() {
 			return this.getEntityCount() >= this.type.targetPopulation();
+		}
+
+		public IntSet getEntityIds() {
+			return entityIds;
 		}
 	}
 

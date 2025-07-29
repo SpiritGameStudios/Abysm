@@ -22,7 +22,7 @@ public class AbysmEcosystemTypes {
 		"small_floral_fish",
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.SMALL_FLORAL_FISH)
-			.setPredators(AbysmEntityTypes.BIG_FLORAL_FISH, AbysmEntityTypes.BLOOMRAY)
+			.setPredators(AbysmEntityTypes.BLOOMRAY)
 			.setPlants(AbysmBlocks.PURPLE_SCABIOSA, AbysmBlocks.PINK_SCABIOSA, AbysmBlocks.RED_SCABIOSA)
 			.setTargetPopulation(10)
 			.setEntitiesPerBreed(1, 4)

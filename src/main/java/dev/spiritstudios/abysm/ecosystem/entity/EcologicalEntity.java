@@ -6,11 +6,11 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
@@ -95,7 +95,9 @@ public interface EcologicalEntity {
 			spawnChildEntity(world, other);
 		}
 		this.setBreedTicks(0);
-		world.sendEntityStatus(self, EntityStatuses.ADD_BREEDING_PARTICLES);
+		this.setShouldRepopulate(false);
+		world.spawnParticles(ParticleTypes.HEART, self.getX(), self.getY(), self.getZ(), 7, 0.5, 0.5, 0.5, 1);
+//		world.sendEntityStatus(self, EntityStatuses.ADD_BREEDING_PARTICLES);
 	}
 
 

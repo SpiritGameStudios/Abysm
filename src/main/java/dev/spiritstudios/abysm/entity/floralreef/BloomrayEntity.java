@@ -110,7 +110,7 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 		return AbstractSchoolingFishEntity.createPredatoryFishAttributes()
 			.add(EntityAttributes.MOVEMENT_SPEED, 1.0F)
 			.add(EntityAttributes.MAX_HEALTH, 14)
-			.add(EntityAttributes.ATTACK_DAMAGE, 1.5);
+			.add(EntityAttributes.ATTACK_DAMAGE, 5);
 	}
 
 	@Override
