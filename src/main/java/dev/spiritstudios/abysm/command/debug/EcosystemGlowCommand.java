@@ -9,6 +9,7 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import net.minecraft.SharedConstants;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
@@ -18,6 +19,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -36,14 +38,13 @@ import java.util.Set;
 public class EcosystemGlowCommand {
 	private static final Set<EcosystemType<?>> currentlyGlowing = new ObjectOpenHashSet<>();
 
-	// FIXME - This isn't working with all the ecosystem types except the bloomray and lectorfin for some reason
 	public static final SuggestionProvider<ServerCommandSource> ECOSYSTEM_ENTITIES = SuggestionProviders.register(
 		Abysm.id("abysm_entities_command_provider"),
 		(commandContext, suggestionsBuilder) -> CommandSource.suggestFromIdentifier(
-			AbysmRegistries.ECOSYSTEM_TYPE.stream(),
+			AbysmRegistries.ECOSYSTEM_TYPE.streamKeys(),
 			suggestionsBuilder,
-			ecosystemType -> EntityType.getId(ecosystemType.entityType()),
-			ecosystemType -> Text.translatable(Util.createTranslationKey("ecosystem_type", EntityType.getId(ecosystemType.entityType())))
+			RegistryKey::getValue,
+			ecosystemType -> Text.translatable(Util.createTranslationKey("ecosystem_type", ecosystemType.getValue()))
 		)
 	);
 
@@ -60,24 +61,24 @@ public class EcosystemGlowCommand {
 		);
 	}
 
-	private static int toggleGlow(ServerCommandSource source, RegistryEntry.Reference<EcosystemType<?>> ecosystemTypeReference) throws CommandSyntaxException {
+	private static int toggleGlow(ServerCommandSource source, RegistryEntry.Reference<EcosystemType<?>> entry) throws CommandSyntaxException {
 		ServerWorld world = source.getWorld();
 		ServerPlayerEntity player = source.getPlayerOrThrow();
 		ChunkPos playerChunk = player.getChunkPos();
 		Vec3d searchCenter = Vec3d.of(playerChunk.getCenterAtY((int) player.getY()));
 
-		EcosystemType<?> ecosystemType = ecosystemTypeReference.value();
+		EcosystemType<?> ecosystemType = entry.value();
 		EntityType<?> entityType = ecosystemType.entityType();
-		int searchRange = ecosystemType.populationChunkSearchRadius() * 32; // convert chunks to blocks doubled for diameter
+		int searchRange = ecosystemType.populationChunkSearchRadius() * (SharedConstants.CHUNK_WIDTH * 2); // convert chunks to blocks doubled for diameter
 
-		if(currentlyGlowing.contains(ecosystemType)) {
+		if (currentlyGlowing.contains(ecosystemType)) {
 			int removalRange = searchRange * 2;
 			Box box = Box.of(searchCenter, removalRange, removalRange, removalRange);
 
 			// This is super cursed because I think it technically checks every entity around you
-			// but its debug so its fine for now
+			// but its debug so it's fine for now
 			world.getEntitiesByType(TypeFilter.instanceOf(entityType.getBaseClass()), box, entity -> ecosystemTypesMatch(entity, ecosystemType)).forEach(entity -> {
-				if(entity instanceof LivingEntity livingEntity) {
+				if (entity instanceof LivingEntity livingEntity) {
 					livingEntity.removeStatusEffect(StatusEffects.GLOWING);
 				}
 			});
@@ -88,8 +89,8 @@ public class EcosystemGlowCommand {
 			Box box = Box.of(searchCenter, searchRange, searchRange * 2, searchRange);
 
 			world.getEntitiesByType(TypeFilter.instanceOf(entityType.getBaseClass()), box, entity -> ecosystemTypesMatch(entity, ecosystemType)).forEach(entity -> {
-				if(entity instanceof LivingEntity livingEntity) {
-					// 5 minutes incase removal doesn't work
+				if (entity instanceof LivingEntity livingEntity) {
+					// 5 minutes in case removal doesn't work
 					StatusEffectInstance glowingEffectInstance = new StatusEffectInstance(StatusEffects.GLOWING, 6000, 1);
 					livingEntity.addStatusEffect(glowingEffectInstance);
 				}
@@ -102,8 +103,8 @@ public class EcosystemGlowCommand {
 	}
 
 	private static boolean ecosystemTypesMatch(Entity entity, EcosystemType<?> type) {
-		if(!entity.isAlive()) return false;
-		if(!(entity instanceof EcologicalEntity ecologicalEntity)) return false;
+		if (!entity.isAlive()) return false;
+		if (!(entity instanceof EcologicalEntity ecologicalEntity)) return false;
 
 		return ecologicalEntity.getEcosystemType() == type;
 	}

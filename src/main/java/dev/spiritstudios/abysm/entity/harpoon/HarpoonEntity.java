@@ -1,18 +1,17 @@
 package dev.spiritstudios.abysm.entity.harpoon;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.component.HarpoonComponent;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
-import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.mixin.harpoon.PersistentProjectileEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -30,6 +29,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -37,11 +37,8 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class HarpoonEntity extends PersistentProjectileEntity {
-
 	public static final float VELOCITY_POWER = 3.5f;
 	public static final TrackedData<Boolean> RETURNING = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-
-	public static final SoundEvent CHAIN_SOUND = Blocks.CHAIN.getDefaultState().getSoundGroup().getFallSound();
 
 	protected int slot = -1;
 	protected int ticksAlive = 0;
@@ -59,12 +56,18 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	}
 
 	public HarpoonEntity(World world, PlayerEntity owner, int slot, ItemStack weapon) {
-		this(AbysmEntityTypes.FLYING_HARPOON, owner.getX(), owner.getEyeY() - 0.1, owner.getZ(), world, ItemStack.EMPTY, weapon);
+		this(
+			AbysmEntityTypes.FLYING_HARPOON,
+			owner.getX(), owner.getEyeY() - 0.1, owner.getZ(),
+			world, ItemStack.EMPTY, weapon
+		);
+
 		this.setOwner(owner);
 		Vec3d velocity = owner.getRotationVec(1.0F).multiply(VELOCITY_POWER);
 		this.setVelocity(velocity);
 		this.setNoGravity(true);
 		this.slot = slot;
+
 		if (weapon != null) {
 			this.haul = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.HAUL);
 			this.grappling = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.GRAPPLING);
@@ -115,16 +118,26 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	@Override
 	public void tick() {
 		ticksAlive++;
+
 		PlayerEntity owner = this.getPlayer();
 		if (owner == null || !owner.isAlive()) {
 			this.discard();
 			return;
 		}
+
 		World world = this.getWorld();
+
 		if (!world.isClient()) {
 			if (this.inGroundTime <= 0 && this.age % 2 == 0) {
-				this.playSound(CHAIN_SOUND, 10.0F, 1.05F);
+				this.getWorld().playSound(
+					null,
+					owner.getX(), owner.getY(), owner.getZ(),
+					SoundEvents.BLOCK_CHAIN_PLACE,
+					this.getSoundCategory(),
+					1.0F, 1.0F
+				);
 			}
+
 			try {
 				ItemStack invStack = owner.getInventory().getStack(this.slot);
 				if (!invStack.isOf(AbysmItems.HARPOON) || invStack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).loaded()) {
@@ -134,31 +147,28 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				Abysm.LOGGER.debug("An error occurred while ticking a harpoon!", indexOutOfBoundsException);
 				this.discard();
 			}
-			if (owner.isSneaking() || this.squaredDistanceTo(owner) > 65536) {
+
+			if (owner.isSneaking() || this.squaredDistanceTo(owner) > (256 * 256)) {
 				this.beginReturn(true);
-			} else {
-				if (this.grappling) {
-					if (this.inGroundTime > 200) {
-						this.beginReturn(true);
-					} else if (!this.isReturning() && this.isInGround()) {
-						if (!this.getBoundingBox().expand(0.3).intersects(owner.getBoundingBox())) {
-							owner.setVelocity(this.getPos().subtract(owner.getPos()).normalize().multiply(2, 1.2, 2));
-							owner.velocityModified = true;
-							owner.fallDistance = 1;
-							((HarpoonDrag) owner).abysm$setDragTicks(2);
-						}
-					}
-				} else {
-					if (this.inGroundTime > 4 || (this.ticksAlive > 60 && this.inGroundTime < 1) || this.squaredDistanceTo(owner) > 65536) {
-						this.beginReturn(true);
-					}
+			} else if (this.grappling) {
+				if (this.inGroundTime > 200) {
+					this.beginReturn(true);
+				} else if (!this.isReturning() && this.isInGround() && !this.getBoundingBox().expand(0.3).intersects(owner.getBoundingBox())) {
+					owner.setVelocity(this.getPos().subtract(owner.getPos()).normalize().multiply(2, 1.2, 2));
+					owner.velocityModified = true;
+					owner.fallDistance = 1;
+					((HarpoonDrag) owner).abysm$setDragTicks(2);
 				}
+			} else if (this.inGroundTime > 4 || (this.ticksAlive > 60 && this.inGroundTime < 1) || this.squaredDistanceTo(owner) > (256 * 256)) {
+				this.beginReturn(true);
 			}
 		}
+
 		if (this.isReturning()) {
-			boolean closeEnough = this.squaredDistanceTo(owner) < 49;
+			boolean closeEnough = this.squaredDistanceTo(owner) < (8 * 8);
 			this.setVelocity(owner.getEyePos().subtract(this.getPos()).normalize().multiply(closeEnough ? 0.65 : VELOCITY_POWER));
 		}
+
 		super.tick();
 	}
 
@@ -198,35 +208,39 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	protected void onEntityHit(EntityHitResult entityHitResult) {
-		Entity entity = entityHitResult.getEntity();
-		float f = this.isSubmergedInWater() ? 8.0F : 3.5F;
-		Entity entity2 = this.getOwner();
+	protected void onEntityHit(EntityHitResult hitResult) {
 		World world = this.getWorld();
+
+		if (!(world instanceof ServerWorld serverWorld)) return;
+
+		Entity entity = hitResult.getEntity();
+		float damage = this.isSubmergedInWater() ? 8.0F : 3.5F;
+		Entity owner = this.getOwner();
+
 		ItemStack weapon = this.getWeaponStack();
-		RegistryEntry<DamageType> damageType = AbysmDamageTypes.getFromWorld(world, AbysmDamageTypes.HARPOON);
-		DamageSource damageSource = new DamageSource(damageType, this, entity2 == null ? this : entity2);
-		if (world instanceof ServerWorld serverWorld) {
-			//noinspection DataFlowIssue
-			f = EnchantmentHelper.getDamage(serverWorld, weapon, entity, damageSource, f);
+
+		RegistryEntry<DamageType> damageType = AbysmDamageTypes.getOrThrow(world, AbysmDamageTypes.HARPOON);
+		DamageSource damageSource = new DamageSource(damageType, this, owner == null ? this : owner);
+
+		if (weapon != null) {
+			damage = EnchantmentHelper.getDamage(serverWorld, weapon, entity, damageSource, damage);
 		}
-		f = this.haul ? 0.01f : f;
+
+		damage = this.haul ? 0.01f : damage;
 		if (this.blessed && entity instanceof LectorfinEntity lectorfin) {
-			f = 0.0001f;
+			damage = 0.0001f;
 			world.getRegistryManager().getOrThrow(AbysmRegistryKeys.FISH_ENCHANTMENT)
 				.getRandom(this.random).ifPresent(enchantment ->
 					lectorfin.setEnchantment(enchantment, lectorfin.getEnchantmentLevel())
 				);
 		}
-		//noinspection deprecation
-		if (entity.sidedDamage(damageSource, f)) {
+
+		if (entity.damage(serverWorld, damageSource, damage)) {
 			if (entity.getType() == EntityType.ENDERMAN) {
 				return;
 			}
 
-			if (world instanceof ServerWorld serverWorld) {
-				EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, weapon, item -> this.kill(serverWorld));
-			}
+			EnchantmentHelper.onTargetDamaged(serverWorld, entity, damageSource, weapon, item -> this.kill(serverWorld));
 
 			if (entity instanceof LivingEntity livingEntity) {
 				this.knockback(livingEntity, damageSource);
@@ -237,22 +251,25 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				}
 			}
 		}
+
 		byte pierceLevel = this.getPierceLevel();
+
 		if (pierceLevel > 0) {
 			((PersistentProjectileEntityAccessor) this).abysm$invokeSetPierceLevel((byte) (pierceLevel - 1));
-			IntOpenHashSet intOpenHashSet = ((PersistentProjectileEntityAccessor) this).abysm$getPiercedEntities();
-			if (intOpenHashSet == null) {
-				intOpenHashSet = new IntOpenHashSet(pierceLevel);
-				intOpenHashSet.add(entity.getId());
-				((PersistentProjectileEntityAccessor) this).abysm$setPiercedEntities(intOpenHashSet);
-			} else {
-				intOpenHashSet.add(entity.getId());
+
+			IntOpenHashSet pierced = ((PersistentProjectileEntityAccessor) this).abysm$getPiercedEntities();
+			if (pierced == null) {
+				pierced = new IntOpenHashSet(pierceLevel);
+				((PersistentProjectileEntityAccessor) this).abysm$setPiercedEntities(pierced);
 			}
+
+			pierced.add(entity.getId());
 		} else {
 			this.beginReturn(true);
 			this.deflect(ProjectileDeflection.SIMPLE, entity, this.getOwner(), false);
 			this.setVelocity(this.getVelocity().multiply(0.02, 0.2, 0.02));
 		}
+
 		this.playSound(AbysmSoundEvents.ITEM_HARPOON_HIT, 1.0F, 1.0F);
 	}
 
@@ -273,10 +290,5 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 	public int getSlot() {
 		return this.slot;
-	}
-
-	@SuppressWarnings("unused")
-	public int getTicksAlive() {
-		return this.ticksAlive;
 	}
 }

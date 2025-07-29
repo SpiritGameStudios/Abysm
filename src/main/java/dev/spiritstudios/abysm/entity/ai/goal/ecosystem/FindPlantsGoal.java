@@ -97,7 +97,6 @@ public class FindPlantsGoal extends Goal {
 	 *
 	 * @return false if the test fails (is aquatic and not in water)
 	 */
-	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean testAquatic() {
 		return !this.forceAquatic || this.obj.isTouchingWater();
 	}

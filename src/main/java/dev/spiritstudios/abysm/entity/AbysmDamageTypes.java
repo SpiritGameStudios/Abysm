@@ -22,11 +22,11 @@ public class AbysmDamageTypes {
 		return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Abysm.id(path));
 	}
 
-	public static RegistryEntry.Reference<DamageType> getFromWorld(World world, RegistryKey<DamageType> registryKey) {
-		return getFromDRM(world.getRegistryManager(), registryKey);
+	public static RegistryEntry.Reference<DamageType> getOrThrow(World world, RegistryKey<DamageType> registryKey) {
+		return getOrThrow(world.getRegistryManager(), registryKey);
 	}
 
-	public static RegistryEntry.Reference<DamageType> getFromDRM(DynamicRegistryManager drm, RegistryKey<DamageType> registryKey) {
+	public static RegistryEntry.Reference<DamageType> getOrThrow(DynamicRegistryManager drm, RegistryKey<DamageType> registryKey) {
 		return drm.getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(registryKey);
 	}
 
