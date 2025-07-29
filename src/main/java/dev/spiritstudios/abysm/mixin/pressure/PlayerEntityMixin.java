@@ -28,7 +28,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		float pressure = PressureFinder.getPressure(world, this.getBlockPos());
 		if (pressure >= 40f) {
 			this.damage(world,
-				new DamageSource(AbysmDamageTypes.getFromWorld(world, AbysmDamageTypes.PRESSURE)),
+				new DamageSource(AbysmDamageTypes.getOrThrow(world, AbysmDamageTypes.PRESSURE)),
 				pressure * 0.2f);
 		}
 	}

@@ -122,7 +122,7 @@ public class ManOWarEntity extends WaterCreatureEntity {
 	@Override
 	protected void mobTick(ServerWorld serverWorld) {
 		super.mobTick(serverWorld);
-		RegistryEntry<DamageType> damageType = AbysmDamageTypes.getFromWorld(serverWorld, AbysmDamageTypes.CNIDOCYTE_STING);
+		RegistryEntry<DamageType> damageType = AbysmDamageTypes.getOrThrow(serverWorld, AbysmDamageTypes.CNIDOCYTE_STING);
 		DamageSource source = new DamageSource(damageType, this);
 		TargetPredicate targetPredicate = TargetPredicate.createAttackable();
 		float damage = (float) this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE);

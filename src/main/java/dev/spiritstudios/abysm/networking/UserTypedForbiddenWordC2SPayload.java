@@ -36,7 +36,7 @@ public record UserTypedForbiddenWordC2SPayload() implements CustomPayload {
 			ServerPlayerEntity player = context.player();
 			ServerWorld serverWorld = player.getServerWorld();
 			context.player().damage(serverWorld,
-				new DamageSource(AbysmDamageTypes.getFromWorld(serverWorld, AbysmDamageTypes.PRESSURE)),
+				new DamageSource(AbysmDamageTypes.getOrThrow(serverWorld, AbysmDamageTypes.PRESSURE)),
 				Float.MAX_VALUE);
 		}
 	}
