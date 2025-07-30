@@ -26,7 +26,7 @@ public class AbysmStructureSets {
 		structureSetRegisterable.register(
 			DEEP_SEA_RUINS,
 			new StructureSet(
-				structureLookup.getOrThrow(AbysmStructureKeys.DEEP_SEA_RUINS),
+				structureLookup.getOrThrow(AbysmStructures.DEEP_SEA_RUINS),
 				new RandomSpreadStructurePlacement(
 					Vec3i.ZERO,
 					StructurePlacement.FrequencyReductionMethod.DEFAULT,

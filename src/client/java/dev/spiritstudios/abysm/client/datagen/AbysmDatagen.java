@@ -1,7 +1,14 @@
 package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.datagen.*;
+import dev.spiritstudios.abysm.datagen.AbysmBlockLootTableProvider;
+import dev.spiritstudios.abysm.datagen.AbysmBlockMetatagProvider;
+import dev.spiritstudios.abysm.datagen.AbysmFishingLootTableProvider;
+import dev.spiritstudios.abysm.datagen.AbysmItemGroupProvider;
+import dev.spiritstudios.abysm.datagen.AbysmItemMetatagProvider;
+import dev.spiritstudios.abysm.datagen.AbysmRecipeProvider;
+import dev.spiritstudios.abysm.datagen.AbysmTagProviders;
+import dev.spiritstudios.abysm.datagen.AutomaticDynamicRegistryProvider;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
@@ -15,6 +22,7 @@ import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import dev.spiritstudios.abysm.worldgen.noise.AbysmNoiseParameters;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureSets;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructures;
+import dev.spiritstudios.abysm.worldgen.structure.pool.AbysmStructurePools;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.JsonKeySortOrderCallback;
@@ -43,6 +51,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		addProvider(pack, RegistryKeys.PLACED_FEATURE);
 		addProvider(pack, RegistryKeys.STRUCTURE_SET);
 		addProvider(pack, RegistryKeys.STRUCTURE);
+		addProvider(pack, RegistryKeys.TEMPLATE_POOL);
 
 		// misc registries
 		addProvider(pack, RegistryKeys.DAMAGE_TYPE);
@@ -108,6 +117,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 			.addRegistry(RegistryKeys.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap)
 			.addRegistry(RegistryKeys.STRUCTURE_SET, AbysmStructureSets::bootstrap)
 			.addRegistry(RegistryKeys.STRUCTURE, AbysmStructures::bootstrap)
+			.addRegistry(RegistryKeys.TEMPLATE_POOL, AbysmStructurePools::bootstrap)
 
 			// misc
 			.addRegistry(RegistryKeys.DAMAGE_TYPE, AbysmDamageTypes::bootstrap)

@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
 import dev.spiritstudios.abysm.mixin.worldgen.StructureAccessor;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
+import dev.spiritstudios.abysm.worldgen.structure.AbysmStructures;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.structure.StructurePiece;
@@ -17,10 +18,8 @@ import net.minecraft.util.math.random.ChunkRandom;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.structure.Structure;
-import net.minecraft.world.gen.structure.StructureKeys;
 import net.minecraft.world.gen.structure.StructureType;
 
-import java.util.List;
 import java.util.Optional;
 
 public class DeepSeaRuinsStructure extends Structure {
@@ -48,7 +47,7 @@ public class DeepSeaRuinsStructure extends Structure {
 			for (int j = -1; j <= 1; j += 2) {
 				addStructure(
 					contextWithChunkPos(context, new ChunkPos(context.chunkPos().x + i * 3, context.chunkPos().z + j * 3)),
-					StructureKeys.BASTION_REMNANT,
+					AbysmStructures.DEEP_SEA_RUINS_BASIC_RUIN,
 					structurePiecesCollector,
 					maxBoundingBox
 				);
@@ -134,11 +133,10 @@ public class DeepSeaRuinsStructure extends Structure {
 
 				// get pieces
 				StructurePiecesList structurePiecesList = structurePosition.generate().toList();
-				List<StructurePiece> pieces = structurePiecesList.pieces();
 
 				// shift structure around
-				int dy = context.random().nextBetween(-10, 10) - 60;
-				pieces.forEach(piece -> piece.translate(0, dy, 0));
+				//int dy = context.random().nextBetween(-10, 10);
+				//structurePiecesList.pieces().forEach(piece -> piece.translate(0, dy, 0));
 
 				// shift structure inside bounds if out of bounds, and if valid add to main structure
 				Optional<Vec3i> shiftOptional = getRequiredShift(structurePiecesList.getBoundingBox(), maxBoundingBox);
