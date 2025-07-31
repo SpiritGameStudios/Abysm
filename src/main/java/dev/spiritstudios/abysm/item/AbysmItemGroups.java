@@ -1,30 +1,26 @@
-package dev.spiritstudios.abysm.datagen;
+package dev.spiritstudios.abysm.item;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
-import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.specter.api.core.reflect.ReflectionHelper;
-import dev.spiritstudios.specter.api.item.datagen.SpecterItemGroupProvider;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import dev.spiritstudios.specter.api.item.DataItemGroup;
+import dev.spiritstudios.specter.api.item.SpecterItemRegistryKeys;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.Identifier;
+import net.minecraft.registry.Registerable;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.BiConsumer;
 
-public class AbysmItemGroupProvider extends SpecterItemGroupProvider {
-	public AbysmItemGroupProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-		super(dataOutput, registriesFuture);
-	}
+public final class AbysmItemGroups {
+	public static final RegistryKey<DataItemGroup> ABYSM = ofKey("abysm");
 
-	@Override
-	protected void generate(BiConsumer<Identifier, ItemGroupData> provider, RegistryWrapper.WrapperLookup lookup) {
+	public static void bootstrap(Registerable<DataItemGroup> registry) {
 		List<ItemStack> items = new ArrayList<>();
+
 		ReflectionHelper.getStaticFields(
 			AbysmBlocks.class,
 			Block.class
@@ -46,13 +42,17 @@ public class AbysmItemGroupProvider extends SpecterItemGroupProvider {
 			}
 		});
 
-		provider.accept(
-			Abysm.id("abysm"),
-			ItemGroupData.of(
-				Abysm.id("abysm"),
+		registry.register(
+			ABYSM,
+			new DataItemGroup(
+				Text.translatable("item_group.abysm.abysm"),
 				AbysmBlocks.FLOROPUMICE,
 				items
 			)
 		);
+	}
+
+	private static RegistryKey<DataItemGroup> ofKey(String id) {
+		return RegistryKey.of(SpecterItemRegistryKeys.ITEM_GROUP, Abysm.id(id));
 	}
 }

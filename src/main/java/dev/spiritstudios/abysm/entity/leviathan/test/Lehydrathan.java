@@ -63,7 +63,7 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
 	@Override
-	public List<EntityPart<Leviathan>> getEntityParts() {
+	public List<EntityPart<Leviathan>> getSpecterEntityParts() {
 		return this.parts;
 	}
 
@@ -105,7 +105,7 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 	@Override
 	protected void tickPartUpdates() {
 
-		var parts = this.getEntityParts();
+		var parts = this.getSpecterEntityParts();
 
 		Vec3d delta;
 		Vec3d pos = this.getPos();

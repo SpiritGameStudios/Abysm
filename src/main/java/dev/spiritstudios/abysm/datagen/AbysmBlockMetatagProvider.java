@@ -21,8 +21,8 @@ public class AbysmBlockMetatagProvider extends MetatagProvider<Block> {
 	}
 
 	@Override
-	protected void configure(Consumer<MetatagBuilder<Block, ?>> consumer, RegistryWrapper.WrapperLookup wrapperLookup) {
-		MetatagBuilder<Block, BlockState> builder = create(BlockMetatags.FLATTENABLE);
+	protected void configure(Consumer<MetatagProvider<Block>.MetatagBuilder<?>> consumer, RegistryWrapper.WrapperLookup wrapperLookup) {
+		MetatagBuilder<BlockState> builder = create(BlockMetatags.FLATTENABLE);
 
 		builder.put(OOZING_DREGLOAM, DREGLOAM.getDefaultState());
 
