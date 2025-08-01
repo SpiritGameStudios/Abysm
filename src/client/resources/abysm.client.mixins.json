@@ -4,17 +4,18 @@
   "package": "dev.spiritstudios.abysm.client.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+	  "ChatScreenMixin",
+	  "ClientPlayerEntityMixin",
+	  "harpoon.PlayerEntityRendererMixin",
+	  "leviathan.ClientPlayNetworkHandlerMixin",
     "render.BackgroundRendererMixin",
-    "ChatScreenMixin",
-  	"render.ClientPlayerEntityMixin",
+	  "render.ClientPlayerEntityMixin",
     "render.GlResourceManagerMixin",
     "render.LightmapTextureManagerMixin",
-    "sound.SoundSystemMixin",
-    "sound.SourceAccessor",
     "render.WaterSuspendParticleMixin",
     "render.WorldRendererMixin",
-    "harpoon.PlayerEntityRendererMixin",
-    "leviathan.ClientPlayNetworkHandlerMixin"
+	  "sound.SoundSystemMixin",
+	  "sound.SourceAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
