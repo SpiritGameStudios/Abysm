@@ -13,7 +13,6 @@ public class AbysmRegistries {
 	public static final Registry<EcosystemType<?>> ECOSYSTEM_TYPE = FabricRegistryBuilder.createSimple(AbysmRegistryKeys.ECOSYSTEM_TYPE).buildAndRegister();
 
 	public static void init() {
-		// TODO: Reloadable DynReg
 		DynamicRegistries.registerSynced(AbysmRegistryKeys.ENTITY_PATTERN, EntityPatternVariant.CODEC);
 		DynamicRegistries.registerSynced(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT, BloomrayEntityVariant.CODEC);
 		DynamicRegistries.registerSynced(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT, ElectricOoglyBooglyVariant.CODEC);

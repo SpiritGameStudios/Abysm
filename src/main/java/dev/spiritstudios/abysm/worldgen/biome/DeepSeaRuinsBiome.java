@@ -35,7 +35,6 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 
 	@Override
 	public BiomeEffects.Builder createEffects() {
-		// TODO: Temporary colors
 		return new BiomeEffects.Builder()
 			.waterColor(0x1C7A56)
 			.waterFogColor(0x06140F)

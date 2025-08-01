@@ -7,6 +7,7 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.ai.goal.SwimAroundBoidGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -19,7 +20,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -79,23 +79,6 @@ public class PaddlefishEntity extends FishEntity implements EcologicalEntity, Ge
 		this.targetSelector.add(1, new HuntPreyGoal(this, false));
 	}
 
-
-	// FIXME: new sound events
-	@Override
-	protected SoundEvent getFlopSound() {
-		return SoundEvents.ENTITY_TROPICAL_FISH_FLOP;
-	}
-
-	@Override
-	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.ENTITY_TROPICAL_FISH_HURT;
-	}
-
-	@Override
-	protected @Nullable SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_TROPICAL_FISH_DEATH;
-	}
-
 	@Override
 	public EcosystemLogic getEcosystemLogic() {
 		return this.ecosystemLogic;
@@ -114,6 +97,21 @@ public class PaddlefishEntity extends FishEntity implements EcologicalEntity, Ge
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
 		return geoCache;
+	}
+
+	@Override
+	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_HURT;
+	}
+
+	@Override
+	protected @Nullable SoundEvent getDeathSound() {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getFlopSound() {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_FLOP;
 	}
 
 	@Override
