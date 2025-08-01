@@ -79,13 +79,13 @@ public class EcosystemChunk {
 		EcosystemType<?> ecosystemType = ecologicalEntity.getEcosystemType();
 		PopStatus popStatus = getPopStatus(ecosystemType);
 
-		if(popStatus.needsRepopulating()) {
-			this.repopulateEcosystemType(ecosystemType, popStatus.repopulatingIsPriority());
-		}
+//		if(popStatus.needsRepopulating()) {
+//			this.repopulateEcosystemType(ecosystemType, popStatus.repopulatingIsPriority());
+//		}
 
-		if(popStatus.needsHunting()) {
-			this.huntEcosystemType(ecosystemType, popStatus.huntingIsPriority());
-		}
+//		if(popStatus.needsHunting()) {
+//			this.huntEcosystemType(ecosystemType, popStatus.huntingIsPriority());
+//		}
 	}
 
 	public void repopulateEcosystemType(EcosystemType<?> ecosystemType, boolean priority) {
