@@ -25,6 +25,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Rarity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
@@ -732,6 +733,19 @@ public final class AbysmBlocks {
 		AbstractBlock.Settings.create()
 			.strength(0.8F)
 			.mapColor(MapColor.OAK_TAN)
+	);
+	// endregion
+
+	// region technical blocks
+	public static final Block DENSITY_BLOB_BLOCK = register(
+		"density_blob_block",
+		DensityBlobBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.LIGHT_GRAY)
+			.requiresTool()
+			.strength(-1.0F, 3600000.0F)
+			.dropsNothing(),
+		(block, settings) -> new BlockItem(block, settings.rarity(Rarity.EPIC))
 	);
 	// endregion
 

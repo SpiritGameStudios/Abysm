@@ -163,6 +163,16 @@ public class AbysmTagProviders {
 					AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 				);
 
+			getOrCreateTagBuilder(BlockTags.DRAGON_IMMUNE)
+				.add(
+					AbysmBlocks.DENSITY_BLOB_BLOCK
+				);
+
+			getOrCreateTagBuilder(BlockTags.WITHER_IMMUNE)
+				.add(
+					AbysmBlocks.DENSITY_BLOB_BLOCK
+				);
+
 
 			getOrCreateTagBuilder(BlockTags.DIRT)
 				.add(

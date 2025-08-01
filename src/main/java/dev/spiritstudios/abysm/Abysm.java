@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm;
 
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.block.entity.AbysmBlockEntityTypes;
 import dev.spiritstudios.abysm.command.AbysmCommands;
 import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
@@ -72,6 +73,7 @@ public class Abysm implements ModInitializer {
 		AbysmBlocks.init();
 		AbysmDataComponentTypes.init();
 		AbysmItems.init();
+		RegistryHelper.registerBlockEntityTypes(AbysmBlockEntityTypes.class, MODID);
 
 		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
 			.register(content -> content.add(AbysmItems.MUSIC_DISC_RENAISSANCE));

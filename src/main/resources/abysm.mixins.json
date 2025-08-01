@@ -26,10 +26,12 @@
 		"worldgen.CarverMixin",
 		"worldgen.ChunkNoiseSamplerAccessor",
 		"worldgen.ChunkNoiseSamplerMixin",
+		"worldgen.JigsawReplacementStructureProcessorMixin",
 		"worldgen.MultiNoiseBiomeSourceMixin",
 		"worldgen.NoiseChunkGeneratorMixin",
 		"worldgen.NoiseConfigMixin",
 		"worldgen.ServerChunkLoadingManagerMixin",
+		"worldgen.SinglePoolElementAccessor",
 		"worldgen.StructureAccessor",
 		"worldgen.StructureAccessorAccessor",
 		"worldgen.StructureWeightSamplerMixin"

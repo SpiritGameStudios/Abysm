@@ -164,6 +164,10 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SILT);
 		generator.registerSimpleCubeAll(AbysmBlocks.CUT_SILT);
 		// endregion
+
+		// region technical blocks
+		generator.registerSimpleCubeAll(AbysmBlocks.DENSITY_BLOB_BLOCK);
+		// endregion
 	}
 
 	private void doForMany(BiConsumer<BlockStateModelGenerator, Block> consumer, BlockStateModelGenerator generator, Block... blocks) {

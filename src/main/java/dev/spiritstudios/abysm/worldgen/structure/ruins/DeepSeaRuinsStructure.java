@@ -2,24 +2,36 @@ package dev.spiritstudios.abysm.worldgen.structure.ruins;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.mixin.worldgen.SinglePoolElementAccessor;
 import dev.spiritstudios.abysm.mixin.worldgen.StructureAccessor;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructures;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.structure.PoolStructurePiece;
 import net.minecraft.structure.StructurePiece;
 import net.minecraft.structure.StructurePiecesCollector;
 import net.minecraft.structure.StructurePiecesList;
+import net.minecraft.structure.StructurePlacementData;
+import net.minecraft.structure.StructureTemplate;
+import net.minecraft.structure.StructureTemplateManager;
+import net.minecraft.structure.pool.ListPoolElement;
+import net.minecraft.structure.pool.SinglePoolElement;
+import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.ChunkRandom;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class DeepSeaRuinsStructure extends Structure {
@@ -35,6 +47,7 @@ public class DeepSeaRuinsStructure extends Structure {
 
 		ChunkPos chunkPos = context.chunkPos();
 		BlockPos blockPos = new BlockPos(chunkPos.getCenterX(), 18, chunkPos.getCenterZ());
+		Random random = context.random();
 
 		BlockBox maxBoundingBox = getMaxBoundingBox(chunkPos, context.world());
 
@@ -52,6 +65,12 @@ public class DeepSeaRuinsStructure extends Structure {
 					maxBoundingBox
 				);
 			}
+		}
+
+		// collect density blob infos and convert into structure pieces
+		List<StructureTemplate.StructureBlockInfo> blobInfos = getBlobInfos(structurePiecesCollector.toList().pieces(), context.structureTemplateManager());
+		for (StructureTemplate.StructureBlockInfo info : blobInfos) {
+			structurePiecesCollector.addPiece(makePieceFromBlobInfo(info, random, info.pos()));
 		}
 
 		// remove any cutoff structure pieces entirely
@@ -214,6 +233,51 @@ public class DeepSeaRuinsStructure extends Structure {
 		ChunkGenerator chunkGenerator = context.chunkGenerator();
 		int seaLevel = chunkGenerator.getSeaLevel();
 		return collector.shiftInto(seaLevel, chunkGenerator.getMinimumY(), random, 10);
+	}
+
+	protected List<StructureTemplate.StructureBlockInfo> getBlobInfos(List<StructurePiece> structurePieces, StructureTemplateManager structureTemplateManager) {
+		List<StructureTemplate.StructureBlockInfo> blobInfos = new ArrayList<>();
+		for (StructurePiece piece : structurePieces) {
+			if (piece instanceof PoolStructurePiece poolStructurePiece) {
+				StructurePoolElement structurePoolElement = poolStructurePiece.getPoolElement();
+				BlockPos pos = poolStructurePiece.getPos();
+				StructurePlacementData structurePlacementData = new StructurePlacementData().setRotation(poolStructurePiece.getRotation());
+
+				blobInfos.addAll(getBlobInfos(structurePoolElement, pos, structurePlacementData, structureTemplateManager));
+			}
+		}
+		return blobInfos;
+	}
+
+	protected List<StructureTemplate.StructureBlockInfo> getBlobInfos(StructurePoolElement structurePoolElement, BlockPos pos, StructurePlacementData structurePlacementData, StructureTemplateManager structureTemplateManager) {
+		if (structurePoolElement instanceof SinglePoolElement singlePoolElement) {
+			StructureTemplate structureTemplate = ((SinglePoolElementAccessor) singlePoolElement).invokeGetStructure(structureTemplateManager);
+			return structureTemplate.getInfosForBlock(
+				pos, structurePlacementData, AbysmBlocks.DENSITY_BLOB_BLOCK, true
+			);
+		} else if (structurePoolElement instanceof ListPoolElement listPoolElement) {
+			List<StructurePoolElement> elements = listPoolElement.getElements();
+			if (elements.isEmpty()) {
+				return List.of();
+			} else {
+				StructurePoolElement firstChild = elements.getFirst();
+				return getBlobInfos(firstChild, pos, structurePlacementData, structureTemplateManager);
+			}
+		} else {
+			return List.of();
+		}
+	}
+
+	protected StructurePiece makePieceFromBlobInfo(StructureTemplate.StructureBlockInfo info, Random random, BlockPos pos) {
+		int rad = random.nextBetween(18, 30);
+		return new DeepSeaRuinsGenerator.SphereCave(
+			0,
+			pos.getX(),
+			pos.getY(),
+			pos.getZ(),
+			rad,
+			rad + random.nextBetween(4, 6)
+		);
 	}
 
 	@Override
