@@ -25,6 +25,9 @@
       "id": "abysm:floropumice_bricks"
     },
     {
+		"id": "abysm:cracked_floropumice_bricks"
+	},
+	  {
       "id": "abysm:floropumice_brick_stairs"
     },
     {
@@ -37,6 +40,9 @@
       "id": "abysm:floropumice_tiles"
     },
     {
+		"id": "abysm:cracked_floropumice_tiles"
+	},
+	  {
       "id": "abysm:floropumice_tile_stairs"
     },
     {
@@ -67,6 +73,9 @@
       "id": "abysm:smooth_floropumice_bricks"
     },
     {
+		"id": "abysm:cracked_smooth_floropumice_bricks"
+	},
+	  {
       "id": "abysm:smooth_floropumice_brick_stairs"
     },
     {
@@ -79,6 +88,9 @@
       "id": "abysm:cut_smooth_floropumice"
     },
     {
+		"id": "abysm:cracked_cut_smooth_floropumice"
+	},
+	  {
       "id": "abysm:cut_smooth_floropumice_stairs"
     },
     {

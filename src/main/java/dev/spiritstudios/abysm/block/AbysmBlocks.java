@@ -70,6 +70,11 @@ public final class AbysmBlocks {
 		Block::new,
 		AbstractBlock.Settings.copy(POLISHED_FLOROPUMICE)
 	);
+	public static final Block CRACKED_FLOROPUMICE_BRICKS = register(
+		"cracked_floropumice_bricks",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_FLOROPUMICE)
+	);
 	public static final Block FLOROPUMICE_BRICK_STAIRS = registerStairsOf(
 		"floropumice_brick_stairs",
 		FLOROPUMICE_BRICKS
@@ -85,6 +90,11 @@ public final class AbysmBlocks {
 
 	public static final Block FLOROPUMICE_TILES = register(
 		"floropumice_tiles",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_FLOROPUMICE)
+	);
+	public static final Block CRACKED_FLOROPUMICE_TILES = register(
+		"cracked_floropumice_tiles",
 		Block::new,
 		AbstractBlock.Settings.copy(POLISHED_FLOROPUMICE)
 	);
@@ -144,6 +154,11 @@ public final class AbysmBlocks {
 		Block::new,
 		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
 	);
+	public static final Block CRACKED_SMOOTH_FLOROPUMICE_BRICKS = register(
+		"cracked_smooth_floropumice_bricks",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
+	);
 	public static final Block SMOOTH_FLOROPUMICE_BRICK_STAIRS = registerStairsOf(
 		"smooth_floropumice_brick_stairs",
 		SMOOTH_FLOROPUMICE_BRICKS
@@ -159,6 +174,11 @@ public final class AbysmBlocks {
 
 	public static final Block CUT_SMOOTH_FLOROPUMICE = register(
 		"cut_smooth_floropumice",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
+	);
+	public static final Block CRACKED_CUT_SMOOTH_FLOROPUMICE = register(
+		"cracked_cut_smooth_floropumice",
 		Block::new,
 		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
 	);

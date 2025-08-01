@@ -26,12 +26,14 @@ public class AbysmBlockFamilies {
 		.slab(AbysmBlocks.FLOROPUMICE_BRICK_SLAB)
 		.wall(AbysmBlocks.FLOROPUMICE_BRICK_WALL)
 		.polished(AbysmBlocks.FLOROPUMICE_TILES)
+		.cracked(AbysmBlocks.CRACKED_FLOROPUMICE_BRICKS)
 		.build();
 
 	public static final BlockFamily FLOROPUMICE_TILES = familyBuilder(AbysmBlocks.FLOROPUMICE_TILES)
 		.stairs(AbysmBlocks.FLOROPUMICE_TILE_STAIRS)
 		.slab(AbysmBlocks.FLOROPUMICE_TILE_SLAB)
 		.wall(AbysmBlocks.FLOROPUMICE_TILE_WALL)
+		.cracked(AbysmBlocks.CRACKED_FLOROPUMICE_TILES)
 		.build();
 
 	public static final BlockFamily SMOOTH_FLOROPUMICE = familyBuilder(AbysmBlocks.SMOOTH_FLOROPUMICE)
@@ -47,11 +49,13 @@ public class AbysmBlockFamilies {
 		.slab(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICK_SLAB)
 		.wall(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICK_WALL)
 		.cut(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE)
+		.cracked(AbysmBlocks.CRACKED_SMOOTH_FLOROPUMICE_BRICKS)
 		.build();
 
 	public static final BlockFamily CUT_SMOOTH_FLOROPUMICE = familyBuilder(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE)
 		.stairs(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE_STAIRS)
 		.slab(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE_SLAB)
+		.cracked(AbysmBlocks.CRACKED_CUT_SMOOTH_FLOROPUMICE)
 		.build();
 
 	public static BlockFamily.Builder familyBuilder(Block baseBlock) {
