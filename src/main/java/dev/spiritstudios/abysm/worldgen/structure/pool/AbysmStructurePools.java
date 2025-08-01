@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.worldgen.structure.pool;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.worldgen.structure.processor.AbysmStructureProcessorLists;
 import dev.spiritstudios.specter.api.worldgen.SpecterStructurePoolElements;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryEntryLookup;
@@ -22,12 +23,14 @@ public class AbysmStructurePools {
 
 		RegistryEntry<StructurePool> emptyPool = templatePoolLookup.getOrThrow(StructurePools.EMPTY);
 
+		RegistryEntry<StructureProcessorList> ruinsDegradation = processorListLookup.getOrThrow(AbysmStructureProcessorLists.DEEP_SEA_RUINS_DEGRADATION);
+
 		registerable.register(
 			BASIC_RUIN,
 			new StructurePool(
 				emptyPool,
 				ImmutableList.of(Pair.of(
-					SpecterStructurePoolElements.ofSingle(Abysm.id("deep_sea_ruins/basic_ruin")),
+					SpecterStructurePoolElements.ofProcessedSingle(Abysm.id("deep_sea_ruins/basic_ruin"), ruinsDegradation),
 					1
 				)),
 				StructurePool.Projection.RIGID

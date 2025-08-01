@@ -23,6 +23,7 @@ import dev.spiritstudios.abysm.worldgen.noise.AbysmNoiseParameters;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureSets;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructures;
 import dev.spiritstudios.abysm.worldgen.structure.pool.AbysmStructurePools;
+import dev.spiritstudios.abysm.worldgen.structure.processor.AbysmStructureProcessorLists;
 import dev.spiritstudios.specter.api.item.SpecterItemRegistryKeys;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
@@ -50,6 +51,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		addProvider(pack, RegistryKeys.CONFIGURED_FEATURE);
 		addProvider(pack, RegistryKeys.PLACED_FEATURE);
 		addProvider(pack, RegistryKeys.STRUCTURE_SET);
+		addProvider(pack, RegistryKeys.PROCESSOR_LIST);
 		addProvider(pack, RegistryKeys.STRUCTURE);
 		addProvider(pack, RegistryKeys.TEMPLATE_POOL);
 
@@ -116,6 +118,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 			.addRegistry(RegistryKeys.CONFIGURED_FEATURE, AbysmConfiguredFeatures::bootstrap)
 			.addRegistry(RegistryKeys.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap)
 			.addRegistry(RegistryKeys.STRUCTURE_SET, AbysmStructureSets::bootstrap)
+			.addRegistry(RegistryKeys.PROCESSOR_LIST, AbysmStructureProcessorLists::bootstrap)
 			.addRegistry(RegistryKeys.STRUCTURE, AbysmStructures::bootstrap)
 			.addRegistry(RegistryKeys.TEMPLATE_POOL, AbysmStructurePools::bootstrap)
 
