@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:fishing",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 60,
+          "name": "abysm:small_floral_fish"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 25,
+          "name": "abysm:big_floral_fish"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

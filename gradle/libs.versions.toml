@@ -8,7 +8,7 @@ yarn = "1.21.5+build.1"
 fabric_loader = "0.16.14"
 fabric_api = "0.124.2+1.21.5"
 
-specter = "1.1.9"
+specter = "1.2.2"
 
 geckolib = "5.1.0"
 biolith = "3.3.0-beta.1"
@@ -38,6 +38,7 @@ specter_entity = { group = "dev.spiritstudios.specter", name = "specter-entity",
 specter_item = { group = "dev.spiritstudios.specter", name = "specter-item", version.ref = "specter" }
 specter_registry = { group = "dev.spiritstudios.specter", name = "specter-registry", version.ref = "specter" }
 specter_render = { group = "dev.spiritstudios.specter", name = "specter-render", version.ref = "specter" }
+specter_worldgen = { group = "dev.spiritstudios.specter", name = "specter-worldgen", version.ref = "specter" }
 specter_debug = { group = "dev.spiritstudios.specter", name = "specter-debug", version.ref = "specter" }
 
 geckolib = { group = "software.bernie.geckolib", name = "geckolib-fabric-1.21.5", version.ref = "geckolib" }
@@ -58,5 +59,6 @@ specter = [
 	"specter_registry",
 	"specter_render",
 	"specter_gui",
-	"specter_serialization"
+	"specter_serialization",
+	"specter_worldgen"
 ]

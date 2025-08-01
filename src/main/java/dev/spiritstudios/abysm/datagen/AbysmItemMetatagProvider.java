@@ -61,11 +61,21 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 		super(dataOutput, RegistryKeys.ITEM, registriesFuture, DataOutput.OutputType.DATA_PACK);
 	}
 
-	@Override
-	protected void configure(Consumer<MetatagBuilder<Item, ?>> consumer, RegistryWrapper.WrapperLookup wrapperLookup) {
-		MetatagBuilder<Item, Float> builder = create(ItemMetatags.COMPOSTING_CHANCE);
+	private void putBlocks(MetatagProvider<Item>.MetatagBuilder<Float> builder, float value, Block... blocks) {
+		for (Block block : blocks) {
+			putBlock(builder, block, value);
+		}
+	}
 
-		putBlocks(builder, 0.3F,
+	private void putBlock(MetatagProvider<Item>.MetatagBuilder<Float> builder, Block block, float value) {
+		builder.put(block.asItem(), value);
+	}
+
+	@Override
+	protected void configure(Consumer<MetatagProvider<Item>.MetatagBuilder<?>> consumer, RegistryWrapper.WrapperLookup wrapperLookup) {
+		MetatagProvider<Item>.MetatagBuilder<Float> compostingChance = create(ItemMetatags.COMPOSTING_CHANCE);
+
+		putBlocks(compostingChance, 0.3F,
 			ROSEBLOOM_PETALS,
 			SUNBLOOM_PETALS,
 			MALLOWBLOOM_PETALS,
@@ -73,11 +83,11 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 			OOZETRICKLE_FILAMENTS
 		);
 
-		putBlocks(builder, 0.5F,
+		putBlocks(compostingChance, 0.5F,
 			TALL_OOZETRICKLE_FILAMENTS
 		);
 
-		putBlocks(builder, 0.65F,
+		putBlocks(compostingChance, 0.65F,
 			ROSY_SPRIGS,
 			SUNNY_SPRIGS,
 			MAUVE_SPRIGS,
@@ -110,7 +120,7 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 			ANTENNAE_PLANT
 		);
 
-		putBlocks(builder, 0.85F,
+		putBlocks(compostingChance, 0.85F,
 			ROSY_BLOOMSHROOM_STEM,
 			ROSY_BLOOMSHROOM_HYPHAE,
 			ROSY_BLOOMSHROOM_CAP,
@@ -124,22 +134,12 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 			MAUVE_BLOOMSHROOM_CAP
 		);
 
-		putBlocks(builder, 1.0F,
+		putBlocks(compostingChance, 1.0F,
 			BLOOMING_SODALITE_CROWN,
 			BLOOMING_ANYOLITE_CROWN,
 			BLOOMING_MELILITE_CROWN
 		);
 
-		consumer.accept(builder);
-	}
-
-	private void putBlocks(MetatagBuilder<Item, Float> builder, float value, Block... blocks) {
-		for (Block block : blocks) {
-			putBlock(builder, block, value);
-		}
-	}
-
-	private void putBlock(MetatagBuilder<Item, Float> builder, Block block, float value) {
-		builder.put(block.asItem(), value);
+		consumer.accept(compostingChance);
 	}
 }

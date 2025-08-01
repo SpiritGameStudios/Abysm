@@ -17,6 +17,20 @@ public class AbysmSoundEvents {
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_RENAISSANCE = registerReference("records.renaissance");
 	// SOUNDS
 	public static final SoundEvent ENTITY_BLOOMRAY_AMBIENT = register("entity.bloomray.ambient");
+	public static final SoundEvent ENTITY_BLOOMRAY_HURT = register("entity.bloomray.hurt");
+	public static final SoundEvent ENTITY_BLOOMRAY_DEATH = register("entity.bloomray.death");
+
+	public static final SoundEvent ENTITY_BIG_FLORAL_FISH_HURT = register("entity.big_floral_fish.hurt");
+	public static final SoundEvent ENTITY_BIG_FLORAL_FISH_DEATH = register("entity.big_floral_fish.death");
+	public static final SoundEvent ENTITY_BIG_FLORAL_FISH_FLOP = register("entity.big_floral_fish.flop");
+
+	public static final SoundEvent ENTITY_SMALL_FLORAL_FISH_HURT = register("entity.small_floral_fish.hurt");
+	public static final SoundEvent ENTITY_SMALL_FLORAL_FISH_DEATH = register("entity.small_floral_fish.death");
+	public static final SoundEvent ENTITY_SMALL_FLORAL_FISH_FLOP = register("entity.small_floral_fish.flop");
+
+	public static final SoundEvent ENTITY_PADDLEFISH_HURT = register("entity.paddlefish.hurt");
+	public static final SoundEvent ENTITY_PADDLEFISH_DEATH = register("entity.paddlefish.death");
+	public static final SoundEvent ENTITY_PADDLEFISH_FLOP = register("entity.paddlefish.flop");
 
 	public static final SoundEvent ITEM_OOZEBALL_APPLY = register("item.oozeball.apply");
 

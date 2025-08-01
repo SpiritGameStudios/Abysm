@@ -234,4 +234,6 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 	private static String animString(RawAnimation anim) {
 		return anim.getAnimationStages().getFirst().animationName();
 	}
+
+
 }

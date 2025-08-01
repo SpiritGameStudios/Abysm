@@ -13,8 +13,6 @@ import org.jetbrains.annotations.Range;
 import java.util.Map;
 import java.util.Optional;
 
-// FIXME - there's an actual name for multiple entities per breed at once but I can't remember it for the life of me
-
 /**
  * @param entityType                   This mob's EntityType - used for sorting/finding/tracking.
  * @param predators                    The predators of this mob.
@@ -24,8 +22,8 @@ import java.util.Optional;
  * @param overpopulationMark           If the population is over this number, it is considered "overpopulated" - being hunted becomes a priority, along with breeding being disallowed.
  * @param nearExtinctMark              If the population is above 0 and below this number, it is considered "near extinct" - breeding becomes a priority, along with being hunted becoming disallowed.
  * @param populationChunkSearchRadius  The chunk search radius for any chunk to maintain the targetPopulation amount (1 = 3x3 chunks, 2 = 4x4, etc.).
- * @param minEntitiesPerBreed          The minimum amount of babies that can spawn upon breeding.
- * @param maxEntitiesPerBreed          The maximum amount of babies that can spawn upon breeding.
+ * @param minLitterSize          The minimum amount of babies that can spawn upon breeding.
+ * @param maxLitterSize          The maximum amount of babies that can spawn upon breeding.
  * @param minHuntTicks                 The minimum amount of ticks this entity can hunt for before giving up, if it can hunt.
  * @param maxHuntTicks                 The maximum amount of ticks this entity can hunt for before giving up, if it can hunt.
  * @param huntFavorChance              The chance(0f-1f) of this entity being favored in a hunt - Only used if this entity is the hunter starting the hunt!
@@ -39,7 +37,7 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 	ImmutableSet<Block> plants,
 	int targetPopulation, int overpopulationMark, int nearExtinctMark,
 	int populationChunkSearchRadius,
-	int minEntitiesPerBreed, int maxEntitiesPerBreed,
+	int minLitterSize, int maxLitterSize,
 	int minHuntTicks, int maxHuntTicks, float huntFavorChance,
 	float favoredHuntSpeedMultiplier, float unfavoredHuntSpeedMultiplier
 ) {
@@ -56,8 +54,8 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 		private int overPopulationMark = 12;
 		private int nearExtinctMark = 2;
 		private int populationChunkSearchRadius = 2;
-		private int minEntitiesPerBreed = 1;
-		private int maxEntitiesPerBreed = 1;
+		private int minLitterSize = 1;
+		private int maxLitterSize = 1;
 
 		private int minHuntTicks = 1200; // 60 seconds
 		private int maxHuntTicks = 1600; // 80 seconds
@@ -116,9 +114,9 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 			return this;
 		}
 
-		public Builder<T> setEntitiesPerBreed(int minEntitiesPerBreed, int maxEntitiesPerBreed) {
-			this.minEntitiesPerBreed = minEntitiesPerBreed;
-			this.maxEntitiesPerBreed = maxEntitiesPerBreed;
+		public Builder<T> setLitterSize(int minEntitiesPerBreed, int maxEntitiesPerBreed) {
+			this.minLitterSize = minEntitiesPerBreed;
+			this.maxLitterSize = maxEntitiesPerBreed;
 			return this;
 		}
 
@@ -154,7 +152,7 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 				this.entityType, this.predators, this.prey, this.plants,
 				this.targetPopulation, this.overPopulationMark, this.nearExtinctMark,
 				this.populationChunkSearchRadius,
-				this.minEntitiesPerBreed, this.maxEntitiesPerBreed,
+				this.minLitterSize, this.maxLitterSize,
 				this.minHuntTicks, this.maxHuntTicks, this.huntFavorChance,
 				this.favoredHuntSpeedMultiplier, this.unfavoredHuntSpeedMultiplier
 			);

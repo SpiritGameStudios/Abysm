@@ -26,6 +26,8 @@ public final class AbysmBlockTags {
 	public static final TagKey<Block> BLOOMING_CROWNS = of("blooming_crowns");
 	public static final TagKey<Block> SCABIOSAS = of("scabiosas");
 
+	public static final TagKey<Block> DEEP_SEA_RUINS_REPLACEABLE = of("deep_sea_ruins_replacable");
+
 	private static TagKey<Block> of(String id) {
 		return TagKey.of(RegistryKeys.BLOCK, Abysm.id(id));
 	}

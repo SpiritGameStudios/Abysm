@@ -1,0 +1,14 @@
+{
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "abysm:deep_sea_ruins/basic_ruin",
+        "processors": "abysm:deep_sea_ruins_degradation",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ],
+  "fallback": "minecraft:empty"
+}

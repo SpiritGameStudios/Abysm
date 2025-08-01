@@ -25,6 +25,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Rarity;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
@@ -70,6 +71,11 @@ public final class AbysmBlocks {
 		Block::new,
 		AbstractBlock.Settings.copy(POLISHED_FLOROPUMICE)
 	);
+	public static final Block CRACKED_FLOROPUMICE_BRICKS = register(
+		"cracked_floropumice_bricks",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_FLOROPUMICE)
+	);
 	public static final Block FLOROPUMICE_BRICK_STAIRS = registerStairsOf(
 		"floropumice_brick_stairs",
 		FLOROPUMICE_BRICKS
@@ -85,6 +91,11 @@ public final class AbysmBlocks {
 
 	public static final Block FLOROPUMICE_TILES = register(
 		"floropumice_tiles",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_FLOROPUMICE)
+	);
+	public static final Block CRACKED_FLOROPUMICE_TILES = register(
+		"cracked_floropumice_tiles",
 		Block::new,
 		AbstractBlock.Settings.copy(POLISHED_FLOROPUMICE)
 	);
@@ -144,6 +155,11 @@ public final class AbysmBlocks {
 		Block::new,
 		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
 	);
+	public static final Block CRACKED_SMOOTH_FLOROPUMICE_BRICKS = register(
+		"cracked_smooth_floropumice_bricks",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
+	);
 	public static final Block SMOOTH_FLOROPUMICE_BRICK_STAIRS = registerStairsOf(
 		"smooth_floropumice_brick_stairs",
 		SMOOTH_FLOROPUMICE_BRICKS
@@ -159,6 +175,11 @@ public final class AbysmBlocks {
 
 	public static final Block CUT_SMOOTH_FLOROPUMICE = register(
 		"cut_smooth_floropumice",
+		Block::new,
+		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
+	);
+	public static final Block CRACKED_CUT_SMOOTH_FLOROPUMICE = register(
+		"cracked_cut_smooth_floropumice",
 		Block::new,
 		AbstractBlock.Settings.copy(POLISHED_SMOOTH_FLOROPUMICE)
 	);
@@ -712,6 +733,19 @@ public final class AbysmBlocks {
 		AbstractBlock.Settings.create()
 			.strength(0.8F)
 			.mapColor(MapColor.OAK_TAN)
+	);
+	// endregion
+
+	// region technical blocks
+	public static final Block DENSITY_BLOB_BLOCK = register(
+		"density_blob_block",
+		DensityBlobBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.LIGHT_GRAY)
+			.requiresTool()
+			.strength(-1.0F, 3600000.0F)
+			.dropsNothing(),
+		(block, settings) -> new BlockItem(block, settings.rarity(Rarity.EPIC))
 	);
 	// endregion
 

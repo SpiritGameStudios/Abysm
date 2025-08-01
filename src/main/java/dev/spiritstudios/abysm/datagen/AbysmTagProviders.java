@@ -163,6 +163,16 @@ public class AbysmTagProviders {
 					AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 				);
 
+			getOrCreateTagBuilder(BlockTags.DRAGON_IMMUNE)
+				.add(
+					AbysmBlocks.DENSITY_BLOB_BLOCK
+				);
+
+			getOrCreateTagBuilder(BlockTags.WITHER_IMMUNE)
+				.add(
+					AbysmBlocks.DENSITY_BLOB_BLOCK
+				);
+
 
 			getOrCreateTagBuilder(BlockTags.DIRT)
 				.add(
@@ -326,6 +336,35 @@ public class AbysmTagProviders {
 					AbysmBlocks.RED_SCABIOSA,
 					AbysmBlocks.BLACK_SCABIOSA
 				);
+
+			this.getOrCreateTagBuilder(AbysmBlockTags.DEEP_SEA_RUINS_REPLACEABLE)
+				.add(
+					AbysmBlocks.SMOOTH_FLOROPUMICE,
+					AbysmBlocks.SMOOTH_FLOROPUMICE_SLAB,
+					AbysmBlocks.SMOOTH_FLOROPUMICE_STAIRS,
+					AbysmBlocks.SMOOTH_FLOROPUMICE_WALL,
+
+					AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS,
+					AbysmBlocks.SMOOTH_FLOROPUMICE_BRICK_SLAB,
+					AbysmBlocks.SMOOTH_FLOROPUMICE_BRICK_STAIRS,
+					AbysmBlocks.SMOOTH_FLOROPUMICE_BRICK_WALL,
+
+					AbysmBlocks.FLOROPUMICE_TILES,
+					AbysmBlocks.FLOROPUMICE_TILE_SLAB,
+					AbysmBlocks.FLOROPUMICE_TILE_STAIRS,
+					AbysmBlocks.FLOROPUMICE_TILE_WALL,
+
+					AbysmBlocks.CUT_SMOOTH_FLOROPUMICE,
+					AbysmBlocks.CUT_SMOOTH_FLOROPUMICE_SLAB,
+					AbysmBlocks.CUT_SMOOTH_FLOROPUMICE_STAIRS,
+
+					AbysmBlocks.FLOROPUMICE_BRICKS,
+					AbysmBlocks.FLOROPUMICE_BRICK_SLAB,
+					AbysmBlocks.FLOROPUMICE_BRICK_STAIRS,
+					AbysmBlocks.FLOROPUMICE_BRICK_WALL,
+
+					AbysmBlocks.CHISLED_FLOROPUMICE
+				);
 			// endregion
 		}
 
@@ -443,6 +482,18 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE)
 				.add(
 					AbysmItems.HARPOON
+				);
+
+			getOrCreateTagBuilder(ItemTags.FISHES)
+				.add(
+					AbysmItems.SMALL_FLORAL_FISH,
+					AbysmItems.BIG_FLORAL_FISH
+				);
+
+			getOrCreateTagBuilder(ItemTags.WOLF_FOOD)
+				.add(
+					AbysmItems.SMALL_FLORAL_FISH,
+					AbysmItems.BIG_FLORAL_FISH
 				);
 			// endregion
 

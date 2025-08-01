@@ -39,7 +39,6 @@ public final class FloralReefBiome extends AbysmBiome {
 
 	@Override
 	public BiomeEffects.Builder createEffects() {
-		// TODO: Temporary colors
 		return new BiomeEffects.Builder()
 			.waterColor(0x0093C4)
 			.waterFogColor(0x08304C)

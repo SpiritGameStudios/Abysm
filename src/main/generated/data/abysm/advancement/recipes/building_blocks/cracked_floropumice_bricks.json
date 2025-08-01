@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_floropumice_bricks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "abysm:floropumice_bricks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "abysm:cracked_floropumice_bricks"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_floropumice_bricks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "abysm:cracked_floropumice_bricks"
+    ]
+  }
+}

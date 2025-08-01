@@ -26,6 +26,7 @@ import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.SwimNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.mob.WaterCreatureEntity;
@@ -157,6 +158,16 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	@Override
 	protected @Nullable SoundEvent getAmbientSound() {
 		return AbysmSoundEvents.ENTITY_BLOOMRAY_AMBIENT;
+	}
+
+	@Override
+	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
+		return AbysmSoundEvents.ENTITY_BLOOMRAY_HURT;
+	}
+
+	@Override
+	protected @Nullable SoundEvent getDeathSound() {
+		return AbysmSoundEvents.ENTITY_BLOOMRAY_DEATH;
 	}
 
 	@Override

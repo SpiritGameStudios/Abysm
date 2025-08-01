@@ -66,10 +66,7 @@ dependencies {
 
 tasks.processResources {
 	val map = mapOf(
-		"mod_id" to mod.id,
-		"mod_version" to mod.version,
-		"fabric_loader_version" to libs.versions.fabric.loader.get(),
-		"minecraft_version" to libs.versions.minecraft.get()
+		"mod_version" to mod.version
 	)
 
 	inputs.properties(map)

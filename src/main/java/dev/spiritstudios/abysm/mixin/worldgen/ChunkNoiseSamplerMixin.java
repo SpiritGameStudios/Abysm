@@ -32,7 +32,7 @@ public abstract class ChunkNoiseSamplerMixin implements ChunkNoiseSamplerDuckInt
 	@Shadow
 	protected abstract DensityFunction getActualDensityFunction(DensityFunction function);
 
-	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
+	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0))
 	private void addBlockStateSampler(
 		int horizontalCellCount,
 		NoiseConfig noiseConfig,

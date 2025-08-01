@@ -2,13 +2,18 @@ package dev.spiritstudios.abysm.item;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.component.AbysmFoodComponents;
 import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import net.minecraft.block.Block;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.EntityBucketItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.item.equipment.ArmorMaterials;
@@ -17,6 +22,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Rarity;
 
 import java.util.function.Function;
@@ -58,6 +64,34 @@ public final class AbysmItems {
 		HarpoonItem::new,
 		new Item.Settings()
 			.maxCount(1).rarity(Rarity.RARE).attributeModifiers(HarpoonItem.createAttributes(2.2f, 2.2f))
+	);
+
+	public static final Item SMALL_FLORAL_FISH = register(
+		"small_floral_fish",
+		new Item.Settings().food(AbysmFoodComponents.SMALL_FLORAL_FISH)
+	);
+
+	public static final Item BIG_FLORAL_FISH = register(
+		"big_floral_fish",
+		new Item.Settings().food(AbysmFoodComponents.BIG_FLORAL_FISH)
+	);
+
+	public static final Item SMALL_FLORAL_FISH_BUCKET = register(
+		"small_floral_fish_bucket",
+		settings -> new EntityBucketItem(AbysmEntityTypes.SMALL_FLORAL_FISH, Fluids.WATER, SoundEvents.ITEM_BUCKET_EMPTY_FISH, settings),
+		new Item.Settings().maxCount(1).component(DataComponentTypes.BUCKET_ENTITY_DATA, NbtComponent.DEFAULT)
+	);
+
+	public static final Item BIG_FLORAL_FISH_BUCKET = register(
+		"big_floral_fish_bucket",
+		settings -> new EntityBucketItem(AbysmEntityTypes.BIG_FLORAL_FISH, Fluids.WATER, SoundEvents.ITEM_BUCKET_EMPTY_FISH, settings),
+		new Item.Settings().maxCount(1).component(DataComponentTypes.BUCKET_ENTITY_DATA, NbtComponent.DEFAULT)
+	);
+
+	public static final Item PADDLEFISH_BUCKET = register(
+		"paddlefish_bucket",
+		settings -> new EntityBucketItem(AbysmEntityTypes.PADDLEFISH, Fluids.WATER, SoundEvents.ITEM_BUCKET_EMPTY_FISH, settings),
+		new Item.Settings().maxCount(1).component(DataComponentTypes.BUCKET_ENTITY_DATA, NbtComponent.DEFAULT)
 	);
 
 	public static final Item SMALL_FLORAL_FISH_SPAWN_EGG = register(

@@ -11,18 +11,20 @@ import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
+import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LocalDifficulty;
@@ -106,12 +108,22 @@ public class BigFloralFishEntity extends AbstractFloralFishEntity implements Eco
 	}
 
 	@Override
+	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
+		return AbysmSoundEvents.ENTITY_BIG_FLORAL_FISH_HURT;
+	}
+
+	@Override
+	protected @Nullable SoundEvent getDeathSound() {
+		return AbysmSoundEvents.ENTITY_BIG_FLORAL_FISH_DEATH;
+	}
+
+	@Override
 	protected SoundEvent getFlopSound() {
-		return SoundEvents.ENTITY_TROPICAL_FISH_FLOP;
+		return AbysmSoundEvents.ENTITY_BIG_FLORAL_FISH_FLOP;
 	}
 
 	@Override
 	public ItemStack getBucketItem() {
-		return null; // FIXME
+		return new ItemStack(AbysmItems.BIG_FLORAL_FISH_BUCKET);
 	}
 }
