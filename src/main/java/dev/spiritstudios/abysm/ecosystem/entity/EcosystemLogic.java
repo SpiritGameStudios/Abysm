@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.ecosystem.entity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 // The actual implementations for handling & signaling most Entity-related Ecosystem code & calls,
 // such as finding food, repopulating, or signaling the Entity's goals/brain to avoid or actively flee from a predator
@@ -12,13 +13,27 @@ public class EcosystemLogic {
 	public final World world;
 	public final EcologicalEntityChunkTracker chunkTracker;
 
+	// Remove for not helpful anymore because it's been split up?
 	public boolean isHungry = false;
-	public boolean shouldRepopulate = false;
 	public boolean isFleeing = false;
 
-	// Ticks until breeding - 1 minute by default
-//	public int breedCooldownTicks = 1200;
-	public int breedCooldownTicks = 80; // testing purposes
+	public boolean canHunt = false;
+	public boolean canScavenge = false;
+	public boolean canRepopulate = false;
+
+	public boolean isHunting = false;
+	public boolean isBeingHunted = false;
+	public boolean isFavoredInHunt = false;
+	@Nullable
+	public MobEntity huntTargetEntity = null;
+	@Nullable
+	public MobEntity hunterEntity = null;
+
+	public boolean isRepopulating = false;
+	@Nullable
+	public MobEntity breedMate = null;
+	// Ticks until breeding - 20 seconds by default, but should probably be determined by EcosystemType later
+	public int breedCooldownTicks = 400;
 	public int breedTicks = 0;
 
 	public EcosystemLogic(MobEntity entity, EcosystemType<?> type) {
@@ -26,6 +41,7 @@ public class EcosystemLogic {
 		this.type = type;
 		this.world = entity.getWorld();
 		this.chunkTracker = new EcologicalEntityChunkTracker(this);
+		this.breedCooldownTicks = 80;
 	}
 
 	public void onSpawn() {
@@ -55,11 +71,11 @@ public class EcosystemLogic {
 	}
 
 	public boolean shouldRepopulate() {
-		return shouldRepopulate;
+		return canRepopulate;
 	}
 
-	public void setShouldRepopulate(boolean shouldRepopulate) {
-		this.shouldRepopulate = shouldRepopulate;
+	public void setCanRepopulate(boolean canRepopulate) {
+		this.canRepopulate = canRepopulate;
 	}
 
 	public boolean isFleeing() {
@@ -76,6 +92,34 @@ public class EcosystemLogic {
 
 	public void setBreedTicks(int breedTicks) {
 		this.breedTicks = breedTicks;
+	}
+
+	public boolean isCanHunt() {
+		return canHunt;
+	}
+
+	public void setCanHunt(boolean canHunt) {
+		this.canHunt = canHunt;
+	}
+
+	public boolean isCanScavenge() {
+		return canScavenge;
+	}
+
+	public void setCanScavenge(boolean canScavenge) {
+		this.canScavenge = canScavenge;
+	}
+
+	public boolean isCanRepopulate() {
+		return canRepopulate;
+	}
+
+	public @Nullable MobEntity getBreedMate() {
+		return breedMate;
+	}
+
+	public void setBreedMate(@Nullable MobEntity breedMate) {
+		this.breedMate = breedMate;
 	}
 
 	//endregion

@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.block.MapColor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -29,15 +30,20 @@ import org.spongepowered.include.com.google.common.collect.ImmutableBiMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-// Displays each EcosystemType from all nearby created EcosystemChunks.
-// {EntityType}: {NearbyPopulation} / {TargetPopulation} ({PopulationInChunk})
-
-// Green = nearby population meets target
-// Light red = nearby population doesn't meet target
-// Dark red = No nearby population (extinct)
-
-// Hold a spyglass in main hand to have text rendering stay a few blocks beneath sea level instead of following you
-// Hold a heart of the sea to see only the current and nearby chunks(changes depending on EcosystemType)
+/**
+ * Displays each EcosystemType form all nearby created {@link EcosystemChunk}. Format:<br><br>
+ * {EntityType}: {NearbyPopulation} / {TargetPopulation} ({PopulationInChunk})<br><br>
+ *
+ * The displayed colors are based on the {@link EcosystemChunk.PopStatus} of {@link EcosystemChunk#getPopStatus(EcosystemType)}<br>
+ * Dark Green = Overpopulated<br>
+ * Green = Maintained<br>
+ * Orange/yellow = Underpopulated<br>
+ * Light red = Near extinct<br>
+ * Dark red = Extinct<br><br>
+ *
+ * Hold a Spyglass to have text rendering stay a few blocks beneath sea level instead of following your y level.<br>
+ * Hold a Heart of The Sea to see only the chunks of the EcosystemType's search radius, as your current chunk in the center.
+ */
 public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 	private static final int DARK_RED = 0x640000;
 
@@ -104,13 +110,18 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 				int chunkPopulation = popInfo.getEntityCount();
 				int nearbyPopulation = ecosystemChunk.getNearbyEcosystemTypePopulation(ecosystemType);
 				int targetPopulation = ecosystemType.targetPopulation();
-				boolean okay = nearbyPopulation >= targetPopulation;
-				boolean extinctInArea = !okay && (nearbyPopulation <= 0);
+				EcosystemChunk.PopStatus status = EcosystemChunk.PopStatus.getStatusWithType(ecosystemType, nearbyPopulation);
 
 				// EntityName: NearbyPopulation/TargetPopulation (ChunkPopulation)
 				String stringedInfo = String.format("%s: %s/%s (%s)", typeName.getString(), nearbyPopulation, targetPopulation, chunkPopulation);
-				int color = okay ? Colors.GREEN :
-					extinctInArea ? DARK_RED : Colors.LIGHT_RED;
+				int color = MapColor.PINK.color; // oh my goodness map color is cursed but it works
+				switch (status) {
+					case EXTINCT -> color = DARK_RED;
+					case NEAR_EXTINCT -> color = Colors.LIGHT_RED;
+					case UNDERPOPULATED -> color = MapColor.TERRACOTTA_YELLOW.color;
+					case MAINTAINED -> color = Colors.GREEN;
+					case OVERPOPULATED -> color = MapColor.DARK_GREEN.color;
+				}
 				drawString(matrices, vertexConsumers, stringedInfo, chunkPos, initY, yOffset, color);
 
 				yOffset -= 1;

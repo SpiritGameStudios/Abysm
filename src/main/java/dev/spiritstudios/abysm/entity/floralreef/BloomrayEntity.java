@@ -9,6 +9,7 @@ import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
@@ -116,6 +117,7 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	@Override
 	protected void initGoals() {
 		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
 		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
 		this.goalSelector.add(4, new SwimAroundGoal(this, 1.0, 10));
 		this.goalSelector.add(4, new LookAroundGoal(this));

@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
+import org.jetbrains.annotations.Range;
 
 import java.util.Map;
 import java.util.Optional;
@@ -15,22 +16,32 @@ import java.util.Optional;
 // FIXME - there's an actual name for multiple entities per breed at once but I can't remember it for the life of me
 
 /**
- * @param entityType                  This mob's EntityType - used for sorting/finding/tracking
- * @param predators                   The predators of this mob
- * @param prey                        The prey of this mob
- * @param plants                      The plants of this mob
- * @param targetPopulation            The target population across the chunkSearchRadius amount of chunks
- * @param populationChunkSearchRadius The chunk search radius for any chunk to maintain the targetPopulation amount (1 = 3x3 chunks, 2 = 4x4, etc.) If the current population from the chunk area equals or exceeds the targetPopulation, the population is considered okay and can be hunted, otherwise it is considered not okay and needs repopulating
- * @param minEntitiesPerBreed         The minimum amount of babies that can spawn upon breeding
- * @param maxEntitiesPerBreed         The maximum amount of babies that can spawn upon breeding
+ * @param entityType                   This mob's EntityType - used for sorting/finding/tracking.
+ * @param predators                    The predators of this mob.
+ * @param prey                         The prey of this mob.
+ * @param plants                       The plants of this mob.
+ * @param targetPopulation             The target population across the chunkSearchRadius amount of chunks.
+ * @param overpopulationMark           If the population is over this number, it is considered "overpopulated" - being hunted becomes a priority, along with breeding being disallowed.
+ * @param nearExtinctMark              If the population is above 0 and below this number, it is considered "near extinct" - breeding becomes a priority, along with being hunted becoming disallowed.
+ * @param populationChunkSearchRadius  The chunk search radius for any chunk to maintain the targetPopulation amount (1 = 3x3 chunks, 2 = 4x4, etc.).
+ * @param minEntitiesPerBreed          The minimum amount of babies that can spawn upon breeding.
+ * @param maxEntitiesPerBreed          The maximum amount of babies that can spawn upon breeding.
+ * @param minHuntTicks                 The minimum amount of ticks this entity can hunt for before giving up, if it can hunt.
+ * @param maxHuntTicks                 The maximum amount of ticks this entity can hunt for before giving up, if it can hunt.
+ * @param huntFavorChance              The chance(0f-1f) of this entity being favored in a hunt - Only used if this entity is the hunter starting the hunt!
+ * @param favoredHuntSpeedMultiplier   The (swim) speed multiplier of this entity if it is favored in a hunt.
+ * @param unfavoredHuntSpeedMultiplier The (swim) speed multiplier of this entity if it is unfavored in a hunt.
  */
 public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 	EntityType<T> entityType,
 	ImmutableSet<EntityType<? extends MobEntity>> predators,
 	ImmutableSet<EntityType<? extends MobEntity>> prey,
 	ImmutableSet<Block> plants,
-	int targetPopulation, int populationChunkSearchRadius,
-	int minEntitiesPerBreed, int maxEntitiesPerBreed
+	int targetPopulation, int overpopulationMark, int nearExtinctMark,
+	int populationChunkSearchRadius,
+	int minEntitiesPerBreed, int maxEntitiesPerBreed,
+	int minHuntTicks, int maxHuntTicks, float huntFavorChance,
+	float favoredHuntSpeedMultiplier, float unfavoredHuntSpeedMultiplier
 ) {
 	private static Map<EntityType<? extends MobEntity>, EcosystemType<? extends MobEntity>> ENTITY_TYPE_MAP;
 
@@ -42,9 +53,17 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 		private ImmutableSet<Block> plants = ImmutableSet.of();
 
 		private int targetPopulation = 7;
+		private int overPopulationMark = 12;
+		private int nearExtinctMark = 2;
 		private int populationChunkSearchRadius = 2;
 		private int minEntitiesPerBreed = 1;
 		private int maxEntitiesPerBreed = 1;
+
+		private int minHuntTicks = 1200; // 60 seconds
+		private int maxHuntTicks = 1600; // 80 seconds
+		private float huntFavorChance = 0.5f;
+		private float favoredHuntSpeedMultiplier = 1.1f;
+		private float unfavoredHuntSpeedMultiplier = 0.9f;
 
 		private Builder(EntityType<T> entityType) {
 			this.entityType = entityType;
@@ -72,7 +91,23 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 		}
 
 		public Builder<T> setTargetPopulation(int targetPopulation) {
+			return this.setTargetPopulation(targetPopulation, (int) (targetPopulation * 1.5), 2);
+		}
+
+		public Builder<T> setTargetPopulation(int targetPopulation, int overPopulationMark, int nearExtinctMark) {
 			this.targetPopulation = targetPopulation;
+			this.overPopulationMark = overPopulationMark;
+			this.nearExtinctMark = nearExtinctMark;
+			return this;
+		}
+
+		public Builder<T> setOverpopulationMark(int overpopulationMark) {
+			this.overPopulationMark = overpopulationMark;
+			return this;
+		}
+
+		public Builder<T> setNearExtinctMark(int nearExtinctMark) {
+			this.nearExtinctMark = nearExtinctMark;
 			return this;
 		}
 
@@ -87,11 +122,41 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 			return this;
 		}
 
+		public Builder<T> setHuntTicks(int minHuntTicks, int maxHuntTicks) {
+			this.minHuntTicks = minHuntTicks;
+			this.maxHuntTicks = maxHuntTicks;
+			return this;
+		}
+
+		public Builder<T> setHuntFavorChance(@Range(from = 0, to = 1) float huntFavorChance) {
+			this.huntFavorChance = huntFavorChance;
+			return this;
+		}
+
+		public Builder<T> setHuntSpeedMultipliers(float favoredHuntSpeedMultiplier, float unfavoredHuntSpeedMultiplier) {
+			this.favoredHuntSpeedMultiplier = favoredHuntSpeedMultiplier;
+			this.unfavoredHuntSpeedMultiplier = unfavoredHuntSpeedMultiplier;
+			return this;
+		}
+
+		public Builder<T> setFavoredHuntSpeed(float favoredHuntSpeedMultiplier) {
+			this.favoredHuntSpeedMultiplier = favoredHuntSpeedMultiplier;
+			return this;
+		}
+
+		public Builder<T> setUnfavoredHuntSpeed(float unfavoredHuntSpeedMultiplier) {
+			this.unfavoredHuntSpeedMultiplier = unfavoredHuntSpeedMultiplier;
+			return this;
+		}
+
 		public EcosystemType<T> build() {
 			return new EcosystemType<>(
 				this.entityType, this.predators, this.prey, this.plants,
-				this.targetPopulation, this.populationChunkSearchRadius,
-				this.minEntitiesPerBreed, this.maxEntitiesPerBreed
+				this.targetPopulation, this.overPopulationMark, this.nearExtinctMark,
+				this.populationChunkSearchRadius,
+				this.minEntitiesPerBreed, this.maxEntitiesPerBreed,
+				this.minHuntTicks, this.maxHuntTicks, this.huntFavorChance,
+				this.favoredHuntSpeedMultiplier, this.unfavoredHuntSpeedMultiplier
 			);
 		}
 

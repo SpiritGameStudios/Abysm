@@ -19,11 +19,26 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Optional;
 
-// Contains methods for handling all entity-related logic that all Ecosystem-related classes may need to call(e.g. EcosystemChunk)
+/**
+ * Contains methods for handling all entity-related logic that any Ecosystem-related systems may need to call(e.g. {@link EcosystemChunk})<br><br>
+ *
+ * <b>YOU MUST MANUALLY CALL THE FOLLOWING:</b>
+ * <ul>
+ *     <li>{@link EcologicalEntity#tickEcosystemLogic()} every tick (e.g. {@link LivingEntity#tick()}).</li>
+ *     <li>{@link EcologicalEntity#alertEcosystemOfSpawn()} upon entity spawning (e.g. {@link MobEntity#initialize(ServerWorldAccess, LocalDifficulty, SpawnReason, EntityData)}).</li>
+ *     <li>{@link EcologicalEntity#alertEcosystemOfDeath()} upon entity removal(death or despawn) (e.g. {@link LivingEntity#onRemove(Entity.RemovalReason)}).</li>
+ * </ul><br>
+ *
+ * For the EcosystemLogic, have your own variable in your entity class and use {@link EcologicalEntity#createEcosystemLogic(MobEntity)} (e.g. in your entity class constructor) to set the variable once. Then return it in {@link EcologicalEntity#getEcosystemLogic()}.<br><br>
+ *
+ * {@link EcologicalEntity#createChildEntity(ServerWorld, MobEntity, BlockPos)} can be overridden for custom breeding results(e.g. giving the child one of the parent's entity patterns or variants).<br><br>
+ *
+ * Beyond that, this interface also contains various getters/setters used in Ecosystem-related systems, which can be manually overridden if desired. Most of them will be towards the bottom of the interface.
+ */
 @SuppressWarnings("UnstableApiUsage")
 public interface EcologicalEntity {
 
@@ -65,15 +80,11 @@ public interface EcologicalEntity {
 	}
 
 	/**
-	 * Alert this Entity's {@link EcosystemLogic} that it has just been killed or despawned, used for removing itself form {@link dev.spiritstudios.abysm.ecosystem.chunk.EcosystemChunk}s.<br><br>
+	 * Alert this Entity's {@link EcosystemLogic} that it has just been killed or despawned(removed), used for removing itself form {@link dev.spiritstudios.abysm.ecosystem.chunk.EcosystemChunk}s.<br><br>
 	 * Intended to be called in {@link LivingEntity#onRemove(Entity.RemovalReason)} to account for death & despawning.
 	 */
 	default void alertEcosystemOfDeath() {
 		this.getEcosystemLogic().onDeath();
-	}
-
-	default boolean canBreed() {
-		return this.getEcosystemLogic().canBreed();
 	}
 
 	/**
@@ -96,10 +107,10 @@ public interface EcologicalEntity {
 		}
 		this.setBreedTicks(0);
 		this.setShouldRepopulate(false);
+		// TODO - custom packet for this.
+		//  Entity status doesn't work unless every single non-PassiveEntity ecological entity manually implements it
 		world.spawnParticles(ParticleTypes.HEART, self.getX(), self.getY(), self.getZ(), 7, 0.5, 0.5, 0.5, 1);
-//		world.sendEntityStatus(self, EntityStatuses.ADD_BREEDING_PARTICLES);
 	}
-
 
 	/**
 	 * Creates and spawns a child entity into the world.
@@ -134,38 +145,6 @@ public interface EcologicalEntity {
 		child.refreshPositionAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0f, 0f);
 		child.initialize(world, world.getLocalDifficulty(spawnPos), SpawnReason.BREEDING, null);
 		return child;
-	}
-
-	default int getBreedTicks() {
-		return this.getEcosystemLogic().getBreedTicks();
-	}
-
-	default void setBreedTicks(int breedTicks) {
-		this.getEcosystemLogic().setBreedTicks(breedTicks);
-	}
-
-	default boolean isHungry() {
-		return this.getEcosystemLogic().isHungry();
-	}
-
-	default void setHungry(boolean hungry) {
-		this.getEcosystemLogic().setHungry(hungry);
-	}
-
-	default boolean isFleeing() {
-		return this.getEcosystemLogic().isFleeing();
-	}
-
-	default void setFleeing(boolean fleeing) {
-		this.getEcosystemLogic().setFleeing(fleeing);
-	}
-
-	default boolean shouldRepopulate() {
-		return this.getEcosystemLogic().shouldRepopulate();
-	}
-
-	default void setShouldRepopulate(boolean shouldRepopulate) {
-		this.getEcosystemLogic().setShouldRepopulate(shouldRepopulate);
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -212,27 +191,50 @@ public interface EcologicalEntity {
 		return nearbyPopulation < ecosystemType.targetPopulation() * 1.2;
 	}
 
-	// Will probably commit crimes by casting self(this) to MobEntity for all of these
-	default List<? extends MobEntity> getNearbyPredators() {
-		return List.of();
+	// EcosystemLogic getters/setters
+
+	default boolean canBreed() {
+		return this.getEcosystemLogic().canBreed();
 	}
 
-	default List<? extends MobEntity> getNearbyPrey() {
-		return List.of();
+	default int getBreedTicks() {
+		return this.getEcosystemLogic().getBreedTicks();
 	}
 
-	default List<? extends MobEntity> getNearbySameType() {
-		return List.of();
+	default void setBreedTicks(int breedTicks) {
+		this.getEcosystemLogic().setBreedTicks(breedTicks);
 	}
 
-	private List<? extends MobEntity> getNearbyEntityType(EntityType<?> type, int searchRadius) {
-		World world = ((MobEntity) this).getWorld();
-
-		return List.of();
+	default boolean isHungry() {
+		return this.getEcosystemLogic().isHungry();
 	}
 
-	default List<BlockPos> getNearbyPlants() {
-		return List.of();
+	default void setHungry(boolean hungry) {
+		this.getEcosystemLogic().setHungry(hungry);
+	}
+
+	default boolean isFleeing() {
+		return this.getEcosystemLogic().isFleeing();
+	}
+
+	default void setFleeing(boolean fleeing) {
+		this.getEcosystemLogic().setFleeing(fleeing);
+	}
+
+	default boolean shouldRepopulate() {
+		return this.getEcosystemLogic().shouldRepopulate();
+	}
+
+	default void setShouldRepopulate(boolean shouldRepopulate) {
+		this.getEcosystemLogic().setCanRepopulate(shouldRepopulate);
+	}
+
+	default @Nullable MobEntity getBreedMate() {
+		return this.getEcosystemLogic().getBreedMate();
+	}
+
+	default void setBreedMate(@Nullable MobEntity breedMate) {
+		this.getEcosystemLogic().setBreedMate(breedMate);
 	}
 
 }

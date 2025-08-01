@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.TypeFilter;
 import net.minecraft.util.math.Box;
@@ -22,7 +23,7 @@ public class RepopulateGoal extends Goal {
 	protected TargetPredicate targetPredicate;
 
 	public RepopulateGoal(MobEntity mob, double speed) {
-		this(mob, speed, null);
+		this(mob, speed, (target, world1) -> target instanceof EcologicalEntity ecologicalTarget && ecologicalTarget.canBreed());
 	}
 
 	public RepopulateGoal(
@@ -48,7 +49,7 @@ public class RepopulateGoal extends Goal {
 	@Override
 	public boolean canStart() {
 		EcologicalEntity ecologicalEntity = (EcologicalEntity) this.mob;
-		if(!ecologicalEntity.shouldRepopulate()) return false;
+		if(!ecologicalEntity.shouldRepopulate() || !ecologicalEntity.canBreed()) return false;
 
 		this.findClosestMate();
 		return this.mate != null;
@@ -59,7 +60,11 @@ public class RepopulateGoal extends Goal {
 		this.mob.getLookControl().lookAt(this.mate, 10f, this.mob.getMaxLookPitchChange());
 		this.mob.getNavigation().startMovingTo(this.mate, this.speed);
 		this.timer++;
-		if(this.timer >= this.getTickCount(60) && this.mob.squaredDistanceTo(this.mate) < 9) {
+		if(this.mob.age % 5 == 0) {
+			this.world.spawnParticles(ParticleTypes.HEART, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ(), 1, 0, 0, 0, 0);
+		}
+//		if(this.timer >= this.getTickCount(60) && this.mob.squaredDistanceTo(this.mate) < 9) {
+		if(this.mob.squaredDistanceTo(this.mate) < 9) {
 			this.breed();
 		}
 	}
