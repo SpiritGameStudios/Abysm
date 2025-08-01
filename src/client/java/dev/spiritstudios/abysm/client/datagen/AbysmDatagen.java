@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.client.datagen;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.datagen.AbysmBlockLootTableProvider;
 import dev.spiritstudios.abysm.datagen.AbysmBlockMetatagProvider;
+import dev.spiritstudios.abysm.datagen.AbysmEntityLootTableProvider;
 import dev.spiritstudios.abysm.datagen.AbysmFishingLootTableProvider;
 import dev.spiritstudios.abysm.datagen.AbysmItemMetatagProvider;
 import dev.spiritstudios.abysm.datagen.AbysmRecipeProvider;
@@ -70,6 +71,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		// loot tables
 		pack.addProvider(AbysmBlockLootTableProvider::new);
 		pack.addProvider(AbysmFishingLootTableProvider::new);
+		pack.addProvider(AbysmEntityLootTableProvider::new);
 
 		// misc
 		pack.addProvider(AbysmRecipeProvider::new);

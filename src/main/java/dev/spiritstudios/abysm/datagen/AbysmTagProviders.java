@@ -473,6 +473,18 @@ public class AbysmTagProviders {
 				.add(
 					AbysmItems.HARPOON
 				);
+
+			getOrCreateTagBuilder(ItemTags.FISHES)
+				.add(
+					AbysmItems.SMALL_FLORAL_FISH,
+					AbysmItems.BIG_FLORAL_FISH
+				);
+
+			getOrCreateTagBuilder(ItemTags.WOLF_FOOD)
+				.add(
+					AbysmItems.SMALL_FLORAL_FISH,
+					AbysmItems.BIG_FLORAL_FISH
+				);
 			// endregion
 
 			// region abysm item tags

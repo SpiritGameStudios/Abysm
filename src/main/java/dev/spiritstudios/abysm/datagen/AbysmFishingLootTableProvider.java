@@ -1,7 +1,8 @@
 package dev.spiritstudios.abysm.datagen;
 
-import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.loot.LootPool;
@@ -38,6 +39,16 @@ public class AbysmFishingLootTableProvider extends SimpleFabricLootTableProvider
 						.with(ItemEntry.builder(AbysmBlocks.ROSEBLOOM_PETALS).weight(15))
 						.with(ItemEntry.builder(AbysmBlocks.SUNBLOOM_PETALS).weight(15))
 						.with(ItemEntry.builder(AbysmBlocks.MALLOWBLOOM_PETALS).weight(15))
+				)
+		);
+
+		addLootTable(
+			AbysmLootTableModifications.FLORAL_REEF_FISH,
+			LootTable.builder()
+				.pool(
+					LootPool.builder()
+						.with(ItemEntry.builder(AbysmItems.SMALL_FLORAL_FISH).weight(60))
+						.with(ItemEntry.builder(AbysmItems.BIG_FLORAL_FISH).weight(25))
 				)
 		);
 	}

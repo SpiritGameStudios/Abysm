@@ -79,7 +79,7 @@ public interface EcologicalEntity {
 	/**
 	 * Main method called for breeding this entity with another.<br><br>
 	 *
-	 * This accounts for the {@link EcosystemType#minEntitiesPerBreed()} & {@link EcosystemType#maxEntitiesPerBreed()} numbers, spawning in a random amount of entities between those two numbers.
+	 * This accounts for the {@link EcosystemType#minLitterSize()} & {@link EcosystemType#maxLitterSize()} numbers, spawning in a random amount of entities between those two numbers.
 	 */
 	default void breed(ServerWorld world, MobEntity other) {
 		this.breed(world, other, false);
@@ -90,7 +90,7 @@ public interface EcologicalEntity {
 
 		EcosystemType<?> ecosystemType = this.getEcosystemType();
 		MobEntity self = (MobEntity) this;
-		int amount = self.getRandom().nextBetween(ecosystemType.minEntitiesPerBreed(), ecosystemType.maxEntitiesPerBreed());
+		int amount = self.getRandom().nextBetween(ecosystemType.minLitterSize(), ecosystemType.maxLitterSize());
 		for (int i = 0; i < amount; i++) {
 			spawnChildEntity(world, other);
 		}

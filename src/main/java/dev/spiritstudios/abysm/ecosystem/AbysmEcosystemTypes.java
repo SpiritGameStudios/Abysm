@@ -25,7 +25,7 @@ public class AbysmEcosystemTypes {
 			.setPredators(AbysmEntityTypes.BIG_FLORAL_FISH, AbysmEntityTypes.BLOOMRAY)
 			.setPlants(AbysmBlocks.PURPLE_SCABIOSA, AbysmBlocks.PINK_SCABIOSA, AbysmBlocks.RED_SCABIOSA)
 			.setTargetPopulation(10)
-			.setEntitiesPerBreed(1, 4)
+			.setLitterSize(1, 4)
 	);
 
 	public static final EcosystemType<BigFloralFishEntity> BIG_FLORAL_FISH = register(
@@ -34,7 +34,7 @@ public class AbysmEcosystemTypes {
 			.create(AbysmEntityTypes.BIG_FLORAL_FISH)
 			.setPredators(AbysmEntityTypes.BLOOMRAY)
 			.setTargetPopulation(7)
-			.setEntitiesPerBreed(1, 3)
+			.setLitterSize(1, 3)
 	);
 
 	public static final EcosystemType<PaddlefishEntity> PADDLEFISH = register(

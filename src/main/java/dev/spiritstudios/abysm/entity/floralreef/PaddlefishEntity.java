@@ -7,6 +7,7 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.ai.goal.SwimAroundBoidGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -116,6 +117,6 @@ public class PaddlefishEntity extends FishEntity implements EcologicalEntity, Ge
 
 	@Override
 	public ItemStack getBucketItem() {
-		return null; // FIXME
+		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 }

@@ -31,7 +31,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-// TODO - Dropped fish item & bucket item
 public abstract class AbstractFloralFishEntity extends FishEntity implements GeoEntity, Patternable {
 	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 

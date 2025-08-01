@@ -10,6 +10,7 @@ import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -122,6 +123,6 @@ public class BigFloralFishEntity extends AbstractFloralFishEntity implements Eco
 
 	@Override
 	public ItemStack getBucketItem() {
-		return null; // FIXME
+		return new ItemStack(AbysmItems.BIG_FLORAL_FISH_BUCKET);
 	}
 }
