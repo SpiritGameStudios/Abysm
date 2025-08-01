@@ -2,11 +2,14 @@ package dev.spiritstudios.abysm.worldgen.structure.ruins;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
+import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.block.entity.DensityBlobBlockEntity;
 import dev.spiritstudios.abysm.mixin.worldgen.SinglePoolElementAccessor;
 import dev.spiritstudios.abysm.mixin.worldgen.StructureAccessor;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructures;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.structure.PoolStructurePiece;
@@ -29,6 +32,7 @@ import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +74,10 @@ public class DeepSeaRuinsStructure extends Structure {
 		// collect density blob infos and convert into structure pieces
 		List<StructureTemplate.StructureBlockInfo> blobInfos = getBlobInfos(structurePiecesCollector.toList().pieces(), context.structureTemplateManager());
 		for (StructureTemplate.StructureBlockInfo info : blobInfos) {
-			structurePiecesCollector.addPiece(makePieceFromBlobInfo(info, random, info.pos()));
+			StructurePiece piece = makePieceFromBlobInfo(info, random, info.pos());
+			if (piece != null) {
+				structurePiecesCollector.addPiece(piece);
+			}
 		}
 
 		// remove any cutoff structure pieces entirely
@@ -217,15 +224,16 @@ public class DeepSeaRuinsStructure extends Structure {
 		ChunkRandom random = context.random();
 
 		for (int i = 0; i < 85; i++) {
-			int rad = random.nextBetween(10, 40);
-			int spread = 120 - rad;
-			DeepSeaRuinsGenerator.SphereCave room = new DeepSeaRuinsGenerator.SphereCave(
+			int radius = random.nextBetween(10, 40);
+			int spread = 120 - radius;
+			DeepSeaRuinsGenerator.DensitySpherePiece room = new DeepSeaRuinsGenerator.DensitySpherePiece(
+				Abysm.id("ruins_shell"),
 				0,
 				chunkPos.getOffsetX(random.nextBetween(7 - spread, 8 + spread)),
 				random.nextBetween(-14, 36),
 				chunkPos.getOffsetZ(random.nextBetween(7 - spread, 8 + spread)),
-				rad,
-				rad + random.nextBetween(4, 6)
+				radius,
+				radius + random.nextBetween(4, 6)
 			);
 			collector.addPiece(room);
 		}
@@ -268,16 +276,27 @@ public class DeepSeaRuinsStructure extends Structure {
 		}
 	}
 
+	@Nullable
 	protected StructurePiece makePieceFromBlobInfo(StructureTemplate.StructureBlockInfo info, Random random, BlockPos pos) {
-		int rad = random.nextBetween(18, 30);
-		return new DeepSeaRuinsGenerator.SphereCave(
-			0,
-			pos.getX(),
-			pos.getY(),
-			pos.getZ(),
-			rad,
-			rad + random.nextBetween(4, 6)
-		);
+		NbtCompound nbt = info.nbt();
+		if (nbt == null) {
+			return null;
+		} else {
+			String id = nbt.getString(DensityBlobBlockEntity.BLOBS_SAMPLER_IDENTIFIER, "");
+			// TODO better size control
+			boolean shell = id.equals("abysm:ruins_shell");
+			int radius = shell ? random.nextBetween(18, 30) : random.nextBetween(2, 3);
+			int outerRadius = radius + (shell ? random.nextBetween(4, 6) : random.nextBetween(2, 4));
+			return new DeepSeaRuinsGenerator.DensitySpherePiece(
+				id,
+				0,
+				pos.getX(),
+				pos.getY(),
+				pos.getZ(),
+				radius,
+				outerRadius
+			);
+		}
 	}
 
 	@Override

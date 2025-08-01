@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.worldgen;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.spiritstudios.abysm.duck.StructureWeightSamplerDuckInterface;
-import dev.spiritstudios.abysm.worldgen.densityfunction.ShellCaveSampler;
+import dev.spiritstudios.abysm.worldgen.densityfunction.DensityBlobsSamplerCollection;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.StructureWeightSampler;
@@ -17,22 +17,22 @@ public abstract class StructureWeightSamplerMixin implements DensityFunctionType
 
 	@Unique
 	@Nullable
-	private ShellCaveSampler shellCaveSampler;
+	private DensityBlobsSamplerCollection samplerCollection;
 
 	@ModifyReturnValue(method = "createStructureWeightSampler", at = @At("RETURN"))
 	private static StructureWeightSampler adjustCreatedSampler(StructureWeightSampler original, StructureAccessor world, ChunkPos pos) {
-		ShellCaveSampler caveSampler = ShellCaveSampler.create(world, pos);
+		DensityBlobsSamplerCollection samplerCollection = DensityBlobsSamplerCollection.create(world, pos);
 
-		// if sdf objects isn't empty, store it
-		if (!caveSampler.isEmpty()) {
-			((StructureWeightSamplerMixin) (Object) original).shellCaveSampler = caveSampler;
+		// if collection contains any samplers, store it
+		if (!samplerCollection.isEmpty()) {
+			((StructureWeightSamplerMixin) (Object) original).samplerCollection = samplerCollection;
 		}
 
 		return original;
 	}
 
 	@Override
-	public @Nullable ShellCaveSampler abysm$getShellCaveSampler() {
-		return this.shellCaveSampler;
+	public @Nullable DensityBlobsSamplerCollection abysm$getSamplerCollection() {
+		return this.samplerCollection;
 	}
 }

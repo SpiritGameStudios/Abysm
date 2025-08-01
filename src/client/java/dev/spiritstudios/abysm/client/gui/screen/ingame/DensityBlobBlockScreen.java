@@ -17,9 +17,11 @@ import java.util.Objects;
 
 public class DensityBlobBlockScreen extends Screen {
 	private static final Text FINAL_STATE_TEXT = Text.translatable("jigsaw_block.final_state");
+	private static final Text BLOB_SAMPLER_IDENTIFIER_TEXT = Text.translatable("abysm.density_blob_block.blob_sampler_identifier");
 
 	private final DensityBlobBlockEntity densityBlob;
 	private TextFieldWidget finalStateField;
+	private TextFieldWidget blobSamplerIdentifierField;
 	private ButtonWidget doneButton;
 
 	public DensityBlobBlockScreen(DensityBlobBlockEntity densityBlob) {
@@ -41,7 +43,8 @@ public class DensityBlobBlockScreen extends Screen {
 	private void updateServer() {
 		ClientPlayNetworking.send(new UpdateDensityBlobBlockC2SPayload(
 			this.densityBlob.getPos(),
-			this.finalStateField.getText()
+			this.finalStateField.getText(),
+			this.blobSamplerIdentifierField.getText()
 		));
 	}
 
@@ -56,6 +59,11 @@ public class DensityBlobBlockScreen extends Screen {
 		this.finalStateField.setMaxLength(256);
 		this.finalStateField.setText(this.densityBlob.getFinalState());
 		this.addSelectableChild(this.finalStateField);
+
+		this.blobSamplerIdentifierField = new TextFieldWidget(this.textRenderer, this.width / 2 - 153, 160, 300, 20, BLOB_SAMPLER_IDENTIFIER_TEXT);
+		this.blobSamplerIdentifierField.setMaxLength(256);
+		this.blobSamplerIdentifierField.setText(this.densityBlob.getBlobsSamplerIdentifier());
+		this.addSelectableChild(this.blobSamplerIdentifierField);
 
 		this.doneButton = this.addDrawableChild(
 			ButtonWidget.builder(ScreenTexts.DONE, button -> this.onDone()).dimensions(this.width / 2 - 4 - 150, 210, 150, 20).build()
@@ -84,8 +92,10 @@ public class DensityBlobBlockScreen extends Screen {
 	@Override
 	public void resize(MinecraftClient client, int width, int height) {
 		String finalState = this.finalStateField.getText();
+		String blobSamplerIdentifier = this.blobSamplerIdentifierField.getText();
 		this.init(client, width, height);
 		this.finalStateField.setText(finalState);
+		this.blobSamplerIdentifierField.setText(blobSamplerIdentifier);
 	}
 
 	@Override
@@ -106,5 +116,8 @@ public class DensityBlobBlockScreen extends Screen {
 
 		context.drawTextWithShadow(this.textRenderer, FINAL_STATE_TEXT, this.width / 2 - 153, 115, 10526880);
 		this.finalStateField.render(context, mouseX, mouseY, deltaTicks);
+
+		context.drawTextWithShadow(this.textRenderer, BLOB_SAMPLER_IDENTIFIER_TEXT, this.width / 2 - 153, 150, 10526880);
+		this.blobSamplerIdentifierField.render(context, mouseX, mouseY, deltaTicks);
 	}
 }

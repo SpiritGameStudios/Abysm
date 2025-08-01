@@ -5,9 +5,15 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.spiritstudios.abysm.duck.ChunkNoiseSamplerDuckInterface;
 import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctionTypes;
-import dev.spiritstudios.abysm.worldgen.densityfunction.ShellCaveSampler;
+import dev.spiritstudios.abysm.worldgen.densityfunction.DensityBlobsSamplerCollection;
+import dev.spiritstudios.abysm.worldgen.densityfunction.ExtraBlockStateSamplers;
 import dev.spiritstudios.abysm.worldgen.noise.NoiseConfigAttachment;
-import net.minecraft.world.gen.chunk.*;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.gen.chunk.AquiferSampler;
+import net.minecraft.world.gen.chunk.Blender;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import net.minecraft.world.gen.chunk.ChunkNoiseSampler;
+import net.minecraft.world.gen.chunk.GenerationShapeConfig;
 import net.minecraft.world.gen.densityfunction.DensityFunction;
 import net.minecraft.world.gen.densityfunction.DensityFunctionTypes;
 import net.minecraft.world.gen.noise.NoiseConfig;
@@ -44,18 +50,25 @@ public abstract class ChunkNoiseSamplerMixin implements ChunkNoiseSamplerDuckInt
 		AquiferSampler.FluidLevelSampler fluidLevelSampler,
 		Blender blender,
 		CallbackInfo ci,
-		@Local(ordinal = 0) List<ChunkNoiseSampler.BlockStateSampler> stateSamplerList) {
-		ShellCaveSampler shellCaveSampler = ShellCaveSampler.get(beardifying);
-		// only add block state sampler if there are shell caves to be sampling
-		if (shellCaveSampler != null) {
-			NoiseConfigAttachment noiseConfigAttachment = NoiseConfigAttachment.get(noiseConfig);
-			// add a block state sampler to the start of the list
-			stateSamplerList.add(ShellCaveSampler.createBlockStateSampler(noiseConfigAttachment, this::getActualDensityFunction, this.beardifying, chunkGeneratorSettings));
-		}
+		@Local(ordinal = 0) List<ChunkNoiseSampler.BlockStateSampler> stateSamplerList
+	) {
+		ExtraBlockStateSamplers.addSamplersToStart(
+			stateSamplerList,
+			this::getActualDensityFunction,
+			horizontalCellCount,
+			noiseConfig,
+			startBlockX,
+			startBlockZ,
+			generationShapeConfig,
+			beardifying,
+			chunkGeneratorSettings,
+			fluidLevelSampler,
+			blender
+		);
 	}
 
 	@WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/gen/densityfunction/DensityFunctionTypes;add(Lnet/minecraft/world/gen/densityfunction/DensityFunction;Lnet/minecraft/world/gen/densityfunction/DensityFunction;)Lnet/minecraft/world/gen/densityfunction/DensityFunction;", ordinal = 0))
-	private DensityFunction addShellCaveBeardifying(
+	private DensityFunction addBeardifierAddition(
 		DensityFunction a,
 		DensityFunction b,
 		Operation<DensityFunction> original,
@@ -81,18 +94,23 @@ public abstract class ChunkNoiseSamplerMixin implements ChunkNoiseSamplerDuckInt
 	}
 
 	@Inject(method = "getActualDensityFunctionImpl", at = @At("HEAD"), cancellable = true)
-	private void getShellCaveFunction(DensityFunction function, CallbackInfoReturnable<DensityFunction> cir) {
+	private void getDensityBlobsSamplerFunction(DensityFunction function, CallbackInfoReturnable<DensityFunction> cir) {
 		// replace the dummy shell cave function with its actual implementation
-		if (function == AbysmDensityFunctionTypes.ShellCaveDummy.INSTANCE) {
-			ShellCaveSampler sampler = ShellCaveSampler.get(this.beardifying);
+		if (function instanceof AbysmDensityFunctionTypes.DummyDensityBlobsSampler dummy) {
+			Identifier identifier = dummy.getIdentifier();
+			DensityBlobsSamplerCollection sampler = DensityBlobsSamplerCollection.get(this.beardifying);
 			if (sampler != null) {
-				cir.setReturnValue(sampler);
+				DensityFunction samplerFunction = sampler.getDensityFunction(identifier);
+				if (samplerFunction != null) {
+					cir.setReturnValue(samplerFunction);
+				}
 			}
 		}
 	}
 
 	@Override
 	public @Nullable DensityFunction abysm$getShellCaveFunction(NoiseConfig noiseConfig) {
+		// get the abysm:ruins_shell_cave function, used to change biome and block carvers
 		NoiseConfigAttachment noiseConfigAttachment = NoiseConfigAttachment.get(noiseConfig);
 		DensityFunction densityFunction = noiseConfigAttachment.getRuinsShellCave();
 		if (densityFunction == null) {

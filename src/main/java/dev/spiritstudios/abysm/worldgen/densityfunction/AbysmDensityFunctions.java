@@ -16,6 +16,7 @@ public class AbysmDensityFunctions {
 	public static final RegistryKey<DensityFunction> RUINS_PILLAR_NOISE = keyOf("ruins_pillar_noise");
 	public static final RegistryKey<DensityFunction> RUINS_SHELL_CAVE = keyOf("ruins_shell_cave");
 	public static final RegistryKey<DensityFunction> RUINS_SHELL_CAVE_WITH_PILLARS = keyOf("ruins_shell_cave_with_pillars");
+	public static final RegistryKey<DensityFunction> RUINS_SEDIMENT = keyOf("ruins_sediment");
 	public static final RegistryKey<DensityFunction> BEARDIFIER_ADDITION = keyOf("beardifier_addition");
 
 	public static void bootstrap(Registerable<DensityFunction> registerable) {
@@ -51,7 +52,7 @@ public class AbysmDensityFunctions {
 			RUINS_SHELL_CAVE,
 			DensityFunctionTypes.cacheOnce(
 				DensityFunctionTypes.mul(
-					AbysmDensityFunctionTypes.ShellCaveDummy.INSTANCE,
+					new AbysmDensityFunctionTypes.DummyDensityBlobsSampler(Abysm.id("ruins_shell")),
 					DensityFunctionTypes.add(
 						DensityFunctionTypes.constant(1.0),
 						DensityFunctionTypes.mul(
@@ -103,6 +104,17 @@ public class AbysmDensityFunctions {
 					)
 				)
 			).square().square()
+		);
+
+		registerable.register(
+			RUINS_SEDIMENT,
+			DensityFunctionTypes.add(
+				DensityFunctionTypes.add(
+					entryHolder(lookup, RUINS_SEDIMENT_NOISE),
+					DensityFunctionTypes.constant(-0.18)
+				),
+				new AbysmDensityFunctionTypes.DummyDensityBlobsSampler(Abysm.id("ruins_sediment"))
+			)
 		);
 	}
 

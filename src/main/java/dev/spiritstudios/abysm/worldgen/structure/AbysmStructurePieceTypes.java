@@ -11,7 +11,7 @@ import java.util.Locale;
 
 public class AbysmStructurePieceTypes {
 	// note: vanilla tends to keep the ids on these short, so that is followed here
-	public static final StructurePieceType DEEP_SEA_RUINS_HOLLOW = register(DeepSeaRuinsGenerator.SphereCave::new, "DSRSphCave");
+	public static final StructurePieceType DEEP_SEA_RUINS_HOLLOW = register(DeepSeaRuinsGenerator.DensitySpherePiece::new, "DSRSphCave");
 
 	private static StructurePieceType register(StructurePieceType type, String id) {
 		// convert to lowercase because vanilla does it, presumably to save characters by removing underscores

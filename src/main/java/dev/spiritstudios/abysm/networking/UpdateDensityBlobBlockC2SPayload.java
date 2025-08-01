@@ -12,17 +12,19 @@ import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public record UpdateDensityBlobBlockC2SPayload(BlockPos pos, String finalState) implements CustomPayload {
+public record UpdateDensityBlobBlockC2SPayload(BlockPos pos, String finalState,
+											   String blobsSamplerIdentifier) implements CustomPayload {
 	public static final PacketCodec<PacketByteBuf, UpdateDensityBlobBlockC2SPayload> PACKET_CODEC = CustomPayload.codecOf(UpdateDensityBlobBlockC2SPayload::write, UpdateDensityBlobBlockC2SPayload::new);
 	public static final Id<UpdateDensityBlobBlockC2SPayload> ID = new Id<>(Abysm.id("update_density_blob_block_c2s"));
 
 	private UpdateDensityBlobBlockC2SPayload(PacketByteBuf buf) {
-		this(buf.readBlockPos(), buf.readString());
+		this(buf.readBlockPos(), buf.readString(), buf.readString());
 	}
 
 	private void write(PacketByteBuf buf) {
 		buf.writeBlockPos(this.pos);
 		buf.writeString(this.finalState);
+		buf.writeString(this.blobsSamplerIdentifier);
 	}
 
 	@Override
@@ -45,6 +47,7 @@ public record UpdateDensityBlobBlockC2SPayload(BlockPos pos, String finalState) 
 				BlockState blockState = world.getBlockState(blockPos);
 				if (world.getBlockEntity(blockPos) instanceof DensityBlobBlockEntity blockEntity) {
 					blockEntity.setFinalState(payload.finalState);
+					blockEntity.setBlobsSamplerIdentifier(payload.blobsSamplerIdentifier);
 					blockEntity.markDirty();
 					world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
 				}

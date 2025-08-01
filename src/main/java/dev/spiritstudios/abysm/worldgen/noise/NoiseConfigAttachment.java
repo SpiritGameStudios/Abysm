@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class NoiseConfigAttachment {
-	private @Nullable DensityFunction ruinsSedimentNoise = null;
+	private @Nullable DensityFunction ruinsSediment = null;
 	private @Nullable DensityFunction ruinsShellCave = null;
 	private @Nullable DensityFunction ruinsShellCaveWithPillars = null;
 	private @Nullable DensityFunction beardifierAddition = null;
@@ -23,7 +23,7 @@ public class NoiseConfigAttachment {
 	public void attachBonusFunctions(ServerWorld world, SamplerFunction samplerFunction) {
 		Registry<DensityFunction> dfRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.DENSITY_FUNCTION);
 
-		this.ruinsSedimentNoise = getDensityFunction(AbysmDensityFunctions.RUINS_SEDIMENT_NOISE, dfRegistry, samplerFunction);
+		this.ruinsSediment = getDensityFunction(AbysmDensityFunctions.RUINS_SEDIMENT, dfRegistry, samplerFunction);
 		this.ruinsShellCave = getDensityFunction(AbysmDensityFunctions.RUINS_SHELL_CAVE, dfRegistry, samplerFunction);
 		this.ruinsShellCaveWithPillars = getDensityFunction(AbysmDensityFunctions.RUINS_SHELL_CAVE_WITH_PILLARS, dfRegistry, samplerFunction);
 		this.beardifierAddition = getDensityFunction(AbysmDensityFunctions.BEARDIFIER_ADDITION, dfRegistry, samplerFunction);
@@ -53,8 +53,8 @@ public class NoiseConfigAttachment {
 		return appliedFunction.orElse(null);
 	}
 
-	public @Nullable DensityFunction getRuinsSedimentNoise() {
-		return ruinsSedimentNoise;
+	public @Nullable DensityFunction getRuinsSediment() {
+		return ruinsSediment;
 	}
 
 	public @Nullable DensityFunction getRuinsShellCave() {
@@ -72,7 +72,7 @@ public class NoiseConfigAttachment {
 	public NoiseConfigAttachment apply(DensityFunction.DensityFunctionVisitor visitor) {
 		NoiseConfigAttachment newNCA = new NoiseConfigAttachment();
 
-		newNCA.ruinsSedimentNoise = apply(visitor, this.ruinsSedimentNoise);
+		newNCA.ruinsSediment = apply(visitor, this.ruinsSediment);
 		newNCA.ruinsShellCave = apply(visitor, this.ruinsShellCave);
 		newNCA.ruinsShellCaveWithPillars = apply(visitor, this.ruinsShellCaveWithPillars);
 		newNCA.beardifierAddition = apply(visitor, this.beardifierAddition);
