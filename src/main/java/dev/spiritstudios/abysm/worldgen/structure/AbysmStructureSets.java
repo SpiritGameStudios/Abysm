@@ -31,7 +31,8 @@ public class AbysmStructureSets {
 					Vec3i.ZERO,
 					StructurePlacement.FrequencyReductionMethod.DEFAULT,
 					1.0F,
-					55147411,
+					55147411, // chosen by fair dice roll
+								  // guaranteed to be random
 					structureSetLookup.getOptional(StructureSetKeys.OCEAN_MONUMENTS)
 						.map(monument -> new StructurePlacement.ExclusionZone(monument, 10)),
 					28,
