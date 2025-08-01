@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:block/cube_all",
-	"textures": {
-		"all": "abysm:block/cracked_cut_smooth_floropumice"
-	}
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "abysm:block/cracked_cut_smooth_floropumice"
+  }
 }

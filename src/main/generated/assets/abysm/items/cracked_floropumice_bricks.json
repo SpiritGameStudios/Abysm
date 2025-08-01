@@ -1,6 +1,6 @@
 {
-	"model": {
-		"type": "minecraft:model",
-		"model": "abysm:block/cracked_floropumice_bricks"
-	}
+  "model": {
+    "type": "minecraft:model",
+    "model": "abysm:block/cracked_floropumice_bricks"
+  }
 }

@@ -1,13 +1,65 @@
 {
   "processors": [
     {
-      "integrity": 0.75,
+      "integrity": 0.85,
       "processor_type": "minecraft:block_rot",
       "rottable_blocks": "#abysm:deep_sea_ruins_replacable"
     },
     {
       "processor_type": "minecraft:rule",
       "rules": [
+        {
+          "input_predicate": {
+            "block": "abysm:floropumice_bricks",
+            "predicate_type": "minecraft:random_block_match",
+            "probability": 0.25
+          },
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "output_state": {
+            "Name": "abysm:cracked_floropumice_bricks"
+          }
+        },
+        {
+          "input_predicate": {
+            "block": "abysm:floropumice_tiles",
+            "predicate_type": "minecraft:random_block_match",
+            "probability": 0.25
+          },
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "output_state": {
+            "Name": "abysm:cracked_floropumice_tiles"
+          }
+        },
+        {
+          "input_predicate": {
+            "block": "abysm:smooth_floropumice_bricks",
+            "predicate_type": "minecraft:random_block_match",
+            "probability": 0.25
+          },
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "output_state": {
+            "Name": "abysm:cracked_smooth_floropumice_bricks"
+          }
+        },
+        {
+          "input_predicate": {
+            "block": "abysm:cut_smooth_floropumice",
+            "predicate_type": "minecraft:random_block_match",
+            "probability": 0.25
+          },
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "output_state": {
+            "Name": "abysm:cracked_cut_smooth_floropumice"
+          }
+        },
         {
           "input_predicate": {
             "block": "minecraft:soul_lantern",

@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "abysm:block/cracked_smooth_floropumice_bricks"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "abysm:block/cracked_smooth_floropumice_bricks"
+    }
+  }
 }

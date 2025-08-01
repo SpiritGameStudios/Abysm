@@ -18,12 +18,12 @@ public class AbysmStructureSets {
 	public static RegistryKey<StructureSet> DEEP_SEA_RUINS = keyOf("deep_sea_ruins");
 
 	@SuppressWarnings("deprecation")
-	public static void bootstrap(Registerable<StructureSet> structureSetRegisterable) {
-		RegistryEntryLookup<Structure> structureLookup = structureSetRegisterable.getRegistryLookup(RegistryKeys.STRUCTURE);
-		RegistryEntryLookup<StructureSet> structureSetLookup = structureSetRegisterable.getRegistryLookup(RegistryKeys.STRUCTURE_SET);
-		RegistryEntryLookup<Biome> biomeLookup = structureSetRegisterable.getRegistryLookup(RegistryKeys.BIOME);
+	public static void bootstrap(Registerable<StructureSet> registry) {
+		RegistryEntryLookup<Structure> structureLookup = registry.getRegistryLookup(RegistryKeys.STRUCTURE);
+		RegistryEntryLookup<StructureSet> structureSetLookup = registry.getRegistryLookup(RegistryKeys.STRUCTURE_SET);
+		RegistryEntryLookup<Biome> biomeLookup = registry.getRegistryLookup(RegistryKeys.BIOME);
 
-		structureSetRegisterable.register(
+		registry.register(
 			DEEP_SEA_RUINS,
 			new StructureSet(
 				structureLookup.getOrThrow(AbysmStructures.DEEP_SEA_RUINS),
@@ -31,8 +31,8 @@ public class AbysmStructureSets {
 					Vec3i.ZERO,
 					StructurePlacement.FrequencyReductionMethod.DEFAULT,
 					1.0F,
-					55147411, // chosen by fair dice roll
-								  // guaranteed to be random
+					4, // chosen by fair dice roll
+						   // guaranteed to be random
 					structureSetLookup.getOptional(StructureSetKeys.OCEAN_MONUMENTS)
 						.map(monument -> new StructurePlacement.ExclusionZone(monument, 10)),
 					28,

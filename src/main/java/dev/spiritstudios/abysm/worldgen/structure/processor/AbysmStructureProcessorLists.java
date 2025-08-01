@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.worldgen.structure.processor;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -29,8 +30,12 @@ public class AbysmStructureProcessorLists {
 		registerable.register(
 			DEEP_SEA_RUINS_DEGRADATION,
 			of(
-				new BlockRotStructureProcessor(blockLookup.getOrThrow(AbysmBlockTags.DEEP_SEA_RUINS_REPLACEABLE), 0.75F),
+				new BlockRotStructureProcessor(blockLookup.getOrThrow(AbysmBlockTags.DEEP_SEA_RUINS_REPLACEABLE), 0.85F),
 				rules(
+					replace(AbysmBlocks.FLOROPUMICE_BRICKS, AbysmBlocks.CRACKED_FLOROPUMICE_BRICKS, 0.25F),
+					replace(AbysmBlocks.FLOROPUMICE_TILES, AbysmBlocks.CRACKED_FLOROPUMICE_TILES, 0.25F),
+					replace(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS, AbysmBlocks.CRACKED_SMOOTH_FLOROPUMICE_BRICKS, 0.25F),
+					replace(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE, AbysmBlocks.CRACKED_CUT_SMOOTH_FLOROPUMICE, 0.25F),
 					replace(Blocks.SOUL_LANTERN, Blocks.WATER, 0.25F)
 				),
 				new ProtectedBlocksStructureProcessor(BlockTags.FEATURES_CANNOT_REPLACE)
