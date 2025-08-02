@@ -97,7 +97,7 @@ public abstract class ChunkNoiseSamplerMixin implements ChunkNoiseSamplerDuckInt
 	private void getDensityBlobsSamplerFunction(DensityFunction function, CallbackInfoReturnable<DensityFunction> cir) {
 		// replace the dummy shell cave function with its actual implementation
 		if (function instanceof AbysmDensityFunctionTypes.DummyDensityBlobsSampler dummy) {
-			Identifier identifier = dummy.getIdentifier();
+			Identifier identifier = dummy.identifier();
 			DensityBlobsSamplerCollection sampler = DensityBlobsSamplerCollection.get(this.beardifying);
 			if (sampler != null) {
 				DensityFunction samplerFunction = sampler.getDensityFunction(identifier);

@@ -1,51 +1,58 @@
 package dev.spiritstudios.abysm.worldgen.densityfunction;
 
-public class DensitySphere implements DensityBlob {
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.util.dynamic.CodecHolder;
+import net.minecraft.util.math.Box;
 
-	private double x;
-	private double y;
-	private double z;
-	private final double radius;
-	private final double thickness;
+public record DensitySphere(double innerRadius, double outerRadius, double valueInsideShell) implements DensityBlob {
+	public static final MapCodec<DensitySphere> CODEC = RecordCodecBuilder.mapCodec(
+		instance -> instance.group(
+				Codec.DOUBLE.fieldOf("inner_radius").forGetter(DensitySphere::innerRadius),
+				Codec.DOUBLE.fieldOf("outer_radius").forGetter(DensitySphere::outerRadius),
+				Codec.DOUBLE.fieldOf("value_inside_shell").forGetter(DensitySphere::valueInsideShell)
+			)
+			.apply(instance, DensitySphere::new)
+	);
+	public static final CodecHolder<DensitySphere> CODEC_HOLDER = CodecHolder.of(CODEC);
 
-	public DensitySphere(double x, double y, double z, double radius, double outerRadius) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.radius = radius;
-		this.thickness = outerRadius - this.radius;
+	@Override
+	public MapCodec<? extends DensityBlob> getCodec() {
+		return CODEC;
 	}
 
-	public void translate(double x, double y, double z) {
-		this.x += x;
-		this.y += y;
-		this.z += z;
+	public static double getDistSqr(double x, double y, double z) {
+		// treat the sphere as being centered at (0, 0, 0)
+		return x * x + y * y + z * z;
 	}
 
-	public double sampleSdf(double bx, double by, double bz) {
-		double dx = bx - x;
-		double dy = by - y;
-		double dz = bz - z;
-		double distSqr = dx * dx + dy * dy + dz * dz;
-		return Math.sqrt(distSqr) - this.radius;
+	public static double getDistance(double x, double y, double z) {
+		return Math.sqrt(getDistSqr(x, y, z));
+	}
+
+	public double getNormalisedShellDepth(double distance) {
+		// returns 0.0 outside outerRadius, 1.0 inside innerRadius, and a linear value in (0.0,1.0) when between these values
+		if (distance > this.outerRadius) {
+			return 0.0;
+		} else if (distance <= this.innerRadius) {
+			return 1.0;
+		} else {
+			return (this.outerRadius - distance) / (this.outerRadius - this.innerRadius);
+		}
+	}
+
+	public double getDensity(double distance) {
+		return this.getNormalisedShellDepth(distance) * this.valueInsideShell;
 	}
 
 	@Override
 	public double sampleDensity(int x, int y, int z) {
-		// return 0 if outside outer radius, 1 if inside inner radius, and a smooth gradient between
-		double innerSd = this.sampleSdf(x, y, z);
-		if (innerSd <= 0.0) {
-			// return greater than 1.0 further within inner radius
-			return 1.0 - innerSd;
-		} else {
-			double outerSd = innerSd - this.thickness;
-			if (outerSd >= 0.0) {
-				// return 0.0 if outside outer radius
-				return 0.0;
-			} else {
-				// smoothly transition between 0.0 on outer radius and 1.0 on inner radius
-				return 1.0 - (innerSd / this.thickness);
-			}
-		}
+		return getDensity(getDistance(x, y, z));
+	}
+
+	@Override
+	public Box getBoundingBox() {
+		return new Box(-this.outerRadius, -this.outerRadius, -this.outerRadius, this.outerRadius, this.outerRadius, this.outerRadius);
 	}
 }

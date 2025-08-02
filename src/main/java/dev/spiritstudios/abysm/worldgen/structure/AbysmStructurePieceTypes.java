@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.worldgen.structure;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.worldgen.structure.ruins.DeepSeaRuinsGenerator;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.structure.StructurePieceType;
@@ -11,7 +10,7 @@ import java.util.Locale;
 
 public class AbysmStructurePieceTypes {
 	// note: vanilla tends to keep the ids on these short, so that is followed here
-	public static final StructurePieceType DEEP_SEA_RUINS_HOLLOW = register(DeepSeaRuinsGenerator.DensitySpherePiece::new, "DSRSphCave");
+	public static final StructurePieceType DENSITY_BLOB = register(DensityBlobStructurePiece::new, "DBlob");
 
 	private static StructurePieceType register(StructurePieceType type, String id) {
 		// convert to lowercase because vanilla does it, presumably to save characters by removing underscores

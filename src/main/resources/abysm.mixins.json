@@ -24,7 +24,6 @@
 		"worldgen.CarverContextAccessor",
 		"worldgen.CarverContextMixin",
 		"worldgen.CarverMixin",
-		"worldgen.ChunkNoiseSamplerAccessor",
 		"worldgen.ChunkNoiseSamplerMixin",
 		"worldgen.JigsawReplacementStructureProcessorMixin",
 		"worldgen.MultiNoiseBiomeSourceMixin",

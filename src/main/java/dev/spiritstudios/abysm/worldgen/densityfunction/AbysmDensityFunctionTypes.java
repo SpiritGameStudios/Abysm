@@ -24,32 +24,27 @@ public class AbysmDensityFunctionTypes {
 	public interface DensityBlobsSamplerFunction extends DensityFunction.Base {
 		CodecHolder<DensityBlobsSamplerFunction> CODEC_HOLDER = CodecHolder.of(RecordCodecBuilder.mapCodec(
 			instance -> instance.group(
-				Identifier.CODEC.fieldOf("identifier").forGetter(DensityBlobsSamplerFunction::getIdentifier)
-			).apply(instance, DummyDensityBlobsSampler::new)));
+					Identifier.CODEC.fieldOf("identifier").forGetter(DensityBlobsSamplerFunction::identifier)
+				)
+				.apply(instance, DummyDensityBlobsSampler::new))
+		);
 
 		@Override
 		default CodecHolder<? extends DensityFunction> getCodecHolder() {
 			return CODEC_HOLDER;
 		}
 
-		Identifier getIdentifier();
+		Identifier identifier();
 	}
 
-	public static class DummyDensityBlobsSampler implements DensityBlobsSamplerFunction {
-
-		private final Identifier identifier;
-
-		public DummyDensityBlobsSampler(Identifier identifier) {
-			this.identifier = identifier;
-		}
-
+	public record DummyDensityBlobsSampler(Identifier identifier) implements DensityBlobsSamplerFunction {
 		@Override
-		public double sample(DensityFunction.NoisePos pos) {
+		public double sample(NoisePos pos) {
 			return 0.0;
 		}
 
 		@Override
-		public void fill(double[] densities, DensityFunction.EachApplier applier) {
+		public void fill(double[] densities, EachApplier applier) {
 			Arrays.fill(densities, 0.0);
 		}
 
@@ -61,11 +56,6 @@ public class AbysmDensityFunctionTypes {
 		@Override
 		public double maxValue() {
 			return 0.0;
-		}
-
-		@Override
-		public Identifier getIdentifier() {
-			return this.identifier;
 		}
 	}
 }

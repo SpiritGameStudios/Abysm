@@ -7,8 +7,12 @@ import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.block.entity.DensityBlobBlockEntity;
 import dev.spiritstudios.abysm.mixin.worldgen.SinglePoolElementAccessor;
 import dev.spiritstudios.abysm.mixin.worldgen.StructureAccessor;
+import dev.spiritstudios.abysm.worldgen.densityfunction.DensityBlob;
+import dev.spiritstudios.abysm.worldgen.densityfunction.DensitySphere;
+import dev.spiritstudios.abysm.worldgen.densityfunction.LayeredDensitySphere;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructures;
+import dev.spiritstudios.abysm.worldgen.structure.DensityBlobStructurePiece;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -225,15 +229,15 @@ public class DeepSeaRuinsStructure extends Structure {
 
 		for (int i = 0; i < 85; i++) {
 			int radius = random.nextBetween(10, 40);
+			int outerRadius = radius + random.nextBetween(4, 6);
 			int spread = 120 - radius;
-			DeepSeaRuinsGenerator.DensitySpherePiece room = new DeepSeaRuinsGenerator.DensitySpherePiece(
+			DensityBlob densityBlob = new LayeredDensitySphere(radius, outerRadius);
+			DensityBlobStructurePiece room = new DensityBlobStructurePiece(
 				Abysm.id("ruins_shell"),
-				0,
 				chunkPos.getOffsetX(random.nextBetween(7 - spread, 8 + spread)),
 				random.nextBetween(-14, 36),
 				chunkPos.getOffsetZ(random.nextBetween(7 - spread, 8 + spread)),
-				radius,
-				radius + random.nextBetween(4, 6)
+				densityBlob
 			);
 			collector.addPiece(room);
 		}
@@ -283,18 +287,19 @@ public class DeepSeaRuinsStructure extends Structure {
 			return null;
 		} else {
 			String id = nbt.getString(DensityBlobBlockEntity.BLOBS_SAMPLER_IDENTIFIER, "");
-			// TODO better size control
+
+			// TODO better size/shape control
 			boolean shell = id.equals("abysm:ruins_shell");
-			int radius = shell ? random.nextBetween(18, 30) : random.nextBetween(2, 3);
-			int outerRadius = radius + (shell ? random.nextBetween(4, 6) : random.nextBetween(2, 4));
-			return new DeepSeaRuinsGenerator.DensitySpherePiece(
-				id,
-				0,
+			int radius = shell ? random.nextBetween(18, 30) : random.nextBetween(1, 2);
+			int outerRadius = radius + (shell ? random.nextBetween(4, 6) : random.nextBetween(2, 3));
+			DensityBlob densityBlob = shell ? new LayeredDensitySphere(radius, outerRadius) : new DensitySphere(radius, outerRadius, 1.0 + radius);
+
+			return new DensityBlobStructurePiece(
+				DensityBlobStructurePiece.idFromString(id),
 				pos.getX(),
 				pos.getY(),
 				pos.getZ(),
-				radius,
-				outerRadius
+				densityBlob
 			);
 		}
 	}

@@ -29,29 +29,30 @@ public class DensityBlobsSamplerCollection {
 		return this.samplerMap.getOrDefault(identifier, null);
 	}
 
-	public static DensityBlobsSamplerCollection create(StructureAccessor world, ChunkPos pos) {
-		Map<Identifier, DensityBlobsSampler> functionMap = new HashMap<>();
+	public static DensityBlobsSamplerCollection create(StructureAccessor world, ChunkPos chunkPos) {
+		Map<Identifier, DensityBlobsSampler> samplerMap = new HashMap<>();
 
 		world.getStructureStarts(
-			pos,
+			chunkPos,
 			// filter for deep sea ruins
 			structure -> structure.getType().equals(AbysmStructureTypes.DEEP_SEA_RUINS)
 		).forEach(structureStart -> structureStart.getChildren().forEach(piece -> {
-			// get each relevant piece
+			// check piece contains a density blob and affects this chunk
 			if (piece instanceof DensityBlobHolder densityBlobHolder) {
 				if (piece.getBoundingBox().intersectsXZ(
-					pos.getStartX(),
-					pos.getStartZ(),
-					pos.getEndX(),
-					pos.getEndZ()
+					chunkPos.getStartX(),
+					chunkPos.getStartZ(),
+					chunkPos.getEndX(),
+					chunkPos.getEndZ()
 				)) {
-					DensityBlobsSampler dbf = functionMap.computeIfAbsent(densityBlobHolder.getIdentifier(), DensityBlobsSampler::new);
-					dbf.addBlob(densityBlobHolder.getDensityBlob());
+					// add blob to sampler
+					DensityBlobsSampler blobsSampler = samplerMap.computeIfAbsent(densityBlobHolder.getIdentifier(), DensityBlobsSampler::new);
+					blobsSampler.addBlob(densityBlobHolder.getDensityBlob());
 				}
 			}
 		}));
 
-		return new DensityBlobsSamplerCollection(functionMap);
+		return new DensityBlobsSamplerCollection(samplerMap);
 	}
 
 	@Nullable

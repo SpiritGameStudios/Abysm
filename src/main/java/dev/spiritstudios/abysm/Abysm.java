@@ -21,6 +21,7 @@ import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
+import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityBlobTypes;
 import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctionTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmFeatures;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructurePieceTypes;
@@ -97,6 +98,7 @@ public class Abysm implements ModInitializer {
 		registerFields(Registries.FOLIAGE_PLACER_TYPE, FoliagePlacerType.class, AbysmFoliagePlacerTypes.class);
 
 		AbysmDensityFunctionTypes.init();
+		AbysmDensityBlobTypes.init();
 		// endregion
 
 		// misc
