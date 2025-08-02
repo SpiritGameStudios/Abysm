@@ -3,8 +3,8 @@
   "argument": {
     "type": "minecraft:mul",
     "argument1": {
-		"type": "abysm:density_blobs_sampler",
-		"identifier": "abysm:ruins_shell"
+      "type": "abysm:density_blobs_sampler",
+      "identifier": "abysm:ruins_shell"
     },
     "argument2": {
       "type": "minecraft:add",

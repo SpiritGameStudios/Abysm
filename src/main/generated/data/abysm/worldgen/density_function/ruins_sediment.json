@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:add",
-	"argument1": {
-		"type": "minecraft:add",
-		"argument1": -0.18,
-		"argument2": "abysm:ruins_sediment_noise"
-	},
-	"argument2": {
-		"type": "abysm:density_blobs_sampler",
-		"identifier": "abysm:ruins_sediment"
-	}
+  "type": "minecraft:add",
+  "argument1": {
+    "type": "minecraft:add",
+    "argument1": -0.18,
+    "argument2": "abysm:ruins_sediment_noise"
+  },
+  "argument2": {
+    "type": "abysm:density_blobs_sampler",
+    "identifier": "abysm:ruins_sediment"
+  }
 }

@@ -28,9 +28,4 @@ public class AbysmBlockMetatagProvider extends MetatagProvider<Block> {
 
 		consumer.accept(builder);
 	}
-
-	@Override
-	public String getName() {
-		return "Datapack " + super.getName();
-	}
 }
