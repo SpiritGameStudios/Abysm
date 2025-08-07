@@ -10,6 +10,7 @@
     "harpoon.LivingEntityMixin",
     "harpoon.PersistentProjectileEntityAccessor",
     "harpoon.PersistentProjectileEntityMixin",
+    "harpoon.PlayerEntityMixin",
     "harpoon.ServerPlayNetworkHandlerMixin",
     "lectorfin.goal.FishEntityMixin",
     "lectorfin.goal.SchoolingFishEntityMixin",

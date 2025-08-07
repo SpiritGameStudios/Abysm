@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.entity.harpoon;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.component.HarpoonComponent;
+import dev.spiritstudios.abysm.duck.HarpoonOwner;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
@@ -29,6 +30,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -36,15 +38,17 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class HarpoonEntity extends PersistentProjectileEntity {
-	public static final float VELOCITY_POWER = 3.5f;
+	public static final float VELOCITY_POWER = 5f;
 	public static final TrackedData<Boolean> RETURNING = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	public static final TrackedData<Boolean> IN_BLOCK = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	public static final TrackedData<Boolean> GRAPPLING = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	public static final TrackedData<Float> LENGTH = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.FLOAT);
 
 	protected int slot = -1;
 	protected int ticksAlive = 0;
 
 	protected boolean haul = false;
 	protected boolean blessed = false;
-	protected boolean grappling = false;
 
 	public HarpoonEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
 		super(entityType, world);
@@ -69,7 +73,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 		if (weapon != null) {
 			this.haul = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.HAUL);
-			this.grappling = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.GRAPPLING);
+			setGrappling(AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.GRAPPLING));
 			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).isBlessed();
 		}
 
@@ -97,6 +101,9 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);
 		builder.add(RETURNING, false);
+		builder.add(GRAPPLING, false);
+		builder.add(IN_BLOCK, false);
+		builder.add(LENGTH, 0.0F);
 	}
 
 	@Override
@@ -112,6 +119,18 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 		invStack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().loaded(true).build());
 		return true;
+	}
+
+	@Override
+	protected void onBlockHit(BlockHitResult blockHitResult) {
+		super.onBlockHit(blockHitResult);
+		this.setVelocity(Vec3d.ZERO);
+		this.setInBlock(true);
+		PlayerEntity playerEntity = this.getPlayer();
+		if (playerEntity != null) {
+			double d = playerEntity.getEyePos().subtract(blockHitResult.getPos()).length();
+			this.setLength(Math.max((float)d * 0.5F - 3.0F, 1.5F));
+		}
 	}
 
 	@Override
@@ -149,23 +168,15 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 			if (owner.isSneaking() || this.squaredDistanceTo(owner) > (256 * 256)) {
 				this.beginReturn(true);
-			} else if (this.grappling) {
-				if (this.inGroundTime > 200) {
-					this.beginReturn(true);
-				} else if (!this.isReturning() && this.isInGround() && !this.getBoundingBox().expand(0.3).intersects(owner.getBoundingBox())) {
-					owner.setVelocity(this.getPos().subtract(owner.getPos()).normalize().multiply(2, 1.2, 2));
-					owner.velocityModified = true;
-					owner.fallDistance = 1;
-					((HarpoonDrag) owner).abysm$setDragTicks(2);
-				}
-			} else if (this.inGroundTime > 4 || (this.ticksAlive > 60 && this.inGroundTime < 1) || this.squaredDistanceTo(owner) > (256 * 256)) {
+			} else if ((this.inGroundTime > 4 || (this.ticksAlive > 60 && this.inGroundTime < 1) || this.squaredDistanceTo(owner) > (256 * 256)) && !isGrappling()) {
 				this.beginReturn(true);
 			}
 		}
 
 		if (this.isReturning()) {
 			boolean closeEnough = this.squaredDistanceTo(owner) < (8 * 8);
-			this.setVelocity(owner.getEyePos().subtract(this.getPos()).normalize().multiply(closeEnough ? 0.65 : VELOCITY_POWER));
+			this.setVelocity(owner.getEyePos().subtract(this.getPos()).normalize()
+				.multiply(closeEnough ? 0.65 : VELOCITY_POWER));
 		}
 
 		super.tick();
@@ -176,6 +187,8 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putInt("slot", this.slot);
 		nbt.putInt("ticksAlive", this.ticksAlive);
+		nbt.putBoolean("in_block", this.isInBlock());
+		nbt.putFloat("length", this.getLength());
 	}
 
 	@Override
@@ -183,6 +196,8 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		super.readCustomDataFromNbt(nbt);
 		this.slot = nbt.getInt("slot", -1);
 		this.ticksAlive = nbt.getInt("ticksAlive", 0);
+		this.setInBlock(nbt.getBoolean("in_block", false));
+		this.setLength(nbt.getFloat("length", 0.0F));
 	}
 
 	@Override
@@ -289,5 +304,56 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 	public int getSlot() {
 		return this.slot;
+	}
+
+	private void setInBlock(boolean inBlock) {
+		this.getDataTracker().set(IN_BLOCK, inBlock);
+	}
+
+	private void setGrappling(boolean grappling) {
+		this.getDataTracker().set(GRAPPLING, grappling);
+	}
+
+
+	private void setLength(float length) {
+		this.getDataTracker().set(LENGTH, length);
+	}
+
+	public boolean isInBlock() {
+		return this.getDataTracker().get(IN_BLOCK);
+	}
+
+	public boolean isGrappling() {
+		return this.getDataTracker().get(GRAPPLING);
+	}
+
+	public float getLength() {
+		return this.getDataTracker().get(LENGTH);
+	}
+
+	@Override
+	public void setOwner(@Nullable Entity entity) {
+		super.setOwner(entity);
+		PlayerEntity playerEntity = this.getPlayer();
+		if (playerEntity != null) {
+			((HarpoonOwner) playerEntity).abysm$setHarpoon(this);
+		}
+	}
+
+	@Override
+	public void remove(RemovalReason reason) {
+		PlayerEntity playerEntity = this.getPlayer();
+		if (playerEntity != null) {
+			((HarpoonOwner) playerEntity).abysm$setHarpoon(null);
+		}
+		super.remove(reason);
+	}
+
+	@Override
+	public void onRemoved() {
+		PlayerEntity playerEntity = this.getPlayer();
+		if (playerEntity != null) {
+			((HarpoonOwner) playerEntity).abysm$setHarpoon(null);
+		}
 	}
 }
