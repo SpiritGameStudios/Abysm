@@ -48,9 +48,6 @@ public class EcosystemLogic {
 	public void onSpawn() {
 		EcosystemAreaPos ecosystemAreaPos = new EcosystemAreaPos(this.entity.getChunkPos());
 		this.tracker.onEcosystemAreaEnter(ecosystemAreaPos);
-//		this.tracker.getEcosystemArea(ecosystemAreaPos).addEntity(this.entity);
-//		this.tracker.getEcosystemArea()
-//		this.chunkTracker.getEcosystemChunk(this.world, this.entity.getChunkPos()).addEntity(this.entity);
 	}
 
 	public void tick() {
@@ -61,8 +58,6 @@ public class EcosystemLogic {
 	public void onDeath() {
 		EcosystemAreaPos ecosystemAreaPos = new EcosystemAreaPos(this.entity.getChunkPos());
 		this.tracker.onEcosystemAreaLeave(ecosystemAreaPos);
-//		this.tracker.getEcosystemArea(ecosystemAreaPos).removeEntity(this.entity);
-//		this.chunkTracker.getEcosystemChunk(this.world, this.entity.getChunkPos()).removeEntity(this.entity);
 	}
 
 	public boolean canBreed() {

@@ -70,7 +70,6 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 
 		if (this.loadingStatus == null) return;
 
-//		Map<ChunkPos, EcosystemChunk> ecosystemChunkMap = this.loadingStatus.serverStates.getNow(null);
 		List<EcosystemArea> ecosystemAreas = this.loadingStatus.serverStates.getNow(null);
 		if (ecosystemAreas == null) return;
 
@@ -83,12 +82,8 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 			initY = player.getWorld().getSeaLevel() - 3;
 		}
 
-		ChunkPos playerChunk = player.getChunkPos();
-		boolean onlyNearbyChunks = player.isHolding(Items.HEART_OF_THE_SEA);
-		int emptyMaxDistance = 2;
-
-		// EcosystemArea renderer
-//		this.renderEcosystemAreas(matrices, vertexConsumers, initY, cameraX, cameraY, cameraZ);
+//		ChunkPos playerChunk = player.getChunkPos();
+//		boolean onlyNearbyChunks = player.isHolding(Items.HEART_OF_THE_SEA);
 
 		for (EcosystemArea ecosystemArea : ecosystemAreas) {
 			EcosystemAreaPos ecosystemAreaPos = ecosystemArea.pos;
@@ -141,76 +136,6 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 			}
 
 		}
-
-		// Populations renderer
-
-//		for (Map.Entry<ChunkPos, EcosystemChunk> entry : ecosystemChunkMap.entrySet()) {
-//			ChunkPos chunkPos = entry.getKey();
-//			EcosystemChunk ecosystemChunk = entry.getValue();
-//			int yOffset = 0;
-//
-//			if (ecosystemChunk instanceof EmptyEcosystemChunk || ecosystemChunk.entityPopulation.isEmpty()) {
-//				if(onlyNearbyChunks) {
-//					if(chunkPos.getChebyshevDistance(playerChunk) > emptyMaxDistance) continue;
-//				}
-//
-//				String empty = "Empty!";
-//				int color = Colors.LIGHT_GRAY;
-//				drawString(matrices, vertexConsumers, empty, chunkPos, initY, yOffset, color);
-//				continue;
-//			}
-//
-//			for (Map.Entry<EcosystemType<?>, PopInfo> popEntry : ecosystemChunk.entityPopulation.entrySet()) {
-//				EcosystemType<?> ecosystemType = popEntry.getKey();
-//				PopInfo popInfo = popEntry.getValue();
-//				Text typeName = ecosystemType.entityType().getName();
-//
-//				if(onlyNearbyChunks) {
-//					if(chunkPos.getChebyshevDistance(playerChunk) > ecosystemType.populationChunkSearchRadius()) continue;
-//				}
-//
-//				int chunkPopulation = popInfo.getEntityCount();
-//				int nearbyPopulation = ecosystemChunk.getNearbyEcosystemTypePopulation(ecosystemType);
-//				int targetPopulation = ecosystemType.targetPopulation();
-//				EcosystemChunk.PopStatus status = EcosystemChunk.PopStatus.getStatusWithType(ecosystemType, nearbyPopulation);
-//
-//				// EntityName: NearbyPopulation/TargetPopulation (ChunkPopulation)
-//				String stringedInfo = String.format("%s: %s/%s (%s)", typeName.getString(), nearbyPopulation, targetPopulation, chunkPopulation);
-//				int color = MapColor.PINK.color; // oh my goodness map color is cursed but it works
-//				switch (status) {
-//					case EXTINCT -> color = DARK_RED;
-//					case NEAR_EXTINCT -> color = Colors.LIGHT_RED;
-//					case UNDERPOPULATED -> color = MapColor.TERRACOTTA_YELLOW.color;
-//					case MAINTAINED -> color = Colors.GREEN;
-//					case OVERPOPULATED -> color = MapColor.DARK_GREEN.color;
-//				}
-//				drawString(matrices, vertexConsumers, stringedInfo, chunkPos, initY, yOffset, color);
-//
-//				yOffset -= 1;
-//			}
-//		}
-	}
-
-	public void renderEcosystemAreas(MatrixStack matrices, VertexConsumerProvider vertexConsumers, double initY, double cameraX, double cameraY, double cameraZ) {
-		ClientPlayerEntity player = this.client.player;
-		ClientWorld world = player.clientWorld;
-
-		ChunkPos playerChunk = player.getChunkPos();
-		EcosystemAreaPos ecosystemAreaPos = new EcosystemAreaPos(playerChunk);
-		ChunkPos areaCenter = ecosystemAreaPos.getCenterChunkPos();
-		int offsetAmount = 16;
-
-		double centerMinX = ChunkSectionPos.getOffsetPos(areaCenter.x, 0) - cameraX;
-		double centerMinZ = ChunkSectionPos.getOffsetPos(areaCenter.z, 0) - cameraZ;
-		double centerMaxX = ChunkSectionPos.getOffsetPos(areaCenter.x, offsetAmount) - cameraX;
-		double centerMaxZ = ChunkSectionPos.getOffsetPos(areaCenter.z, offsetAmount) - cameraZ;
-		double minY = -30;
-		double maxY = 20;
-		VertexRendering.drawBox(matrices, vertexConsumers.getBuffer(RenderLayer.getLines()), centerMinX, minY, centerMinZ, centerMaxX, maxY, centerMaxZ, 1f, 1f, 1f, 1f);
-		VertexRendering.drawBox(matrices, vertexConsumers.getBuffer(RenderLayer.getLines()), centerMinX - offsetAmount, minY, centerMinZ - offsetAmount, centerMaxX + offsetAmount, maxY, centerMaxZ + offsetAmount, 1f, 0f, 0f, 1f);
-
-		String areaPosString = ecosystemAreaPos.toString();
-		drawString(matrices, vertexConsumers, areaPosString, playerChunk, initY, 0, Colors.WHITE);
 	}
 
 	private void drawString(MatrixStack matrices, VertexConsumerProvider vertexConsumers, String string, ChunkPos chunkPos, double initY, int yOffset, int color) {
@@ -257,12 +182,10 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 
 			assert clientWorld != null;
 			RegistryKey<World> worldKey = clientWorld.getRegistryKey();
-//			int searchRadius = EcosystemDebugRenderer.this.client.player.isHolding(Items.ENDER_EYE) ? 3 : 1;
 
 			// This is beyond cursed, but it's what Minecraft does ¯\_(ツ)_/¯
 			this.serverStates = server.submit(() -> {
 				ServerWorld serverWorld = server.getWorld(worldKey);
-//				if (serverWorld == null) return ImmutableBiMap.of();
 				if (serverWorld == null) return ImmutableList.of();
 
 				ImmutableList.Builder<EcosystemArea> areaBuilder = ImmutableList.builder();
@@ -275,19 +198,6 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 				}
 
 				return areaBuilder.build();
-//				ChunkPos.stream()
-
-
-//				ImmutableMap.Builder<>
-
-//				ImmutableMap.Builder<ChunkPos, EcosystemChunk> mapBuilder = ImmutableMap.builder();
-//				for (ChunkPos chunkPos : ChunkPos.stream(playerChunkPos, 2).toList()) {
-//					Chunk chunk = serverWorld.getChunk(chunkPos.x, chunkPos.z);
-//					EcosystemChunk ecosystemChunk = chunk.getAttachedOrElse(AbysmAttachments.ECOSYSTEM_CHUNK, new EmptyEcosystemChunk(serverWorld, chunkPos));
-//					mapBuilder.put(chunkPos, ecosystemChunk);
-//				}
-//
-//				return mapBuilder.build();
 			});
 		}
 	}
@@ -298,10 +208,4 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 			super(world, pos);
 		}
 	}
-
-//	private static class EmptyEcosystemChunk extends EcosystemChunk {
-//		public EmptyEcosystemChunk(World world, ChunkPos pos) {
-//			super(world, pos, null);
-//		}
-//	}
 }

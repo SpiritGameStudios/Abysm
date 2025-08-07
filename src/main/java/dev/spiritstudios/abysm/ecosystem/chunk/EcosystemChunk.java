@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.ecosystem.chunk;
 
-import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
@@ -178,68 +177,6 @@ public class EcosystemChunk {
 //		return entity.getAttributeValue(EntityAttributes.FOLLOW_RANGE);
 //	}
 //
-	/**
-	 * The status of a single EcosystemType, with this chunk in the center and <b>accounting for nearby chunks</b> based on the {@link EcosystemType#populationChunkSearchRadius()}.<br><br>
-	 */
-//	public static enum PopStatus {
-//		EXTINCT, // No entities nearby
-//		NEAR_EXTINCT, // At or below near extinct mark - breeding becomes high priority and being hunted is disallowed
-//		UNDERPOPULATED, // Between extinct mark and target population - breeding still a priority but can now be hunted
-//		MAINTAINED, // At or above target population, and below overpopulation mark - breeding still allowed
-//		OVERPOPULATED; // At or above overpopulation mark - being hunted becomes priority and breeding is disallowed
-//
-//		public static PopStatus getStatusWithType(EcosystemType<?> ecosystemType, int nearbyPopulation) {
-//			if(nearbyPopulation <= 0) return EXTINCT; // I'd be pretty concerned if it was less than 0 but backup I guess
-//
-//			int nearExtinctMark = ecosystemType.nearExtinctMark();
-//			if(nearbyPopulation <= nearExtinctMark) return NEAR_EXTINCT;
-//
-//			int target = ecosystemType.targetPopulation();
-//			if(nearbyPopulation < target) return UNDERPOPULATED;
-//
-//			int overpopulationMark = ecosystemType.overpopulationMark();
-//			if(nearbyPopulation >= overpopulationMark) return OVERPOPULATED;
-//
-//			return MAINTAINED;
-//		}
-//
-//		// Doing this instead of having a big switch case in EcosystemChunk#onPopChange, because I think that's better?
-//		public boolean needsRepopulating() {
-//			return this.isNearExtinct() || this.isUnderpopulated();
-//		}
-//
-//		public boolean repopulatingIsPriority() {
-//			return this.isNearExtinct();
-//		}
-//
-//		public boolean needsHunting() {
-//			return this.isMaintained() || this.isOverpopulated();
-//		}
-//
-//		public boolean huntingIsPriority() {
-//			return this.isOverpopulated();
-//		}
-//
-//		// I think that's how you're supposed to do this stuff?
-//		public boolean isOverpopulated() {
-//			return this == OVERPOPULATED;
-//		}
-//
-//		public boolean isMaintained() {
-//			return this == MAINTAINED;
-//		}
-//
-//		public boolean isUnderpopulated() {
-//			return this == UNDERPOPULATED;
-//		}
-//
-//		public boolean isNearExtinct() {
-//			return this == NEAR_EXTINCT;
-//		}
-//
-//		public boolean isExtinct() {
-//			return this == EXTINCT;
-//		}
-//	}
+
 
 }
