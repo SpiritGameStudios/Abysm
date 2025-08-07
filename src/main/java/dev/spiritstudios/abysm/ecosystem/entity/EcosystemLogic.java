@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm.ecosystem.entity;
 
+import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaPos;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.world.World;
@@ -11,7 +12,7 @@ public class EcosystemLogic {
 	public final MobEntity entity;
 	public final EcosystemType<?> type;
 	public final World world;
-	public final EcologicalEntityChunkTracker chunkTracker;
+	public final EcosystemTracker tracker;
 
 	// Remove for not helpful anymore because it's been split up?
 	public boolean isHungry = false;
@@ -40,21 +41,28 @@ public class EcosystemLogic {
 		this.entity = entity;
 		this.type = type;
 		this.world = entity.getWorld();
-		this.chunkTracker = new EcologicalEntityChunkTracker(this);
+		this.tracker = new EcosystemTracker(this);
 		this.breedCooldownTicks = 80;
 	}
 
 	public void onSpawn() {
-		this.chunkTracker.getEcosystemChunk(this.world, this.entity.getChunkPos()).addEntity(this.entity);
+		EcosystemAreaPos ecosystemAreaPos = new EcosystemAreaPos(this.entity.getChunkPos());
+		this.tracker.onEcosystemAreaEnter(ecosystemAreaPos);
+//		this.tracker.getEcosystemArea(ecosystemAreaPos).addEntity(this.entity);
+//		this.tracker.getEcosystemArea()
+//		this.chunkTracker.getEcosystemChunk(this.world, this.entity.getChunkPos()).addEntity(this.entity);
 	}
 
 	public void tick() {
-		this.chunkTracker.tick();
+		this.tracker.tick();
 		breedTicks++;
 	}
 
 	public void onDeath() {
-		this.chunkTracker.getEcosystemChunk(this.world, this.entity.getChunkPos()).removeEntity(this.entity);
+		EcosystemAreaPos ecosystemAreaPos = new EcosystemAreaPos(this.entity.getChunkPos());
+		this.tracker.onEcosystemAreaLeave(ecosystemAreaPos);
+//		this.tracker.getEcosystemArea(ecosystemAreaPos).removeEntity(this.entity);
+//		this.chunkTracker.getEcosystemChunk(this.world, this.entity.getChunkPos()).removeEntity(this.entity);
 	}
 
 	public boolean canBreed() {

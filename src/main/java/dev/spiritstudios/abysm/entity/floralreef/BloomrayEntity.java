@@ -146,6 +146,11 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	}
 
 	@Override
+	public boolean canBeLeashed() {
+		return true;
+	}
+
+	@Override
 	public EcosystemLogic getEcosystemLogic() {
 		return this.ecosystemLogic;
 	}

@@ -163,9 +163,9 @@ public interface EcologicalEntity {
 			if (optional.isEmpty()) {
 				continue;
 			}
-			if (ecosystemChunk.ecosystemTypeNearbyPopOkay(optional.get())) {
-				return true;
-			}
+//			if (ecosystemChunk.ecosystemTypeNearbyPopOkay(optional.get())) {
+//				return true;
+//			}
 		}
 
 		return false;
@@ -187,8 +187,9 @@ public interface EcologicalEntity {
 
 		EcosystemType<? extends MobEntity> ecosystemType = optional.get();
 
-		int nearbyPopulation = ecosystemChunk.getNearbyEcosystemTypePopulation(ecosystemType);
-		return nearbyPopulation < ecosystemType.targetPopulation() * 1.2;
+//		int nearbyPopulation = ecosystemChunk.getNearbyEcosystemTypePopulation(ecosystemType);
+//		return nearbyPopulation < ecosystemType.targetPopulation() * 1.2;
+		return true;
 	}
 
 	// EcosystemLogic getters/setters
