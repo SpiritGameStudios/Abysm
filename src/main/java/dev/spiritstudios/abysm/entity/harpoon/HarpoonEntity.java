@@ -29,7 +29,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -132,7 +131,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				this.getWorld().playSound(
 					null,
 					owner.getX(), owner.getY(), owner.getZ(),
-					SoundEvents.BLOCK_CHAIN_PLACE,
+					AbysmSoundEvents.ITEM_HARPOON_IN_AIR,
 					this.getSoundCategory(),
 					1.0F, 1.0F
 				);

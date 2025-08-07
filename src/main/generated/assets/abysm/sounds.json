@@ -48,11 +48,94 @@
     ],
     "subtitle": "subtitles.abysm.item.harpoon.hit_ground"
   },
+  "item.harpoon.in_air": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch1"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch2"
+      },
+      {
+        "pitch": 0.8,
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch2"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch3"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch4"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch5"
+      },
+      {
+        "pitch": 1.2,
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch5"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch6"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch7"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch8"
+      },
+      {
+        "pitch": 0.8,
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch8"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch9"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch10"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch11"
+      },
+      {
+        "pitch": 1.2,
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch11"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch12"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch13"
+      },
+      {
+        "pitch": 0.8,
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/launch13"
+      }
+    ],
+    "subtitle": "subtitles.abysm.harpoon.in_air"
+  },
   "item.harpoon.launch": {
     "category": "neutral",
     "sounds": [
-      "minecraft:item/trident/throw1",
-      "minecraft:item/trident/throw2"
+      "abysm:entity/harpoon/launch1",
+      "abysm:entity/harpoon/launch2"
     ],
     "subtitle": "subtitles.abysm.item.harpoon.launch"
   },
@@ -61,40 +144,51 @@
     "sounds": [
       {
         "volume": 0.8,
-        "name": "minecraft:item/trident/return1"
+        "name": "abysm:entity/harpoon/retract1"
       },
       {
         "volume": 0.8,
-        "name": "minecraft:item/trident/return2"
-      },
-      {
-        "pitch": 0.8,
-        "volume": 0.8,
-        "name": "minecraft:item/trident/return2"
+        "name": "abysm:entity/harpoon/retract2"
       },
       {
         "pitch": 1.2,
         "volume": 0.8,
-        "name": "minecraft:item/trident/return2"
+        "name": "abysm:entity/harpoon/retract2"
       },
       {
         "volume": 0.8,
-        "name": "minecraft:item/trident/return3"
+        "name": "abysm:entity/harpoon/retract3"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/retract4"
       },
       {
         "pitch": 0.8,
         "volume": 0.8,
-        "name": "minecraft:item/trident/return3"
+        "name": "abysm:entity/harpoon/retract4"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/retract5"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/retract6"
       },
       {
         "pitch": 0.8,
         "volume": 0.8,
-        "name": "minecraft:item/trident/return3"
+        "name": "abysm:entity/harpoon/retract6"
+      },
+      {
+        "volume": 0.8,
+        "name": "abysm:entity/harpoon/retract7"
       },
       {
         "pitch": 1.2,
         "volume": 0.8,
-        "name": "minecraft:item/trident/return3"
+        "name": "abysm:entity/harpoon/retract7"
       }
     ],
     "subtitle": "subtitles.abysm.item.harpoon.return"

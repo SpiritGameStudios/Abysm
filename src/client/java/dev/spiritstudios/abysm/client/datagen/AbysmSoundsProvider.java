@@ -17,7 +17,9 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 		super(output, registriesFuture);
 	}
 
-	// EXTRA VANILLA SONGS
+	// Music & sounds created by WorldWidePixel (unless otherwise stated). Made with love and a bowl :3
+
+	// EXTRA VANILLA SONGS (by C418)
 	private final SoundTypeBuilder.EntryBuilder AXOLOTL = ofVanillaFile("music/game/water/axolotl").stream(true).volume(0.4F).weight(1);
 	private final SoundTypeBuilder.EntryBuilder DRAGON_FISH = ofVanillaFile("music/game/water/dragon_fish").stream(true).volume(0.4F).weight(1);
 	private final SoundTypeBuilder.EntryBuilder SHUNIJI = ofVanillaFile("music/game/water/shuniji").stream(true).volume(0.4F).weight(1);
@@ -97,16 +99,39 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.category(SoundCategory.BLOCKS)
 		);
 
-		// TODO: Needs custom sounds
 		exporter.add(
 			AbysmSoundEvents.ITEM_HARPOON_LAUNCH,
 			SoundTypeBuilder.of()
 				.subtitle("subtitles.abysm.item.harpoon.launch")
-				.sound(ofVanillaFile("item/trident/throw1"))
-				.sound(ofVanillaFile("item/trident/throw2"))
+				.sound(ofFile("entity/harpoon/launch1"))
+				.sound(ofFile("entity/harpoon/launch2"))
 		);
 
-		// TODO: Needs custom sounds
+		exporter.add(
+			AbysmSoundEvents.ITEM_HARPOON_IN_AIR,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.item.harpoon.in_air")
+				.sound(ofFile("entity/harpoon/launch1").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch2").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch2").volume(0.8F).pitch(0.8F))
+				.sound(ofFile("entity/harpoon/launch3").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch4").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch5").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch5").volume(0.8F).pitch(1.2F))
+				.sound(ofFile("entity/harpoon/launch6").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch7").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch8").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch8").volume(0.8F).pitch(0.8F))
+				.sound(ofFile("entity/harpoon/launch9").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch10").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch11").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch11").volume(0.8F).pitch(1.2F))
+				.sound(ofFile("entity/harpoon/launch12").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch13").volume(0.8F))
+				.sound(ofFile("entity/harpoon/launch13").volume(0.8F).pitch(0.8F))
+		);
+
+		// TODO: Custom sounds (optional)
 		exporter.add(
 			AbysmSoundEvents.ITEM_HARPOON_HIT_GROUND,
 			SoundTypeBuilder.of()
@@ -117,7 +142,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("item/trident/ground_impact4").volume(0.9F))
 		);
 
-		// TODO: Needs custom sounds
+		// TODO: Custom sounds (optional)
 		exporter.add(
 			AbysmSoundEvents.ITEM_HARPOON_HIT,
 			SoundTypeBuilder.of()
@@ -127,20 +152,21 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("item/trident/pierce3"))
 		);
 
-		// TODO: Needs custom sounds
 		exporter.add(
 			AbysmSoundEvents.ITEM_HARPOON_RETURN,
 			SoundTypeBuilder.of()
 				.subtitle("subtitles.abysm.item.harpoon.return")
-				.sound(ofVanillaFile("item/trident/return1").volume(0.8F))
-				.sound(ofVanillaFile("item/trident/return2").volume(0.8F))
-				.sound(ofVanillaFile("item/trident/return2").volume(0.8F).pitch(0.8F))
-				.sound(ofVanillaFile("item/trident/return2").volume(0.8F).pitch(1.2F))
-				.sound(ofVanillaFile("item/trident/return3").volume(0.8F))
-				// yes, vanilla has these duplicate entries
-				.sound(ofVanillaFile("item/trident/return3").volume(0.8F).pitch(0.8F))
-				.sound(ofVanillaFile("item/trident/return3").volume(0.8F).pitch(0.8F))
-				.sound(ofVanillaFile("item/trident/return3").volume(0.8F).pitch(1.2F))
+				.sound(ofFile("entity/harpoon/retract1").volume(0.8F))
+				.sound(ofFile("entity/harpoon/retract2").volume(0.8F))
+				.sound(ofFile("entity/harpoon/retract2").volume(0.8F).pitch(1.2F))
+				.sound(ofFile("entity/harpoon/retract3").volume(0.8F))
+				.sound(ofFile("entity/harpoon/retract4").volume(0.8F))
+				.sound(ofFile("entity/harpoon/retract4").volume(0.8F).pitch(0.8F))
+				.sound(ofFile("entity/harpoon/retract5").volume(0.8F))
+				.sound(ofFile("entity/harpoon/retract6").volume(0.8F))
+				.sound(ofFile("entity/harpoon/retract6").volume(0.8F).pitch(0.8F))
+				.sound(ofFile("entity/harpoon/retract7").volume(0.8F))
+				.sound(ofFile("entity/harpoon/retract7").volume(0.8F).pitch(1.2F))
 		);
 	}
 

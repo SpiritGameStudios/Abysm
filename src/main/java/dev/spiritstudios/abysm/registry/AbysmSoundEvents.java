@@ -35,6 +35,7 @@ public class AbysmSoundEvents {
 	public static final SoundEvent ITEM_OOZEBALL_APPLY = register("item.oozeball.apply");
 
 	public static final SoundEvent ITEM_HARPOON_LAUNCH = register("item.harpoon.launch");
+	public static final SoundEvent ITEM_HARPOON_IN_AIR = register("item.harpoon.in_air");
 	public static final SoundEvent ITEM_HARPOON_HIT_GROUND = register("item.harpoon.hit_ground");
 	public static final SoundEvent ITEM_HARPOON_HIT = register("item.harpoon.hit");
 	public static final SoundEvent ITEM_HARPOON_RETURN = register("item.harpoon.return");

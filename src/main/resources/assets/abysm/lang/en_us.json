@@ -180,6 +180,7 @@
 	"subtitles.abysm.item.oozeball.apply": "Oozeball splats",
 	"subtitles.abysm.entity.bloomray.ambient": "Bloomray bloops",
 	"subtitles.abysm.item.harpoon.launch": "Harpoon launches",
+	"subtitles.abysm.item.harpoon.in_air": "Harpoon soars",
 	"subtitles.abysm.item.harpoon.hit_ground": "Harpoon hits ground",
 	"subtitles.abysm.item.harpoon.return": "Harpoon returns",
 	"subtitles.abysm.item.harpoon.hit": "Harpoon impales"
