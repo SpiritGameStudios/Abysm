@@ -127,10 +127,10 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		if (this.dispatcher.gameOptions.getPerspective().isFirstPerson() &&
 			player == MinecraftClient.getInstance().player) {
 			return player.getCameraPosVec(tickProgress)
-				.add(this.dispatcher.camera.getProjection().getPosition(arm * 0.525F, -0.1F)
+				.add(this.dispatcher.camera.getProjection().getPosition(arm * 0.525F, -1F)
 					.multiply(960.0F / this.dispatcher.gameOptions.getFov().getValue())
 					.rotateY(angle * 0.5F)
-					.rotateX(-angle * 0.7F)).subtract(0, 0.6, 0);
+					.rotateX(-angle * 0.7F));
 		} else {
 			float yaw = (MathHelper.lerp(tickProgress, player.lastBodyYaw, player.bodyYaw) + 10) * MathHelper.RADIANS_PER_DEGREE;
 
