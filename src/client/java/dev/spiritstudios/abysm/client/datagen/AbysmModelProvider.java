@@ -245,6 +245,12 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 			AbysmItems.FLIPPERS,
 
+			AbysmItems.SMALL_FLORAL_FISH,
+			AbysmItems.BIG_FLORAL_FISH,
+			AbysmItems.SMALL_FLORAL_FISH_BUCKET,
+			AbysmItems.BIG_FLORAL_FISH_BUCKET,
+			AbysmItems.PADDLEFISH_BUCKET,
+
 			AbysmItems.SMALL_FLORAL_FISH_SPAWN_EGG,
 			AbysmItems.BIG_FLORAL_FISH_SPAWN_EGG,
 			AbysmItems.PADDLEFISH_SPAWN_EGG,

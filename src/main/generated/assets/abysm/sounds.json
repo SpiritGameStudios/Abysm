@@ -129,7 +129,7 @@
         "name": "abysm:entity/harpoon/launch13"
       }
     ],
-    "subtitle": "subtitles.abysm.harpoon.in_air"
+	  "subtitle": "subtitles.abysm.item.harpoon.in_air"
   },
   "item.harpoon.launch": {
     "category": "neutral",
