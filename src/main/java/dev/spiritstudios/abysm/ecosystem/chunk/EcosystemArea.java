@@ -38,7 +38,8 @@ public class EcosystemArea {
 		popInfo.removeEntity(entity);
 	}
 
-	public void tick() {
+	@SuppressWarnings("unused")
+	public void tick(EcosystemAreaPos pos) {
 
 	}
 

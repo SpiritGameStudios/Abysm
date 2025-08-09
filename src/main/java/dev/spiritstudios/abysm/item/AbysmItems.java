@@ -29,16 +29,16 @@ import java.util.function.Function;
 
 @SuppressWarnings({"unused", "SameParameterValue"})
 public final class AbysmItems {
-	public static Item LAPIS_BULB = register(
+	public static final Item LAPIS_BULB = register(
 		"lapis_bulb",
 		createBlockItemWithUniqueName(AbysmBlocks.GOLDEN_LAZULI_OREFURL)
 	);
 
-	public static Item GOLD_LEAF = register(
+	public static final Item GOLD_LEAF = register(
 		"gold_leaf"
 	);
 
-	public static Item DREGLOAM_OOZEBALL = register(
+	public static final Item DREGLOAM_OOZEBALL = register(
 		"dregloam_oozeball",
 		OozeballItem::new
 	);
