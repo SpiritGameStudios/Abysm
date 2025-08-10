@@ -1,9 +1,7 @@
 package dev.spiritstudios.abysm.ecosystem.entity;
 
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
-import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemChunk;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -16,15 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.chunk.Chunk;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 /**
- * Contains methods for handling all entity-related logic that any Ecosystem-related systems may need to call(e.g. {@link EcosystemChunk})<br><br>
+ * Contains methods for handling all entity-related logic that any Ecosystem-related systems may need to call(e.g. {@link EcosystemLogic})<br><br>
  *
  * <b>YOU MUST MANUALLY CALL THE FOLLOWING:</b>
  * <ul>
@@ -72,7 +66,7 @@ public interface EcologicalEntity {
 	}
 
 	/**
-	 * Alert this Entity's {@link EcosystemLogic} that it has just spawned, used for adding itself to {@link dev.spiritstudios.abysm.ecosystem.chunk.EcosystemChunk}s.<br><br>
+	 * Alert this Entity's {@link EcosystemLogic} that it has just spawned, used for adding itself to {@link dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea}s.<br><br>
 	 * Intended to be called in {@link MobEntity#initialize(ServerWorldAccess, LocalDifficulty, SpawnReason, EntityData)}
 	 */
 	default void alertEcosystemOfSpawn() {
@@ -80,7 +74,7 @@ public interface EcologicalEntity {
 	}
 
 	/**
-	 * Alert this Entity's {@link EcosystemLogic} that it has just been killed or despawned(removed), used for removing itself form {@link dev.spiritstudios.abysm.ecosystem.chunk.EcosystemChunk}s.<br><br>
+	 * Alert this Entity's {@link EcosystemLogic} that it has just been killed or despawned(removed), used for removing itself from {@link dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea}s.<br><br>
 	 * Intended to be called in {@link LivingEntity#onRemove(Entity.RemovalReason)} to account for death & despawning.
 	 */
 	default void alertEcosystemOfDeath() {
@@ -152,24 +146,8 @@ public interface EcologicalEntity {
 		return this.isHungry();
 	}
 
+	@SuppressWarnings("unused")
 	static <T extends MobEntity> boolean canSpawnInEcosystem(EntityType<T> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
-		Chunk chunk = world.getChunk(pos);
-
-		EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
-		if (ecosystemChunk == null) {
-			return true;
-		}
-
-		Optional<EcosystemType<? extends MobEntity>> optional = EcosystemType.get(type);
-
-		if (optional.isEmpty()) {
-			return true;
-		}
-
-		EcosystemType<? extends MobEntity> ecosystemType = optional.get();
-
-//		int nearbyPopulation = ecosystemChunk.getNearbyEcosystemTypePopulation(ecosystemType);
-//		return nearbyPopulation < ecosystemType.targetPopulation() * 1.2;
 		return true;
 	}
 

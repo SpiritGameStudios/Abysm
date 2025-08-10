@@ -5,7 +5,6 @@ import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea.PopInfo;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaManager;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaPos;
-import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemChunk;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -34,10 +33,10 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Displays each EcosystemType form all nearby created {@link EcosystemChunk}. Format:<br><br>
+ * Displays each EcosystemType form all nearby created {@link EcosystemArea}. Format:<br><br>
  * {EntityType}: {NearbyPopulation} / {TargetPopulation} ({PopulationInChunk})<br><br>
  *
- * The displayed colors are based on the {@link EcosystemChunk.PopStatus} of {@link EcosystemChunk#getPopStatus(EcosystemType)}<br>
+ * The displayed colors are based on the {@link EcosystemArea.PopInfo} of {@link EcosystemArea#populations}<br>
  * Dark Green = Overpopulated<br>
  * Green = Maintained<br>
  * Orange/yellow = Underpopulated<br>
