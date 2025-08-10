@@ -117,6 +117,7 @@ public class FleePredatorsGoal extends Goal {
 	@Override
 	public void start() {
 		this.fleeingEntityNavigation.startMovingAlong(this.fleePath, this.slowSpeed);
+		((EcologicalEntity) this.mob).setFleeing(true);
 	}
 
 	@Override

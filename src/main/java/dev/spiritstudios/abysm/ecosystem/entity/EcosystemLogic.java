@@ -55,6 +55,9 @@ public class EcosystemLogic {
 	public void tick() {
 		this.tracker.tick();
 		this.breedTicks++;
+		if (this.isFleeing && this.hunterEntity == null) {
+			this.isFleeing = false;
+		}
 		if (huntTicks > 0 && this.huntTargetEntity != null) {
 			this.huntTicks--;
 		}
