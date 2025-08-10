@@ -3,28 +3,29 @@ package dev.spiritstudios.abysm.ecosystem.chunk;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 
-// Handles all entities within a specific chunk, accounting for adjacent chunks too.
-// This class keeps track of how many EcologicalEntities are within a chunk,
-// tells them how to feel & what to do based on available data(accounts for adjacent chunks),
-// as well as keep that data persistent across world reloads.
-
-// If there's plenty of common prey available, common predators will be told to feel hungry and start hunting,
-// and if there's too little common prey, the prey will be told to start repopulating and common predators will be less hungry.
-// The current idea for this implementation is that the EcosystemLogic class will have signals(booleans methods?) available saying how
-// the entity should be feeling, and this class will enable/disable those signals as needed.
-// Each EcologicalEntity can then use those signals as desired, either with a brain or AI goals.
-// Or, ignore them completely(the giant leviathans probably won't care about their EntityType population)
-
-// Persistence handling:
-// Persistent EcosystemChunks will keep track of the number of each EcosystemType in it,
-// and will respawn that number of entities upon that chunk being reloaded by a player.
-// This replaces having each individual entity persistent. But, we must account for entities that would normally
-// be persistent, e.g. nametagged entities and entities near players upon world leave.
-
-// Each EcosystemChunk will be checked for the biome (likely by checking the center block of the chunk).
-// If it is an Abysm biome, the EcosystemChunk will be persistent.
-// If not, the closest persistent EcosystemChunk will be found and given all the entity counts instead.
-
+/**
+ * Handles all entities within a specific chunk, accounting for adjacent chunks too.
+ * This class keeps track of how many EcologicalEntities are within a chunk,
+ * tells them how to feel & what to do based on available data(accounts for adjacent chunks),
+ * as well as keep that data persistent across world reloads.
+ * <p>
+ * If there's plenty of common prey available, common predators will be told to feel hungry and start hunting,
+ * and if there's too little common prey, the prey will be told to start repopulating and common predators will be less hungry.
+ * The current idea for this implementation is that the EcosystemLogic class will have signals(booleans methods?) available saying how
+ * the entity should be feeling, and this class will enable/disable those signals as needed.
+ * Each EcologicalEntity can then use those signals as desired, either with a brain or AI goals.
+ * Or, ignore them completely(the giant leviathans probably won't care about their EntityType population)
+ * <p>
+ * Persistence handling:
+ * Persistent EcosystemChunks will keep track of the number of each EcosystemType in it,
+ * and will respawn that number of entities upon that chunk being reloaded by a player.
+ * This replaces having each individual entity persistent. But, we must account for entities that would normally
+ * be persistent, e.g. nametagged entities and entities near players upon world leave.
+ * <p>
+ * Each EcosystemChunk will be checked for the biome (likely by checking the center block of the chunk).
+ * If it is an Abysm biome, the EcosystemChunk will be persistent.
+ * If not, the closest persistent EcosystemChunk will be found and given all the entity counts instead.
+ */
 public class EcosystemChunk {
 	public final World world;
 	public final ChunkPos pos;

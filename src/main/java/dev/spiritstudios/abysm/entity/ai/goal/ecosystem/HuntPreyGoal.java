@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.entity.ai.goal.ecosystem;
 
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
+import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -10,6 +11,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.TypeFilter;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -73,7 +75,7 @@ public class HuntPreyGoal extends TrackTargetGoal {
 		if (this.reciprocalChance > 0 && this.mob.getRandom().nextInt(this.reciprocalChance) != 0) {
 			return false;
 		}
-		if (!((EcologicalEntity) this.mob).isHungryCarnivore()) {
+		if (!((EcologicalEntity) this.mob).getEcosystemLogic().canHunt) {
 			return false;
 		}
 		this.findClosestTarget();
@@ -102,6 +104,12 @@ public class HuntPreyGoal extends TrackTargetGoal {
 	@Override
 	public void start() {
 		this.mob.setTarget(this.targetEntity);
+		EcosystemType<?> myType = ((EcologicalEntity) this).getEcosystemType();
+		float favorChance = myType.huntFavorChance();
+		Random random = this.mob.getRandom();
+		boolean favor = random.nextFloat() <= favorChance;
+		((EcologicalEntity) this).getEcosystemLogic().theHuntIsOn((MobEntity) this.targetEntity, random.nextBetween(myType.minHuntTicks(), myType.maxHuntTicks()), favor);
+		((EcologicalEntity) this.targetEntity).getEcosystemLogic().alertOfHunt(this.mob, favor);
 		super.start();
 	}
 

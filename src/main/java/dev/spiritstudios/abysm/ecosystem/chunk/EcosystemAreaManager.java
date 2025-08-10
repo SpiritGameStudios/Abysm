@@ -15,7 +15,7 @@ public class EcosystemAreaManager {
 	}
 
 	public void tick() {
-		this.areas.forEach((pos, area) -> area.tick(pos));
+		this.areas.forEach((pos, area) -> area.tick(this.world, pos));
 	}
 
 	public boolean containsArea(EcosystemAreaPos pos) {

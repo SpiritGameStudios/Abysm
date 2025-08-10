@@ -1,7 +1,9 @@
 package dev.spiritstudios.abysm.ecosystem.chunk;
 
+import com.google.common.base.MoreObjects;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Spliterators;
@@ -9,19 +11,12 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class EcosystemAreaPos {
+public record EcosystemAreaPos(int x, int z) {
 	public static final int CHUNK_DISTANCE = 3;
-	public final int x;
-	public final int z;
-
-	public EcosystemAreaPos(int x, int z) {
-		this.x = x;
-		this.z = z;
-	}
 
 	public EcosystemAreaPos(ChunkPos chunkPos) {
 		this(
-			MathHelper.floor((float) chunkPos.x / CHUNK_DISTANCE),
+			MathHelper.floor((float) chunkPos.x / CHUNK_DISTANCE), // is using floorDiv better here?
 			MathHelper.floor((float) chunkPos.z / CHUNK_DISTANCE)
 		);
 	}
@@ -80,11 +75,11 @@ public class EcosystemAreaPos {
 		if(this == obj) return true;
 		// There's probably a reason why Mojang does it this way with ChunkPos#equals(), right?
 		// (Instead of doing `obj instanceof EcosystemAreaPos && this.x == areaPos.x && this.z == areaPos.z;`)
-		return !(obj instanceof EcosystemAreaPos areaPos) ? false : this.x == areaPos.x && this.z == areaPos.z;
+		return obj instanceof EcosystemAreaPos(int x1, int z1) && this.x == x1 && this.z == z1;
 	}
 
 	@Override
-	public String toString() {
-		return "[" + this.x + ", " + this.z + "]";
+	public @NotNull String toString() {
+		return MoreObjects.toStringHelper(this).add("x", this.x).add("z", this.z).toString();
 	}
 }

@@ -149,26 +149,7 @@ public interface EcologicalEntity {
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	default boolean isHungryCarnivore() {
-		World world = ((MobEntity) this).getWorld();
-		Chunk chunk = world.getChunk(((MobEntity) this).getBlockPos());
-
-		EcosystemChunk ecosystemChunk = chunk.getAttached(AbysmAttachments.ECOSYSTEM_CHUNK);
-		if (ecosystemChunk == null) {
-			return false;
-		}
-
-		for (EntityType<? extends MobEntity> prey : this.getEcosystemType().prey()) {
-			Optional<EcosystemType<? extends MobEntity>> optional = EcosystemType.get(prey);
-
-			if (optional.isEmpty()) {
-				continue;
-			}
-//			if (ecosystemChunk.ecosystemTypeNearbyPopOkay(optional.get())) {
-//				return true;
-//			}
-		}
-
-		return false;
+		return this.isHungry();
 	}
 
 	static <T extends MobEntity> boolean canSpawnInEcosystem(EntityType<T> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
@@ -226,11 +207,16 @@ public interface EcologicalEntity {
 		return this.getEcosystemLogic().shouldRepopulate();
 	}
 
+	default boolean canBreedAndRepopulate() {
+		return this.shouldRepopulate() && this.canBreed();
+	}
+
 	default void setShouldRepopulate(boolean shouldRepopulate) {
 		this.getEcosystemLogic().setCanRepopulate(shouldRepopulate);
 	}
 
 	default @Nullable MobEntity getBreedMate() {
+		// we probably don't need this?
 		return this.getEcosystemLogic().getBreedMate();
 	}
 

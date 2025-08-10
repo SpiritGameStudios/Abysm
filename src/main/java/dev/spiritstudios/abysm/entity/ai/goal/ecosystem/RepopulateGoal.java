@@ -49,7 +49,7 @@ public class RepopulateGoal extends Goal {
 	@Override
 	public boolean canStart() {
 		EcologicalEntity ecologicalEntity = (EcologicalEntity) this.mob;
-		if(!ecologicalEntity.shouldRepopulate() || !ecologicalEntity.canBreed()) return false;
+		if(!ecologicalEntity.canBreedAndRepopulate()) return false;
 
 		this.findClosestMate();
 		return this.mate != null;
@@ -73,8 +73,8 @@ public class RepopulateGoal extends Goal {
 	public boolean shouldContinue() {
 		if(this.mate == null || this.timer > 60 || this.mate.isDead()) return false;
 
-		EcologicalEntity ecologicalMate = (EcologicalEntity) mate;
-		return ecologicalMate.shouldRepopulate();
+		return ((EcologicalEntity) this).canBreedAndRepopulate() &&
+			((EcologicalEntity) mate).canBreedAndRepopulate();
 	}
 
 	public void breed() {
@@ -92,7 +92,15 @@ public class RepopulateGoal extends Goal {
 		this.mate = this.world.getClosestEntity(
 			this.world.getEntitiesByType(TypeFilter.instanceOf(MobEntity.class),
 				this.getSearchBox(this.getFollowRange()),
-				mobEntity -> mobEntity.getType().equals(this.mob.getType())),
+				mobEntity -> {
+					if (!mobEntity.getType().equals(this.mob.getType())) {
+						return false;
+					}
+					if (!(mobEntity instanceof EcologicalEntity eco)) {
+						return false;
+					}
+					return eco.canBreedAndRepopulate();
+				}),
 			this.getAndUpdateTargetPredicate(),
 			this.mob,
 			this.mob.getX(),

@@ -2,10 +2,10 @@ package dev.spiritstudios.abysm.client.render.debug.ecosystem;
 
 import com.google.common.collect.ImmutableList;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea;
+import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea.PopInfo;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaManager;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaPos;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemChunk;
-import dev.spiritstudios.abysm.ecosystem.chunk.PopInfo;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
