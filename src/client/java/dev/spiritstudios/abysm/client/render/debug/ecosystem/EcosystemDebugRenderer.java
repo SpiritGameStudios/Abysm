@@ -47,7 +47,8 @@ import java.util.concurrent.CompletableFuture;
  * Hold a Heart of The Sea to see only the chunks of the EcosystemType's search radius, as your current chunk in the center.
  */
 public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
-	private static final int DARK_RED = 0x640000;
+	private static final int DARK_RED = 0xFF640000;
+	private static final int DARK_GREEN = 0xFF006400;
 
 	public final MinecraftClient client;
 	private double lastUpdateTime = Double.MIN_VALUE;
@@ -129,7 +130,19 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 
 				// EntityName: NearbyPopulation/TargetPopulation (ChunkPopulation)
 				String stringedInfo = String.format("%s: %s/%s (%s)", typeName.getString(), nearbyPopulation, targetPopulation, areaPopulation);
-				int color = nearbyPopulation >= targetPopulation ? Colors.GREEN : Colors.LIGHT_RED;
+				int color;
+
+				if (nearbyPopulation <= 0) {
+					color = DARK_RED;
+				} else if (nearbyPopulation <= ecosystemType.nearExtinctMark()) {
+					color = Colors.LIGHT_RED;
+				} else if (nearbyPopulation >= ecosystemType.overpopulationMark()) {
+					color = DARK_GREEN;
+				} else if (nearbyPopulation < ecosystemType.targetPopulation()) {
+					color = Colors.YELLOW;
+				} else {
+					color = Colors.GREEN;
+				}
 				drawString(matrices, vertexConsumers, stringedInfo, areaCenterPos, initY, yOffset, color);
 				yOffset -= 1;
 			}

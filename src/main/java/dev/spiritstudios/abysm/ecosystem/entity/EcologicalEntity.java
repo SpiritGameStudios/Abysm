@@ -2,6 +2,9 @@ package dev.spiritstudios.abysm.ecosystem.entity;
 
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
+import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -91,7 +94,7 @@ public interface EcologicalEntity {
 	}
 
 	default void breed(ServerWorld world, MobEntity other, boolean overrideCanBreed) {
-		if(!overrideCanBreed && !canBreed()) return;
+		if (!overrideCanBreed && !canBreed()) return;
 
 		EcosystemType<?> ecosystemType = this.getEcosystemType();
 		MobEntity self = (MobEntity) this;
@@ -101,9 +104,7 @@ public interface EcologicalEntity {
 		}
 		this.setBreedTicks(0);
 		this.setShouldRepopulate(false);
-		// TODO - custom packet for this.
-		//  Entity status doesn't work unless every single non-PassiveEntity ecological entity manually implements it
-		world.spawnParticles(ParticleTypes.HEART, self.getX(), self.getY(), self.getZ(), 7, 0.5, 0.5, 0.5, 1);
+		new HappyEntityParticlesS2CPayload(self, ParticleTypes.HEART, 7).send(self);
 	}
 
 	/**

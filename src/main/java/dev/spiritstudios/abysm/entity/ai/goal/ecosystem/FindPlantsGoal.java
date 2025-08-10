@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.entity.ai.goal.ecosystem;
 
 import dev.spiritstudios.abysm.ecosystem.entity.PlantEater;
-import dev.spiritstudios.abysm.networking.EntityFinishedEatingS2CPayload;
+import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -144,9 +144,7 @@ public class FindPlantsGoal extends Goal {
 		if (this.ate()) {
 			plantEater.setNotHungryAnymoreYay();
 			if (!this.obj.getWorld().isClient) {
-				EntityFinishedEatingS2CPayload payload = new EntityFinishedEatingS2CPayload(this.obj, ParticleTypes.HAPPY_VILLAGER);
-				PlayerLookup.tracking(this.obj)
-					.forEach(player -> ServerPlayNetworking.send(player, payload));
+				new HappyEntityParticlesS2CPayload(this.obj, ParticleTypes.HAPPY_VILLAGER, 5).send(this.obj);
 			}
 		}
 

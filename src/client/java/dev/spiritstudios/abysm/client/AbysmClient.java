@@ -22,7 +22,7 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.Lectorfin
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
-import dev.spiritstudios.abysm.networking.EntityFinishedEatingS2CPayload;
+import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
 import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -62,7 +62,7 @@ public class AbysmClient implements ClientModInitializer {
 		AbysmRenderPipelines.init();
 		AbysmDebugRenderers.init();
 
-		ClientPlayNetworking.registerGlobalReceiver(EntityFinishedEatingS2CPayload.ID, (payload, context) -> {
+		ClientPlayNetworking.registerGlobalReceiver(HappyEntityParticlesS2CPayload.ID, (payload, context) -> {
 			World world = context.player().getWorld();
 			Entity entity = world.getEntityById(payload.entityId());
 			if (entity == null) {
