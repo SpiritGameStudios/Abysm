@@ -36,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
  *
  * Beyond that, this interface also contains various getters/setters used in Ecosystem-related systems, which can be manually overridden if desired. Most of them will be towards the bottom of the interface.
  */
-@SuppressWarnings("UnstableApiUsage")
 public interface EcologicalEntity {
 
 	/**

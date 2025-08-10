@@ -78,6 +78,8 @@ public class FleePredatorsGoal extends Goal {
 
 	@Override
 	public boolean canStart() {
+		return ((EcologicalEntity) this.mob).getEcosystemLogic().isBeingHunted;
+		/*
 		ServerWorld serverWorld = getServerWorld(this.mob);
 		Set<EntityType<? extends MobEntity>> predators = ((EcologicalEntity) this.mob).getEcosystemType().predators();
 		this.targetEntity = serverWorld
@@ -104,6 +106,7 @@ public class FleePredatorsGoal extends Goal {
 				return this.fleePath != null;
 			}
 		}
+		*/
 	}
 
 	@Override

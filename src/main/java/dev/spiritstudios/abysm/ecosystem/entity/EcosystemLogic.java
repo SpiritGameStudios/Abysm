@@ -129,7 +129,7 @@ public class EcosystemLogic {
 	public void alertOfHunt(MobEntity hunter, boolean favor) {
 		this.hunterEntity = hunter;
 		this.isBeingHunted = true;
-		this.isFavoredInHunt = false;
+		this.isFavoredInHunt = favor;
 	}
 
 	public boolean canScavenge() {

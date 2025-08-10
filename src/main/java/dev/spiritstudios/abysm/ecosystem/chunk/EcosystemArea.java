@@ -72,7 +72,7 @@ public class EcosystemArea {
 					ecoTarget.getEcosystemLogic().stopHunt();
 				}
 			} else {
-				// being hunt
+				// begin hunt
 				logic.allowHunting();
 			}
 		});
