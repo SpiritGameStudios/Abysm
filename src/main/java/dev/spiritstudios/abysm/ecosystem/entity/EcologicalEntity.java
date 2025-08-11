@@ -2,14 +2,15 @@ package dev.spiritstudios.abysm.ecosystem.entity;
 
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
+import dev.spiritstudios.abysm.entity.AbysmEntityAttributeModifiers;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
@@ -17,8 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Contains methods for handling all entity-related logic that any Ecosystem-related systems may need to call(e.g. {@link EcosystemLogic})<br><br>
@@ -35,6 +36,11 @@ import org.jetbrains.annotations.Nullable;
  * {@link EcologicalEntity#createChildEntity(ServerWorld, MobEntity, BlockPos)} can be overridden for custom breeding results(e.g. giving the child one of the parent's entity patterns or variants).<br><br>
  *
  * Beyond that, this interface also contains various getters/setters used in Ecosystem-related systems, which can be manually overridden if desired. Most of them will be towards the bottom of the interface.
+ *
+ * @see EcologicalEntity#tickEcosystemLogic()
+ * @see EcologicalEntity#alertEcosystemOfSpawn()
+ * @see EcologicalEntity#alertEcosystemOfDeath()
+ * @see EcologicalEntity#createChildEntity(ServerWorld, MobEntity, BlockPos)
  */
 public interface EcologicalEntity {
 
@@ -84,9 +90,99 @@ public interface EcologicalEntity {
 	}
 
 	/**
+	 * Main method called for starting a hunt as the predator.<br><br>
+	 *
+	 * Determines hunt favor and length, applies hunt's favor buffs/debuffs, and alerts the target prey about the hunt.
+	 * @see dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal
+	 */
+	default void theHuntIsOn(World world, MobEntity target) {
+		float hunterFavorChance = this.getEcosystemType().huntFavorChance();
+		boolean hunterFavored = world.getRandom().nextFloat() <= hunterFavorChance;
+
+		int minHuntTicks = this.getEcosystemType().minHuntTicks();
+		int maxHuntTicks = this.getEcosystemType().maxHuntTicks();
+		int huntTicks = world.getRandom().nextBetween(minHuntTicks, maxHuntTicks);
+
+		// Allow for non-EcologicalEntity targets if that happened for some reason
+		if ((target instanceof EcologicalEntity ecologicalTarget)) {
+			// Alert the prey of the hunt, and activate relevant effects
+			ecologicalTarget.onBeingHunted(world, hunterFavored);
+		}
+
+		this.setCanHunt(false);
+		this.setHunting(true);
+		this.setHuntTicks(huntTicks);
+		this.setFavoredInHunt(hunterFavored);
+		this.applyHuntSpeeds(hunterFavored);
+	}
+
+	/**
+	 * Main method called for getting included in a hunt as the prey - called from the predator who started the hunt.<br><br>
+	 *
+	 * Applies hunt's favor buffs/debuffs.
+	 * @see dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal
+	 */
+	default void onBeingHunted(World world, boolean hunterFavored) {
+		this.setBeingHunted(true);
+		this.setFavoredInHunt(!hunterFavored);
+		this.applyHuntSpeeds(!hunterFavored);
+	}
+
+	default void applyHuntSpeeds(boolean selfIsFavored) {
+		// FIXME - Sometimes entities crash with the custom attributes modifier
+		// FIXME - Movement speed increases doesn't do anything for the fish
+		// FIXME - Hunters give up on hunting prey too easily because they get too far away too fast (partially above issue)
+		// FIXME - Fish repopulating can't get close enough to their chosen mate because they don't speed up
+		EcosystemType<?> ecosystemType = this.getEcosystemType();
+		MobEntity self = (MobEntity) this;
+		EntityAttributeInstance speedAttributeInstance = self.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
+		if(selfIsFavored) {
+			float favoredSpeed = ecosystemType.favoredHuntSpeedMultiplier();
+			speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(favoredSpeed * 5f));
+		} else {
+			float unfavoredSpeed = ecosystemType.unfavoredHuntSpeedMultiplier();
+			speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(unfavoredSpeed * 5f));
+		}
+	}
+
+	/**
+	 * Main method called for ending hunts, as either the target prey or hunter predator. <br><br>
+	 *
+	 * Resets hunt related fields.<br><br>
+	 */
+	default void onHuntEnd() {
+		this.setHunting(false);
+		this.setBeingHunted(false);
+		this.setHuntTicks(0);
+		this.setFavoredInHunt(false);
+
+		MobEntity self = (MobEntity) this;
+		EntityAttributeInstance speedAttributeInstance = self.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
+		speedAttributeInstance.removeModifier(AbysmEntityAttributeModifiers.FAVORED_HUNT_SPEED_MODIFIER_ID);
+		speedAttributeInstance.removeModifier(AbysmEntityAttributeModifiers.UNFAVORED_HUNT_SPEED_MODIFIER_ID);
+	}
+
+	default boolean shouldFailHunt() {
+		return this.getHuntTicks() <= 0;
+	}
+
+	default boolean canBreedAndRepopulate() {
+		return this.canRepopulate() && this.canBreed();
+	}
+
+	default boolean canBreed() {
+		boolean alive = ((MobEntity) this).isAlive();
+		boolean beingHunted = this.isBeingHunted();
+		int breedTicks = this.getBreedTicks();
+		int maxBreedTicks = 80; // TODO - EcosystemType this
+		return breedTicks >= maxBreedTicks && !beingHunted && alive;
+	}
+
+	/**
 	 * Main method called for breeding this entity with another.<br><br>
 	 *
 	 * This accounts for the {@link EcosystemType#minLitterSize()} & {@link EcosystemType#maxLitterSize()} numbers, spawning in a random amount of entities between those two numbers.
+	 * @see dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal
 	 */
 	default void breed(ServerWorld world, MobEntity other) {
 		this.breed(world, other, false);
@@ -102,7 +198,7 @@ public interface EcologicalEntity {
 			spawnChildEntity(world, other);
 		}
 		this.setBreedTicks(0);
-		this.setShouldRepopulate(false);
+		this.setCanRepopulate(false);
 		new HappyEntityParticlesS2CPayload(self, ParticleTypes.HEART, 7).send(self);
 	}
 
@@ -141,20 +237,87 @@ public interface EcologicalEntity {
 		return child;
 	}
 
-	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	default boolean isHungryCarnivore() {
-		return this.isHungry();
-	}
-
 	@SuppressWarnings("unused")
 	static <T extends MobEntity> boolean canSpawnInEcosystem(EntityType<T> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
 		return true;
 	}
 
-	// EcosystemLogic getters/setters
+	// EcosystemLogic getters/setters - overridable for custom behaviours if wanted
 
-	default boolean canBreed() {
-		return this.getEcosystemLogic().canBreed();
+	/**
+	 * @return If an EcosystemArea has tasked this entity to hunt.
+	 */
+	default boolean canHunt() {
+		return this.getEcosystemLogic().canHunt();
+	}
+
+	/**
+	 * Called when the current EcosystemArea allows this entity to hunt based on nearby population data, or when this entity succeeds/fails at its hunt.
+	 */
+	default void setCanHunt(boolean canHunt) {
+		this.getEcosystemLogic().setCanHunt(canHunt);
+	}
+
+	/**
+	 * @return If an EcosystemArea has tasked this entity to repopulate.
+	 */
+	default boolean canRepopulate() {
+		return this.getEcosystemLogic().canRepopulate();
+	}
+
+	/**
+	 * Called when the current EcosystemArea allows this entity to repopulate based on nearby population data, or after this entity has breed.
+	 */
+	default void setCanRepopulate(boolean canRepopulate) {
+		this.getEcosystemLogic().setCanRepopulate(canRepopulate);
+	}
+
+	/**
+	 * @return If an EcosystemArea has tasked this entity to scavenge for plants (mostly determined randomly for now).
+	 */
+	default boolean canScavenge() {
+		return this.getEcosystemLogic().canScavenge();
+	}
+
+	/**
+	 * Called when the current EcosystemArea allows this entity to scavenge for plants, or after this entity has finished eating plants.
+	 */
+	default void setCanScavenge(boolean canScavenge) {
+		this.getEcosystemLogic().setCanScavenge(canScavenge);
+	}
+
+
+
+	default boolean isHunting() {
+		return this.getEcosystemLogic().isHunting();
+	}
+
+	default void setHunting(boolean hunting) {
+		this.getEcosystemLogic().setHunting(hunting);
+	}
+
+	default boolean isBeingHunted() {
+		return this.getEcosystemLogic().isBeingHunted();
+	}
+
+	default void setBeingHunted(boolean beingHunted) {
+		this.getEcosystemLogic().setBeingHunted(beingHunted);
+	}
+
+	default int getHuntTicks() {
+		return this.getEcosystemLogic().getHuntTicks();
+	}
+
+	default void setHuntTicks(int huntTicks) {
+		this.getEcosystemLogic().setHuntTicks(huntTicks);
+	}
+
+	default boolean isFavoredInHunt() {
+		return this.getEcosystemLogic().isFavoredInHunt();
+	}
+
+	default void setFavoredInHunt(boolean favoredInHunt) {
+		this.getEcosystemLogic().setFavoredInHunt(favoredInHunt);
 	}
 
 	default int getBreedTicks() {
@@ -163,43 +326,6 @@ public interface EcologicalEntity {
 
 	default void setBreedTicks(int breedTicks) {
 		this.getEcosystemLogic().setBreedTicks(breedTicks);
-	}
-
-	default boolean isHungry() {
-		return this.getEcosystemLogic().isHungry();
-	}
-
-	default void setHungry(boolean hungry) {
-		this.getEcosystemLogic().setHungry(hungry);
-	}
-
-	default boolean isFleeing() {
-		return this.getEcosystemLogic().isFleeing();
-	}
-
-	default void setFleeing(boolean fleeing) {
-		this.getEcosystemLogic().setFleeing(fleeing);
-	}
-
-	default boolean shouldRepopulate() {
-		return this.getEcosystemLogic().shouldRepopulate();
-	}
-
-	default boolean canBreedAndRepopulate() {
-		return this.shouldRepopulate() && this.canBreed();
-	}
-
-	default void setShouldRepopulate(boolean shouldRepopulate) {
-		this.getEcosystemLogic().setCanRepopulate(shouldRepopulate);
-	}
-
-	default @Nullable MobEntity getBreedMate() {
-		// we probably don't need this?
-		return this.getEcosystemLogic().getBreedMate();
-	}
-
-	default void setBreedMate(@Nullable MobEntity breedMate) {
-		this.getEcosystemLogic().setBreedMate(breedMate);
 	}
 
 }

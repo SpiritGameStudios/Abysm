@@ -3,8 +3,9 @@ package dev.spiritstudios.abysm.ecosystem.entity;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaPos;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 // The actual implementations for handling & signaling most Entity-related Ecosystem code & calls,
 // such as finding food, repopulating, or signaling the Entity's goals/brain to avoid or actively flee from a predator
@@ -14,29 +15,17 @@ public class EcosystemLogic {
 	public final World world;
 	public final EcosystemTracker tracker;
 
-	// Remove for not helpful anymore because it's been split up?
-	public boolean isHungry = false;
-	public boolean isFleeing = false;
-
 	public boolean canHunt = false;
 	public boolean canScavenge = false;
 	public boolean canRepopulate = false;
 
-	public int huntTicks = 0;
-
 	public boolean isHunting = false;
 	public boolean isBeingHunted = false;
+	public int huntTicks = 0;
 	public boolean isFavoredInHunt = false;
-	@Nullable
-	public MobEntity huntTargetEntity = null;
-	@Nullable
-	public MobEntity hunterEntity = null;
 
-	public boolean isRepopulating = false;
-	@Nullable
-	public MobEntity breedMate = null;
-	// Ticks until breeding - 20 seconds by default, but should probably be determined by EcosystemType later
-	public int breedCooldownTicks = 400;
+	// TODO - determine by EcosystemType
+	public int breedCooldownTicks;
 	public int breedTicks = 0;
 
 	public EcosystemLogic(MobEntity entity, EcosystemType<?> type) {
@@ -55,11 +44,19 @@ public class EcosystemLogic {
 	public void tick() {
 		this.tracker.tick();
 		this.breedTicks++;
-		if (this.isFleeing && this.hunterEntity == null) {
-			this.isFleeing = false;
-		}
-		if (huntTicks > 0 && this.huntTargetEntity != null) {
+
+		if (this.isHunting) {
 			this.huntTicks--;
+
+			if(this.world.isClient) return;
+		}
+
+		if(this.isHunting || this.isBeingHunted) {
+			if(this.isFavoredInHunt()) {
+				((ServerWorld) this.world).spawnParticles(ParticleTypes.WAX_ON, this.entity.getX(), this.entity.getY() + 1, this.entity.getZ(), 1, 0, 0, 0, 0);
+			} else {
+				((ServerWorld) this.world).spawnParticles(ParticleTypes.WAX_OFF, this.entity.getX(), this.entity.getY() + 1, this.entity.getZ(), 1, 0, 0, 0, 0);
+			}
 		}
 	}
 
@@ -68,53 +65,15 @@ public class EcosystemLogic {
 		this.tracker.onEcosystemAreaLeave(ecosystemAreaPos);
 	}
 
-	public boolean canBreed() {
-		return this.breedTicks >= this.breedCooldownTicks && this.entity.isAlive();
+	public void theHuntIsOn(MobEntity target, int huntTicks, boolean favor) {
+		this.isHunting = true;
+		this.huntTicks = huntTicks;
+		this.isFavoredInHunt = favor;
 	}
 
-	//region Getters and Setters
-	public boolean isHungry() {
-		return this.isHungry;
-	}
-
-	public void setHungry(boolean hungry) {
-		this.isHungry = hungry;
-	}
-
-	public boolean shouldRepopulate() {
-		return this.canRepopulate;
-	}
-
-	public void setCanRepopulate(boolean canRepopulate) {
-		this.canRepopulate = canRepopulate;
-	}
-
-	public boolean isFleeing() {
-		return this.isFleeing;
-	}
-
-	public void setFleeing(boolean fleeing) {
-		this.isFleeing = fleeing;
-	}
-
-	public int getBreedTicks() {
-		return this.breedTicks;
-	}
-
-	public void setBreedTicks(int breedTicks) {
-		this.breedTicks = breedTicks;
-	}
-
-	public boolean canHunt() {
-		return this.canHunt;
-	}
-
-	public void stopHunt() {
-		this.isFavoredInHunt = false;
-		this.isHunting = false;
-		this.isBeingHunted = false;
-		this.hunterEntity = null;
-		this.huntTargetEntity = null;
+	public void alertOfHunt(MobEntity hunter, boolean favor) {
+		this.isBeingHunted = true;
+		this.isFavoredInHunt = favor;
 	}
 
 	public void allowHunting() {
@@ -122,17 +81,22 @@ public class EcosystemLogic {
 		this.huntTicks = 1;
 	}
 
-	public void theHuntIsOn(MobEntity target, int huntTicks, boolean favor) {
-		this.isHunting = true;
-		this.huntTicks = huntTicks;
-		this.huntTargetEntity = target;
-		this.isFavoredInHunt = favor;
+	//region Getters and Setters
+
+	public boolean canHunt() {
+		return this.canHunt;
 	}
 
-	public void alertOfHunt(MobEntity hunter, boolean favor) {
-		this.hunterEntity = hunter;
-		this.isBeingHunted = true;
-		this.isFavoredInHunt = favor;
+	public void setCanHunt(boolean canHunt) {
+		this.canHunt = canHunt;
+	}
+
+	public boolean canRepopulate() {
+		return this.canRepopulate;
+	}
+
+	public void setCanRepopulate(boolean canRepopulate) {
+		this.canRepopulate = canRepopulate;
 	}
 
 	public boolean canScavenge() {
@@ -143,16 +107,44 @@ public class EcosystemLogic {
 		this.canScavenge = canScavenge;
 	}
 
-	public boolean canRepopulate() {
-		return this.canRepopulate;
+	public boolean isHunting() {
+		return this.isHunting;
 	}
 
-	public @Nullable MobEntity getBreedMate() {
-		return this.breedMate;
+	public void setHunting(boolean hunting) {
+		this.isHunting = hunting;
 	}
 
-	public void setBreedMate(@Nullable MobEntity breedMate) {
-		this.breedMate = breedMate;
+	public boolean isBeingHunted() {
+		return this.isBeingHunted;
+	}
+
+	public void setBeingHunted(boolean beingHunted) {
+		this.isBeingHunted = beingHunted;
+	}
+
+	public int getHuntTicks() {
+		return this.huntTicks;
+	}
+
+	public void setHuntTicks(int huntTicks) {
+		this.huntTicks = huntTicks;
+	}
+
+	public boolean isFavoredInHunt() {
+		return isFavoredInHunt;
+	}
+
+	public void setFavoredInHunt(boolean favoredInHunt) {
+		isFavoredInHunt = favoredInHunt;
+	}
+
+	public int getBreedTicks() {
+		return this.breedTicks;
+	}
+
+	public void setBreedTicks(int breedTicks) {
+		this.breedTicks = breedTicks;
 	}
 
 	//endregion

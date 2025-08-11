@@ -59,7 +59,7 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 
 		private int minHuntTicks = 1200; // 60 seconds
 		private int maxHuntTicks = 1600; // 80 seconds
-		private float huntFavorChance = 0.5f;
+		private float huntFavorChance = 0.85f;
 		private float favoredHuntSpeedMultiplier = 1.1f;
 		private float unfavoredHuntSpeedMultiplier = 0.9f;
 

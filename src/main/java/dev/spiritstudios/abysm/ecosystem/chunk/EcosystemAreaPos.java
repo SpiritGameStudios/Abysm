@@ -16,7 +16,7 @@ public record EcosystemAreaPos(int x, int z) {
 
 	public EcosystemAreaPos(ChunkPos chunkPos) {
 		this(
-			MathHelper.floor((float) chunkPos.x / CHUNK_DISTANCE), // is using floorDiv better here?
+			MathHelper.floor((float) chunkPos.x / CHUNK_DISTANCE), // is using floorDiv better here? - Maybe?
 			MathHelper.floor((float) chunkPos.z / CHUNK_DISTANCE)
 		);
 	}

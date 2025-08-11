@@ -60,7 +60,7 @@ public class RepopulateGoal extends Goal {
 		this.mob.getLookControl().lookAt(this.mate, 10f, this.mob.getMaxLookPitchChange());
 		this.mob.getNavigation().startMovingTo(this.mate, this.speed);
 		this.timer++;
-		if(this.mob.age % 5 == 0) {
+		if (this.mob.age % 5 == 0) {
 			this.world.spawnParticles(ParticleTypes.HEART, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ(), 1, 0, 0, 0, 0);
 		}
 //		if(this.timer >= this.getTickCount(60) && this.mob.squaredDistanceTo(this.mate) < 9) {
@@ -73,8 +73,7 @@ public class RepopulateGoal extends Goal {
 	public boolean shouldContinue() {
 		if(this.mate == null || this.timer > 60 || this.mate.isDead()) return false;
 
-		return ((EcologicalEntity) this).canBreedAndRepopulate() &&
-			((EcologicalEntity) mate).canBreedAndRepopulate();
+		return ((EcologicalEntity) this.mob).canBreedAndRepopulate();
 	}
 
 	public void breed() {

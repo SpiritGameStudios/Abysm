@@ -1,6 +1,6 @@
 {
-	"model": {
-		"type": "minecraft:model",
-		"model": "abysm:item/small_floral_fish"
-	}
+  "model": {
+    "type": "minecraft:model",
+    "model": "abysm:item/small_floral_fish"
+  }
 }

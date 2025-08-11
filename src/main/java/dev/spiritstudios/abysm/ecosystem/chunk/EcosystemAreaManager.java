@@ -15,6 +15,7 @@ public class EcosystemAreaManager {
 	}
 
 	public void tick() {
+		// TODO - EcosystemArea unloading either when empty or when all their chunks are unloaded
 		this.areas.forEach((pos, area) -> area.tick(this.world, pos));
 	}
 

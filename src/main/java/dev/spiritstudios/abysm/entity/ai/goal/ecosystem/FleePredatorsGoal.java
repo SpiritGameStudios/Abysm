@@ -1,28 +1,25 @@
 package dev.spiritstudios.abysm.entity.ai.goal.ecosystem;
 
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.TypeFilter;
-import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.Set;
 import java.util.function.Predicate;
 
 import static dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal.assertIsEcologicalEntity;
 
 /**
+ * If this entity is being hunted, swim away from it
+ *
  * @see net.minecraft.entity.ai.goal.FleeEntityGoal
  */
 public class FleePredatorsGoal extends Goal {
@@ -78,7 +75,7 @@ public class FleePredatorsGoal extends Goal {
 
 	@Override
 	public boolean canStart() {
-		return ((EcologicalEntity) this.mob).getEcosystemLogic().isBeingHunted;
+		return ((EcologicalEntity) this.mob).isBeingHunted();
 		/*
 		ServerWorld serverWorld = getServerWorld(this.mob);
 		Set<EntityType<? extends MobEntity>> predators = ((EcologicalEntity) this.mob).getEcosystemType().predators();
@@ -117,16 +114,19 @@ public class FleePredatorsGoal extends Goal {
 	@Override
 	public void start() {
 		this.fleeingEntityNavigation.startMovingAlong(this.fleePath, this.slowSpeed);
-		((EcologicalEntity) this.mob).setFleeing(true);
+//		((EcologicalEntity) this.mob).setFleeing(true);
 	}
 
 	@Override
 	public void stop() {
+		((EcologicalEntity) this.mob).onHuntEnd();
+		getServerWorld(this.mob).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 3, 0, 0, 0, 0);
 		this.targetEntity = null;
 	}
 
 	@Override
 	public void tick() {
+		if(this.targetEntity == null) return;
 		if (this.mob.squaredDistanceTo(this.targetEntity) < 49.0) {
 			this.mob.getNavigation().setSpeed(this.fastSpeed);
 		} else {

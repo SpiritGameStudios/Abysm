@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.command.AbysmCommands;
 import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
+import dev.spiritstudios.abysm.entity.AbysmEntityAttributeModifiers;
 import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
@@ -82,6 +83,7 @@ public class Abysm implements ModInitializer {
 
 		// register entities & related
 		AbysmEntityAttributes.init();
+		AbysmEntityAttributeModifiers.init();
 		AbysmEntityTypes.init();
 		AbysmTrackedDataHandlers.init();
 		AbysmEcosystemTypes.init();

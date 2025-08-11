@@ -1,23 +1,23 @@
 package dev.spiritstudios.abysm.entity.ai.goal.ecosystem;
 
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
-import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TrackTargetGoal;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.TypeFilter;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.Set;
 
 /**
+ * If this entity is allowed to hunt, it'll search for nearby targets and begin a hunt upon finding one.
+ *
  * @see TrackTargetGoal
  * @see net.minecraft.entity.ai.goal.ActiveTargetGoal
  */
@@ -32,7 +32,7 @@ public class HuntPreyGoal extends TrackTargetGoal {
 	 */
 	protected final int reciprocalChance;
 	@Nullable
-	protected LivingEntity targetEntity;
+	protected MobEntity targetEntity;
 	protected TargetPredicate targetPredicate;
 
 	@SuppressWarnings("unused")
@@ -72,12 +72,14 @@ public class HuntPreyGoal extends TrackTargetGoal {
 
 	@Override
 	public boolean canStart() {
-		if (this.reciprocalChance > 0 && this.mob.getRandom().nextInt(this.reciprocalChance) != 0) {
+//		if (this.reciprocalChance > 0 && this.mob.getRandom().nextInt(this.reciprocalChance) != 0) {
+//			return false;
+//		}
+
+		if (!((EcologicalEntity) this.mob).canHunt()) {
 			return false;
 		}
-		if (!((EcologicalEntity) this.mob).getEcosystemLogic().canHunt) {
-			return false;
-		}
+
 		this.findClosestTarget();
 		return this.targetEntity != null;
 	}
@@ -104,17 +106,37 @@ public class HuntPreyGoal extends TrackTargetGoal {
 	@Override
 	public void start() {
 		this.mob.setTarget(this.targetEntity);
-		EcosystemType<?> myType = ((EcologicalEntity) this).getEcosystemType();
-		float favorChance = myType.huntFavorChance();
-		Random random = this.mob.getRandom();
-		boolean favor = random.nextFloat() <= favorChance;
-		((EcologicalEntity) this).getEcosystemLogic().theHuntIsOn((MobEntity) this.targetEntity, random.nextBetween(myType.minHuntTicks(), myType.maxHuntTicks()), favor);
-		((EcologicalEntity) this.targetEntity).getEcosystemLogic().alertOfHunt(this.mob, favor);
+		((EcologicalEntity) this.mob).theHuntIsOn(this.mob.getWorld(), this.targetEntity);
 		super.start();
 	}
 
+	@Override
+	public boolean shouldContinue() {
+		EcologicalEntity ecologicalMob = (EcologicalEntity) this.mob;
+		if (ecologicalMob.shouldFailHunt()) {
+			getServerWorld(this.mob).spawnParticles(ParticleTypes.ANGRY_VILLAGER, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 1, 0, 0, 0, 0);
+			return false;
+		}
+
+		return super.shouldContinue();
+	}
+
+	@Override
+	public void stop() {
+		((EcologicalEntity) this.mob).onHuntEnd();
+		if(this.targetEntity != null && this.targetEntity.isAlive()) {
+			((EcologicalEntity) this.targetEntity).onHuntEnd();
+		}
+		super.stop();
+	}
+
+//	@Override
+//	protected double getFollowRange() {
+//		return super.getFollowRange() * 5;
+//	}
+
 	@SuppressWarnings("unused")
-	protected void setTargetEntity(@Nullable LivingEntity targetEntity) {
+	protected void setTargetEntity(@Nullable MobEntity targetEntity) {
 		this.targetEntity = targetEntity;
 	}
 

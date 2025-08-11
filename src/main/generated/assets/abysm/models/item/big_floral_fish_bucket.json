@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": {
-		"layer0": "abysm:item/big_floral_fish_bucket"
-	}
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "abysm:item/big_floral_fish_bucket"
+  }
 }
