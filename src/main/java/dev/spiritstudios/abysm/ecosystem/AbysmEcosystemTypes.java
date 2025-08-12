@@ -24,9 +24,9 @@ public class AbysmEcosystemTypes {
 			.create(AbysmEntityTypes.SMALL_FLORAL_FISH)
 			.setPredators(AbysmEntityTypes.BLOOMRAY)
 			.setPlants(AbysmBlocks.PURPLE_SCABIOSA, AbysmBlocks.PINK_SCABIOSA, AbysmBlocks.RED_SCABIOSA)
-			.setTargetPopulation(10, 15, 3)
+			.setTargetPopulation(7)
+			.setUnfavoredHuntSpeed(0.35f)
 			.setLitterSize(1, 4)
-			.setUnfavoredHuntSpeed(0.8f)
 	);
 
 	public static final EcosystemType<BigFloralFishEntity> BIG_FLORAL_FISH = register(
@@ -34,9 +34,9 @@ public class AbysmEcosystemTypes {
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.BIG_FLORAL_FISH)
 			.setPredators(AbysmEntityTypes.BLOOMRAY)
-			.setTargetPopulation(7, 13, 3)
-			.setLitterSize(1, 3)
-			.setUnfavoredHuntSpeed(0.85f)
+			.setTargetPopulation(5)
+			.setUnfavoredHuntSpeed(0.25f)
+			.setLitterSize(1, 2)
 	);
 
 	public static final EcosystemType<PaddlefishEntity> PADDLEFISH = register(
@@ -52,10 +52,11 @@ public class AbysmEcosystemTypes {
 		"bloomray",
 		EcosystemType.Builder.create(AbysmEntityTypes.BLOOMRAY)
 			.setPrey(AbysmEntityTypes.SMALL_FLORAL_FISH, AbysmEntityTypes.BIG_FLORAL_FISH)
-			.setTargetPopulation(4, 7, 2)
+			.setTargetPopulation(3)
 			.setHuntTicks(400, 1000) // 20 seconds, 50 seconds
 			.setHuntFavorChance(0.9f)
-			.setHuntSpeedMultipliers(1.15f, 0.85f)
+			.setHuntSpeedMultipliers(0.3f, 0.2f)
+			.setBreedCooldownTicks(400) // 20 seconds
 	);
 
 	public static final EcosystemType<LectorfinEntity> LECTORFIN = register(

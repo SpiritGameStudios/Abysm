@@ -108,7 +108,8 @@ public class FleePredatorsGoal extends Goal {
 
 	@Override
 	public boolean shouldContinue() {
-		return !this.fleeingEntityNavigation.isIdle();
+//		return !this.fleeingEntityNavigation.isIdle();
+		return super.shouldContinue();
 	}
 
 	@Override

@@ -76,7 +76,7 @@ public class HuntPreyGoal extends TrackTargetGoal {
 //			return false;
 //		}
 
-		if (!((EcologicalEntity) this.mob).canHunt()) {
+		if (!((EcologicalEntity) this.mob).shouldHunt()) {
 			return false;
 		}
 
@@ -114,7 +114,6 @@ public class HuntPreyGoal extends TrackTargetGoal {
 	public boolean shouldContinue() {
 		EcologicalEntity ecologicalMob = (EcologicalEntity) this.mob;
 		if (ecologicalMob.shouldFailHunt()) {
-			getServerWorld(this.mob).spawnParticles(ParticleTypes.ANGRY_VILLAGER, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 1, 0, 0, 0, 0);
 			return false;
 		}
 
@@ -124,16 +123,12 @@ public class HuntPreyGoal extends TrackTargetGoal {
 	@Override
 	public void stop() {
 		((EcologicalEntity) this.mob).onHuntEnd();
-		if(this.targetEntity != null && this.targetEntity.isAlive()) {
+		if (this.targetEntity != null && this.targetEntity.isAlive()) {
+			getServerWorld(this.mob).spawnParticles(ParticleTypes.ANGRY_VILLAGER, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 1, 0, 0, 0, 0);
 			((EcologicalEntity) this.targetEntity).onHuntEnd();
 		}
 		super.stop();
 	}
-
-//	@Override
-//	protected double getFollowRange() {
-//		return super.getFollowRange() * 5;
-//	}
 
 	@SuppressWarnings("unused")
 	protected void setTargetEntity(@Nullable MobEntity targetEntity) {

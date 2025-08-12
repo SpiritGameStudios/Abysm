@@ -109,7 +109,7 @@ public interface EcologicalEntity {
 			ecologicalTarget.onBeingHunted(world, hunterFavored);
 		}
 
-		this.setCanHunt(false);
+		this.setShouldHunt(false);
 		this.setHunting(true);
 		this.setHuntTicks(huntTicks);
 		this.setFavoredInHunt(hunterFavored);
@@ -136,13 +136,13 @@ public interface EcologicalEntity {
 		EcosystemType<?> ecosystemType = this.getEcosystemType();
 		MobEntity self = (MobEntity) this;
 		EntityAttributeInstance speedAttributeInstance = self.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
-		if(selfIsFavored) {
-			float favoredSpeed = ecosystemType.favoredHuntSpeedMultiplier();
-			speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(favoredSpeed * 5f));
-		} else {
-			float unfavoredSpeed = ecosystemType.unfavoredHuntSpeedMultiplier();
-			speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(unfavoredSpeed * 5f));
-		}
+//		if(selfIsFavored) {
+//			float favoredSpeed = ecosystemType.favoredHuntSpeedMultiplier();
+//			speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(favoredSpeed * 5f));
+//		} else {
+//			float unfavoredSpeed = ecosystemType.unfavoredHuntSpeedMultiplier();
+//			speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(unfavoredSpeed * 5f));
+//		}
 	}
 
 	/**
@@ -167,15 +167,15 @@ public interface EcologicalEntity {
 	}
 
 	default boolean canBreedAndRepopulate() {
-		return this.canRepopulate() && this.canBreed();
+		return this.shouldRepopulate() && this.canBreed();
 	}
 
 	default boolean canBreed() {
 		boolean alive = ((MobEntity) this).isAlive();
 		boolean beingHunted = this.isBeingHunted();
 		int breedTicks = this.getBreedTicks();
-		int maxBreedTicks = 80; // TODO - EcosystemType this
-		return breedTicks >= maxBreedTicks && !beingHunted && alive;
+		int breedCooldownTicks = this.getEcosystemType().breedCooldownTicks();
+		return breedTicks >= breedCooldownTicks && !beingHunted && alive;
 	}
 
 	/**
@@ -193,12 +193,21 @@ public interface EcologicalEntity {
 
 		EcosystemType<?> ecosystemType = this.getEcosystemType();
 		MobEntity self = (MobEntity) this;
-		int amount = self.getRandom().nextBetween(ecosystemType.minLitterSize(), ecosystemType.maxLitterSize());
+		int minLitterSize = ecosystemType.minLitterSize();
+		int maxLitterSize = ecosystemType.maxLitterSize();
+
+		int amount;
+		if (minLitterSize == maxLitterSize) {
+			amount = 1;
+		} else {
+			amount = self.getRandom().nextBetween(minLitterSize, maxLitterSize);
+		}
+
 		for (int i = 0; i < amount; i++) {
 			spawnChildEntity(world, other);
 		}
 		this.setBreedTicks(0);
-		this.setCanRepopulate(false);
+		this.setShouldRepopulate(false);
 		new HappyEntityParticlesS2CPayload(self, ParticleTypes.HEART, 7).send(self);
 	}
 
@@ -247,43 +256,43 @@ public interface EcologicalEntity {
 	/**
 	 * @return If an EcosystemArea has tasked this entity to hunt.
 	 */
-	default boolean canHunt() {
-		return this.getEcosystemLogic().canHunt();
+	default boolean shouldHunt() {
+		return this.getEcosystemLogic().shouldHunt();
 	}
 
 	/**
 	 * Called when the current EcosystemArea allows this entity to hunt based on nearby population data, or when this entity succeeds/fails at its hunt.
 	 */
-	default void setCanHunt(boolean canHunt) {
-		this.getEcosystemLogic().setCanHunt(canHunt);
+	default void setShouldHunt(boolean shouldHunt) {
+		this.getEcosystemLogic().setShouldHunt(shouldHunt);
 	}
 
 	/**
 	 * @return If an EcosystemArea has tasked this entity to repopulate.
 	 */
-	default boolean canRepopulate() {
-		return this.getEcosystemLogic().canRepopulate();
+	default boolean shouldRepopulate() {
+		return this.getEcosystemLogic().shouldRepopulate();
 	}
 
 	/**
 	 * Called when the current EcosystemArea allows this entity to repopulate based on nearby population data, or after this entity has breed.
 	 */
-	default void setCanRepopulate(boolean canRepopulate) {
-		this.getEcosystemLogic().setCanRepopulate(canRepopulate);
+	default void setShouldRepopulate(boolean shouldRepopulate) {
+		this.getEcosystemLogic().setShouldRepopulate(shouldRepopulate);
 	}
 
 	/**
 	 * @return If an EcosystemArea has tasked this entity to scavenge for plants (mostly determined randomly for now).
 	 */
-	default boolean canScavenge() {
-		return this.getEcosystemLogic().canScavenge();
+	default boolean shouldScavenge() {
+		return this.getEcosystemLogic().shouldScavenge();
 	}
 
 	/**
 	 * Called when the current EcosystemArea allows this entity to scavenge for plants, or after this entity has finished eating plants.
 	 */
-	default void setCanScavenge(boolean canScavenge) {
-		this.getEcosystemLogic().setCanScavenge(canScavenge);
+	default void setShouldScavenge(boolean shouldScavenge) {
+		this.getEcosystemLogic().setShouldScavenge(shouldScavenge);
 	}
 
 

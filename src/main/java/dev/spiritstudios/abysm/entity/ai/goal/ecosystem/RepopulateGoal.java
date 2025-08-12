@@ -98,6 +98,16 @@ public class RepopulateGoal extends Goal {
 					if (!(mobEntity instanceof EcologicalEntity eco)) {
 						return false;
 					}
+
+					// FIXME - Double the amount of entities are spawned in because of this
+					// Because both entities are marked as "shouldRepopulate", both end up finding each other
+					// and both end up calling EcologicalEntity#breed(), which spawns in the litter twice
+
+					// A quick fix is to only search for "eco.canBreed()", but I think that would end up causing
+					// more entities overall, which is a problem for us considering our lack of predators
+
+					// A better system would be alerting the other entity that they are trying to breed,
+					// and then one is chosen to spawn in the new entities, but that isn't on my to-do list for now
 					return eco.canBreedAndRepopulate();
 				}),
 			this.getAndUpdateTargetPredicate(),

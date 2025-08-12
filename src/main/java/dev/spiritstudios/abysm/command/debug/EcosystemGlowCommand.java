@@ -69,7 +69,8 @@ public class EcosystemGlowCommand {
 
 		EcosystemType<?> ecosystemType = entry.value();
 		EntityType<?> entityType = ecosystemType.entityType();
-		int searchRange = ecosystemType.populationChunkSearchRadius() * (SharedConstants.CHUNK_WIDTH * 2); // convert chunks to blocks doubled for diameter
+		int chunkSearchRange = 2;
+		int searchRange = chunkSearchRange * (SharedConstants.CHUNK_WIDTH * 2); // convert chunks to blocks doubled for diameter
 
 		if (currentlyGlowing.contains(ecosystemType)) {
 			int removalRange = searchRange * 2;

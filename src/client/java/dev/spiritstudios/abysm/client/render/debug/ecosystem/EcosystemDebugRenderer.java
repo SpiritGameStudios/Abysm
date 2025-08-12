@@ -131,15 +131,10 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 				// EntityName: NearbyPopulation/TargetPopulation (ChunkPopulation)
 				String stringedInfo = String.format("%s: %s/%s (%s)", typeName.getString(), nearbyPopulation, targetPopulation, areaPopulation);
 				int color;
-
-				if (nearbyPopulation <= 0) {
+				if(nearbyPopulation <= 0) {
 					color = DARK_RED;
-				} else if (nearbyPopulation <= ecosystemType.nearExtinctMark()) {
-					color = Colors.LIGHT_RED;
-				} else if (nearbyPopulation >= ecosystemType.overpopulationMark()) {
-					color = DARK_GREEN;
 				} else if (nearbyPopulation < ecosystemType.targetPopulation()) {
-					color = Colors.YELLOW;
+					color = Colors.LIGHT_RED;
 				} else {
 					color = Colors.GREEN;
 				}

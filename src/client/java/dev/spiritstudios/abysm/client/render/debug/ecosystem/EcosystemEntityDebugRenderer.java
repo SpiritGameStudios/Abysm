@@ -133,7 +133,7 @@ public class EcosystemEntityDebugRenderer implements DebugRenderer.Renderer {
 
 					// Names are completely useless, but I think it's fun that Minecraft uses them for debug anyways
 					statusBuilder.add(new EntityStatus(entity, NameGenerator.name(entity),
-						ecologicalEntity.canHunt(), ecologicalEntity.canRepopulate(),
+						ecologicalEntity.shouldHunt(), ecologicalEntity.shouldRepopulate(),
 						ecologicalEntity.isHunting(), ecologicalEntity.isBeingHunted(), ecologicalEntity.isFavoredInHunt(), ecologicalEntity.getHuntTicks()
 					));
 				});

@@ -9,8 +9,6 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.Nullable;
@@ -124,9 +122,8 @@ public class EcosystemArea {
 
 		// Allow the hunter to begin searching for nearby prey
 		// TODO - Specify huntablePrey EcosystemTypes for predators
-//		ecologicalHunter.getEcosystemLogic().allowHunting();
-		ecologicalHunter.setCanHunt(true);
-		hunter.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200));
+		ecologicalHunter.setShouldHunt(true);
+//		hunter.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200));
 		this.resetForceTaskTicks();
 	}
 
@@ -136,8 +133,8 @@ public class EcosystemArea {
 		if(!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 
 		// Allow the entity to begin searching for a nearby mate
-		ecologicalEntity.setCanRepopulate(true);
-		entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200));
+		ecologicalEntity.setShouldRepopulate(true);
+//		entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200));
 		this.resetForceTaskTicks();
 	}
 
