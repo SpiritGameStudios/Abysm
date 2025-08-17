@@ -23,7 +23,9 @@ import net.minecraft.entity.ai.brain.task.*;
 import net.minecraft.entity.boss.dragon.EnderDragonFrameTracker;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.server.network.DebugInfoSender;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -109,6 +111,10 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 		var parts = this.getSpecterEntityParts();
 		this.frameTracker.tick(this.getY(), this.getYaw());
 
+		this.setYaw(wrapYaw(this.getYaw()));
+
+		this.bodyYaw = this.getYaw();
+
 		EnderDragonFrameTracker.Frame frame = this.frameTracker.getFrame(5);
 
 		float r = (float)(this.frameTracker.getFrame(5).y() - this.frameTracker.getFrame(10).y()) * 10.0F * MathHelper.RADIANS_PER_DEGREE;
@@ -126,19 +132,34 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 			double originalPartZ = enderDragonPart.getZ();
 
 			EnderDragonFrameTracker.Frame frame2 = this.frameTracker.getFrame(12 + aa * 2);
-			float changedYaw = (this.getYaw() + this.wrapYawChange(frame2.yRot() - frame.yRot()) * MathHelper.RADIANS_PER_DEGREE);
+			float changedYaw = (this.getYaw() + this.wrapYaw(frame2.yRot() - frame.yRot())) * MathHelper.RADIANS_PER_DEGREE;
 			float sinNewYaw = MathHelper.sin(changedYaw);
 			float cosNewYaw = MathHelper.cos(changedYaw);
 			float n = 1.5F;
 			float difference = (aa + 1) * enderDragonPart.getWidth();
-			this.movePart(enderDragonPart, -(sinYaw * n + sinNewYaw * difference) * s, frame2.y() - frame.y() - (difference + n) * t + 1.5, (cosYaw * n + cosNewYaw * difference) * s);
+			this.movePart(enderDragonPart, -(sinYaw * n + sinNewYaw * difference) * s, frame2.y() - frame.y() - (difference + n) * t, (cosYaw * n + cosNewYaw * difference) * s);
 
 			this.updatePartLastPos(enderDragonPart, originalPartX, originalPartY, originalPartZ);
+
+			/*if (aa == 1 && this.getWorld() instanceof ServerWorld serverWorld) {
+				List<ServerPlayerEntity> players = serverWorld.getPlayers();
+				if (!players.isEmpty()) {
+					Vec3d relative = enderDragonPart.getRelativePos();
+					players.getFirst().sendMessage(Text.literal("x : " + relative.x +
+						", y : " + relative.getY() +
+						", z : " + relative.getZ()), false);
+				}
+			}*/
 		}
 	}
 
-	protected float wrapYawChange(double yawDeg) {
+	protected float wrapYaw(double yawDeg) {
 		return (float) MathHelper.wrapDegrees(yawDeg);
+	}
+
+	@Override
+	public int getMaxLookYawChange() {
+		return 1;
 	}
 
 	@Override
