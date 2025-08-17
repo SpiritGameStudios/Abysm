@@ -17,6 +17,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
  *
  * @see SmallFloralFishEntityRenderer
  */
+@SuppressWarnings("JavadocReference")
 public abstract class AbstractFishEntityRenderer<T extends Entity & GeoAnimatable, R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<T, R> {
 	public AbstractFishEntityRenderer(EntityRendererFactory.Context context, GeoModel<T> model) {
 		super(context, model);
@@ -30,9 +31,13 @@ public abstract class AbstractFishEntityRenderer<T extends Entity & GeoAnimatabl
 		super.applyRotations(renderState, matrixStack, nativeScale);
 		float rotation = 4.3F * MathHelper.sin(0.6F * renderState.age);
 		matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
-		if(!renderState.touchingWater) {
+		if(!renderState.touchingWater && this.shouldApplyFishLandTransforms()) {
 			matrixStack.translate(0.2F, 0.1F, 0.0F);
 			matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90.0F));
 		}
+	}
+
+	protected boolean shouldApplyFishLandTransforms() {
+		return true;
 	}
 }

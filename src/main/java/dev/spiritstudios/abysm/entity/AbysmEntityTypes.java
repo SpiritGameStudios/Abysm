@@ -100,6 +100,13 @@ public class AbysmEntityTypes {
 			.dimensions(0.7F, 0.7F)
 	);
 
+	public static final EntityType<ReticulatedFliprayEntity> RETICULATED_FLIPRAY = register(
+		"reticulated_flipray",
+		EntityType.Builder.create(ReticulatedFliprayEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(2F, 2F) // I have no idea how big this should be
+	);
+
+
 	private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
 		return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
 	}
@@ -122,6 +129,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(LECTORFIN, LectorfinEntity.createPredatoryFishAttributes());
 		FabricDefaultAttributeRegistry.register(MYSTERIOUS_BLOB, MysteriousBlobEntity.createVaseAttributes());
 		FabricDefaultAttributeRegistry.register(TEST_LEVIATHAN, Leviathan.createLeviathanAttributes());
+		FabricDefaultAttributeRegistry.register(RETICULATED_FLIPRAY, ReticulatedFliprayEntity.createRayAttributes());
 	}
 
 }

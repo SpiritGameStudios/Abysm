@@ -116,15 +116,16 @@ public class EcosystemArea {
 		if(predatorTypes.isEmpty()) return;
 
 		int index = this.world.getRandom().nextInt(predatorTypes.size());
-		EcosystemType<?> hunterType = predatorTypes.get(index).get();
-		MobEntity hunter = this.getRandomEntity(hunterType);
-		if(!(hunter instanceof EcologicalEntity ecologicalHunter)) return;
+		predatorTypes.get(index).ifPresent(hunterType -> {
+			MobEntity hunter = this.getRandomEntity(hunterType);
+			if(!(hunter instanceof EcologicalEntity ecologicalHunter)) return;
 
-		// Allow the hunter to begin searching for nearby prey
-		// TODO - Specify huntablePrey EcosystemTypes for predators
-		ecologicalHunter.setShouldHunt(true);
-//		hunter.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200));
-		this.resetForceTaskTicks();
+			// Allow the hunter to begin searching for nearby prey
+			// TODO - Specify huntablePrey EcosystemTypes for predators
+			ecologicalHunter.setShouldHunt(true);
+			// hunter.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200));
+			this.resetForceTaskTicks();
+		});
 	}
 
 	public void reproduceEcosystemType(EcosystemType<?> ecosystemType) {

@@ -38,7 +38,7 @@ public class FleePredatorsGoal extends Goal {
 	private final TargetPredicate withinRangePredicate;
 
 	public FleePredatorsGoal(PathAwareEntity mob, float distance, double slowSpeed, double fastSpeed) {
-		this(mob, entity -> true, distance, slowSpeed, fastSpeed, EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR::test);
+		this(mob, distance, slowSpeed, fastSpeed, EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR::test);
 	}
 
 	public FleePredatorsGoal(

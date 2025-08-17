@@ -12,6 +12,7 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.BigFloralFishEntity
 import dev.spiritstudios.abysm.client.render.entity.renderer.BloomrayEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.ElectricOoglyBooglyRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.FlippersRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.FliprayEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.LehydrathanEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.ManOWarEntityRenderer;
@@ -21,6 +22,7 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEnti
 import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.entity.ReticulatedFliprayEntity;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
 import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
@@ -54,6 +56,7 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.MYSTERIOUS_BLOB, MysteriousBlobEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.TEST_LEVIATHAN, LehydrathanEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.PADDLEFISH, PaddlefishEntityRenderer::new);
+		EntityRendererRegistry.register(AbysmEntityTypes.RETICULATED_FLIPRAY, FliprayEntityRenderer::new);
 
 		ArmorRenderer.register(new FlippersRenderer(), AbysmItems.FLIPPERS);
 

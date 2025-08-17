@@ -46,6 +46,11 @@ public class MysteriousBlobEntityRenderer<R extends LivingEntityRenderState & Ge
 		this.scaleHeight = blob.lerpScaleY(partialTick);
 	}
 
+	@Override
+	protected boolean shouldApplyFishLandTransforms() {
+		return false;
+	}
+
 	public static class EntityModel extends DefaultedEntityGeoModel<MysteriousBlobEntity> {
 		public EntityModel() {
 			super(Abysm.id("mysterious_blob"), true);

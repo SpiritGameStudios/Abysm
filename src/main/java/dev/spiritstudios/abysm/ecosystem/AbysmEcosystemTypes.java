@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.entity.ReticulatedFliprayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.PaddlefishEntity;
@@ -65,6 +66,12 @@ public class AbysmEcosystemTypes {
 			.setPlants(AbysmBlocks.GOLDEN_LAZULI_OREFURL,
 				AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT)
 			.setTargetPopulation(10)
+	);
+
+	public static final EcosystemType<ReticulatedFliprayEntity> RETICULATED_FLIPRAY = register(
+		"reticulated_flipray",
+		EcosystemType.Builder.create(AbysmEntityTypes.RETICULATED_FLIPRAY)
+			.setTargetPopulation(2)
 	);
 
 //	public static <T extends MobEntity & EcologicalEntity> EcosystemType<T> register(EcosystemType.Builder<T> builder) {
