@@ -27,6 +27,11 @@ public class FliprayEntityRenderer<R extends LivingEntityRenderState & GeoRender
 	}
 
 	@Override
+	protected void applyRotations(R renderState, MatrixStack matrixStack, float nativeScale) {
+		super.applyRotations(renderState, matrixStack, nativeScale);
+	}
+
+	@Override
 	protected boolean shouldApplyFishLandTransforms() {
 		return false;
 	}

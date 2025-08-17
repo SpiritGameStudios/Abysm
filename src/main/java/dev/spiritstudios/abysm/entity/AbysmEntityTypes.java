@@ -97,7 +97,7 @@ public class AbysmEntityTypes {
 	public static final EntityType<Lehydrathan> TEST_LEVIATHAN = register(
 		"lehydrathan",
 		EntityType.Builder.create(Lehydrathan::new, SpawnGroup.MISC)
-			.dimensions(2F, 2F)
+			.dimensions(1F, 1F)
 	);
 
 	public static final EntityType<ReticulatedFliprayEntity> RETICULATED_FLIPRAY = register(
