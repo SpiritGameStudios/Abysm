@@ -157,7 +157,7 @@ public class DeepSeaRuinsStructure extends Structure {
 		Structure structure = context.dynamicRegistryManager().getOrThrow(RegistryKeys.STRUCTURE).get(structureKey);
 
 		if (structure instanceof StructureAccessor structureAccessor) {
-			Optional<StructurePosition> structurePositionOptional = structureAccessor.invokeGetStructurePosition(context);
+			Optional<StructurePosition> structurePositionOptional = structureAccessor.abysm$invokeGetStructurePosition(context);
 			if (structurePositionOptional.isPresent()) {
 				StructurePosition structurePosition = structurePositionOptional.get();
 
@@ -263,7 +263,7 @@ public class DeepSeaRuinsStructure extends Structure {
 
 	protected List<StructureTemplate.StructureBlockInfo> getBlobInfos(StructurePoolElement structurePoolElement, BlockPos pos, StructurePlacementData structurePlacementData, StructureTemplateManager structureTemplateManager) {
 		if (structurePoolElement instanceof SinglePoolElement singlePoolElement) {
-			StructureTemplate structureTemplate = ((SinglePoolElementAccessor) singlePoolElement).invokeGetStructure(structureTemplateManager);
+			StructureTemplate structureTemplate = ((SinglePoolElementAccessor) singlePoolElement).abysm$invokeGetStructure(structureTemplateManager);
 			return structureTemplate.getInfosForBlock(
 				pos, structurePlacementData, AbysmBlocks.DENSITY_BLOB_BLOCK, true
 			);

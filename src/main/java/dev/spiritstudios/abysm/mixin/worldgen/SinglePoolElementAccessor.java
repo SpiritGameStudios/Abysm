@@ -8,6 +8,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(SinglePoolElement.class)
 public interface SinglePoolElementAccessor {
-	@Invoker
-	StructureTemplate invokeGetStructure(StructureTemplateManager structureTemplateManager);
+	@Invoker("getStructure")
+	StructureTemplate abysm$invokeGetStructure(StructureTemplateManager structureTemplateManager);
 }

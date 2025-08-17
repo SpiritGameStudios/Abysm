@@ -9,6 +9,6 @@ import java.util.Optional;
 @Mixin(Structure.class)
 public interface StructureAccessor {
 
-	@Invoker
-	Optional<Structure.StructurePosition> invokeGetStructurePosition(Structure.Context context);
+	@Invoker("getStructurePosition")
+	Optional<Structure.StructurePosition> abysm$invokeGetStructurePosition(Structure.Context context);
 }

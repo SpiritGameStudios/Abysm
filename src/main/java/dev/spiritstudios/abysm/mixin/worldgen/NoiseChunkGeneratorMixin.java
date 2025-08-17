@@ -39,7 +39,7 @@ public abstract class NoiseChunkGeneratorMixin {
 		CallbackInfo ci,
 		@Local(ordinal = 0) CarverContext context
 	) {
-		ChunkNoiseSampler chunkNoiseSampler = ((CarverContextAccessor) context).getChunkNoiseSampler();
+		ChunkNoiseSampler chunkNoiseSampler = ((CarverContextAccessor) context).abysm$getChunkNoiseSampler();
 		DensityFunction shellCaveFunction = ((ChunkNoiseSamplerDuckInterface) chunkNoiseSampler).abysm$getShellCaveFunction(noiseConfig);
 		if (shellCaveFunction != null) {
 			// setup carver context for later, this means it will check the sampler to see if it should cancel
@@ -59,7 +59,7 @@ public abstract class NoiseChunkGeneratorMixin {
 		DensityFunction shellCaveFunction = ((ChunkNoiseSamplerDuckInterface) chunkNoiseSampler).abysm$getShellCaveFunction(noiseConfig);
 		if (shellCaveFunction != null) {
 			// get target biome
-			var deepSeaRuins = ((StructureAccessorAccessor) structureAccessor).getWorld().getRegistryManager()
+			var deepSeaRuins = ((StructureAccessorAccessor) structureAccessor).abysm$getWorld().getRegistryManager()
 				.getOptionalEntry(AbysmBiomes.DEEP_SEA_RUINS);
 
 			if (deepSeaRuins.isPresent()) {

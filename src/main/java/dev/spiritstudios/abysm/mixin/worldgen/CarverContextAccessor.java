@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(CarverContext.class)
 public interface CarverContextAccessor {
-	@Accessor
-	ChunkNoiseSampler getChunkNoiseSampler();
+	@Accessor("chunkNoiseSampler")
+	ChunkNoiseSampler abysm$getChunkNoiseSampler();
 }
