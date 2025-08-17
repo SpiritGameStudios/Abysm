@@ -148,10 +148,22 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 		this.tickPartUpdates();
 	}
 
+	@Override
+	public abstract List<? extends LeviathanPart> getSpecterEntityParts();
+
 	protected abstract void tickPartUpdates();
 
-	protected void movePart(EntityPart<Leviathan> entityPart, double dx, double dy, double dz) {
-		entityPart.setRelativePos(new Vec3d(dx, dy, dz));
+	protected void movePart(EntityPart<Leviathan> part, double dx, double dy, double dz) {
+		part.setRelativePos(new Vec3d(dx, dy, dz));
+	}
+
+	protected void updatePartLastPos(EntityPart<Leviathan> part, double x, double y, double z) {
+		part.lastX = x;
+		part.lastY = y;
+		part.lastZ = z;
+		part.lastRenderX = x;
+		part.lastRenderY = y;
+		part.lastRenderZ = z;
 	}
 
 	@Override

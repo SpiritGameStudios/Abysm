@@ -9,7 +9,6 @@ import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
 import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
 import dev.spiritstudios.abysm.entity.leviathan.LeviathanPart;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
-import dev.spiritstudios.specter.api.entity.EntityPart;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -21,10 +20,12 @@ import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.sensor.Sensor;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.entity.ai.brain.task.*;
+import net.minecraft.entity.boss.dragon.EnderDragonFrameTracker;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.server.network.DebugInfoSender;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.profiler.Profiler;
@@ -59,17 +60,18 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 		MemoryModuleType.HAS_HUNTING_COOLDOWN
 	);
 
-	public final List<EntityPart<Leviathan>> parts;
+	public final List<LeviathanPart> parts;
 	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+	public final EnderDragonFrameTracker frameTracker = new EnderDragonFrameTracker();
 
 	@Override
-	public List<EntityPart<Leviathan>> getSpecterEntityParts() {
+	public List<LeviathanPart> getSpecterEntityParts() {
 		return this.parts;
 	}
 
 	public Lehydrathan(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
-		ImmutableList.Builder<EntityPart<Leviathan>> builder = ImmutableList.builder();
+		ImmutableList.Builder<LeviathanPart> builder = ImmutableList.builder();
 		float width = entityType.getWidth();
 		float height = entityType.getHeight();
 		for (int i = 0; i < 4; i++) {
@@ -104,36 +106,39 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 
 	@Override
 	protected void tickPartUpdates() {
-
 		var parts = this.getSpecterEntityParts();
+		this.frameTracker.tick(this.getY(), this.getYaw());
 
-		Vec3d delta;
-		Vec3d pos = this.getPos();
-		Entity previousPart = this;
-		EntityPart<Leviathan> currentPart;
-		for (EntityPart<Leviathan> part : parts) {
-			currentPart = part;
+		EnderDragonFrameTracker.Frame frame = this.frameTracker.getFrame(5);
 
-			final double posX = currentPart.getX();
-			final double posY = currentPart.getY();
-			final double posZ = currentPart.getZ();
+		float r = (float)(this.frameTracker.getFrame(5).y() - this.frameTracker.getFrame(10).y()) * 10.0F * MathHelper.RADIANS_PER_DEGREE;
+		float s = MathHelper.cos(r);
+		float t = MathHelper.sin(r);
+		float yawRad = this.getYaw() * MathHelper.RADIANS_PER_DEGREE;
+		float sinYaw = MathHelper.sin(yawRad);
+		float cosYaw = MathHelper.cos(yawRad);
 
-			if (!previousPart.getBoundingBox().intersects(currentPart.getBoundingBox())) {
-				// TODO: FIX ME, CREATE MORE NATURAL MOVEMENT
-				Vec3d last = new Vec3d(previousPart.lastX, previousPart.lastY, previousPart.lastZ);
-				delta = currentPart.getPos().lerp(last, 0.1F).subtract(pos);
-				movePart(currentPart, delta.x, delta.y, delta.z);
-			}
+		for (int aa = 0; aa < parts.size(); aa++) {
+			LeviathanPart enderDragonPart = parts.get(aa);
 
-			currentPart.lastX = posX;
-			currentPart.lastY = posY;
-			currentPart.lastZ = posZ;
-			currentPart.lastRenderX = posX;
-			currentPart.lastRenderY = posY;
-			currentPart.lastRenderZ = posZ;
+			double originalPartX = enderDragonPart.getX();
+			double originalPartY = enderDragonPart.getY();
+			double originalPartZ = enderDragonPart.getZ();
 
-			previousPart = currentPart;
+			EnderDragonFrameTracker.Frame frame2 = this.frameTracker.getFrame(12 + aa * 2);
+			float changedYaw = (this.getYaw() + this.wrapYawChange(frame2.yRot() - frame.yRot()) * MathHelper.RADIANS_PER_DEGREE);
+			float sinNewYaw = MathHelper.sin(changedYaw);
+			float cosNewYaw = MathHelper.cos(changedYaw);
+			float n = 1.5F;
+			float difference = (aa + 1) * enderDragonPart.getWidth();
+			this.movePart(enderDragonPart, -(sinYaw * n + sinNewYaw * difference) * s, frame2.y() - frame.y() - (difference + n) * t + 1.5, (cosYaw * n + cosNewYaw * difference) * s);
+
+			this.updatePartLastPos(enderDragonPart, originalPartX, originalPartY, originalPartZ);
 		}
+	}
+
+	protected float wrapYawChange(double yawDeg) {
+		return (float) MathHelper.wrapDegrees(yawDeg);
 	}
 
 	@Override
@@ -143,7 +148,7 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 		profiler.push("lehydrathanBrain");
 		this.getBrain().tick(serverWorld, this);
 		profiler.pop();
-		profiler.push("lehdrathanActivityUpdate");
+		profiler.push("lehydrathanActivityUpdate");
 		LehydrathanBrain.updateActivities(this);
 		profiler.pop();
 	}

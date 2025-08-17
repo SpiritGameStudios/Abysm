@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 /* help it's really bad what am I doing
    this is a half-unfinished garbage interface
 */
-@SuppressWarnings("unused")
 public interface Breedable {
 
 	@Nullable
