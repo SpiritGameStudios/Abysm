@@ -23,9 +23,9 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 	}
 
 	@Unique
-	private float underwaterAmbientSkyLight;
+	private float abysm$underwaterAmbientSkyLight;
 	@Unique
-	private float lastUnderwaterAmbientSkyLight;
+	private float abysm$lastUnderwaterAmbientSkyLight;
 
 	@Inject(method = "tickMovement", at = @At("RETURN"))
 	private void updateAmbientSkyLight(CallbackInfo ci) {
@@ -33,16 +33,16 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity
 		boolean inFloralReef = biome.matchesKey(AbysmBiomes.FLORAL_REEF);
 		float targetAmbientSkyLight = inFloralReef ? 0.18F : 0.0F;
 
-		this.lastUnderwaterAmbientSkyLight = this.underwaterAmbientSkyLight;
+		this.abysm$lastUnderwaterAmbientSkyLight = this.abysm$underwaterAmbientSkyLight;
 		if (this.isSubmergedIn(FluidTags.WATER)) {
-			this.underwaterAmbientSkyLight = MathHelper.lerp(0.1F, this.underwaterAmbientSkyLight, targetAmbientSkyLight);
+			this.abysm$underwaterAmbientSkyLight = MathHelper.lerp(0.1F, this.abysm$underwaterAmbientSkyLight, targetAmbientSkyLight);
 		} else {
-			this.underwaterAmbientSkyLight = targetAmbientSkyLight;
+			this.abysm$underwaterAmbientSkyLight = targetAmbientSkyLight;
 		}
 	}
 
 	@Override
 	public float abysm$getUnderwaterAmbientSkyLight(float tickDelta) {
-		return this.lastUnderwaterAmbientSkyLight + tickDelta * (this.underwaterAmbientSkyLight - this.lastUnderwaterAmbientSkyLight);
+		return this.abysm$lastUnderwaterAmbientSkyLight + tickDelta * (this.abysm$underwaterAmbientSkyLight - this.abysm$lastUnderwaterAmbientSkyLight);
 	}
 }

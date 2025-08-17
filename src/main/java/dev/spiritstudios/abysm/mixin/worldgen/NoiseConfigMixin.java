@@ -17,15 +17,15 @@ public abstract class NoiseConfigMixin implements NoiseConfigDuckInterface {
 	public abstract DoublePerlinNoiseSampler getOrCreateSampler(RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> noiseParametersKey);
 
 	@Unique
-	private final NoiseConfigAttachment attachment = new NoiseConfigAttachment();
+	private final NoiseConfigAttachment abysm$attachment = new NoiseConfigAttachment();
 
 	@Override
 	public void abysm$attachBonusFunctions(ServerWorld world) {
-		this.attachment.attachBonusFunctions(world, this::getOrCreateSampler);
+		this.abysm$attachment.attachBonusFunctions(world, this::getOrCreateSampler);
 	}
 
 	@Override
 	public NoiseConfigAttachment abysm$getAttachment() {
-		return this.attachment;
+		return this.abysm$attachment;
 	}
 }

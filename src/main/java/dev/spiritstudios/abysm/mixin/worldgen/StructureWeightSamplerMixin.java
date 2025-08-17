@@ -17,7 +17,7 @@ public abstract class StructureWeightSamplerMixin implements DensityFunctionType
 
 	@Unique
 	@Nullable
-	private DensityBlobsSamplerCollection samplerCollection;
+	private DensityBlobsSamplerCollection abysm$samplerCollection;
 
 	@ModifyReturnValue(method = "createStructureWeightSampler", at = @At("RETURN"))
 	private static StructureWeightSampler adjustCreatedSampler(StructureWeightSampler original, StructureAccessor world, ChunkPos pos) {
@@ -25,7 +25,7 @@ public abstract class StructureWeightSamplerMixin implements DensityFunctionType
 
 		// if collection contains any samplers, store it
 		if (!samplerCollection.isEmpty()) {
-			((StructureWeightSamplerMixin) (Object) original).samplerCollection = samplerCollection;
+			((StructureWeightSamplerMixin) (Object) original).abysm$samplerCollection = samplerCollection;
 		}
 
 		return original;
@@ -33,6 +33,6 @@ public abstract class StructureWeightSamplerMixin implements DensityFunctionType
 
 	@Override
 	public @Nullable DensityBlobsSamplerCollection abysm$getSamplerCollection() {
-		return this.samplerCollection;
+		return this.abysm$samplerCollection;
 	}
 }

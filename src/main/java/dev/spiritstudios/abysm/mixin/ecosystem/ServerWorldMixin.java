@@ -23,22 +23,22 @@ import java.util.function.BooleanSupplier;
 @Mixin(ServerWorld.class)
 public class ServerWorldMixin implements EcosystemManagedWorld {
 	@Unique
-	public EcosystemAreaManager ecosystemAreaManager = null;
+	public EcosystemAreaManager abysm$ecosystemAreaManager = null;
 
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void abysm$createEcosystemAreaManager(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey worldKey, DimensionOptions dimensionOptions, WorldGenerationProgressListener worldGenerationProgressListener, boolean debugWorld, long seed, List spawners, boolean shouldTickTime, RandomSequencesState randomSequencesState, CallbackInfo ci) {
 		ServerWorld world = (ServerWorld) (Object) this;
-		this.ecosystemAreaManager = new EcosystemAreaManager(world);
+		this.abysm$ecosystemAreaManager = new EcosystemAreaManager(world);
 	}
 
 	// Instead of using a Fabric API event, simply inject into the tick method because we're already here with a mixin
 	@Inject(method = "tick", at = @At("TAIL"))
 	public void abysm$tickEcosystemAreaManager(BooleanSupplier shouldKeepTicking, CallbackInfo ci) {
-		this.ecosystemAreaManager.tick();
+		this.abysm$ecosystemAreaManager.tick();
 	}
 
 	@Override
 	public EcosystemAreaManager abysm$getEcosystemAreaManager() {
-		return this.ecosystemAreaManager;
+		return this.abysm$ecosystemAreaManager;
 	}
 }

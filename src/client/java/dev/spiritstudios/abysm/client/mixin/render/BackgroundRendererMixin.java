@@ -26,9 +26,9 @@ public abstract class BackgroundRendererMixin {
 	@Shadow
 	private static long lastWaterFogColorUpdateTime;
 	@Unique
-	private static float underwaterVisibilityMultiplier = 1.0F;
+	private static float abysm$underwaterVisibilityMultiplier = 1.0F;
 	@Unique
-	private static float nextUnderwaterVisibilityMultiplier = 1.0F;
+	private static float abysm$nextUnderwaterVisibilityMultiplier = 1.0F;
 
 	@ModifyVariable(method = "getFogColor", at = @At("STORE"), ordinal = 1)
 	private static int adjustWaterFogColor(int value, Camera camera, float tickProgress, ClientWorld world, int clampedViewDistance, float skyDarkness) {
@@ -48,11 +48,11 @@ public abstract class BackgroundRendererMixin {
 			}
 
 			if (lastWaterFogColorUpdateTime < 0L) {
-				underwaterVisibilityMultiplier = visibilityMultiplier;
-				nextUnderwaterVisibilityMultiplier = visibilityMultiplier;
+				abysm$underwaterVisibilityMultiplier = visibilityMultiplier;
+				abysm$nextUnderwaterVisibilityMultiplier = visibilityMultiplier;
 			} else {
-				underwaterVisibilityMultiplier = nextUnderwaterVisibilityMultiplier;
-				nextUnderwaterVisibilityMultiplier = MathHelper.lerp(0.007F, underwaterVisibilityMultiplier, visibilityMultiplier);
+				abysm$underwaterVisibilityMultiplier = abysm$nextUnderwaterVisibilityMultiplier;
+				abysm$nextUnderwaterVisibilityMultiplier = MathHelper.lerp(0.007F, abysm$underwaterVisibilityMultiplier, visibilityMultiplier);
 			}
 
 			// adjust fog color
@@ -71,7 +71,7 @@ public abstract class BackgroundRendererMixin {
 	private static void reduceUnderwaterVisibility(Camera camera, float tickProgress, ClientWorld world, int clampedViewDistance, float skyDarkness, CallbackInfoReturnable<Vector4f> cir, @Local(ordinal = 5) LocalFloatRef underwaterVisibilityRef) {
 		if (camera.getSubmersionType() == CameraSubmersionType.WATER) {
 			// adjust underwater visibility
-			float visibilityMultiplier = MathHelper.lerp(tickProgress, underwaterVisibilityMultiplier, nextUnderwaterVisibilityMultiplier);
+			float visibilityMultiplier = MathHelper.lerp(tickProgress, abysm$underwaterVisibilityMultiplier, abysm$nextUnderwaterVisibilityMultiplier);
 
 			if (visibilityMultiplier < (1.0F - MathHelper.EPSILON)) {
 				underwaterVisibilityRef.set(underwaterVisibilityRef.get() * visibilityMultiplier);

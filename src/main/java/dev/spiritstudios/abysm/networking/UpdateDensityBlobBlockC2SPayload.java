@@ -41,17 +41,19 @@ public record UpdateDensityBlobBlockC2SPayload(BlockPos pos, String finalState,
 		@Override
 		public void receive(UpdateDensityBlobBlockC2SPayload payload, ServerPlayNetworking.Context context) {
 			PlayerEntity player = context.player();
-			if (player.isCreativeLevelTwoOp()) {
-				World world = player.getWorld();
-				BlockPos blockPos = payload.pos;
-				BlockState blockState = world.getBlockState(blockPos);
-				if (world.getBlockEntity(blockPos) instanceof DensityBlobBlockEntity blockEntity) {
-					blockEntity.setFinalState(payload.finalState);
-					blockEntity.setBlobsSamplerIdentifier(payload.blobsSamplerIdentifier);
-					blockEntity.markDirty();
-					world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
-				}
+			if (!player.isCreativeLevelTwoOp()) {
+				return;
 			}
+			World world = player.getWorld();
+			BlockPos blockPos = payload.pos;
+			if (!(world.getBlockEntity(blockPos) instanceof DensityBlobBlockEntity blockEntity)) {
+				return;
+			}
+			BlockState blockState = world.getBlockState(blockPos);
+			blockEntity.setFinalState(payload.finalState);
+			blockEntity.setBlobsSamplerIdentifier(payload.blobsSamplerIdentifier);
+			blockEntity.markDirty();
+			world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
 		}
 	}
 }

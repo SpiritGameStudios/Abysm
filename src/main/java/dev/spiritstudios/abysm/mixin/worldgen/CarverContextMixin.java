@@ -17,15 +17,15 @@ public abstract class CarverContextMixin extends HeightContext implements Carver
 	}
 
 	@Unique
-	private DensityFunctionWrapper sampler;
+	private DensityFunctionWrapper abysm$sampler;
 
 	@Override
 	public void abysm$setFunction(DensityFunctionWrapper sampler) {
-		this.sampler = sampler;
+		this.abysm$sampler = sampler;
 	}
 
 	@Override
 	public @Nullable DensityFunctionWrapper abysm$getSampler() {
-		return this.sampler;
+		return this.abysm$sampler;
 	}
 }

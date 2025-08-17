@@ -25,19 +25,19 @@ public abstract class LightmapTextureManagerMixin {
 	@Shadow @Final private MinecraftClient client;
 	@Shadow @Final private GpuTexture glTexture;
 
-	@Unique private GpuTexture secondaryGlTexture;
+	@Unique private GpuTexture abysm$secondaryGlTexture;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void initDummy(GameRenderer renderer, MinecraftClient client, CallbackInfo ci) {
 		GpuDevice gpuDevice = RenderSystem.getDevice();
-		this.secondaryGlTexture = gpuDevice.createTexture("Light Texture", TextureFormat.RGBA8, 16, 16, 1);
-		this.secondaryGlTexture.setTextureFilter(FilterMode.LINEAR, false);
-		gpuDevice.createCommandEncoder().clearColorTexture(this.secondaryGlTexture, 0xFFFFFFFF);
+		this.abysm$secondaryGlTexture = gpuDevice.createTexture("Light Texture", TextureFormat.RGBA8, 16, 16, 1);
+		this.abysm$secondaryGlTexture.setTextureFilter(FilterMode.LINEAR, false);
+		gpuDevice.createCommandEncoder().clearColorTexture(this.abysm$secondaryGlTexture, 0xFFFFFFFF);
 	}
 
 	@Inject(method = "close", at = @At("RETURN"))
 	private void closeDummy(CallbackInfo ci) {
-		this.secondaryGlTexture.close();
+		this.abysm$secondaryGlTexture.close();
 	}
 
 	@Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V"))
@@ -47,6 +47,6 @@ public abstract class LightmapTextureManagerMixin {
 		// player should not be null
 		Objects.requireNonNull(player);
 
-		LightmapAdjustment.adjustLightmap(player, this.glTexture, this.secondaryGlTexture, tickProgress);
+		LightmapAdjustment.adjustLightmap(player, this.glTexture, this.abysm$secondaryGlTexture, tickProgress);
 	}
 }

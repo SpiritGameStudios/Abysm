@@ -25,7 +25,7 @@ public abstract class MultiNoiseBiomeSourceMixin {
 
 	@Unique
 	@Nullable
-	private List<RegistryEntry<Biome>> bonusBiomes = null;
+	private List<RegistryEntry<Biome>> abysm$bonusBiomes = null;
 
 	@ModifyReturnValue(method = "biomeStream", at = @At("RETURN"))
 	private Stream<RegistryEntry<Biome>> addBiomesToStream(Stream<RegistryEntry<Biome>> original) {
@@ -36,7 +36,7 @@ public abstract class MultiNoiseBiomeSourceMixin {
 
 		// init bonus biomes if not yet initialised
 		synchronized (this) {
-			if (this.bonusBiomes == null) {
+			if (this.abysm$bonusBiomes == null) {
 				// try to get registry from where biolith stores it
 				Optional<Registry<Biome>> biomeLookupOptional = BiomeCoordinator.getBiomeLookup();
 				if (biomeLookupOptional.isEmpty()) {
@@ -57,17 +57,17 @@ public abstract class MultiNoiseBiomeSourceMixin {
 					}
 
 					// store bonus biomes
-					this.bonusBiomes = bonusBiomes;
+					this.abysm$bonusBiomes = bonusBiomes;
 				}
 			}
 		}
 
-		if (this.bonusBiomes.isEmpty()) {
+		if (this.abysm$bonusBiomes.isEmpty()) {
 			return original;
 		} else {
 			return Streams.concat(
 				original,
-				this.bonusBiomes.stream()
+				this.abysm$bonusBiomes.stream()
 			).distinct();
 		}
 	}

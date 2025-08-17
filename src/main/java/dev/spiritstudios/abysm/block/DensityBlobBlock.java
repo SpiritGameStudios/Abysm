@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import dev.spiritstudios.abysm.block.entity.DensityBlobBlockEntity;
-import dev.spiritstudios.abysm.duck.PlayerEntityDuck;
+import dev.spiritstudios.abysm.duck.DensityPlayerEntityDuck;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
@@ -36,13 +36,12 @@ public class DensityBlobBlock extends Block implements BlockEntityProvider, Oper
 	@Override
 	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		BlockEntity blockEntity = world.getBlockEntity(pos);
-		if (blockEntity instanceof DensityBlobBlockEntity densityBlobBlockEntity && player.isCreativeLevelTwoOp()) {
-			if (player instanceof PlayerEntityDuck playerEntityDuck) {
-				playerEntityDuck.abysm$openDensityBlobScreen(densityBlobBlockEntity);
-			}
-			return ActionResult.SUCCESS;
-		} else {
+		if (!(blockEntity instanceof DensityBlobBlockEntity densityBlobBlockEntity) || !player.isCreativeLevelTwoOp()) {
 			return ActionResult.PASS;
 		}
+		if (player instanceof DensityPlayerEntityDuck clientPlayer) {
+			clientPlayer.abysm$openDensityBlobScreen(densityBlobBlockEntity);
+		}
+		return ActionResult.SUCCESS;
 	}
 }
