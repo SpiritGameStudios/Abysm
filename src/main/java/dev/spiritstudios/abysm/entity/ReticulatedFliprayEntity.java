@@ -4,9 +4,20 @@ import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
+import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.control.AquaticMoveControl;
+import net.minecraft.entity.ai.control.YawAdjustingLookControl;
+import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.SwimAroundGoal;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
+import net.minecraft.entity.ai.pathing.SwimNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.passive.SchoolingFishEntity;
@@ -22,10 +33,13 @@ public class ReticulatedFliprayEntity extends AbstractSchoolingFishEntity implem
 
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.flipray.swim");
 
-	protected EcosystemLogic ecosystemLogic = createEcosystemLogic(this);
+	protected EcosystemLogic ecosystemLogic;
 
 	public ReticulatedFliprayEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
+		this.ecosystemLogic = createEcosystemLogic(this);
+		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+		this.lookControl = new YawAdjustingLookControl(this, 20);
 	}
 
 	@Override
@@ -64,7 +78,27 @@ public class ReticulatedFliprayEntity extends AbstractSchoolingFishEntity implem
 	}
 
 	public static DefaultAttributeContainer.Builder createRayAttributes() {
-		return createPredatoryFishAttributes()
+		return BloomrayEntity.createRayAttributes()
 			.add(EntityAttributes.MAX_HEALTH, 40);
+	}
+
+	@Override
+	public int getMaxLookPitchChange() {
+		return 1;
+	}
+
+	@Override
+	protected void initGoals() {
+		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
+		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
+		this.goalSelector.add(4, new SwimAroundGoal(this, 1.0, 10));
+		this.goalSelector.add(4, new LookAroundGoal(this));
+		this.targetSelector.add(1, new HuntPreyGoal(this, false));
+	}
+
+	@Override
+	public float mvmSpdMul() {
+		return 1;
 	}
 }

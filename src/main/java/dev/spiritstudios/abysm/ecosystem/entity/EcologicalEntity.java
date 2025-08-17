@@ -136,13 +136,15 @@ public interface EcologicalEntity {
 		EcosystemType<?> ecosystemType = this.getEcosystemType();
 		MobEntity self = (MobEntity) this;
 		EntityAttributeInstance speedAttributeInstance = self.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
-//		if(selfIsFavored) {
-//			float favoredSpeed = ecosystemType.favoredHuntSpeedMultiplier();
-//			speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(favoredSpeed * 5f));
-//		} else {
-//			float unfavoredSpeed = ecosystemType.unfavoredHuntSpeedMultiplier();
-//			speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(unfavoredSpeed * 5f));
-//		}
+		if (speedAttributeInstance != null) {
+			if(selfIsFavored) {
+				float favoredSpeed = ecosystemType.favoredHuntSpeed();
+				speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(favoredSpeed));
+			} else {
+				float unfavoredSpeed = ecosystemType.unfavoredHuntSpeed();
+				speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofUnfavoredSpeed(unfavoredSpeed));
+			}
+		}
 	}
 
 	/**

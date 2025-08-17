@@ -26,7 +26,7 @@ public class AbysmEcosystemTypes {
 			.setPredators(AbysmEntityTypes.BLOOMRAY)
 			.setPlants(AbysmBlocks.PURPLE_SCABIOSA, AbysmBlocks.PINK_SCABIOSA, AbysmBlocks.RED_SCABIOSA)
 			.setTargetPopulation(7)
-			.setUnfavoredHuntSpeed(0.35f)
+			.setUnfavoredHuntSpeed(-0.35f)
 			.setLitterSize(1, 4)
 	);
 
@@ -36,7 +36,7 @@ public class AbysmEcosystemTypes {
 			.create(AbysmEntityTypes.BIG_FLORAL_FISH)
 			.setPredators(AbysmEntityTypes.BLOOMRAY)
 			.setTargetPopulation(5)
-			.setUnfavoredHuntSpeed(0.25f)
+			.setUnfavoredHuntSpeed(-0.25f)
 			.setLitterSize(1, 2)
 	);
 
@@ -56,7 +56,7 @@ public class AbysmEcosystemTypes {
 			.setTargetPopulation(3)
 			.setHuntTicks(400, 1000) // 20 seconds, 50 seconds
 			.setHuntFavorChance(0.9f)
-			.setHuntSpeedMultipliers(0.3f, 0.2f)
+			.setHuntSpeedModifiers(0.3f, -0.2f)
 			.setBreedCooldownTicks(400) // 20 seconds
 	);
 

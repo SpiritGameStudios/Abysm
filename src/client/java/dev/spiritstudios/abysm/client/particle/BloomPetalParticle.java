@@ -166,10 +166,10 @@ public class BloomPetalParticle extends SpriteBillboardParticle {
 			float size = 0.6F + random.nextFloat() * 2.5F;
 			BloomPetalParticle particle = new BloomPetalParticle(clientWorld, x, y, z, this.spriteProvider, 0.7F, 10.0F, size, 0.011F, getNextParticle());
 
-			int col = ColorHelper.lerp(random.nextFloat(), getColorStart(), getColorEnd());
-			float red = ColorHelper.getRed(col) / 255.0F;
-			float green = ColorHelper.getGreen(col) / 255.0F;
-			float blue = ColorHelper.getBlue(col) / 255.0F;
+			int color = ColorHelper.lerp(random.nextFloat(), getColorStart(), getColorEnd());
+			float red = ColorHelper.getRedFloat(color);
+			float green = ColorHelper.getGreenFloat(color);
+			float blue = ColorHelper.getBlueFloat(color);
 			particle.setColor(red, green, blue);
 
 			return particle;

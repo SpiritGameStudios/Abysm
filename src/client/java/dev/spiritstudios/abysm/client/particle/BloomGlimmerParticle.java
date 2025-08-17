@@ -72,10 +72,10 @@ public class BloomGlimmerParticle extends AscendingParticle {
 
 			BloomGlimmerParticle particle = new BloomGlimmerParticle(clientWorld, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider, 40, 0.0125F, 0.96F);
 
-			int col = ColorHelper.lerp(random.nextFloat(), getColorStart(), getColorEnd());
-			float red = ColorHelper.getRed(col) / 255.0F;
-			float green = ColorHelper.getGreen(col) / 255.0F;
-			float blue = ColorHelper.getBlue(col) / 255.0F;
+			int color = ColorHelper.lerp(random.nextFloat(), getColorStart(), getColorEnd());
+			float red = ColorHelper.getRedFloat(color);
+			float green = ColorHelper.getGreenFloat(color);
+			float blue = ColorHelper.getBlueFloat(color);
 			particle.setColor(red, green, blue);
 
 			particle.scale(0.6F + 1.8F * random.nextFloat());

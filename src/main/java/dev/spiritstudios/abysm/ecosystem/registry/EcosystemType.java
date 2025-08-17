@@ -53,7 +53,7 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 		private int maxHuntTicks = 1600; // 80 seconds
 		private float huntFavorChance = 0.85f;
 		private float favoredHuntSpeed = 0.5f;
-		private float unfavoredHuntSpeed = 0.25f;
+		private float unfavoredHuntSpeed = -0.25f;
 
 		private int breedCooldownTicks = 300; // 15 seconds
 		private int minLitterSize = 1;
@@ -100,10 +100,8 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 			return this;
 		}
 
-		public Builder<T> setHuntSpeedMultipliers(float favoredHuntSpeed, float unfavoredHuntSpeed) {
-			this.favoredHuntSpeed = favoredHuntSpeed;
-			this.unfavoredHuntSpeed = unfavoredHuntSpeed;
-			return this;
+		public Builder<T> setHuntSpeedModifiers(float favoredHuntSpeed, float unfavoredHuntSpeed) {
+			return this.setFavoredHuntSpeed(favoredHuntSpeed).setUnfavoredHuntSpeed(unfavoredHuntSpeed);
 		}
 
 		public Builder<T> setFavoredHuntSpeed(float favoredHuntSpeed) {

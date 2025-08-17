@@ -97,13 +97,13 @@ public class AbysmEntityTypes {
 	public static final EntityType<Lehydrathan> TEST_LEVIATHAN = register(
 		"lehydrathan",
 		EntityType.Builder.create(Lehydrathan::new, SpawnGroup.MISC)
-			.dimensions(0.7F, 0.7F)
+			.dimensions(2F, 2F)
 	);
 
 	public static final EntityType<ReticulatedFliprayEntity> RETICULATED_FLIPRAY = register(
 		"reticulated_flipray",
 		EntityType.Builder.create(ReticulatedFliprayEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(2F, 2F) // I have no idea how big this should be
+			.dimensions(1.7F, 0.2F) // I have no idea how big this should be
 	);
 
 

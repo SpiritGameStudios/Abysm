@@ -46,7 +46,7 @@ public abstract class AbstractSchoolingFishEntity extends SchoolingFishEntity im
 	@Override
 	public void travel(Vec3d movementInput) {
 		if (this.isTouchingWater()) {
-			this.updateVelocity(this.getMovementSpeed() * 0.02F, movementInput);
+			this.updateVelocity(this.getMovementSpeed() * this.mvmSpdMul(), movementInput);
 			this.move(MovementType.SELF, this.getVelocity());
 			this.setVelocity(this.getVelocity().multiply(0.9));
 			if (this.getTarget() == null) {
@@ -55,6 +55,10 @@ public abstract class AbstractSchoolingFishEntity extends SchoolingFishEntity im
 		} else {
 			super.travel(movementInput);
 		}
+	}
+
+	public float mvmSpdMul() {
+		return 0.02F;
 	}
 
 	@Override

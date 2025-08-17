@@ -44,6 +44,6 @@ public class OoglyBooglyFumesParticleEffect implements ParticleEffect {
 	}
 
 	public boolean isDeadly() {
-		return deadly;
+		return this.deadly;
 	}
 }

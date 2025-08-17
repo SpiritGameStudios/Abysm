@@ -44,6 +44,7 @@ public class AbysmParticleTypes {
 		return RegistryKey.of(RegistryKeys.PARTICLE_TYPE, Abysm.id(id));
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private static SimpleParticleType registerSimple(String name, boolean alwaysShow) {
 		return Registry.register(Registries.PARTICLE_TYPE, keyOf(name), FabricParticleTypes.simple(alwaysShow));
 	}
