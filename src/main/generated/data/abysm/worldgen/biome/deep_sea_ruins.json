@@ -36,7 +36,8 @@
       "minecraft:lake_lava_surface"
     ],
     [
-      "minecraft:amethyst_geode"
+		"minecraft:amethyst_geode",
+		"abysm:surface_smooth_floropumice_stalagmites"
     ],
     [
       "minecraft:monster_room",

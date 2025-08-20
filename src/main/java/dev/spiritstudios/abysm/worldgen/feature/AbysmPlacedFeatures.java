@@ -43,6 +43,7 @@ public class AbysmPlacedFeatures {
 	public static final RegistryKey<PlacedFeature> PATCH_PETALS_SURFACE = ofKey("patch_petals_surface");
 
 	public static final RegistryKey<PlacedFeature> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
+	public static final RegistryKey<PlacedFeature> SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES = ofKey("surface_smooth_floropumice_stalagmites");
 
 	public static final RegistryKey<PlacedFeature> PATCH_SEAGRASS_CAVE = ofKey("patch_seagrass_cave");
 	public static final RegistryKey<PlacedFeature> PATCH_GOLDEN_LAZULI_OREFURL = ofKey("patch_golden_lazuli_orefurl");
@@ -101,27 +102,36 @@ public class AbysmPlacedFeatures {
 		);
 
 		helper.add(
+			SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES, AbysmConfiguredFeatures.SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES,
+			PlacedFeatures.createCountExtraModifier(1, 0.1F, 2),
+			SquarePlacementModifier.of(),
+			RUINS_CAVE_RANGE,
+			BiomePlacementModifier.of(),
+			PlacedFeatures.OCEAN_FLOOR_WG_HEIGHTMAP
+		);
+
+		helper.add(
 			PATCH_SPRIGS, AbysmConfiguredFeatures.PATCH_SPRIGS,
 			CountPlacementModifier.of(30),
+			SquarePlacementModifier.of(),
 			PlacedFeatures.OCEAN_FLOOR_WG_HEIGHTMAP,
-			BiomePlacementModifier.of(),
-			SquarePlacementModifier.of()
+			BiomePlacementModifier.of()
 		);
 
 		helper.add(
 			PATCH_PETALS_UNDERWATER, AbysmConfiguredFeatures.PATCH_PETALS_UNDERWATER,
 			CountPlacementModifier.of(7),
+			SquarePlacementModifier.of(),
 			PlacedFeatures.OCEAN_FLOOR_WG_HEIGHTMAP,
-			BiomePlacementModifier.of(),
-			SquarePlacementModifier.of()
+			BiomePlacementModifier.of()
 		);
 
 		helper.add(
 			PATCH_PETALS_SURFACE, AbysmConfiguredFeatures.PATCH_PETALS_SURFACE,
 			CountPlacementModifier.of(7),
+			SquarePlacementModifier.of(),
 			PlacedFeatures.MOTION_BLOCKING_HEIGHTMAP,
-			BiomePlacementModifier.of(),
-			SquarePlacementModifier.of()
+			BiomePlacementModifier.of()
 		);
 
 		helper.add(

@@ -59,6 +59,7 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 		DefaultBiomeFeatures.addDefaultVegetation(builder, true);
 
 		builder
+			.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES)
 			.feature(GenerationStep.Feature.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_CLAY_DREGLOAM)
 			.feature(GenerationStep.Feature.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_GOLDEN_LAZULI_DREGLOAM)
 			.feature(GenerationStep.Feature.UNDERGROUND_DECORATION, AbysmPlacedFeatures.PATCH_HANGING_LANTERN)

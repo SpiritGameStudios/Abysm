@@ -53,7 +53,8 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 			new WindModifier(pos.getY(), random, config.windSpeed) :
 			WindModifier.create();
 
-		if (stalagmite.canGenerate(world, windModifier)) stalagmite.generate(world, random, windModifier);
+		if (stalagmite.canGenerate(world, windModifier))
+			stalagmite.generate(world, random, windModifier, config.maxHeightAboveWorldSurface.get(random));
 
 		return true;
 	}
@@ -144,7 +145,7 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 			return (int) (i / 0.384F * scale);
 		}
 
-		void generate(StructureWorldAccess world, Random random, WindModifier wind) {
+		void generate(StructureWorldAccess world, Random random, WindModifier wind, int maxHeightAboveWorldSurface) {
 			for (int x = -this.scale; x <= this.scale; x++) {
 				for (int z = -this.scale; z <= this.scale; z++) {
 					float horizontalLength = MathHelper.sqrt(x * x + z * z);
@@ -159,7 +160,7 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 
 					BlockPos.Mutable pos = this.pos.add(x, 0, z).mutableCopy();
 					boolean bl = false;
-					int l = world.getTopY(Heightmap.Type.WORLD_SURFACE_WG, pos.getX(), pos.getZ());
+					int l = world.getTopY(Heightmap.Type.WORLD_SURFACE_WG, pos.getX(), pos.getZ()) + maxHeightAboveWorldSurface;
 
 					for (int m = 0; m < scale && pos.getY() < l; m++) {
 						BlockPos blockPos = wind.modify(pos);
@@ -218,7 +219,8 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 		int minRadiusForWind,
 		float minBluntnessForWind,
 		IntProvider columnRadius,
-		float maxColumnRadiusToCaveHeightRatio
+		float maxColumnRadiusToCaveHeightRatio,
+		IntProvider maxHeightAboveWorldSurface
 	) implements FeatureConfig {
 		public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 			BlockStateProvider.TYPE_CODEC.fieldOf("state").forGetter(Config::stateProvider),
@@ -228,7 +230,8 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 			Codec.intRange(0, 100).fieldOf("min_radius_for_wind").forGetter(Config::minRadiusForWind),
 			Codec.floatRange(0.0F, 5.0F).fieldOf("min_bluntness_for_wind").forGetter(Config::minBluntnessForWind),
 			IntProvider.createValidatingCodec(1, 60).fieldOf("column_radius").forGetter(Config::columnRadius),
-			Codec.floatRange(0.1F, 1.0F).fieldOf("max_column_radius_to_cave_height_ratio").forGetter(Config::maxColumnRadiusToCaveHeightRatio)
+			Codec.floatRange(0.1F, 1.0F).fieldOf("max_column_radius_to_cave_height_ratio").forGetter(Config::maxColumnRadiusToCaveHeightRatio),
+			IntProvider.createValidatingCodec(0, 100).fieldOf("max_height_above_world_surface").forGetter(Config::columnRadius)
 		).apply(instance, Config::new));
 	}
 }

@@ -70,6 +70,7 @@ public class AbysmConfiguredFeatures {
 	public static final RegistryKey<ConfiguredFeature<?, ?>> MAUVE_BLOOMSHROOM_VEGETATION = ofKey("mauve_bloomshroom_vegetation");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> FLOROPUMICE_STALAGMITES = ofKey("floropumice_stalagmites");
+	public static final RegistryKey<ConfiguredFeature<?, ?>> SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES = ofKey("surface_smooth_floropumice_stalagmites");
 
 	public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_SEAGRASS_CAVE = ofKey("patch_seagrass_cave");
 	public static final RegistryKey<ConfiguredFeature<?, ?>> GOLDEN_LAZULI_OREFURL = ofKey("golden_lazuli_orefurl");
@@ -208,7 +209,22 @@ public class AbysmConfiguredFeatures {
 				UniformFloatProvider.create(0.4F, 2.0F),
 				4, 0.6F,
 				UniformIntProvider.create(3, 19),
-				0.33F
+				0.33F,
+				ConstantIntProvider.ZERO
+			)
+		);
+
+		helper.add(
+			SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES, AbysmFeatures.STALAGMITE,
+			new StalagmiteFeature.Config(
+				BlockStateProvider.of(AbysmBlocks.SMOOTH_FLOROPUMICE),
+				UniformFloatProvider.create(0.2F, 0.6F),
+				UniformFloatProvider.create(0.3F, 0.9F),
+				UniformFloatProvider.create(0.7F, 1.7F),
+				3, 0.4F,
+				UniformIntProvider.create(5, 12),
+				0.45F,
+				ConstantIntProvider.create(100)
 			)
 		);
 
