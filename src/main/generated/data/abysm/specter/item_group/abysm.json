@@ -320,6 +320,70 @@
     },
     {
       "id": "abysm:music_disc_renaissance"
+	},
+	  {
+		  "components": {
+			  "minecraft:potion_contents": {
+				  "potion": "abysm:blue"
+			  }
+		  },
+		  "id": "minecraft:potion"
+	  },
+	  {
+		  "components": {
+			  "minecraft:potion_contents": {
+				  "potion": "abysm:long_blue"
+			  }
+		  },
+		  "id": "minecraft:potion"
+	  },
+	  {
+		  "components": {
+			  "minecraft:potion_contents": {
+				  "potion": "abysm:blue"
+			  }
+		  },
+		  "id": "minecraft:splash_potion"
+	  },
+	  {
+		  "components": {
+			  "minecraft:potion_contents": {
+				  "potion": "abysm:long_blue"
+			  }
+		  },
+		  "id": "minecraft:splash_potion"
+	  },
+	  {
+		  "components": {
+			  "minecraft:potion_contents": {
+				  "potion": "abysm:blue"
+			  }
+		  },
+		  "id": "minecraft:lingering_potion"
+	  },
+	  {
+		  "components": {
+			  "minecraft:potion_contents": {
+				  "potion": "abysm:long_blue"
+			  }
+		  },
+		  "id": "minecraft:lingering_potion"
+	  },
+	  {
+		  "components": {
+			  "minecraft:potion_contents": {
+				  "potion": "abysm:blue"
+			  }
+		  },
+		  "id": "minecraft:tipped_arrow"
+	  },
+	  {
+		  "components": {
+			  "minecraft:potion_contents": {
+				  "potion": "abysm:long_blue"
+			  }
+		  },
+		  "id": "minecraft:tipped_arrow"
     }
   ]
 }

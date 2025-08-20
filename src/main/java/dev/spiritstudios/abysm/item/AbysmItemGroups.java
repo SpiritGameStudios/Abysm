@@ -6,10 +6,14 @@ import dev.spiritstudios.specter.api.core.reflect.ReflectionHelper;
 import dev.spiritstudios.specter.api.item.DataItemGroup;
 import dev.spiritstudios.specter.api.item.SpecterItemRegistryKeys;
 import net.minecraft.block.Block;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.potion.Potion;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
@@ -41,6 +45,21 @@ public final class AbysmItemGroups {
 				items.add(stack);
 			}
 		});
+
+		List<RegistryEntry<Potion>> potionEntries = new ArrayList<>();
+		ReflectionHelper.getStaticFields(
+			AbysmPotions.class,
+			RegistryEntry.class
+		).forEach(pair -> {
+			potionEntries.add(pair.value());
+		});
+
+		List<Item> potionItems = List.of(Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION, Items.TIPPED_ARROW);
+		for (Item item : potionItems) {
+			for (RegistryEntry<Potion> potionEntry : potionEntries) {
+				items.add(PotionContentsComponent.createStack(item, potionEntry));
+			}
+		}
 
 		registry.register(
 			ABYSM,

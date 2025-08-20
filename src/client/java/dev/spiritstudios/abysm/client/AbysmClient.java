@@ -21,9 +21,10 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.PaddlefishEntityRen
 import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
+import dev.spiritstudios.abysm.duck.LivingEntityDuck;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.entity.ReticulatedFliprayEntity;
 import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
 import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
 import net.fabricmc.api.ClientModInitializer;
@@ -78,6 +79,17 @@ public class AbysmClient implements ClientModInitializer {
 				double velocityY = random.nextGaussian() * 0.02;
 				double velocityZ = random.nextGaussian() * 0.02;
 				world.addParticleClient(parameters, entity.getParticleX(1.0), entity.getRandomBodyY() + 0.5, entity.getParticleZ(1.0), velocityX, velocityY, velocityZ);
+			}
+		});
+
+		ClientPlayNetworking.registerGlobalReceiver(EntityUpdateBlueS2CPayload.ID, (payload, context) -> {
+			World world = context.player().getWorld();
+			Entity entity = world.getEntityById(payload.entityId());
+			if (entity == null) {
+				return;
+			}
+			if (entity instanceof LivingEntityDuck duck) {
+				duck.abysm$setBlue(payload.isBlue());
 			}
 		});
 

@@ -12,12 +12,16 @@ import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
+import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
 import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.item.AbysmPotions;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
+import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
 import dev.spiritstudios.abysm.networking.UpdateDensityBlobBlockC2SPayload;
 import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
+import dev.spiritstudios.abysm.recipe.AbysmBrewingRecipes;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
@@ -66,6 +70,8 @@ public class Abysm implements ModInitializer {
 
 		AbysmLootTableModifications.init();
 
+		AbysmBrewingRecipes.init();
+
 		EcosystemType.init();
 	}
 
@@ -88,6 +94,9 @@ public class Abysm implements ModInitializer {
 		AbysmTrackedDataHandlers.init();
 		AbysmEcosystemTypes.init();
 		AbysmSensorTypes.init();
+
+		AbysmStatusEffects.init();
+		AbysmPotions.init();
 
 		// region worldgen
 		// structures
@@ -121,7 +130,9 @@ public class Abysm implements ModInitializer {
 	private void registerNetworking() {
 		PayloadTypeRegistry.playC2S().register(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload.PACKET_CODEC);
 		PayloadTypeRegistry.playC2S().register(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload.PACKET_CODEC);
+
 		PayloadTypeRegistry.playS2C().register(HappyEntityParticlesS2CPayload.ID, HappyEntityParticlesS2CPayload.PACKET_CODEC);
+		PayloadTypeRegistry.playS2C().register(EntityUpdateBlueS2CPayload.ID, EntityUpdateBlueS2CPayload.PACKET_CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload.Receiver.INSTANCE);
 		ServerPlayNetworking.registerGlobalReceiver(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload.Receiver.INSTANCE);
