@@ -15,6 +15,7 @@ public final class AbysmItemTags {
 	public static final TagKey<Item> SUNNY_BLOOMSHROOM_STEMS = of("sunny_bloomshroom_stems");
 	public static final TagKey<Item> MAUVE_BLOOMSHROOM_STEMS = of("mauve_bloomshroom_stems");
 	public static final TagKey<Item> BLOOMSHROOM_CAPS = of("bloomshroom_caps");
+	public static final TagKey<Item> NECTARSAP = of("nectarsap");
 	public static final TagKey<Item> BLOOMING_CROWNS = of("blooming_crowns");
 	public static final TagKey<Item> SCABIOSAS = of("scabiosas");
 

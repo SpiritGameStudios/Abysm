@@ -107,7 +107,9 @@ public class AbysmModelProvider extends FabricModelProvider {
 			AbysmBlocks.SUNBLOOM_PETALEAVES,
 			AbysmBlocks.MALLOWBLOOM_PETALEAVES,
 
-			AbysmBlocks.SWEET_NECTARSAP
+			AbysmBlocks.SWEET_NECTARSAP,
+			AbysmBlocks.SOUR_NECTARSAP,
+			AbysmBlocks.BITTER_NECTARSAP
 		);
 
 		registerBloomingCrowns(generator,

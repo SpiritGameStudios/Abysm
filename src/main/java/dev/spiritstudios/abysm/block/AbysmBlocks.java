@@ -452,6 +452,20 @@ public final class AbysmBlocks {
 			.nonOpaque()
 	);
 
+	public static final Block SOUR_NECTARSAP = register(
+		"sour_nectarsap",
+		BloomshroomGoopBlock::new,
+		AbstractBlock.Settings.copy(SWEET_NECTARSAP)
+			.mapColor(DyeColor.YELLOW)
+	);
+
+	public static final Block BITTER_NECTARSAP = register(
+		"bitter_nectarsap",
+		BloomshroomGoopBlock::new,
+		AbstractBlock.Settings.copy(SWEET_NECTARSAP)
+			.mapColor(DyeColor.PURPLE)
+	);
+
 	public static final Block BLOOMING_SODALITE_CROWN = register(
 		"blooming_sodalite_crown",
 		settings -> new BloomshroomCrownBlock(AbysmParticleTypes.ROSEBLOOM_GLIMMER, AbysmParticleTypes.SODALITE_THORNS, settings),

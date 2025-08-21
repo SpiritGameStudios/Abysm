@@ -1,6 +1,9 @@
 {
   "values": [
-	  "abysm:sweet_nectarsap",
+	  {
+		  "id": "#abysm:nectarsap",
+		  "required": false
+	  },
     {
       "id": "#abysm:bloomshroom_stems",
       "required": false

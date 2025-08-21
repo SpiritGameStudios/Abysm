@@ -36,7 +36,7 @@
 		"nectarsap_provider": {
 			"type": "minecraft:simple_state_provider",
 			"state": {
-				"Name": "abysm:sweet_nectarsap",
+				"Name": "abysm:sour_nectarsap",
 				"Properties": {
 					"waterlogged": "false"
           }

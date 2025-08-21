@@ -95,8 +95,8 @@ public class AbysmTagProviders {
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS);
 
 			getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE)
+				.addOptionalTag(AbysmBlockTags.NECTARSAP)
 				.add(
-					AbysmBlocks.SWEET_NECTARSAP,
 					AbysmBlocks.DREGLOAM,
 					AbysmBlocks.OOZING_DREGLOAM,
 					AbysmBlocks.DREGLOAM_OOZE,
@@ -105,9 +105,7 @@ public class AbysmTagProviders {
 				);
 
 			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
-				.add(
-					AbysmBlocks.SWEET_NECTARSAP
-				)
+				.addOptionalTag(AbysmBlockTags.NECTARSAP)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS);
 
@@ -239,7 +237,7 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(AbysmBlockTags.ALSO_PRESERVES_LEAVES)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
-				.add(AbysmBlocks.SWEET_NECTARSAP);
+				.addOptionalTag(AbysmBlockTags.NECTARSAP);
 
 			getOrCreateTagBuilder(AbysmBlockTags.IS_AIR_OR_WATER)
 				.addOptionalTag(BlockTags.AIR)
@@ -308,6 +306,13 @@ public class AbysmTagProviders {
 					AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 					AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
 					AbysmBlocks.MAUVE_BLOOMSHROOM_CAP
+				);
+
+			getOrCreateTagBuilder(AbysmBlockTags.NECTARSAP)
+				.add(
+					AbysmBlocks.SWEET_NECTARSAP,
+					AbysmBlocks.SOUR_NECTARSAP,
+					AbysmBlocks.BITTER_NECTARSAP
 				);
 
 			getOrCreateTagBuilder(AbysmBlockTags.BLOOMING_CROWNS)
@@ -543,6 +548,7 @@ public class AbysmTagProviders {
 			this.copy(AbysmBlockTags.SUNNY_BLOOMSHROOM_STEMS, AbysmItemTags.SUNNY_BLOOMSHROOM_STEMS);
 			this.copy(AbysmBlockTags.MAUVE_BLOOMSHROOM_STEMS, AbysmItemTags.MAUVE_BLOOMSHROOM_STEMS);
 			this.copy(AbysmBlockTags.BLOOMSHROOM_CAPS, AbysmItemTags.BLOOMSHROOM_CAPS);
+			this.copy(AbysmBlockTags.NECTARSAP, AbysmItemTags.NECTARSAP);
 			this.copy(AbysmBlockTags.BLOOMING_CROWNS, AbysmItemTags.BLOOMING_CROWNS);
 			this.copy(AbysmBlockTags.SCABIOSAS, AbysmItemTags.SCABIOSAS);
 			// endregion

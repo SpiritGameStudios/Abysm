@@ -1,6 +1,9 @@
 {
   "values": [
-	  "abysm:sweet_nectarsap",
+	  {
+		  "id": "#abysm:nectarsap",
+		  "required": false
+	  },
     "abysm:dregloam",
     "abysm:oozing_dregloam",
     "abysm:dregloam_ooze",

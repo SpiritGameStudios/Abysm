@@ -164,7 +164,9 @@ public class AbysmClient implements ClientModInitializer {
 
 		BlockRenderLayerMap.INSTANCE.putBlocks(
 			RenderLayer.getTranslucent(),
-			AbysmBlocks.SWEET_NECTARSAP
+			AbysmBlocks.SWEET_NECTARSAP,
+			AbysmBlocks.SOUR_NECTARSAP,
+			AbysmBlocks.BITTER_NECTARSAP
 		);
 	}
 }
