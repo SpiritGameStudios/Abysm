@@ -440,8 +440,8 @@ public final class AbysmBlocks {
 		PlaceableOnWaterOrBlockItem::new
 	);
 
-	public static final Block BLOOMSHROOM_GOOP = register(
-		"bloomshroom_goop",
+	public static final Block SWEET_NECTARSAP = register(
+		"sweet_nectarsap",
 		BloomshroomGoopBlock::new,
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.PINK)

@@ -21,15 +21,6 @@
         }
       },
       "diagonal_top_petal_chance": 0.5,
-      "goop_provider": {
-        "type": "minecraft:simple_state_provider",
-        "state": {
-          "Name": "abysm:bloomshroom_goop",
-          "Properties": {
-            "waterlogged": "false"
-          }
-        }
-      },
       "horizontal_top_petal_chance": 0.2,
       "leaves_provider": {
         "type": "minecraft:simple_state_provider",
@@ -39,6 +30,15 @@
             "distance": "7",
             "persistent": "false",
             "waterlogged": "false"
+		  }
+		}
+	  },
+		"nectarsap_provider": {
+			"type": "minecraft:simple_state_provider",
+			"state": {
+				"Name": "abysm:sweet_nectarsap",
+				"Properties": {
+					"waterlogged": "false"
           }
         }
       },

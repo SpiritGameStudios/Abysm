@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "abysm:bloomshroom_goop"
+			"name": "abysm:sweet_nectarsap"
         }
       ],
       "rolls": 1.0

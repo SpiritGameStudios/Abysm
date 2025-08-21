@@ -107,7 +107,7 @@ public class AbysmConfiguredFeatures {
 			AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
 			AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 			AbysmBlocks.ROSEBLOOM_PETALEAVES,
-			AbysmBlocks.BLOOMSHROOM_GOOP,
+			AbysmBlocks.SWEET_NECTARSAP,
 			AbysmBlocks.BLOOMING_SODALITE_CROWN,
 			3,
 			0.8F,
@@ -119,7 +119,7 @@ public class AbysmConfiguredFeatures {
 			AbysmBlocks.SUNNY_BLOOMSHROOM_STEM,
 			AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
 			AbysmBlocks.SUNBLOOM_PETALEAVES,
-			AbysmBlocks.BLOOMSHROOM_GOOP,
+			AbysmBlocks.SWEET_NECTARSAP,
 			AbysmBlocks.BLOOMING_ANYOLITE_CROWN,
 			2,
 			0.3F,
@@ -131,7 +131,7 @@ public class AbysmConfiguredFeatures {
 			AbysmBlocks.MAUVE_BLOOMSHROOM_STEM,
 			AbysmBlocks.MAUVE_BLOOMSHROOM_CAP,
 			AbysmBlocks.MALLOWBLOOM_PETALEAVES,
-			AbysmBlocks.BLOOMSHROOM_GOOP,
+			AbysmBlocks.SWEET_NECTARSAP,
 			AbysmBlocks.BLOOMING_MELILITE_CROWN,
 			5,
 			0.2F,
@@ -354,7 +354,7 @@ public class AbysmConfiguredFeatures {
 		return RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, Abysm.id(id));
 	}
 
-	private static void registerBloomshroom(ConfiguredFeatureHelper helper, RegistryKey<ConfiguredFeature<?, ?>> key, Block stemBlock, Block capBlock, Block leavesBlock, Block goopBlock, Block crownBlock, int randomHeight, float horizontalTopPetalChance, float diagonalTopPetalChance) {
+	private static void registerBloomshroom(ConfiguredFeatureHelper helper, RegistryKey<ConfiguredFeature<?, ?>> key, Block stemBlock, Block capBlock, Block leavesBlock, Block nectarsapBlock, Block crownBlock, int randomHeight, float horizontalTopPetalChance, float diagonalTopPetalChance) {
 		helper.add(
 			key, Feature.TREE,
 			new TreeFeatureConfig.Builder(
@@ -370,7 +370,7 @@ public class AbysmConfiguredFeatures {
 					ConstantIntProvider.create(3),
 					ConstantIntProvider.create(0),
 					BlockStateProvider.of(leavesBlock),
-					BlockStateProvider.of(goopBlock),
+					BlockStateProvider.of(nectarsapBlock),
 					BlockStateProvider.of(crownBlock),
 					horizontalTopPetalChance,
 					diagonalTopPetalChance

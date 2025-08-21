@@ -164,7 +164,7 @@ public class AbysmClient implements ClientModInitializer {
 
 		BlockRenderLayerMap.INSTANCE.putBlocks(
 			RenderLayer.getTranslucent(),
-			AbysmBlocks.BLOOMSHROOM_GOOP
+			AbysmBlocks.SWEET_NECTARSAP
 		);
 	}
 }

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "abysm:block/bloomshroom_goop"
+	  "model": "abysm:block/sweet_nectarsap"
   }
 }

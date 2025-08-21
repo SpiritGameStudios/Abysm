@@ -96,7 +96,7 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE)
 				.add(
-					AbysmBlocks.BLOOMSHROOM_GOOP,
+					AbysmBlocks.SWEET_NECTARSAP,
 					AbysmBlocks.DREGLOAM,
 					AbysmBlocks.OOZING_DREGLOAM,
 					AbysmBlocks.DREGLOAM_OOZE,
@@ -106,7 +106,7 @@ public class AbysmTagProviders {
 
 			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
 				.add(
-					AbysmBlocks.BLOOMSHROOM_GOOP
+					AbysmBlocks.SWEET_NECTARSAP
 				)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS);
@@ -239,7 +239,7 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(AbysmBlockTags.ALSO_PRESERVES_LEAVES)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
-				.add(AbysmBlocks.BLOOMSHROOM_GOOP);
+				.add(AbysmBlocks.SWEET_NECTARSAP);
 
 			getOrCreateTagBuilder(AbysmBlockTags.IS_AIR_OR_WATER)
 				.addOptionalTag(BlockTags.AIR)

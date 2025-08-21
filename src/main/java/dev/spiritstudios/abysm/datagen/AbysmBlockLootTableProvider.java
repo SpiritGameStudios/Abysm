@@ -74,7 +74,7 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE,
 			AbysmBlocks.MAUVE_BLOOMSHROOM_CAP,
 
-			AbysmBlocks.BLOOMSHROOM_GOOP,
+			AbysmBlocks.SWEET_NECTARSAP,
 
 			AbysmBlocks.BLOOMING_SODALITE_CROWN,
 			AbysmBlocks.BLOOMING_ANYOLITE_CROWN,

@@ -25,7 +25,7 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 				BlockStateProvider.TYPE_CODEC.fieldOf("leaves_provider").forGetter(placer -> placer.leavesProvider)
 			)
 			.and(
-				BlockStateProvider.TYPE_CODEC.fieldOf("goop_provider").forGetter(placer -> placer.goopProvider)
+				BlockStateProvider.TYPE_CODEC.fieldOf("nectarsap_provider").forGetter(placer -> placer.nectarsapProvider)
 			)
 			.and(
 				BlockStateProvider.TYPE_CODEC.fieldOf("crown_provider").forGetter(placer -> placer.crownProvider)
@@ -40,15 +40,15 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 	);
 
 	private final BlockStateProvider leavesProvider;
-	private final BlockStateProvider goopProvider;
+	private final BlockStateProvider nectarsapProvider;
 	private final BlockStateProvider crownProvider;
 	private final float horizontalTopPetalChance;
 	private final float diagonalTopPetalChance;
 
-	public BloomshroomFoliagePlacer(IntProvider radius, IntProvider offset, BlockStateProvider leavesProvider, BlockStateProvider goopProvider, BlockStateProvider crownProvider, float horizontalTopPetalChance, float diagonalTopPetalChance) {
+	public BloomshroomFoliagePlacer(IntProvider radius, IntProvider offset, BlockStateProvider leavesProvider, BlockStateProvider nectarsapProvider, BlockStateProvider crownProvider, float horizontalTopPetalChance, float diagonalTopPetalChance) {
 		super(radius, offset);
 		this.leavesProvider = leavesProvider;
-		this.goopProvider = goopProvider;
+		this.nectarsapProvider = nectarsapProvider;
 		this.crownProvider = crownProvider;
 		this.horizontalTopPetalChance = horizontalTopPetalChance;
 		this.diagonalTopPetalChance = diagonalTopPetalChance;
@@ -94,8 +94,8 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 		return this.placeBlock(world, placer, random, pos, this.leavesProvider);
 	}
 
-	protected boolean placeGoopBlock(TestableWorld world, FoliagePlacer.BlockPlacer placer, Random random, BlockPos pos) {
-		return this.placeBlock(world, placer, random, pos, this.goopProvider);
+	protected boolean placeNectarsapBlock(TestableWorld world, FoliagePlacer.BlockPlacer placer, Random random, BlockPos pos) {
+		return this.placeBlock(world, placer, random, pos, this.nectarsapProvider);
 	}
 
 	protected boolean placeCrownBlock(TestableWorld world, FoliagePlacer.BlockPlacer placer, Random random, BlockPos pos) {
@@ -133,11 +133,11 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 		int y = -foliageHeight;
 		int r = radius + treeNode.getFoliageRadius();
 
-		// place goop
+		// place nectarsap
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dz = -1; dz <= 1; dz++) {
 				if (dx == 0 || dz == 0) {
-					fillCuboid(world, placer, random, pos.add(dx, y - 1, dz), this.goopProvider, 0, -3, 0);
+					fillCuboid(world, placer, random, pos.add(dx, y - 1, dz), this.nectarsapProvider, 0, -3, 0);
 				}
 			}
 		}
