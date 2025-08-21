@@ -442,7 +442,7 @@ public final class AbysmBlocks {
 
 	public static final Block SWEET_NECTARSAP = register(
 		"sweet_nectarsap",
-		BloomshroomGoopBlock::new,
+		settings -> new NectarsapBlock(AbysmParticleTypes.ROSEBLOOM_GLIMMER, settings),
 		AbstractBlock.Settings.create()
 			.mapColor(DyeColor.PINK)
 			.instrument(NoteBlockInstrument.BASS)
@@ -454,14 +454,14 @@ public final class AbysmBlocks {
 
 	public static final Block SOUR_NECTARSAP = register(
 		"sour_nectarsap",
-		BloomshroomGoopBlock::new,
+		settings -> new NectarsapBlock(AbysmParticleTypes.SUNBLOOM_GLIMMER, settings),
 		AbstractBlock.Settings.copy(SWEET_NECTARSAP)
 			.mapColor(DyeColor.YELLOW)
 	);
 
 	public static final Block BITTER_NECTARSAP = register(
 		"bitter_nectarsap",
-		BloomshroomGoopBlock::new,
+		settings -> new NectarsapBlock(AbysmParticleTypes.MALLOWBLOOM_GLIMMER, settings),
 		AbstractBlock.Settings.copy(SWEET_NECTARSAP)
 			.mapColor(DyeColor.PURPLE)
 	);

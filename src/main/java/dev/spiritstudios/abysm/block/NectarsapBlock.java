@@ -1,25 +1,36 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
-import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SideShapeType;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-public class BloomshroomGoopBlock extends WaterloggableTranslucentBlock {
-	public static final MapCodec<WaterloggableTranslucentBlock> CODEC = createCodec(BloomshroomGoopBlock::new);
+public class NectarsapBlock extends WaterloggableTranslucentBlock {
+	public static final MapCodec<NectarsapBlock> CODEC = RecordCodecBuilder.mapCodec(
+		instance -> instance.group(
+				ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
+				createSettingsCodec()
+			)
+			.apply(instance, NectarsapBlock::new)
+	);
 
 	@Override
 	protected MapCodec<? extends WaterloggableTranslucentBlock> getCodec() {
 		return CODEC;
 	}
 
-	public BloomshroomGoopBlock(Settings settings) {
+	public final ParticleEffect particle;
+
+	public NectarsapBlock(ParticleEffect particle, Settings settings) {
 		super(settings);
+		this.particle = particle;
 	}
 
 	@Override
@@ -61,7 +72,7 @@ public class BloomshroomGoopBlock extends WaterloggableTranslucentBlock {
 						}
 					}
 
-					world.addParticleClient(AbysmParticleTypes.ROSEBLOOM_GLIMMER, x, y, z, vx, vy, vz);
+					world.addParticleClient(this.particle, x, y, z, vx, vy, vz);
 				}
 			}
 		}
