@@ -20,6 +20,7 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 import java.util.Map;
 
@@ -37,6 +38,12 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 
 	public LectorfinEntityRenderer(EntityRendererFactory.Context context) {
 		super(context, new LectorfinEntityModel());
+		this.addRenderLayer(new AutoGlowingGeoLayer<>(this) {
+			@Override
+			protected boolean shouldRespectWorldLighting(R renderState) {
+				return true;
+			}
+		});
 	}
 
 	@Override
