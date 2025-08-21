@@ -281,8 +281,8 @@ public class AbysmConfiguredFeatures {
 		helper.add(
 			HANGING_LANTERN, AbysmFeatures.HANGING_LANTERN,
 			new HangingLanternFeature.Config(
-				BlockStateProvider.of(Blocks.SOUL_LANTERN.getDefaultState().with(LanternBlock.HANGING, true)),
-				BlockStateProvider.of(Blocks.CHAIN),
+				BlockStateProvider.of(AbysmBlocks.OOZETRICKLE_LANTERN.getDefaultState().with(LanternBlock.HANGING, true)),
+				BlockStateProvider.of(AbysmBlocks.OOZETRICKLE_CORD),
 				BiasedToBottomIntProvider.create(3, 18),
 				UniformIntProvider.create(3, 5)
 			)

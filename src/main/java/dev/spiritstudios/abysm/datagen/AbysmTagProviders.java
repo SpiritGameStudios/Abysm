@@ -88,11 +88,15 @@ public class AbysmTagProviders {
 					AbysmBlocks.CHISELED_SILT,
 					AbysmBlocks.CUT_SILT
 				)
-				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
+				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE)
+				.add(AbysmBlocks.OOZETRICKLE_CORD)
+				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
 
 			getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
-				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS);
+				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
+				.add(AbysmBlocks.OOZETRICKLE_CORD)
+				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
 
 			getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE)
 				.addOptionalTag(AbysmBlockTags.NECTARSAP)
@@ -107,7 +111,9 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
 				.addOptionalTag(AbysmBlockTags.NECTARSAP)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
-				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS);
+				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
+				.add(AbysmBlocks.OOZETRICKLE_CORD)
+				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
 
 			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_TREES)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)

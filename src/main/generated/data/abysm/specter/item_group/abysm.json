@@ -262,6 +262,12 @@
       "id": "abysm:tall_oozetrickle_filaments"
     },
     {
+		"id": "abysm:oozetrickle_cord"
+	},
+	  {
+		  "id": "abysm:oozetrickle_lantern"
+	  },
+	  {
       "id": "abysm:silt"
     },
     {

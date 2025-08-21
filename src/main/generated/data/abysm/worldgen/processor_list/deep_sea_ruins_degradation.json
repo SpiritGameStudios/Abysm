@@ -62,7 +62,7 @@
         },
         {
           "input_predicate": {
-            "block": "minecraft:soul_lantern",
+			  "block": "abysm:oozetrickle_lantern",
             "predicate_type": "minecraft:random_block_match",
             "probability": 0.25
           },
