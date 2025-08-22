@@ -1,44 +1,31 @@
 package dev.spiritstudios.abysm.entity;
 
-import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
-import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.ai.goal.SwimAroundBoidGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
-import dev.spiritstudios.abysm.item.AbysmItems;
-import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animatable.processing.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SnapperEntity extends FishEntity implements EcologicalEntity, GeoEntity {
-	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.snapper.idle");
+public abstract class SimpleFishEntity  extends FishEntity implements EcologicalEntity, GeoEntity {
 	protected EcosystemLogic ecosystemLogic;
+	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-	public SnapperEntity(EntityType<SnapperEntity> entityType, World world) {
+	public SimpleFishEntity(EntityType<? extends SimpleFishEntity> entityType, World world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
 	}
@@ -65,16 +52,6 @@ public class SnapperEntity extends FishEntity implements EcologicalEntity, GeoEn
 	protected void initGoals() {
 		this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25));
 		this.goalSelector.add(2, new FleeEntityGoal<>(this, PlayerEntity.class, 8.0F, 1.6, 1.4, EntityPredicates.EXCEPT_SPECTATOR::test));
-
-		this.goalSelector.add(4, new SwimAroundBoidGoal(
-			this,
-			2.5F,
-			100 * MathHelper.RADIANS_PER_DEGREE,
-			70 * MathHelper.RADIANS_PER_DEGREE,
-			0.5F, 0.4F, 0.4F, 0.005F, 0.75F,
-			0.05F, 0.15F
-		));
-
 		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
 		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
 		this.targetSelector.add(1, new HuntPreyGoal(this, false));
@@ -82,41 +59,11 @@ public class SnapperEntity extends FishEntity implements EcologicalEntity, GeoEn
 
 	@Override
 	public EcosystemLogic getEcosystemLogic() {
-		return this.ecosystemLogic;
-	}
-
-	@Override
-	public EcosystemType<?> getEcosystemType() {
-		return AbysmEcosystemTypes.SNAPPER;
-	}
-
-	@Override
-	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>(0, event -> event.setAndContinue(IDLE_ANIM)));
+		return ecosystemLogic;
 	}
 
 	@Override
 	public AnimatableInstanceCache getAnimatableInstanceCache() {
 		return geoCache;
-	}
-
-	@Override
-	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
-		return AbysmSoundEvents.ENTITY_PADDLEFISH_HURT;
-	}
-
-	@Override
-	protected @Nullable SoundEvent getDeathSound() {
-		return AbysmSoundEvents.ENTITY_PADDLEFISH_DEATH;
-	}
-
-	@Override
-	protected SoundEvent getFlopSound() {
-		return AbysmSoundEvents.ENTITY_PADDLEFISH_FLOP;
-	}
-
-	@Override
-	public ItemStack getBucketItem() {
-		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 }

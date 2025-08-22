@@ -6,7 +6,8 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.ReticulatedFliprayEntity;
-import dev.spiritstudios.abysm.entity.SnapperEntity;
+import dev.spiritstudios.abysm.entity.generic.GupGupEntity;
+import dev.spiritstudios.abysm.entity.generic.SnapperEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.PaddlefishEntity;
@@ -51,6 +52,7 @@ public class AbysmEcosystemTypes {
 			.setTargetPopulation(7)
 	);
 
+	// TODO
 	public static final EcosystemType<SnapperEntity> SNAPPER = register(
 		"snapper",
 		EcosystemType.Builder
@@ -58,6 +60,14 @@ public class AbysmEcosystemTypes {
 			.setPredators(AbysmEntityTypes.BLOOMRAY)
 			.setPrey(EntityType.PLAYER)
 			.setTargetPopulation(5)
+	);
+
+	// TODO
+	public static final EcosystemType<GupGupEntity> GUP_GUP = register(
+		"gup_gup",
+		EcosystemType.Builder
+			.create(AbysmEntityTypes.GUP_GUP)
+			.setTargetPopulation(50)
 	);
 
 	public static final EcosystemType<BloomrayEntity> BLOOMRAY = register(

@@ -1,9 +1,10 @@
-package dev.spiritstudios.abysm.entity.floralreef;
+package dev.spiritstudios.abysm.entity.generic;
 
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.SimpleFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.SwimAroundBoidGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityType;
@@ -17,30 +18,30 @@ import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public class PaddlefishEntity extends SimpleFishEntity {
-	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.paddlefish.idle");
+public class GupGupEntity extends SimpleFishEntity {
+	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.gup_gup.idle");
 
-	public PaddlefishEntity(EntityType<PaddlefishEntity> entityType, World world) {
+	public GupGupEntity(EntityType<GupGupEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
 	@Override
 	protected void initGoals() {
 		super.initGoals();
-
+		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
 		this.goalSelector.add(4, new SwimAroundBoidGoal(
 			this,
-			2.5F,
+			2.0F,
 			100 * MathHelper.RADIANS_PER_DEGREE,
 			70 * MathHelper.RADIANS_PER_DEGREE,
-			0.5F, 0.4F, 0.4F, 0.005F, 0.75F,
-			0.05F, 0.15F
+			0.1F, 0.4F, 0.4F, 0.005F, 2F,
+			0.025F, 0.05F
 		));
 	}
 
 	@Override
 	public EcosystemType<?> getEcosystemType() {
-		return AbysmEcosystemTypes.PADDLEFISH;
+		return AbysmEcosystemTypes.GUP_GUP;
 	}
 
 	@Override
@@ -48,6 +49,18 @@ public class PaddlefishEntity extends SimpleFishEntity {
 		controllers.add(new AnimationController<>(0, event -> event.setAndContinue(IDLE_ANIM)));
 	}
 
+	@Override
+	public boolean shouldRender(double distance) {
+		double d = this.getBoundingBox().getAverageSideLength();
+		if (Double.isNaN(d)) {
+			d = 1.0;
+		}
+
+		d *= 64.0 * 5;
+		return distance < d * d;
+	}
+
+	// TODO: SoundEvents
 	@Override
 	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
 		return AbysmSoundEvents.ENTITY_PADDLEFISH_HURT;
