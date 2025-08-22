@@ -18,7 +18,7 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.HarpoonEntityRender
 import dev.spiritstudios.abysm.client.render.entity.renderer.LehydrathanEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.ManOWarEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.MysteriousBlobEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.PaddlefishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.SimpleFishRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
@@ -58,7 +58,8 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.LECTORFIN, LectorfinEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.MYSTERIOUS_BLOB, MysteriousBlobEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.TEST_LEVIATHAN, LehydrathanEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.PADDLEFISH, PaddlefishEntityRenderer::new);
+		EntityRendererRegistry.register(AbysmEntityTypes.PADDLEFISH, SimpleFishRenderer.factory("paddlefish"));
+		EntityRendererRegistry.register(AbysmEntityTypes.SNAPPER, SimpleFishRenderer.factory("snapper"));
 		EntityRendererRegistry.register(AbysmEntityTypes.RETICULATED_FLIPRAY, FliprayEntityRenderer::new);
 
 		ArmorRenderer.register(new FlippersRenderer(), AbysmItems.FLIPPERS);

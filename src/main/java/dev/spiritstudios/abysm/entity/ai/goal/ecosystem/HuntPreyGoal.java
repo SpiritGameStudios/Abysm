@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.entity.ai.goal.ecosystem;
 
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.goal.TrackTargetGoal;
@@ -90,7 +91,7 @@ public class HuntPreyGoal extends TrackTargetGoal {
 
 	protected void findClosestTarget() {
 		ServerWorld serverWorld = getServerWorld(this.mob);
-		Set<EntityType<? extends MobEntity>> prey = ((EcologicalEntity) this.mob).getEcosystemType().prey();
+		Set<EntityType<? extends LivingEntity>> prey = ((EcologicalEntity) this.mob).getEcosystemType().prey();
 		this.targetEntity = serverWorld.getClosestEntity(
 			serverWorld.getEntitiesByType(TypeFilter.instanceOf(MobEntity.class),
 				this.getSearchBox(this.getFollowRange()),
