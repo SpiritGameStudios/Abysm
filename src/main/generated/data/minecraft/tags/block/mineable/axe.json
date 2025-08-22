@@ -7,8 +7,8 @@
     {
       "id": "#abysm:bloomshroom_caps",
       "required": false
-	},
-	  "abysm:oozetrickle_cord",
-	  "abysm:oozetrickle_lantern"
+    },
+    "abysm:oozetrickle_cord",
+    "abysm:oozetrickle_lantern"
   ]
 }

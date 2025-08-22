@@ -30,15 +30,15 @@
             "distance": "7",
             "persistent": "false",
             "waterlogged": "false"
-		  }
-		}
-	  },
-		"nectarsap_provider": {
-			"type": "minecraft:simple_state_provider",
-			"state": {
-				"Name": "abysm:sour_nectarsap",
-				"Properties": {
-					"waterlogged": "false"
+          }
+        }
+      },
+      "nectarsap_provider": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "abysm:sour_nectarsap",
+          "Properties": {
+            "waterlogged": "false"
           }
         }
       },

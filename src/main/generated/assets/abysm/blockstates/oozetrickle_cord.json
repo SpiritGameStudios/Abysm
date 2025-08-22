@@ -1,16 +1,16 @@
 {
-	"variants": {
-		"axis=x": {
-			"model": "abysm:block/oozetrickle_cord",
-			"x": 90,
-			"y": 90
-		},
-		"axis=y": {
-			"model": "abysm:block/oozetrickle_cord"
-		},
-		"axis=z": {
-			"model": "abysm:block/oozetrickle_cord",
-			"x": 90
-		}
-	}
+  "variants": {
+    "axis=x": {
+      "model": "abysm:block/oozetrickle_cord",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "abysm:block/oozetrickle_cord"
+    },
+    "axis=z": {
+      "model": "abysm:block/oozetrickle_cord",
+      "x": 90
+    }
+  }
 }

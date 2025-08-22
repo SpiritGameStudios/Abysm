@@ -1,9 +1,9 @@
 {
   "values": [
-	  {
-		  "id": "#abysm:nectarsap",
-		  "required": false
-	  },
+    {
+      "id": "#abysm:nectarsap",
+      "required": false
+    },
     {
       "id": "#abysm:bloomshroom_stems",
       "required": false
@@ -11,8 +11,8 @@
     {
       "id": "#abysm:bloomshroom_caps",
       "required": false
-	},
-	  "abysm:oozetrickle_cord",
-	  "abysm:oozetrickle_lantern"
+    },
+    "abysm:oozetrickle_cord",
+    "abysm:oozetrickle_lantern"
   ]
 }

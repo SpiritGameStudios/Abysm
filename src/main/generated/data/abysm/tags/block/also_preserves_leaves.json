@@ -8,9 +8,9 @@
       "id": "#abysm:bloomshroom_stems",
       "required": false
     },
-	  {
-		  "id": "#abysm:nectarsap",
-		  "required": false
-	  }
+    {
+      "id": "#abysm:nectarsap",
+      "required": false
+    }
   ]
 }

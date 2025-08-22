@@ -1,6 +1,6 @@
 {
-	"model": {
-		"type": "minecraft:model",
-		"model": "abysm:item/oozetrickle_cord"
-	}
+  "model": {
+    "type": "minecraft:model",
+    "model": "abysm:item/oozetrickle_cord"
+  }
 }
