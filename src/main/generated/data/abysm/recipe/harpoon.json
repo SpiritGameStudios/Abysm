@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "c": "abysm:oozetrickle_cord",
+    "f": "abysm:smooth_floropumice",
+    "g": "minecraft:gold_ingot",
+    "h": "minecraft:heart_of_the_sea"
+  },
+  "result": {
+    "count": 1,
+    "id": "abysm:harpoon"
+  },
+  "pattern": [
+    "ff ",
+    "hcg",
+    "f  "
+  ]
+}

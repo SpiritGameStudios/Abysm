@@ -81,6 +81,18 @@ public class AbysmRecipeProvider extends FabricRecipeProvider {
 					.criterion("has_oozeball", this.conditionsFromItem(AbysmItems.DREGLOAM_OOZEBALL))
 					.criterion("has_dregloam", this.conditionsFromItem(AbysmBlocks.DREGLOAM))
 					.offerTo(this.exporter);
+
+				// harpoon
+				this.createShaped(RecipeCategory.COMBAT, AbysmItems.HARPOON)
+					.input('c', AbysmBlocks.OOZETRICKLE_CORD)
+					.input('h', Items.HEART_OF_THE_SEA)
+					.input('g', Items.GOLD_INGOT)
+					.input('f', AbysmBlocks.SMOOTH_FLOROPUMICE)
+					.pattern("ff ")
+					.pattern("hcg")
+					.pattern("f  ")
+					.criterion("has_cord", this.conditionsFromItem(AbysmBlocks.OOZETRICKLE_CORD))
+					.offerTo(this.exporter);
 				// endregion crafting
 
 				// region smelting etc
