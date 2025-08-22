@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "abysm:block/sour_nectarsap"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "abysm:block/sour_nectarsap"
+    }
+  }
 }

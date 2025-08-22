@@ -17,11 +17,11 @@
       "min_inclusive": 0.4
     },
     "max_column_radius_to_cave_height_ratio": 0.33,
-	  "max_height_above_world_surface": {
-		  "type": "minecraft:uniform",
-		  "max_inclusive": 19,
-		  "min_inclusive": 3
-	  },
+    "max_height_above_world_surface": {
+      "type": "minecraft:uniform",
+      "max_inclusive": 19,
+      "min_inclusive": 3
+    },
     "min_bluntness_for_wind": 0.6,
     "min_radius_for_wind": 4,
     "state": {

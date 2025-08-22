@@ -280,6 +280,16 @@
       }
     ]
   },
+  "music.overworld.seaside": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/paddleboard"
+      }
+    ]
+  },
   "music.overworld.the_entwined": {
     "category": "music",
     "sounds": [

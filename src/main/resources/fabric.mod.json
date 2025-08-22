@@ -46,5 +46,11 @@
 		"java": ">=21"
 	},
 	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://discord.gg/TTmx7d2axf",
+				"modmenu.website": "https://spiritstudios.dev/project/abysm"
+			}
+		}
 	}
 }

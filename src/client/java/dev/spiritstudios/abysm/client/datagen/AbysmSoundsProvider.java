@@ -37,6 +37,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(TILAPIA)
 				.category(SoundCategory.MUSIC)
 		);
+
 		exporter.add(
 			AbysmSoundEvents.MUSIC_OVERWORLD_DEEP_SEA_RUINS,
 			SoundTypeBuilder.of()
@@ -61,6 +62,13 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 			AbysmSoundEvents.MUSIC_OVERWORLD_THE_ENTWINED,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/abysm").stream(true).volume(0.4F)) // The Entwined only plays this one song.
+				.category(SoundCategory.MUSIC)
+		);
+
+		exporter.add(
+			AbysmSoundEvents.MUSIC_OVERWORLD_SEASIDE,
+			SoundTypeBuilder.of()
+				.sound(ofFile("music/game/paddleboard").stream(true).volume(0.4F))
 				.category(SoundCategory.MUSIC)
 		);
 

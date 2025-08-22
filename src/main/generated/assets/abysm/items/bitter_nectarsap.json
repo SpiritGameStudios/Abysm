@@ -1,6 +1,6 @@
 {
-	"model": {
-		"type": "minecraft:model",
-		"model": "abysm:block/bitter_nectarsap"
-	}
+  "model": {
+    "type": "minecraft:model",
+    "model": "abysm:block/bitter_nectarsap"
+  }
 }

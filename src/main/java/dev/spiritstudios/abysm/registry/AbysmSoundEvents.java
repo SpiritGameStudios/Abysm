@@ -13,6 +13,8 @@ public class AbysmSoundEvents {
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_DEEP_SEA_RUINS = registerReference("music.overworld.deep_sea_ruins");
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_PEARLESCENT_SEA = registerReference("music.overworld.pearlescent_sea");
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_THE_ENTWINED = registerReference("music.overworld.the_entwined");
+	// VANILLA BIOMES
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_SEASIDE = registerReference("music.overworld.seaside");
 	// MUSIC DISCS
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_RENAISSANCE = registerReference("records.renaissance");
 	// SOUNDS
@@ -49,6 +51,7 @@ public class AbysmSoundEvents {
 		Identifier id = Abysm.id(path);
 		return Registry.registerReference(Registries.SOUND_EVENT, id, SoundEvent.of(id));
 	}
+
 
 	public static void init() {
 		// NO-OP
