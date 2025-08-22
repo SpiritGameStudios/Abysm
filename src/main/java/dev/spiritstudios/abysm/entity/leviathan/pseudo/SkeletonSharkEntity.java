@@ -26,7 +26,6 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.animatable.processing.AnimationController;
 
 import java.util.List;
 
@@ -60,9 +59,9 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
-		AnimationController<SkeletonSharkEntity> animController = new AnimationController<>(0, event -> event.setAndContinue(IDLE_ANIM));
+		//AnimationController<SkeletonSharkEntity> animController = new AnimationController<>(0, event -> event.setAndContinue(IDLE_ANIM));
 
-		registrar.add(animController);
+		//registrar.add(animController);
 	}
 
 	@Override
@@ -95,7 +94,7 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 
 	public static DefaultAttributeContainer.Builder createSansAttributes() {
 		return MobEntity.createMobAttributes()
-			.add();
+			/*.add()*/;
 	}
 
 	@Override
