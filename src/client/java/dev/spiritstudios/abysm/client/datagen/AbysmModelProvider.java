@@ -162,6 +162,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 		// endregion
 
 		// region oozetrickle deco
+		generator.registerItemModel(AbysmBlocks.OOZETRICKLE_CORD.asItem());
 		generator.registerAxisRotated(AbysmBlocks.OOZETRICKLE_CORD, createWeightedVariant(ModelIds.getBlockModelId(AbysmBlocks.OOZETRICKLE_CORD)));
 		this.registerOozetrickleLantern(generator, AbysmBlocks.OOZETRICKLE_LANTERN);
 		// endregion
