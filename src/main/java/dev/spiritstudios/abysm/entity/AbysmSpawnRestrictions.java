@@ -24,6 +24,7 @@ public class AbysmSpawnRestrictions {
 		registerStandardWC(AbysmEntityTypes.MAN_O_WAR);
 		registerStandardEcoWC(AbysmEntityTypes.LECTORFIN);
 		registerStandardEcoWC(AbysmEntityTypes.RETICULATED_FLIPRAY);
+		registerStandardEcoWC(AbysmEntityTypes.SKELETON_SHARK);
 	}
 
 	private static <T extends WaterCreatureEntity> void registerStandardEcoWC(EntityType<T> type) {

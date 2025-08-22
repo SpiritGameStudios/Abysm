@@ -14,6 +14,7 @@ import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.PaddlefishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
+import dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkEntity;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
@@ -108,6 +109,12 @@ public class AbysmEcosystemTypes {
 	public static final EcosystemType<ReticulatedFliprayEntity> RETICULATED_FLIPRAY = register(
 		"reticulated_flipray",
 		EcosystemType.Builder.create(AbysmEntityTypes.RETICULATED_FLIPRAY)
+			.setTargetPopulation(3)
+	);
+
+	public static final EcosystemType<SkeletonSharkEntity> SKELETON_SHARK = register(
+		"skeleton_shark",
+		EcosystemType.Builder.create(AbysmEntityTypes.SKELETON_SHARK)
 			.setTargetPopulation(2)
 	);
 

@@ -8,6 +8,7 @@ import dev.spiritstudios.abysm.entity.generic.GupGupEntity;
 import dev.spiritstudios.abysm.entity.generic.SnapperEntity;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
+import dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkEntity;
 import dev.spiritstudios.abysm.entity.leviathan.test.Lehydrathan;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -132,7 +133,13 @@ public class AbysmEntityTypes {
 	public static final EntityType<ReticulatedFliprayEntity> RETICULATED_FLIPRAY = register(
 		"reticulated_flipray",
 		EntityType.Builder.create(ReticulatedFliprayEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(1.7F, 0.2F) // I have no idea how big this should be
+			.dimensions(1.7F, 0.2F)
+	);
+
+	public static final EntityType<SkeletonSharkEntity> SKELETON_SHARK = register(
+		"skeleton_shark",
+		EntityType.Builder.create(SkeletonSharkEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(1.7F, 0.2F)
 	);
 
 

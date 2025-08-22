@@ -1,73 +1,20 @@
 package dev.spiritstudios.abysm.entity.leviathan.test;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.Dynamic;
-import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
-import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
 import dev.spiritstudios.abysm.entity.leviathan.LeviathanPart;
+import dev.spiritstudios.abysm.entity.leviathan.GeoChainLeviathan;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.brain.Activity;
-import net.minecraft.entity.ai.brain.Brain;
-import net.minecraft.entity.ai.brain.LookTarget;
-import net.minecraft.entity.ai.brain.MemoryModuleState;
-import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.brain.sensor.Sensor;
-import net.minecraft.entity.ai.brain.sensor.SensorType;
-import net.minecraft.entity.ai.brain.task.*;
-import net.minecraft.entity.boss.dragon.EnderDragonFrameTracker;
 import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.server.network.DebugInfoSender;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.intprovider.UniformIntProvider;
-import net.minecraft.util.profiler.Profiler;
-import net.minecraft.util.profiler.Profilers;
 import net.minecraft.world.World;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animatable.manager.AnimatableManager;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
-import java.util.Optional;
 
-public class Lehydrathan extends Leviathan implements GeoEntity {
-
-	protected static final ImmutableList<? extends SensorType<? extends Sensor<? super Lehydrathan>>> SENSORS = ImmutableList.of(
-		SensorType.NEAREST_LIVING_ENTITIES, SensorType.HURT_BY, AbysmSensorTypes.LEVIATHAN_ATTACKABLES
-	);
-	protected static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_MODULES = ImmutableList.of(
-		MemoryModuleType.MOBS,
-		MemoryModuleType.VISIBLE_MOBS,
-		MemoryModuleType.NEAREST_VISIBLE_PLAYER,
-		MemoryModuleType.NEAREST_VISIBLE_TARGETABLE_PLAYER,
-		MemoryModuleType.LOOK_TARGET,
-		MemoryModuleType.WALK_TARGET,
-		MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-		MemoryModuleType.PATH,
-		MemoryModuleType.ATTACK_TARGET,
-		MemoryModuleType.ATTACK_COOLING_DOWN,
-		MemoryModuleType.HURT_BY_ENTITY,
-		MemoryModuleType.NEAREST_ATTACKABLE,
-		MemoryModuleType.HAS_HUNTING_COOLDOWN
-	);
+public class Lehydrathan extends GeoChainLeviathan {
 
 	public final List<LeviathanPart> parts;
-	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-	public final EnderDragonFrameTracker frameTracker = new EnderDragonFrameTracker();
-
-	@Override
-	public List<LeviathanPart> getSpecterEntityParts() {
-		return this.parts;
-	}
 
 	public Lehydrathan(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
@@ -83,99 +30,8 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 	}
 
 	@Override
-	protected Brain.Profile<Lehydrathan> createBrainProfile() {
-		return Brain.createProfile(MEMORY_MODULES, SENSORS);
-	}
-
-	@Override
-	protected Brain<?> deserializeBrain(Dynamic<?> dynamic) {
-		return LehydrathanBrain.create(this.createBrainProfile().deserialize(dynamic));
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public Brain<Lehydrathan> getBrain() {
-		return (Brain<Lehydrathan>) super.getBrain();
-	}
-
-	@Override
-	protected void sendAiDebugData() {
-		super.sendAiDebugData();
-		DebugInfoSender.sendBrainDebugData(this);
-	}
-
-	@Override
-	protected void tickPartUpdates() {
-		var parts = this.getSpecterEntityParts();
-		this.frameTracker.tick(this.getY(), this.getYaw());
-
-		this.setYaw(wrapYaw(this.getYaw()));
-
-		this.bodyYaw = this.getYaw();
-
-		EnderDragonFrameTracker.Frame frame = this.frameTracker.getFrame(5);
-
-		// I have no idea what to call this variable - Sky
-		float r = (float)(this.frameTracker.getFrame(5).y() - this.frameTracker.getFrame(10).y()) * 10.0F * MathHelper.RADIANS_PER_DEGREE;
-		float sinR = MathHelper.cos(r);
-		float cosR = MathHelper.sin(r);
-		float yawRad = this.getYaw() * MathHelper.RADIANS_PER_DEGREE;
-		float sinYaw = MathHelper.sin(yawRad);
-		float cosYaw = MathHelper.cos(yawRad);
-
-		for (int index = 0; index < parts.size(); index++) {
-			LeviathanPart leviathanPart = parts.get(index);
-
-			double originalPartX = leviathanPart.getX();
-			double originalPartY = leviathanPart.getY();
-			double originalPartZ = leviathanPart.getZ();
-
-			EnderDragonFrameTracker.Frame frame2 = this.frameTracker.getFrame(12 + index * 2);
-			float changedYaw = (
-					this.getYaw() + this.wrapYaw(frame2.yRot() - frame.yRot())
-				) * MathHelper.RADIANS_PER_DEGREE;
-			float sinNewYaw = MathHelper.sin(changedYaw);
-			float cosNewYaw = MathHelper.cos(changedYaw);
-			float distanceToMain = 0.5F; // distance to the main segment/body of the entity
-			float perPart = (index + 1) * leviathanPart.getWidth();
-			this.movePart(leviathanPart,
-				(sinYaw * distanceToMain + sinNewYaw * perPart) * sinR,
-				frame2.y() - frame.y() - (perPart + distanceToMain) * cosR,
-				-(cosYaw * distanceToMain + cosNewYaw * perPart) * sinR);
-
-			this.updatePartLastPos(leviathanPart, originalPartX, originalPartY, originalPartZ);
-		}
-	}
-
-	protected float wrapYaw(double yawDeg) {
-		return (float) MathHelper.wrapDegrees(yawDeg);
-	}
-
-	@Override
-	public int getMaxLookYawChange() {
-		return 1;
-	}
-
-	@Override
-	protected void mobTick(ServerWorld serverWorld) {
-		super.mobTick(serverWorld);
-		Profiler profiler = Profilers.get();
-		profiler.push("lehydrathanBrain");
-		this.getBrain().tick(serverWorld, this);
-		profiler.pop();
-		profiler.push("lehydrathanActivityUpdate");
-		LehydrathanBrain.updateActivities(this);
-		profiler.pop();
-	}
-
-	@Override
-	public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-
-	}
-
-	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache() {
-		return this.geoCache;
+	public List<LeviathanPart> getSpecterEntityParts() {
+		return this.parts;
 	}
 
 	@Override
@@ -183,97 +39,4 @@ public class Lehydrathan extends Leviathan implements GeoEntity {
 		return super.isValidNonPlayerTarget(living) && living.getType().isIn(AbysmEntityTypeTags.LEHYDRATHAN_HUNT_TARGETS);
 	}
 
-	public static class LehydrathanBrain {
-
-		protected static Brain<Lehydrathan> create(Brain<Lehydrathan> brain) {
-			addCoreActivities(brain);
-			addIdleActivities(brain);
-			addFightActivities(brain);
-			brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
-			brain.setDefaultActivity(Activity.IDLE);
-			brain.resetPossibleActivities();
-			return brain;
-		}
-
-		private static void addFightActivities(Brain<Lehydrathan> brain) {
-			brain.setTaskList(
-				Activity.FIGHT,
-				0,
-				ImmutableList.of(
-					RangedApproachTask.create(LehydrathanBrain::getTargetApproachingSpeed),
-					MeleeAttackTask.create(20)
-				),
-				MemoryModuleType.ATTACK_TARGET
-			);
-		}
-
-		private static void addCoreActivities(Brain<Lehydrathan> brain) {
-			brain.setTaskList(
-				Activity.CORE,
-				0,
-				ImmutableList.of(
-					new UpdateLookControlTask(45, 90), new MoveToTargetTask()
-				)
-			);
-		}
-
-		@SuppressWarnings("deprecation")
-		private static void addIdleActivities(Brain<Lehydrathan> brain) {
-			brain.setTaskList(
-				Activity.IDLE,
-				ImmutableList.of(
-					Pair.of(0, LookAtMobWithIntervalTask.follow(EntityType.PLAYER, 6.0F, UniformIntProvider.create(30, 60))),
-					Pair.of(1, UpdateAttackTargetTask.create(LehydrathanBrain::getAttackTarget)),
-					Pair.of(1, SeekWaterTask.create(6, 0.15F)),
-					Pair.of(
-						2,
-						new CompositeTask<>(
-							ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryModuleState.VALUE_ABSENT),
-							ImmutableSet.of(),
-							CompositeTask.Order.ORDERED,
-							CompositeTask.RunMode.TRY_ALL,
-							ImmutableList.of(
-								Pair.of(StrollTask.createDynamicRadius(0.5F), 2),
-								Pair.of(StrollTask.create(0.15F, false), 2),
-								Pair.of(GoToLookTargetTask.create(LehydrathanBrain::canGoToLookTarget, LehydrathanBrain::returnOneHalf, 3), 3),
-								Pair.of(TaskTriggerer.predicate(Entity::isTouchingWater), 5),
-								Pair.of(TaskTriggerer.predicate(Entity::isOnGround), 5)
-							)
-						)
-					)
-				)
-			);
-		}
-
-		private static boolean canGoToLookTarget(LivingEntity entity) {
-			World world = entity.getWorld();
-			Optional<LookTarget> optional = entity.getBrain().getOptionalRegisteredMemory(MemoryModuleType.LOOK_TARGET);
-			if (optional.isEmpty()) {
-				return false;
-			}
-			BlockPos blockPos = optional.get().getBlockPos();
-			return world.isWater(blockPos) == entity.isTouchingWater();
-		}
-
-		private static float returnOneHalf(LivingEntity living) {
-			return 0.5F;
-		}
-
-		public static void updateActivities(Lehydrathan lehydrathan) {
-			Brain<Lehydrathan> brain = lehydrathan.getBrain();
-			Activity activity = brain.getFirstPossibleNonCoreActivity().orElse(null);
-			brain.resetPossibleActivities(ImmutableList.of(Activity.FIGHT, Activity.IDLE));
-			if (activity == Activity.FIGHT && brain.getFirstPossibleNonCoreActivity().orElse(null) != Activity.FIGHT) {
-				brain.remember(MemoryModuleType.HAS_HUNTING_COOLDOWN, true, 2400L);
-			}
-		}
-
-		private static float getTargetApproachingSpeed(LivingEntity entity) {
-			return entity.isTouchingWater() ? 0.6F : 0.15F;
-		}
-
-		private static Optional<? extends LivingEntity> getAttackTarget(ServerWorld serverWorld, Lehydrathan lehydrathan) {
-			return lehydrathan.getBrain().getOptionalRegisteredMemory(MemoryModuleType.NEAREST_ATTACKABLE);
-		}
-	}
 }
