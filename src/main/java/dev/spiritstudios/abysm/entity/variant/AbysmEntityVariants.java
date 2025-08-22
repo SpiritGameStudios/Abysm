@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.variant.AbstractEntityVariant;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
+import dev.spiritstudios.abysm.data.variant.GupGupEntityVariant;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.particle.SimpleParticleType;
@@ -58,12 +59,45 @@ public class AbysmEntityVariants {
 	}
 	// endregion
 
+	// region gup gup
+	public static final RegistryKey<GupGupEntityVariant> GUP_GUP = ofGupGup("gup_gup");
+	public static final RegistryKey<GupGupEntityVariant> SUP_SUP = ofGupGup("sup_sup");
+	public static final RegistryKey<GupGupEntityVariant> HUP_HUP = ofGupGup("hup_hup");
+	public static final RegistryKey<GupGupEntityVariant> PUP_PUP = ofGupGup("pup_pup");
+
+	public static void gupGupBootstrap(Registerable<GupGupEntityVariant> registerable) {
+		registerGupGup(
+			registerable,
+			GUP_GUP
+		);
+
+		registerGupGup(
+			registerable,
+			SUP_SUP
+		);
+
+		registerGupGup(
+			registerable,
+			HUP_HUP
+		);
+
+		registerGupGup(
+			registerable,
+			PUP_PUP
+		);
+	}
+	// endregion
+
 	private static RegistryKey<BloomrayEntityVariant> ofBloomray(String path) {
 		return of(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT, path);
 	}
 
 	private static RegistryKey<ElectricOoglyBooglyVariant> ofOoglyBoogly(String path) {
 		return of(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT, path);
+	}
+
+	private static RegistryKey<GupGupEntityVariant> ofGupGup(String path) {
+		return of(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT, path);
 	}
 
 	private static <T extends AbstractEntityVariant> RegistryKey<T> of(RegistryKey<Registry<T>> key, String path) {
@@ -81,6 +115,13 @@ public class AbysmEntityVariants {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + "_boogly.png");
 		Text name = Text.translatable("abysm.entity.electric_oogly_boogly." + key.getValue().getPath());
 		ElectricOoglyBooglyVariant variant = new ElectricOoglyBooglyVariant(name, variantPath, electricityColor, deadly);
+		register(registry, key, variant);
+	}
+
+	private static void registerGupGup(Registerable<GupGupEntityVariant> registry, RegistryKey<GupGupEntityVariant> key) {
+		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + ".png");
+		Text name = Text.translatable("abysm.entity.gup_gup." + key.getValue().getPath());
+		GupGupEntityVariant variant = new GupGupEntityVariant(name, variantPath);
 		register(registry, key, variant);
 	}
 

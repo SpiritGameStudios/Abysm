@@ -65,6 +65,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 
 		addProvider(pack, AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
 		addProvider(pack, AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
+		addProvider(pack, AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT);
 
 		addProvider(pack, AbysmRegistryKeys.FISH_ENCHANTMENT);
 
@@ -134,6 +135,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 
 			.addRegistry(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT, AbysmEntityVariants::bloomrayBootstrap)
 			.addRegistry(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT, AbysmEntityVariants::ooglyBooglyBootstrap)
+			.addRegistry(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT, AbysmEntityVariants::gupGupBootstrap)
 
 			.addRegistry(AbysmRegistryKeys.FISH_ENCHANTMENT, AbysmFishEnchantments::bootstrap);
 	}

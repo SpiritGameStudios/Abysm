@@ -14,6 +14,7 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.BloomrayEntityRende
 import dev.spiritstudios.abysm.client.render.entity.renderer.ElectricOoglyBooglyRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.FlippersRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.FliprayEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.GupGupEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.HarpoonEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.LehydrathanEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.ManOWarEntityRenderer;
@@ -60,7 +61,7 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.TEST_LEVIATHAN, LehydrathanEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.PADDLEFISH, SimpleFishRenderer.factory("paddlefish", false));
 		EntityRendererRegistry.register(AbysmEntityTypes.SNAPPER, SimpleFishRenderer.factory("snapper", false));
-		EntityRendererRegistry.register(AbysmEntityTypes.GUP_GUP, SimpleFishRenderer.factory("gup_gup", false));
+		EntityRendererRegistry.register(AbysmEntityTypes.GUP_GUP, GupGupEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.AROWANA_MAGICII, SimpleFishRenderer.factory("arowana_magicii", false));
 		EntityRendererRegistry.register(AbysmEntityTypes.RETICULATED_FLIPRAY, FliprayEntityRenderer::new);
 
