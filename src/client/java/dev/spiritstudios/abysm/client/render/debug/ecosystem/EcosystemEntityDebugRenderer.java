@@ -58,6 +58,7 @@ public class EcosystemEntityDebugRenderer implements DebugRenderer.Renderer {
 
 			if(entityStatus.shouldHunt) stringInfos.add(new StringInfo("Should Hunt", Colors.GREEN));
 			if(entityStatus.shouldRepopulate) stringInfos.add(new StringInfo("Should Repopulate", Colors.GREEN));
+			if(entityStatus.shouldScavenge) stringInfos.add(new StringInfo("Should Scavenge", Colors.GREEN));
 
 			if(entityStatus.isHunting || entityStatus.isBeingHunted) {
 				boolean favored = entityStatus.favoredInHunt;
@@ -133,7 +134,7 @@ public class EcosystemEntityDebugRenderer implements DebugRenderer.Renderer {
 
 					// Names are completely useless, but I think it's fun that Minecraft uses them for debug anyways
 					statusBuilder.add(new EntityStatus(entity, NameGenerator.name(entity),
-						ecologicalEntity.shouldHunt(), ecologicalEntity.shouldRepopulate(),
+						ecologicalEntity.shouldHunt(), ecologicalEntity.shouldRepopulate(), ecologicalEntity.shouldScavenge(),
 						ecologicalEntity.isHunting(), ecologicalEntity.isBeingHunted(), ecologicalEntity.isFavoredInHunt(), ecologicalEntity.getHuntTicks()
 					));
 				});
@@ -145,7 +146,7 @@ public class EcosystemEntityDebugRenderer implements DebugRenderer.Renderer {
 
 	private static record EntityStatus (
 		MobEntity entity, String name,
-		boolean shouldHunt, boolean shouldRepopulate,
+		boolean shouldHunt, boolean shouldRepopulate, boolean shouldScavenge,
 		boolean isHunting, boolean isBeingHunted, boolean favoredInHunt, int huntTicks
 	) {}
 

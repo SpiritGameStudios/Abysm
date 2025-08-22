@@ -1,20 +1,18 @@
 package dev.spiritstudios.abysm.entity.ai.goal.ecosystem;
 
-import dev.spiritstudios.abysm.ecosystem.entity.PlantEater;
+import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
 import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.Path;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +25,7 @@ import java.util.function.Supplier;
  */
 @SuppressWarnings("JavadocReference")
 public class FindPlantsGoal extends Goal {
-	protected final PathAwareEntity obj;
+	protected final PathAwareEntity mob;
 	protected final boolean forceAquatic;
 	protected final float navigationSpeed;
 	protected final float moveControlSpeed;
@@ -41,6 +39,8 @@ public class FindPlantsGoal extends Goal {
 	private int ticks;
 	private Long2LongOpenHashMap unreachablePosCache = new Long2LongOpenHashMap();
 
+	private BlockPos plantPos = null;
+
 	public FindPlantsGoal(PathAwareEntity mob) {
 		this(mob, true);
 	}
@@ -50,11 +50,11 @@ public class FindPlantsGoal extends Goal {
 	}
 
 	public FindPlantsGoal(PathAwareEntity mob, float navigationSpeed, float moveControlSpeed, boolean forceAquatic) {
-		if (!(mob instanceof PlantEater)) {
-			throw new IllegalArgumentException("Tried to create FindPlantsGoal for non PlantEater entity");
-		}
+//		if (!(mob instanceof PlantEater)) {
+//			throw new IllegalArgumentException("Tried to create FindPlantsGoal for non PlantEater entity");
+//		}
 
-		this.obj = mob;
+		this.mob = mob;
 		this.navigationSpeed = navigationSpeed;
 		this.moveControlSpeed = moveControlSpeed;
 		this.forceAquatic = forceAquatic;
@@ -72,22 +72,28 @@ public class FindPlantsGoal extends Goal {
 			return false;
 		}
 
-		PlantEater plantEater = (PlantEater) this.obj;
-		if (!plantEater.isHungryHerbivore()) {
-			return false;
-		}
+		EcologicalEntity ecologicalEntity = (EcologicalEntity) this.mob;
+		if(!ecologicalEntity.shouldScavenge()) return false;
+
+		// Only check for nearby plants every second to reduce lage
+		if(this.mob.age % 20 != 1) return false;
+
+//		PlantEater plantEater = (PlantEater) this.obj;
+//		if (!plantEater.isHungryHerbivore()) {
+//			return false;
+//		}
 
 		return this.getPlant()
 			.map(pos -> {
-				plantEater.setPlantPos(pos);
-				this.obj.getNavigation().startMovingTo(
+				this.plantPos = pos;
+				this.mob.getNavigation().startMovingTo(
 					pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
 					this.navigationSpeed
 				);
 
 				return true;
 			}).orElseGet(() -> {
-				plantEater.setTicksUntilHunger(MathHelper.nextInt(this.obj.getRandom(), 20, 60));
+//				plantEater.setTicksUntilHunger(MathHelper.nextInt(this.mob.getRandom(), 20, 60));
 				return false;
 			});
 	}
@@ -98,15 +104,15 @@ public class FindPlantsGoal extends Goal {
 	 * @return false if the test fails (is aquatic and not in water)
 	 */
 	public boolean testAquatic() {
-		return !this.forceAquatic || this.obj.isTouchingWater();
+		return !this.forceAquatic || this.mob.isTouchingWater();
 	}
 
 	@Override
 	public boolean shouldContinue() {
 		return this.running &&
-			((PlantEater) this.obj).hasPlant() &&
+			this.plantPos != null &&
 			this.testAquatic() &&
-			(!this.ate() || this.obj.getRandom().nextFloat() < 0.2F);
+			(!this.ate() || this.mob.getRandom().nextFloat() < 0.2F);
 	}
 
 	protected boolean ate() {
@@ -135,22 +141,20 @@ public class FindPlantsGoal extends Goal {
 		this.ticks = 0;
 		this.lastEatingTick = 0;
 		this.running = true;
-		((PlantEater) this.obj).resetTicksUntilHunger();
 	}
 
 	@Override
 	public void stop() {
-		PlantEater plantEater = (PlantEater) this.obj;
 		if (this.ate()) {
-			plantEater.setNotHungryAnymoreYay();
-			if (!this.obj.getWorld().isClient) {
-				new HappyEntityParticlesS2CPayload(this.obj, ParticleTypes.HAPPY_VILLAGER, 5).send(this.obj);
+			if (!this.mob.getWorld().isClient) {
+				new HappyEntityParticlesS2CPayload(this.mob, ParticleTypes.HAPPY_VILLAGER, 5).send(this.mob);
 			}
 		}
 
 		this.running = false;
-		this.obj.getNavigation().stop();
-		plantEater.setTicksUntilHunger(200);
+		this.plantPos = null;
+		this.mob.getNavigation().stop();
+		((EcologicalEntity) this.mob).setShouldScavenge(false);
 	}
 
 	@Override
@@ -160,10 +164,7 @@ public class FindPlantsGoal extends Goal {
 
 	@Override
 	public void tick() {
-		PlantEater plantEater = (PlantEater) this.obj;
-		if (!plantEater.hasPlant()) {
-			return;
-		}
+		if (this.plantPos == null) return;
 		this.ticks++;
 		/*
 		// debug code
@@ -175,14 +176,18 @@ public class FindPlantsGoal extends Goal {
 		}
 		 */
 		if (this.ticks > 600) {
-			plantEater.clearPlantPos();
-			this.running = false;
-			plantEater.setTicksUntilHunger(200);
+			this.stop();
 			return;
 		}
+
+		// visual indicator - this only gets called on the server
+		if(this.ticks % 20 == 0) {
+			new HappyEntityParticlesS2CPayload(this.mob, new BlockStateParticleEffect(ParticleTypes.BLOCK, mob.getWorld().getBlockState(this.plantPos)), 5).send(this.mob);
+		}
+
 		//noinspection DataFlowIssue
-		Vec3d potentialTarget = Vec3d.ofBottomCenter(plantEater.getPlantPos()).add(0.0, 0.6F, 0.0);
-		if (potentialTarget.distanceTo(this.obj.getPos()) > 1.0) {
+		Vec3d potentialTarget = Vec3d.ofBottomCenter(this.plantPos).add(0.0, 0.6F, 0.0);
+		if (potentialTarget.distanceTo(this.mob.getPos()) > 1.0) {
 			this.nextTarget = potentialTarget;
 			this.moveToNextTarget();
 			return;
@@ -190,22 +195,22 @@ public class FindPlantsGoal extends Goal {
 		if (this.nextTarget == null) {
 			this.nextTarget = potentialTarget;
 		}
-		boolean veryClose = this.obj.getPos().distanceTo(this.nextTarget) <= 0.1;
+		boolean veryClose = this.mob.getPos().distanceTo(this.nextTarget) <= 0.1;
 		boolean shouldStartMoving = true;
 		if (!veryClose && this.ticks > 600) {
-			plantEater.clearPlantPos();
+			this.plantPos = null;
 			return;
 		}
 
 		if (veryClose) {
-			if (this.obj.getRandom().nextInt(25) == 0) {
+			if (this.mob.getRandom().nextInt(25) == 0) {
 				this.nextTarget = new Vec3d(potentialTarget.getX() + this.getRandomOffset(), potentialTarget.getY(), potentialTarget.getZ() + this.getRandomOffset());
-				this.obj.getNavigation().stop();
+				this.mob.getNavigation().stop();
 			} else {
 				shouldStartMoving = false;
 			}
 
-			this.obj.getLookControl().lookAt(potentialTarget.getX(), potentialTarget.getY(), potentialTarget.getZ());
+			this.mob.getLookControl().lookAt(potentialTarget.getX(), potentialTarget.getY(), potentialTarget.getZ());
 		}
 
 		if (shouldStartMoving) {
@@ -213,9 +218,9 @@ public class FindPlantsGoal extends Goal {
 		}
 
 		this.eatingTicks++;
-		if (this.obj.getRandom().nextFloat() < 0.09F && this.eatingTicks > this.lastEatingTick + 40) {
+		if (this.mob.getRandom().nextFloat() < 0.09F && this.eatingTicks > this.lastEatingTick + 40) {
 			this.lastEatingTick = this.eatingTicks;
-			this.obj.playSound(SoundEvents.ENTITY_GENERIC_EAT.value(), 1.0F, 1.0F);
+			this.mob.playSound(SoundEvents.ENTITY_GENERIC_EAT.value(), 1.0F, 1.0F);
 		}
 	}
 
@@ -223,31 +228,31 @@ public class FindPlantsGoal extends Goal {
 		if (this.nextTarget == null) {
 			return;
 		}
-		this.obj.getMoveControl().moveTo(this.nextTarget.getX(), this.nextTarget.getY(), this.nextTarget.getZ(), this.moveControlSpeed);
+		this.mob.getMoveControl().moveTo(this.nextTarget.getX(), this.nextTarget.getY(), this.nextTarget.getZ(), this.moveControlSpeed);
 	}
 
 	protected float getRandomOffset() {
-		return (this.obj.getRandom().nextFloat() * 2.0F - 1.0F) * (1.0F / 3.0F); // yay magic constants
+		return (this.mob.getRandom().nextFloat() * 2.0F - 1.0F) * (1.0F / 3.0F); // yay magic constants
 	}
 
 	protected Optional<BlockPos> getPlant() {
 		int range = this.rangeSupplier.get();
 		Long2LongOpenHashMap unreachableCache = new Long2LongOpenHashMap();
 
-		for (BlockPos blockPos : BlockPos.iterateOutwards(this.obj.getBlockPos(), range, range, range)) {
+		for (BlockPos blockPos : BlockPos.iterateOutwards(this.mob.getBlockPos(), range, range, range)) {
 			long l = this.unreachablePosCache.getOrDefault(blockPos.asLong(), Long.MIN_VALUE);
 
-			if (this.obj.getWorld().getTime() < l) {
+			if (this.mob.getWorld().getTime() < l) {
 				unreachableCache.put(blockPos.asLong(), l);
 			} else {
-				BlockState blockState = this.obj.getWorld().getBlockState(blockPos);
-				if (((PlantEater) this.obj).getEcosystemType().plants().contains(blockState.getBlock())) {
-					Path path = this.obj.getNavigation().findPathTo(blockPos, 1);
+				BlockState blockState = this.mob.getWorld().getBlockState(blockPos);
+				if (((EcologicalEntity) this.mob).getEcosystemType().plants().contains(blockState.getBlock())) {
+					Path path = this.mob.getNavigation().findPathTo(blockPos, 1);
 					if (path != null && path.reachesTarget()) {
 						return Optional.of(blockPos);
 					}
 
-					unreachableCache.put(blockPos.asLong(), this.obj.getWorld().getTime() + 600L);
+					unreachableCache.put(blockPos.asLong(), this.mob.getWorld().getTime() + 600L);
 				}
 			}
 		}

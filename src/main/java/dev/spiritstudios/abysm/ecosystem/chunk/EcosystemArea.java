@@ -27,6 +27,8 @@ public class EcosystemArea {
 	public static final int MAX_TASK_WAIT_TICKS = 600; // 30 seconds
 	public static final int MIN_TASK_WAIT_TICKS = 200; // 10 seconds
 	public static final int FORCE_TASK_TICKS = 1200; // 60 seconds
+	// When giving an EcosystemType a task, chance of tasking another entity with eating plants
+	public static final float SCAVENGE_CHANCE = 0.05f;
 
 	public final ServerWorld world;
 	public final EcosystemAreaPos pos;
@@ -103,6 +105,16 @@ public class EcosystemArea {
 			// Reproduce this EcosystemType - choose random entity of said EcosystemType to accept the task
 			this.reproduceEcosystemType(targetEcosystemType);
 		}
+
+		boolean canScavenge = !targetEcosystemType.plants().isEmpty();
+		if(!canScavenge) return;
+
+		// don't worry about the force variable, because this is mostly a visual thing
+		// Commented out for now because of bugs
+//		boolean scavenge = this.world.getRandom().nextFloat() <= SCAVENGE_CHANCE;
+//		if(scavenge) {
+//			this.scavengeEcosystemType(targetEcosystemType);
+//		}
 	}
 
 	public void huntEcosystemType(EcosystemType<?> ecosystemType) {
@@ -136,6 +148,17 @@ public class EcosystemArea {
 
 		// Allow the entity to begin searching for a nearby mate
 		ecologicalEntity.setShouldRepopulate(true);
+//		entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200));
+		this.resetForceTaskTicks();
+	}
+
+	public void scavengeEcosystemType(EcosystemType<?> ecosystemType) {
+		// Choose random entity in this EcosystemArea to accept the task
+		MobEntity entity = this.getRandomEntity(ecosystemType);
+		if(!(entity instanceof EcologicalEntity ecologicalEntity)) return;
+
+		// Allow the entity to begin searching for a nearby mate
+		ecologicalEntity.setShouldScavenge(true);
 //		entity.addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 200));
 		this.resetForceTaskTicks();
 	}
