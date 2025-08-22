@@ -22,7 +22,7 @@ public class OozetrickleLanternBlock extends LanternBlock {
 	private static final int[] COLORS = Util.make(new int[16], colors -> {
 		for (int i = 0; i <= 15; i++) {
 			float light = i / 15.0F;
-			float l = light * 0.8F + (light > 0.0F ? 0.2F : 0.1F);
+			float l = light * 0.6F + (light > 0.0F ? 0.4F : 0.3F);
 			colors[i] = ColorHelper.fromFloats(1.0F, l, l, l);
 		}
 	});
