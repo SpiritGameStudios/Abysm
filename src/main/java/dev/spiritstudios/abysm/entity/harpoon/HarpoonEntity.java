@@ -43,6 +43,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	public static final TrackedData<Boolean> IN_BLOCK = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	public static final TrackedData<Boolean> GRAPPLING = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	public static final TrackedData<Float> LENGTH = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.FLOAT);
+	private static final TrackedData<Boolean> ENCHANTED = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
 	protected int slot = -1;
 	protected int ticksAlive = 0;
@@ -75,6 +76,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 			this.haul = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.HAUL);
 			setGrappling(AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.GRAPPLING));
 			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).isBlessed();
+			this.dataTracker.set(ENCHANTED, weapon.hasGlint());
 		}
 
 		double d = velocity.horizontalLength();
@@ -104,6 +106,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		builder.add(GRAPPLING, false);
 		builder.add(IN_BLOCK, false);
 		builder.add(LENGTH, 0.0F);
+		builder.add(ENCHANTED, false);
 	}
 
 	@Override
@@ -325,6 +328,10 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 	public boolean isGrappling() {
 		return this.getDataTracker().get(GRAPPLING);
+	}
+
+	public boolean isEnchanted() {
+		return this.dataTracker.get(ENCHANTED);
 	}
 
 	public float getLength() {
