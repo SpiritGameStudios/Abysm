@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.client;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.AbysmConfig;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.block.OozetrickleLanternBlock;
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
 import dev.spiritstudios.abysm.client.render.AbysmDebugRenderers;
 import dev.spiritstudios.abysm.client.render.AbysmRenderPipelines;
@@ -17,7 +18,7 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.HarpoonEntityRender
 import dev.spiritstudios.abysm.client.render.entity.renderer.LehydrathanEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.ManOWarEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.MysteriousBlobEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.PaddlefishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.SimpleFishRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
@@ -32,6 +33,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.RenderLayer;
@@ -56,7 +58,8 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.LECTORFIN, LectorfinEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.MYSTERIOUS_BLOB, MysteriousBlobEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.TEST_LEVIATHAN, LehydrathanEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.PADDLEFISH, PaddlefishEntityRenderer::new);
+		EntityRendererRegistry.register(AbysmEntityTypes.PADDLEFISH, SimpleFishRenderer.factory("paddlefish"));
+		EntityRendererRegistry.register(AbysmEntityTypes.SNAPPER, SimpleFishRenderer.factory("snapper"));
 		EntityRendererRegistry.register(AbysmEntityTypes.RETICULATED_FLIPRAY, FliprayEntityRenderer::new);
 
 		ArmorRenderer.register(new FlippersRenderer(), AbysmItems.FLIPPERS);
@@ -152,14 +155,18 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS,
 
 			AbysmBlocks.GOLDEN_LAZULI_OREFURL,
-			AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT
+			AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT,
+
+			AbysmBlocks.OOZETRICKLE_LANTERN
 		);
 
 		BlockRenderLayerMap.INSTANCE.putBlocks(
 			RenderLayer.getCutoutMipped(),
 			AbysmBlocks.ROSEBLOOM_PETALEAVES,
 			AbysmBlocks.SUNBLOOM_PETALEAVES,
-			AbysmBlocks.MALLOWBLOOM_PETALEAVES
+			AbysmBlocks.MALLOWBLOOM_PETALEAVES,
+
+			AbysmBlocks.OOZETRICKLE_CORD
 		);
 
 		BlockRenderLayerMap.INSTANCE.putBlocks(
@@ -168,5 +175,7 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.SOUR_NECTARSAP,
 			AbysmBlocks.BITTER_NECTARSAP
 		);
+
+		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> OozetrickleLanternBlock.getColor(state.get(OozetrickleLanternBlock.LIGHT)), AbysmBlocks.OOZETRICKLE_LANTERN);
 	}
 }

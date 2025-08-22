@@ -8,6 +8,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractPlantStemBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ChainBlock;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.PillarBlock;
@@ -720,6 +721,33 @@ public final class AbysmBlocks {
 			.noCollision()
 			.breakInstantly(),
 		false
+	);
+	// endregion
+
+	// region oozetrickle deco blocks
+	public static final Block OOZETRICKLE_CORD = register(
+		"oozetrickle_cord",
+		ChainBlock::new,
+		AbstractBlock.Settings.create()
+			.strength(2.5F, 3.0F)
+			.sounds(BlockSoundGroup.ROOTS)
+			.solid()
+			.requiresTool()
+			.nonOpaque()
+	);
+
+	public static final Block OOZETRICKLE_LANTERN = register(
+		"oozetrickle_lantern",
+		OozetrickleLanternBlock::new,
+		AbstractBlock.Settings.create()
+			.strength(1.9F)
+			.mapColor(MapColor.LIGHT_BLUE)
+			.sounds(BlockSoundGroup.FROGLIGHT)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> state.get(OozetrickleLanternBlock.LIGHT))
+			.solid()
+			.nonOpaque()
+			.ticksRandomly()
 	);
 	// endregion
 

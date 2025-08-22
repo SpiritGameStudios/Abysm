@@ -52,81 +52,20 @@
     "category": "neutral",
     "sounds": [
       {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch1"
+        "volume": 0.5,
+        "name": "minecraft:block/chain/break1"
       },
       {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch2"
+        "volume": 0.5,
+        "name": "minecraft:block/chain/break2"
       },
       {
-        "pitch": 0.8,
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch2"
+        "volume": 0.5,
+        "name": "minecraft:block/chain/break3"
       },
       {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch3"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch4"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch5"
-      },
-      {
-        "pitch": 1.2,
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch5"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch6"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch7"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch8"
-      },
-      {
-        "pitch": 0.8,
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch8"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch9"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch10"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch11"
-      },
-      {
-        "pitch": 1.2,
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch11"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch12"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch13"
-      },
-      {
-        "pitch": 0.8,
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/launch13"
+        "volume": 0.5,
+        "name": "minecraft:block/chain/break4"
       }
     ],
     "subtitle": "subtitles.abysm.item.harpoon.in_air"
@@ -134,8 +73,8 @@
   "item.harpoon.launch": {
     "category": "neutral",
     "sounds": [
-      "abysm:entity/harpoon/launch1",
-      "abysm:entity/harpoon/launch2"
+      "minecraft:item/trident/throw1",
+      "minecraft:item/trident/throw2"
     ],
     "subtitle": "subtitles.abysm.item.harpoon.launch"
   },
@@ -144,51 +83,40 @@
     "sounds": [
       {
         "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract1"
+        "name": "minecraft:item/trident/return1"
       },
       {
         "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract2"
-      },
-      {
-        "pitch": 1.2,
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract2"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract3"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract4"
+        "name": "minecraft:item/trident/return2"
       },
       {
         "pitch": 0.8,
         "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract4"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract5"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract6"
-      },
-      {
-        "pitch": 0.8,
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract6"
-      },
-      {
-        "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract7"
+        "name": "minecraft:item/trident/return2"
       },
       {
         "pitch": 1.2,
         "volume": 0.8,
-        "name": "abysm:entity/harpoon/retract7"
+        "name": "minecraft:item/trident/return2"
+      },
+      {
+        "volume": 0.8,
+        "name": "minecraft:item/trident/return3"
+      },
+      {
+        "pitch": 0.8,
+        "volume": 0.8,
+        "name": "minecraft:item/trident/return3"
+      },
+      {
+        "pitch": 0.8,
+        "volume": 0.8,
+        "name": "minecraft:item/trident/return3"
+      },
+      {
+        "pitch": 1.2,
+        "volume": 0.8,
+        "name": "minecraft:item/trident/return3"
       }
     ],
     "subtitle": "subtitles.abysm.item.harpoon.return"

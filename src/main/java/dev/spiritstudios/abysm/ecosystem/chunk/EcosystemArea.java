@@ -9,6 +9,7 @@ import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.Nullable;
@@ -106,7 +107,7 @@ public class EcosystemArea {
 
 	public void huntEcosystemType(EcosystemType<?> ecosystemType) {
 		// Choose random predator in this EcosystemArea to accept the task
-		ImmutableSet<EntityType<? extends MobEntity>> predators = ecosystemType.predators();
+		ImmutableSet<EntityType<? extends LivingEntity>> predators = ecosystemType.predators();
 		if(predators.isEmpty()) return;
 
 		// I don't know why I can't use List<EcosystemType<?>> and Optional#get() on the map function, but the types were messing up in a way I don't know how
@@ -209,7 +210,7 @@ public class EcosystemArea {
 	/**
 	 * @return If this EcosystemArea contains the given EntityType.
 	 */
-	public boolean containsEntityType(EntityType<? extends MobEntity> entityType) {
+	public boolean containsEntityType(EntityType<? extends LivingEntity> entityType) {
 		EcosystemType<?> ecosystemType = EcosystemType.get(entityType).orElse(null);
 		if(ecosystemType == null) return false;
 

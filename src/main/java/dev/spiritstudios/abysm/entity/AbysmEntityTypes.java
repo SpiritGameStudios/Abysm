@@ -44,6 +44,14 @@ public class AbysmEntityTypes {
 			.maxTrackingRange(4)
 	);
 
+	public static final EntityType<SnapperEntity> SNAPPER = register(
+		"snapper",
+		EntityType.Builder
+			.create(SnapperEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(0.4f, 0.5f)
+			.eyeHeight(0.35f)
+			.maxTrackingRange(4)
+	);
 
 	public static final EntityType<BloomrayEntity> BLOOMRAY = register(
 		"bloomray",
@@ -123,6 +131,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(SMALL_FLORAL_FISH, SmallFloralFishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BIG_FLORAL_FISH, BigFloralFishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(PADDLEFISH, PaddlefishEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(SNAPPER, SnapperEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createRayAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());

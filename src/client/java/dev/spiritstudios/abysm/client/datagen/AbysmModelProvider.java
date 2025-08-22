@@ -161,6 +161,12 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.registerDoubleBlockAndItem(AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS, CrossType.NOT_TINTED);
 		// endregion
 
+		// region oozetrickle deco
+		generator.registerItemModel(AbysmBlocks.OOZETRICKLE_CORD.asItem());
+		generator.registerAxisRotated(AbysmBlocks.OOZETRICKLE_CORD, createWeightedVariant(ModelIds.getBlockModelId(AbysmBlocks.OOZETRICKLE_CORD)));
+		this.registerOozetrickleLantern(generator, AbysmBlocks.OOZETRICKLE_LANTERN);
+		// endregion
+
 		// region silt
 		generator.registerSimpleCubeAll(AbysmBlocks.SILT);
 		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SILT);
@@ -236,6 +242,14 @@ public class AbysmModelProvider extends FabricModelProvider {
 					.register(true, waterloggedVariant)
 			)
 		);
+	}
+
+	public final void registerOozetrickleLantern(BlockStateModelGenerator BMG, Block lantern) {
+		WeightedVariant weightedVariant = createWeightedVariant(AbysmTexturedModels.TEMPLATE_OOZETRICKLE_LANTERN.upload(lantern, BMG.modelCollector));
+		WeightedVariant weightedVariant2 = createWeightedVariant(AbysmTexturedModels.TEMPLATE_OOZETRICKLE_HANGING_LANTERN.upload(lantern, BMG.modelCollector));
+		BMG.registerItemModel(lantern.asItem());
+		BMG.blockStateCollector
+			.accept(VariantsBlockModelDefinitionCreator.of(lantern).with(BlockStateModelGenerator.createBooleanModelMap(Properties.HANGING, weightedVariant2, weightedVariant)));
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import dev.spiritstudios.specter.api.registry.SpecterRegistryEvents;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import org.jetbrains.annotations.Range;
 
@@ -28,23 +29,23 @@ import java.util.Optional;
  * @param minLitterSize      The minimum amount of babies that can spawn upon breeding.
  * @param maxLitterSize      The maximum amount of babies that can spawn upon breeding.
  */
-public record EcosystemType<T extends MobEntity & EcologicalEntity>(
+public record EcosystemType<T extends LivingEntity & EcologicalEntity>(
 	EntityType<T> entityType,
-	ImmutableSet<EntityType<? extends MobEntity>> predators,
-	ImmutableSet<EntityType<? extends MobEntity>> prey,
+	ImmutableSet<EntityType<? extends LivingEntity>> predators,
+	ImmutableSet<EntityType<? extends LivingEntity>> prey,
 	ImmutableSet<Block> plants,
 	int targetPopulation,
 	int minHuntTicks, int maxHuntTicks, float huntFavorChance,
 	float favoredHuntSpeed, float unfavoredHuntSpeed,
 	int breedCooldownTicks, int minLitterSize, int maxLitterSize
 ) {
-	private static Map<EntityType<? extends MobEntity>, EcosystemType<? extends MobEntity>> ENTITY_TYPE_MAP;
+	private static Map<EntityType<? extends LivingEntity>, EcosystemType<? extends LivingEntity>> ENTITY_TYPE_MAP;
 
-	public static class Builder<T extends MobEntity & EcologicalEntity> {
+	public static class Builder<T extends LivingEntity & EcologicalEntity> {
 		private final EntityType<T> entityType;
 
-		private ImmutableSet<EntityType<? extends MobEntity>> predators = ImmutableSet.of();
-		private ImmutableSet<EntityType<? extends MobEntity>> prey = ImmutableSet.of();
+		private ImmutableSet<EntityType<? extends LivingEntity>> predators = ImmutableSet.of();
+		private ImmutableSet<EntityType<? extends LivingEntity>> prey = ImmutableSet.of();
 		private ImmutableSet<Block> plants = ImmutableSet.of();
 
 		private int targetPopulation = 7;
@@ -68,13 +69,13 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 		}
 
 		@SafeVarargs
-		public final Builder<T> setPredators(EntityType<? extends MobEntity>... predators) {
+		public final Builder<T> setPredators(EntityType<? extends LivingEntity>... predators) {
 			this.predators = ImmutableSet.copyOf(predators);
 			return this;
 		}
 
 		@SafeVarargs
-		public final Builder<T> setPrey(EntityType<? extends MobEntity>... prey) {
+		public final Builder<T> setPrey(EntityType<? extends LivingEntity>... prey) {
 			this.prey = ImmutableSet.copyOf(prey);
 			return this;
 		}
@@ -140,7 +141,7 @@ public record EcosystemType<T extends MobEntity & EcologicalEntity>(
 		}
 	}
 
-	public static Optional<EcosystemType<? extends MobEntity>> get(EntityType<? extends MobEntity> type) {
+	public static Optional<EcosystemType<? extends LivingEntity>> get(EntityType<? extends LivingEntity> type) {
 		return Optional.ofNullable(ENTITY_TYPE_MAP.getOrDefault(type, null));
 	}
 

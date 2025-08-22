@@ -36,7 +36,7 @@ public class AbysmStructureProcessorLists {
 					replace(AbysmBlocks.FLOROPUMICE_TILES, AbysmBlocks.CRACKED_FLOROPUMICE_TILES, 0.25F),
 					replace(AbysmBlocks.SMOOTH_FLOROPUMICE_BRICKS, AbysmBlocks.CRACKED_SMOOTH_FLOROPUMICE_BRICKS, 0.25F),
 					replace(AbysmBlocks.CUT_SMOOTH_FLOROPUMICE, AbysmBlocks.CRACKED_CUT_SMOOTH_FLOROPUMICE, 0.25F),
-					replace(Blocks.SOUL_LANTERN, Blocks.WATER, 0.25F)
+					replace(AbysmBlocks.OOZETRICKLE_LANTERN, Blocks.WATER, 0.25F)
 				),
 				new ProtectedBlocksStructureProcessor(BlockTags.FEATURES_CANNOT_REPLACE)
 			)

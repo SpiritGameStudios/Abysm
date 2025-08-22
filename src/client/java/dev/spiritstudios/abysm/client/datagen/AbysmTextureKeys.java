@@ -8,4 +8,6 @@ public class AbysmTextureKeys {
 
 	public static final TextureKey BLOSSOM_FLOWER_KEY = TextureKey.of("flower");
 	public static final TextureKey BLOSSOM_BASE_KEY = TextureKey.of("base");
+
+	public static final TextureKey LANTERN_OVERLAY = TextureKey.of("lantern_overlay");
 }

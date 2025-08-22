@@ -191,6 +191,9 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 
 		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL, true);
 		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, false);
+
+		this.addDrop(AbysmBlocks.OOZETRICKLE_CORD);
+		this.addDrop(AbysmBlocks.OOZETRICKLE_LANTERN);
 	}
 
 	private void forEach(Consumer<Block> consumer, Block... blocks) {

@@ -1,0 +1,7 @@
+{
+  "parent": "abysm:block/template_hanging_oozetrickle_lantern",
+  "textures": {
+    "lantern": "abysm:block/oozetrickle_lantern",
+    "lantern_overlay": "abysm:block/oozetrickle_lantern_overlay"
+  }
+}

@@ -4,7 +4,7 @@
     "chain_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:chain",
+        "Name": "abysm:oozetrickle_cord",
         "Properties": {
           "axis": "y",
           "waterlogged": "false"
@@ -14,9 +14,10 @@
     "lantern_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:soul_lantern",
+        "Name": "abysm:oozetrickle_lantern",
         "Properties": {
           "hanging": "true",
+          "light": "13",
           "waterlogged": "false"
         }
       }

@@ -7,4 +7,5 @@ public class HarpoonEntityRenderState extends ProjectileEntityRenderState {
 	public Vec3d handPos;
 	public int startLight;
 	public int endLight;
+	public boolean enchanted;
 }

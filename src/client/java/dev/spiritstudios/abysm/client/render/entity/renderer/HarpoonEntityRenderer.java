@@ -11,8 +11,11 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.ProjectileEntityRenderer;
+import net.minecraft.client.render.entity.model.ArrowEntityModel;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Arm;
@@ -22,20 +25,17 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 
-public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntity, HarpoonEntityRenderState> {
-
+public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity, HarpoonEntityRenderState> {
 	protected static final Identifier TEXTURE = Abysm.id("textures/item/harpoon_arrow.png");
 	public static final Identifier CHAINS = Abysm.id("textures/entity/chains.png");
 
 	private static final RenderLayer RENDER_LAYER = RenderLayer.getEntityCutoutNoCull(CHAINS);
 
+	private final ArrowEntityModel model;
+
 	public HarpoonEntityRenderer(EntityRendererFactory.Context context) {
 		super(context);
-	}
-
-	@Override
-	protected Identifier getTexture(HarpoonEntityRenderState state) {
-		return TEXTURE;
+		this.model = new ArrowEntityModel(context.getPart(EntityModelLayers.ARROW));
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 			matrices.multiply(RotationAxis.POSITIVE_X.rotation(-verticalAngle));
 
 			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(45));
-			VertexConsumer consumer = consumers.getBuffer(RENDER_LAYER);
+			VertexConsumer consumer = ItemRenderer.getItemGlintConsumer(consumers, RENDER_LAYER, false, state.enchanted);
 
 			renderPart(state.startLight, state.endLight, consumer, matrices.peek(), length, false);
 
@@ -80,7 +80,17 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 		}
 		matrices.pop();
 
-		super.render(state, matrices, consumers, light);
+		matrices.push();
+		{
+			matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(state.yaw - 90.0F));
+			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(state.pitch));
+			VertexConsumer consumer = ItemRenderer.getItemGlintConsumer(
+				consumers, this.model.getLayer(TEXTURE), false, state.enchanted
+			);
+			this.model.setAngles(state);
+			this.model.render(matrices, consumer, light, OverlayTexture.DEFAULT_UV);
+		}
+		matrices.pop();
 	}
 
 	private static void renderPart(int startLight, int endLight, VertexConsumer consumer, MatrixStack.Entry entry, float length, boolean shift) {
@@ -176,5 +186,9 @@ public class HarpoonEntityRenderer extends ProjectileEntityRenderer<HarpoonEntit
 
 		state.startLight = LightmapTextureManager.pack(getBlockLight(harpoon, start), getSkyLight(harpoon, start));
 		state.endLight = getLight(harpoon, tickProgress);
+
+		state.yaw = harpoon.getLerpedYaw(tickProgress);
+		state.pitch = harpoon.getLerpedPitch(tickProgress);
+		state.enchanted = harpoon.isEnchanted();
 	}
 }

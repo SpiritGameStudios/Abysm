@@ -33,14 +33,14 @@ import net.minecraft.world.WorldAccess;
  *
  * For the EcosystemLogic, have your own variable in your entity class and use {@link EcologicalEntity#createEcosystemLogic(MobEntity)} (e.g. in your entity class constructor) to set the variable once. Then return it in {@link EcologicalEntity#getEcosystemLogic()}.<br><br>
  *
- * {@link EcologicalEntity#createChildEntity(ServerWorld, MobEntity, BlockPos)} can be overridden for custom breeding results(e.g. giving the child one of the parent's entity patterns or variants).<br><br>
+ * {@link EcologicalEntity#createChildEntity(ServerWorld, LivingEntity, BlockPos)} can be overridden for custom breeding results(e.g. giving the child one of the parent's entity patterns or variants).<br><br>
  *
  * Beyond that, this interface also contains various getters/setters used in Ecosystem-related systems, which can be manually overridden if desired. Most of them will be towards the bottom of the interface.
  *
  * @see EcologicalEntity#tickEcosystemLogic()
  * @see EcologicalEntity#alertEcosystemOfSpawn()
  * @see EcologicalEntity#alertEcosystemOfDeath()
- * @see EcologicalEntity#createChildEntity(ServerWorld, MobEntity, BlockPos)
+ * @see EcologicalEntity#createChildEntity(ServerWorld, LivingEntity, BlockPos)
  */
 public interface EcologicalEntity {
 
@@ -217,16 +217,16 @@ public interface EcologicalEntity {
 	 * Creates and spawns a child entity into the world.
 	 *
 	 * @param world The world to spawn the entity into (assumed to be the same world as this entity)
-	 * @param other The other entity this entity is breeding with - given to {@link EcologicalEntity#createChildEntity(ServerWorld, MobEntity, BlockPos)}.
+	 * @param other The other entity this entity is breeding with - given to {@link EcologicalEntity#createChildEntity(ServerWorld, LivingEntity, BlockPos)}.
 	 */
-	default void spawnChildEntity(ServerWorld world, MobEntity other) {
-		MobEntity self = (MobEntity) this;
-		MobEntity child = this.createChildEntity(world, other, self.getBlockPos());
+	default void spawnChildEntity(ServerWorld world, LivingEntity other) {
+		LivingEntity self = (LivingEntity) this;
+		LivingEntity child = this.createChildEntity(world, other, self.getBlockPos());
 		if(child == null) return;
 
 		// TODO - Should we have any entities that can be bred by the player,
 		//  advancement/statistic credit needs to be given here
-		child.setBaby(true);
+		if (child instanceof MobEntity mob) mob.setBaby(true);
 		child.refreshPositionAndAngles(self.getX(), self.getY(), self.getZ(), 0f, 0f);
 		world.spawnEntity(child);
 	}
@@ -240,11 +240,12 @@ public interface EcologicalEntity {
 	 * @param other The other parent entity - use to mix and match whatever data wanted
 	 * @return The created child entity
 	 */
-	default MobEntity createChildEntity(ServerWorld world, MobEntity other, BlockPos spawnPos) {
-		MobEntity child = this.getEcosystemType().entityType().create(world, SpawnReason.BREEDING);
+	default LivingEntity createChildEntity(ServerWorld world, LivingEntity other, BlockPos spawnPos) {
+		LivingEntity child = this.getEcosystemType().entityType().create(world, SpawnReason.BREEDING);
 		if(child == null) return null;
 		child.refreshPositionAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0f, 0f);
-		child.initialize(world, world.getLocalDifficulty(spawnPos), SpawnReason.BREEDING, null);
+		if (child instanceof MobEntity mob) mob.initialize(world, world.getLocalDifficulty(spawnPos), SpawnReason.BREEDING, null);
+
 		return child;
 	}
 

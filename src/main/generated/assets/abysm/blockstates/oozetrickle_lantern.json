@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "abysm:block/oozetrickle_lantern"
+    },
+    "hanging=true": {
+      "model": "abysm:block/oozetrickle_lantern_hanging"
+    }
+  }
+}

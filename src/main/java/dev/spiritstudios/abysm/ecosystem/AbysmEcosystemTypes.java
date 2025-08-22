@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.ReticulatedFliprayEntity;
+import dev.spiritstudios.abysm.entity.SnapperEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.PaddlefishEntity;
@@ -13,6 +14,7 @@ import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -47,6 +49,15 @@ public class AbysmEcosystemTypes {
 			.setPredators(AbysmEntityTypes.BLOOMRAY)
 			.setPlants(AbysmBlocks.ROSY_BLOOMSHROOM, AbysmBlocks.MAUVE_BLOOMSHROOM, AbysmBlocks.SUNNY_BLOOMSHROOM)
 			.setTargetPopulation(7)
+	);
+
+	public static final EcosystemType<SnapperEntity> SNAPPER = register(
+		"snapper",
+		EcosystemType.Builder
+			.create(AbysmEntityTypes.SNAPPER)
+			.setPredators(AbysmEntityTypes.BLOOMRAY)
+			.setPrey(EntityType.PLAYER)
+			.setTargetPopulation(5)
 	);
 
 	public static final EcosystemType<BloomrayEntity> BLOOMRAY = register(
