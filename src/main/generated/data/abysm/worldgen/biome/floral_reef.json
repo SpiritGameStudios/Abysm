@@ -186,6 +186,12 @@
         "maxCount": 16,
         "minCount": 8,
         "weight": 50
+      },
+      {
+        "type": "abysm:paddlefish",
+        "maxCount": 16,
+        "minCount": 8,
+        "weight": 50
       }
     ],
     "water_creature": [

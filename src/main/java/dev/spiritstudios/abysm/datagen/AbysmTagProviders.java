@@ -699,12 +699,16 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
 					AbysmEntityTypes.PADDLEFISH,
+					AbysmEntityTypes.SNAPPER,
+					AbysmEntityTypes.GUP_GUP,
+					AbysmEntityTypes.AROWANA_MAGICII,
 					AbysmEntityTypes.BLOOMRAY,
 					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
 					AbysmEntityTypes.MAN_O_WAR,
 					AbysmEntityTypes.LECTORFIN,
 					AbysmEntityTypes.MYSTERIOUS_BLOB,
-					AbysmEntityTypes.TEST_LEVIATHAN
+					AbysmEntityTypes.TEST_LEVIATHAN,
+					AbysmEntityTypes.RETICULATED_FLIPRAY
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.AQUATIC)
@@ -712,12 +716,16 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
 					AbysmEntityTypes.PADDLEFISH,
+					AbysmEntityTypes.SNAPPER,
+					AbysmEntityTypes.GUP_GUP,
+					AbysmEntityTypes.AROWANA_MAGICII,
 					AbysmEntityTypes.BLOOMRAY,
 					AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY,
 					AbysmEntityTypes.MAN_O_WAR,
 					AbysmEntityTypes.LECTORFIN,
 					AbysmEntityTypes.MYSTERIOUS_BLOB,
-					AbysmEntityTypes.TEST_LEVIATHAN
+					AbysmEntityTypes.TEST_LEVIATHAN,
+					AbysmEntityTypes.RETICULATED_FLIPRAY
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH)
@@ -725,6 +733,8 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
 					AbysmEntityTypes.PADDLEFISH,
+					AbysmEntityTypes.GUP_GUP,
+					AbysmEntityTypes.AROWANA_MAGICII,
 					AbysmEntityTypes.LECTORFIN
 				);
 

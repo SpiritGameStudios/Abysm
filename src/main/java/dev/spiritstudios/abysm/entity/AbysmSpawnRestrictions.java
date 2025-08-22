@@ -13,15 +13,28 @@ import net.minecraft.world.Heightmap;
 public class AbysmSpawnRestrictions {
 
 	public static void init() {
-		register(AbysmEntityTypes.SMALL_FLORAL_FISH, and(WaterCreatureEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
-		register(AbysmEntityTypes.BIG_FLORAL_FISH, and(WaterCreatureEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
-		register(AbysmEntityTypes.BLOOMRAY, and(WaterCreatureEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
-		register(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY, and(WaterCreatureEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
-		register(AbysmEntityTypes.MAN_O_WAR, WaterCreatureEntity::canSpawn);
-		register(AbysmEntityTypes.LECTORFIN, and(WaterCreatureEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
+		registerStandardEcoWC(AbysmEntityTypes.SMALL_FLORAL_FISH);
+		registerStandardEcoWC(AbysmEntityTypes.BIG_FLORAL_FISH);
+		registerStandardEcoWC(AbysmEntityTypes.PADDLEFISH);
+		registerStandardEcoWC(AbysmEntityTypes.SNAPPER);
+		registerStandardEcoWC(AbysmEntityTypes.GUP_GUP);
+		registerStandardEcoWC(AbysmEntityTypes.AROWANA_MAGICII);
+		registerStandardEcoWC(AbysmEntityTypes.BLOOMRAY);
+		registerStandardEcoWC(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY);
+		registerStandardWC(AbysmEntityTypes.MAN_O_WAR);
+		registerStandardEcoWC(AbysmEntityTypes.LECTORFIN);
+		registerStandardEcoWC(AbysmEntityTypes.RETICULATED_FLIPRAY);
 	}
 
-	private static <T extends WaterCreatureEntity> void register(EntityType<T> type, SpawnRestriction.SpawnPredicate<T> predicate) {
+	private static <T extends WaterCreatureEntity> void registerStandardEcoWC(EntityType<T> type) {
+		registerWC(type, and(WaterCreatureEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
+	}
+
+	private static <T extends WaterCreatureEntity> void registerStandardWC(EntityType<T> type) {
+		registerWC(type, WaterCreatureEntity::canSpawn);
+	}
+
+	private static <T extends WaterCreatureEntity> void registerWC(EntityType<T> type, SpawnRestriction.SpawnPredicate<T> predicate) {
 		register(type, SpawnLocationTypes.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, predicate);
 	}
 
