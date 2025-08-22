@@ -8,6 +8,8 @@ import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
+import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -16,11 +18,11 @@ import net.minecraft.entity.ai.control.YawAdjustingLookControl;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.SwimNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.passive.SchoolingFishEntity;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -29,13 +31,13 @@ import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public class ReticulatedFliprayEntity extends AbstractSchoolingFishEntity implements EcologicalEntity {
+public class ReticulatedFliprayEntity extends SimpleFishEntity implements EcologicalEntity {
 
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.flipray.swim");
 
 	protected EcosystemLogic ecosystemLogic;
 
-	public ReticulatedFliprayEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
+	public ReticulatedFliprayEntity(EntityType<? extends SimpleFishEntity> entityType, World world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
 		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.1F, true);
@@ -44,7 +46,7 @@ public class ReticulatedFliprayEntity extends AbstractSchoolingFishEntity implem
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
-		AnimationController<ReticulatedFliprayEntity> animController = new AnimationController<>(ANIM_CONTROLLER_STRING, 0, event -> event.setAndContinue(IDLE_ANIM));
+		AnimationController<ReticulatedFliprayEntity> animController = new AnimationController<>("default", 0, event -> event.setAndContinue(IDLE_ANIM));
 
 		registrar.add(animController);
 	}
@@ -97,8 +99,24 @@ public class ReticulatedFliprayEntity extends AbstractSchoolingFishEntity implem
 		this.targetSelector.add(1, new HuntPreyGoal(this, false));
 	}
 
+	// TODO: SoundEvents
 	@Override
-	public float mvmSpdMul() {
-		return 1;
+	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_HURT;
+	}
+
+	@Override
+	protected @Nullable SoundEvent getDeathSound() {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getFlopSound() {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_FLOP;
+	}
+
+	@Override
+	public ItemStack getBucketItem() {
+		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 }

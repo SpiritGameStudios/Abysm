@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.entity;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
 import dev.spiritstudios.abysm.entity.floralreef.*;
+import dev.spiritstudios.abysm.entity.generic.ArowanaMagiciiEntity;
 import dev.spiritstudios.abysm.entity.generic.GupGupEntity;
 import dev.spiritstudios.abysm.entity.generic.SnapperEntity;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
@@ -61,7 +62,16 @@ public class AbysmEntityTypes {
 			.create(GupGupEntity::new, SpawnGroup.WATER_AMBIENT)
 			.dimensions(0.1f, 0.1f)
 			.eyeHeight(0.05f)
-			.maxTrackingRange(10)
+			.maxTrackingRange(4)
+	);
+
+	public static final EntityType<ArowanaMagiciiEntity> AROWANA_MAGICII = register(
+		"arowana_magicii",
+		EntityType.Builder
+			.create(ArowanaMagiciiEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(0.4f, 0.5f)
+			.eyeHeight(0.35f)
+			.maxTrackingRange(4)
 	);
 
 	public static final EntityType<BloomrayEntity> BLOOMRAY = register(
@@ -144,6 +154,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(PADDLEFISH, PaddlefishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(SNAPPER, SnapperEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(GUP_GUP, GupGupEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(AROWANA_MAGICII, ArowanaMagiciiEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createRayAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());

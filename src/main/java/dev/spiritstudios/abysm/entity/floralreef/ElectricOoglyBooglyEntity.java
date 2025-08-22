@@ -1,22 +1,27 @@
 package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
-import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
+import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
+import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.entity.SimpleFishEntity;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
+import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.particle.OoglyBooglyFumesParticleEffect;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.passive.SchoolingFishEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -24,6 +29,7 @@ import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -37,7 +43,7 @@ import java.util.List;
 
 // TODO - (datagen'd?) tags
 // TODO - proper health
-public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity implements Variantable<ElectricOoglyBooglyVariant> {
+public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Variantable<ElectricOoglyBooglyVariant> {
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.ooglyboogly.idle");
 	public static final RawAnimation BONK_ANIM = RawAnimation.begin().thenPlay("animation.ooglyboogly.bonk");
 	public static final RawAnimation BLOWING_UP_WITH_MIND_ANIM = RawAnimation.begin().thenLoop("animation.ooglyboogly.blowingupwithmind");
@@ -46,7 +52,7 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 	public static final TrackedData<Boolean> BLOWING_UP_WITH_MIND = DataTracker.registerData(ElectricOoglyBooglyEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	public int ticksSinceBlowingUp = 0;
 
-	public ElectricOoglyBooglyEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
+	public ElectricOoglyBooglyEntity(EntityType<? extends SimpleFishEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
@@ -127,7 +133,7 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 		serverWorld.playSoundFromEntity(this, this, SoundEvents.ITEM_TRIDENT_THUNDER.value(), SoundCategory.NEUTRAL, 0.75f, 2f);
 		serverWorld.playSoundFromEntity(this, this, SoundEvents.ENTITY_ALLAY_HURT, SoundCategory.NEUTRAL, 1f, 2f);
 		this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20 * 20, 50, false, false));
-		this.triggerAnim(ANIM_CONTROLLER_STRING, animString(BONK_ANIM));
+		this.triggerAnim("default", animString(BONK_ANIM));
 	}
 
 	@Override
@@ -179,7 +185,7 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-		AnimationController<ElectricOoglyBooglyEntity> animController = new AnimationController<>(ANIM_CONTROLLER_STRING, 5, event -> {
+		AnimationController<ElectricOoglyBooglyEntity> animController = new AnimationController<>("default", 5, event -> {
 			if (event.animatable().isBlowingUpWithMind()) {
 				return event.setAndContinue(BLOWING_UP_WITH_MIND_ANIM);
 			}
@@ -235,5 +241,29 @@ public class ElectricOoglyBooglyEntity extends AbstractSchoolingFishEntity imple
 		return anim.getAnimationStages().getFirst().animationName();
 	}
 
+	// TODO: SoundEvents
+	@Override
+	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_HURT;
+	}
 
+	@Override
+	protected @Nullable SoundEvent getDeathSound() {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getFlopSound() {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_FLOP;
+	}
+
+	@Override
+	public ItemStack getBucketItem() {
+		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
+	}
+
+	@Override
+	public EcosystemType<?> getEcosystemType() {
+		return AbysmEcosystemTypes.ELECTRIC_OOGLY_BOOGLY;
+	}
 }

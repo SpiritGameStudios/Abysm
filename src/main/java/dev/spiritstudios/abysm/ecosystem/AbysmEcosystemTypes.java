@@ -6,6 +6,8 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.ReticulatedFliprayEntity;
+import dev.spiritstudios.abysm.entity.floralreef.ElectricOoglyBooglyEntity;
+import dev.spiritstudios.abysm.entity.generic.ArowanaMagiciiEntity;
 import dev.spiritstudios.abysm.entity.generic.GupGupEntity;
 import dev.spiritstudios.abysm.entity.generic.SnapperEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
@@ -70,6 +72,14 @@ public class AbysmEcosystemTypes {
 			.setTargetPopulation(50)
 	);
 
+	// TODO
+	public static final EcosystemType<ArowanaMagiciiEntity> AROWANA_MAGICII = register(
+		"arowana_magicii",
+		EcosystemType.Builder
+			.create(AbysmEntityTypes.AROWANA_MAGICII)
+			.setTargetPopulation(50)
+	);
+
 	public static final EcosystemType<BloomrayEntity> BLOOMRAY = register(
 		"bloomray",
 		EcosystemType.Builder.create(AbysmEntityTypes.BLOOMRAY)
@@ -79,6 +89,12 @@ public class AbysmEcosystemTypes {
 			.setHuntFavorChance(0.9f)
 			.setHuntSpeedModifiers(0.3f, -0.2f)
 			.setBreedCooldownTicks(400) // 20 seconds
+	);
+
+	public static final EcosystemType<ElectricOoglyBooglyEntity> ELECTRIC_OOGLY_BOOGLY = register(
+		"electric_oogly_boogly",
+		EcosystemType.Builder.create(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY)
+			.setTargetPopulation(3)
 	);
 
 	public static final EcosystemType<LectorfinEntity> LECTORFIN = register(

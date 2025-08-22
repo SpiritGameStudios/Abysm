@@ -109,6 +109,21 @@ public final class AbysmItems {
 		settings -> new SpawnEggItem(AbysmEntityTypes.PADDLEFISH, settings)
 	);
 
+	public static final Item SNAPPER_SPAWN_EGG = register(
+		"snapper_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.SNAPPER, settings)
+	);
+
+	public static final Item GUP_GUP_SPAWN_EGG = register(
+		"gup_gup_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.GUP_GUP, settings)
+	);
+
+	public static final Item AROWANA_MAGICII_SPAWN_EGG = register(
+		"arowana_magicii_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.AROWANA_MAGICII, settings)
+	);
+
 	public static final Item BLOOMRAY_SPAWN_EGG = register(
 		"bloomray_spawn_egg",
 		settings -> new SpawnEggItem(AbysmEntityTypes.BLOOMRAY, settings)

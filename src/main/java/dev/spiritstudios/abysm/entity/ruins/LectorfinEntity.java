@@ -5,9 +5,11 @@ import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.entity.PlantEater;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.AbstractSchoolingFishEntity;
+import dev.spiritstudios.abysm.entity.SimpleVanillaSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal;
+import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -26,6 +28,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.SchoolingFishEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -33,6 +36,7 @@ import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LocalDifficulty;
@@ -48,7 +52,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
-public class LectorfinEntity extends AbstractSchoolingFishEntity implements PlantEater {
+public class LectorfinEntity extends SimpleVanillaSchoolingFishEntity implements PlantEater {
 	// use nbt if sync is unnecessary
 	protected static final TrackedData<Integer> ENCHANTMENT_LEVEL = DataTracker.registerData(LectorfinEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	protected static final TrackedData<RegistryEntry<FishEnchantment>> ENCHANTMENT = DataTracker.registerData(LectorfinEntity.class, AbysmTrackedDataHandlers.FISH_ENCHANTMENT);
@@ -161,6 +165,7 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 	@Override
 	protected void initGoals() {
 		super.initGoals();
+		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this));
 		this.plantsGoal = new FindPlantsGoal(this);
 		this.plantsGoal.setRangeSupplier(() -> (int) Math.floor(this.getAttributeValue(EntityAttributes.FOLLOW_RANGE) * 0.8));
 		this.goalSelector.add(4, this.plantsGoal);
@@ -254,6 +259,27 @@ public class LectorfinEntity extends AbstractSchoolingFishEntity implements Plan
 			}
 		}
 		this.previousEnchantment = enchantment;
+	}
+
+	// TODO: SoundEvents
+	@Override
+	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_HURT;
+	}
+
+	@Override
+	protected @Nullable SoundEvent getDeathSound() {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_DEATH;
+	}
+
+	@Override
+	protected SoundEvent getFlopSound() {
+		return AbysmSoundEvents.ENTITY_PADDLEFISH_FLOP;
+	}
+
+	@Override
+	public ItemStack getBucketItem() {
+		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 
 	public static class LectorfinRevengeGoal extends RevengeGoal {
