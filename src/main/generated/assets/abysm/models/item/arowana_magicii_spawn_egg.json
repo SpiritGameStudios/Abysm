@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "abysm:item/arowana_magicii_spawn_egg"
+  }
+}
