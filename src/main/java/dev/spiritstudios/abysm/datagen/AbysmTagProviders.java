@@ -708,7 +708,8 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.LECTORFIN,
 					AbysmEntityTypes.MYSTERIOUS_BLOB,
 					AbysmEntityTypes.TEST_LEVIATHAN,
-					AbysmEntityTypes.RETICULATED_FLIPRAY
+					AbysmEntityTypes.RETICULATED_FLIPRAY,
+					AbysmEntityTypes.SKELETON_SHARK
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.AQUATIC)
@@ -725,7 +726,8 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.LECTORFIN,
 					AbysmEntityTypes.MYSTERIOUS_BLOB,
 					AbysmEntityTypes.TEST_LEVIATHAN,
-					AbysmEntityTypes.RETICULATED_FLIPRAY
+					AbysmEntityTypes.RETICULATED_FLIPRAY,
+					AbysmEntityTypes.SKELETON_SHARK
 				);
 
 			getOrCreateTagBuilder(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH)
@@ -751,7 +753,8 @@ public class AbysmTagProviders {
 			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_FRIEND)
 				.add(
 					EntityType.PUFFERFISH,
-					AbysmEntityTypes.MAN_O_WAR
+					AbysmEntityTypes.MAN_O_WAR,
+					AbysmEntityTypes.SKELETON_SHARK
 				);
 
 			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_PREY)
@@ -775,7 +778,11 @@ public class AbysmTagProviders {
 				);
 
 			getOrCreateTagBuilder(AbysmEntityTypeTags.LEHYDRATHAN_HUNT_TARGETS)
-				.add(EntityType.GLOW_SQUID);
+				.add(EntityType.GLOW_SQUID)
+				.add(AbysmEntityTypes.SKELETON_SHARK);
+
+			getOrCreateTagBuilder(EntityTypeTags.UNDEAD)
+				.add(AbysmEntityTypes.SKELETON_SHARK);
 			// endregion
 		}
 	}

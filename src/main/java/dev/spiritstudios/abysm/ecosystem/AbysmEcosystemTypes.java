@@ -138,7 +138,8 @@ public class AbysmEcosystemTypes {
 				AbysmEntityTypes.GUP_GUP,
 				AbysmEntityTypes.SNAPPER,
 				AbysmEntityTypes.BLOOMRAY,
-				EntityType.PLAYER)
+				EntityType.PLAYER,
+				AbysmEntityTypes.TEST_LEVIATHAN)
 	);
 
 //	public static <T extends MobEntity & EcologicalEntity> EcosystemType<T> register(EcosystemType.Builder<T> builder) {
