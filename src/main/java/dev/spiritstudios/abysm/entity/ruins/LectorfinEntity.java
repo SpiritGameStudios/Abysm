@@ -165,7 +165,7 @@ public class LectorfinEntity extends SimpleVanillaSchoolingFishEntity implements
 	@Override
 	protected void initGoals() {
 		super.initGoals();
-		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this));
+		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this, 1.0F));
 		this.plantsGoal = new FindPlantsGoal(this);
 		this.plantsGoal.setRangeSupplier(() -> (int) Math.floor(this.getAttributeValue(EntityAttributes.FOLLOW_RANGE) * 0.8));
 		this.goalSelector.add(4, this.plantsGoal);

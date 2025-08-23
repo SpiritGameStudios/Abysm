@@ -102,8 +102,8 @@ public abstract class SimpleVanillaSchoolingFishEntity extends SchoolingFishEnti
 	public static class SwimToRandomPlaceGoal extends SwimAroundGoal {
 		private final FishEntity fish;
 
-		public SwimToRandomPlaceGoal(FishEntity fish) {
-			super(fish, 1.0, 40);
+		public SwimToRandomPlaceGoal(FishEntity fish, float speed) {
+			super(fish,  speed, 40);
 			this.fish = fish;
 		}
 

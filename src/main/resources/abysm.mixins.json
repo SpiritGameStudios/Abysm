@@ -8,6 +8,7 @@
     "FishEntityAccessor",
     "LeavesBlockMixin",
     "LivingEntityMixin",
+    "SchoolingFishEntityAccessor",
     "ShovelItemMixin",
     "blue.BatEntityMixin",
     "blue.BlazeEntityMixin",

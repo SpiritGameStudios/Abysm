@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.SimpleVanillaSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.mixin.SchoolingFishEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -29,9 +30,16 @@ public class ArowanaMagiciiEntity extends SimpleVanillaSchoolingFishEntity {
 	@Override
 	protected void initGoals() {
 		super.initGoals();
-		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this));
+		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this, 3.0F));
 		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
 	}
+
+	public void moveTowardLeader() {
+		if (this.hasLeader()) {
+			this.getNavigation().startMovingTo(((SchoolingFishEntityAccessor)this).getLeader(), 3.0F);
+		}
+	}
+
 
 	@Override
 	public EcosystemType<?> getEcosystemType() {
@@ -62,11 +70,6 @@ public class ArowanaMagiciiEntity extends SimpleVanillaSchoolingFishEntity {
 	@Override
 	public ItemStack getBucketItem() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
-	}
-
-	@Override
-	public float mvmSpdMul() {
-		return 1.25F;
 	}
 
 	public static DefaultAttributeContainer.Builder createFishAttributes() {
