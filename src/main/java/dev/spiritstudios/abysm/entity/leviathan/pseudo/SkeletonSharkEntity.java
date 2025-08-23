@@ -11,6 +11,7 @@ import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.leviathan.GeoChainLeviathan;
 import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
 import dev.spiritstudios.abysm.entity.leviathan.LeviathanPart;
+import dev.spiritstudios.abysm.networking.NowHuntingS2CPayload;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -23,6 +24,8 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -37,14 +40,25 @@ import java.util.List;
 public class SkeletonSharkEntity extends GeoChainLeviathan implements EcologicalEntity {
 
 	public final List<SkeletonSharkPart> parts;
+	public final List<SkeletonSharkPart> nonFins;
 	public final EcosystemLogic ecosystemLogic = this.createEcosystemLogic(this);
+
+	public final SkeletonSharkPart rfin;
+	public final SkeletonSharkPart lfin;
+
+	protected boolean wasHunting = false;
 
 	public SkeletonSharkEntity(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
 		ImmutableList.Builder<SkeletonSharkPart> builder = ImmutableList.builder();
 		builder.add(new SkeletonSharkPart(this, "body", 2F, 1F, -0.1F));
+		this.rfin = new SkeletonSharkPart(this, "rfin", 0.5F, 0.5F, 0F);
+		this.lfin = new SkeletonSharkPart(this, "lfin", 0.5F, 0.5F, 0F);
 		builder.add(new SkeletonSharkPart(this, "tail", 2F, 1F, 1F));
+		builder.add(this.rfin);
+		builder.add(this.lfin);
 		this.parts = builder.build();
+		this.nonFins = this.parts.stream().filter(part -> !part.name.contains("fin")).toList();
 	}
 
 	@Override
@@ -57,6 +71,11 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 	@Override
 	public List<SkeletonSharkPart> getSpecterEntityParts() {
 		return this.parts;
+	}
+
+	@Override
+	public List<? extends LeviathanPart> getTailParts() {
+		return this.nonFins;
 	}
 
 	@Override
@@ -106,7 +125,18 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 
 	public static DefaultAttributeContainer.Builder createSansAttributes() {
 		return Leviathan.createLeviathanAttributes()
-			.add(EntityAttributes.ATTACK_DAMAGE, 15);
+				.add(EntityAttributes.MAX_HEALTH, 2000)
+				.add(EntityAttributes.ATTACK_DAMAGE, 8)
+				.add(EntityAttributes.MOVEMENT_SPEED, 0.9);
+	}
+
+	@Override
+	public void tickMovement() {
+		super.tickMovement();
+		if (this.getWorld() instanceof ServerWorld && this.getEcosystemLogic().isHunting() != this.wasHunting) {
+			this.wasHunting ^= true; // this.wasHunting = !this.wasHunting;
+			new NowHuntingS2CPayload(this.getId(), this.wasHunting).send(this);
+		}
 	}
 
 	@Override
@@ -121,6 +151,6 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 
 	@Override
 	public float damageResist() {
-		return 200F;
+		return 100F;
 	}
 }

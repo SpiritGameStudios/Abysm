@@ -32,6 +32,7 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 
 	public static final DataTicket<Boolean> SANS = DataTicket.create("sans", Boolean.class);
 	public static final DataTicket<List> PARTS = DataTicket.create("parts", List.class);
+	public static final DataTicket<Boolean> HACKY_ROTATE_ANYWAY = DataTicket.create("hacky_rotate_anyway", Boolean.class);
 
 	public SkeletonSharkRenderer(EntityRendererFactory.Context context) {
 		super(context, new EntityModel());
@@ -46,7 +47,9 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 				if (!GeoUtil.getOrDefaultGeoData(renderState, SANS, false)) {
 					return;
 				}
+				renderState.addGeckolibData(HACKY_ROTATE_ANYWAY, true);
 				super.render(renderState, poseStack, bakedModel, renderType, bufferSource, buffer, packedLight, packedOverlay, renderColor);
+				renderState.addGeckolibData(HACKY_ROTATE_ANYWAY, false);
 			}
 		});
 	}
@@ -60,6 +63,9 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 	@Override
 	public void actuallyRender(R state, MatrixStack matrices, BakedGeoModel model, @Nullable RenderLayer renderType, VertexConsumerProvider vertexConsumers, @Nullable VertexConsumer buffer, boolean isReRender, int packedLight, int packedOverlay, int renderColor) {
 		matrices.push();
+		if (GeoUtil.getOrDefaultGeoData(state, HACKY_ROTATE_ANYWAY, false)) {
+			applyRotations(state, matrices, state.baseScale);
+		}
 		super.actuallyRender(state, matrices, model, renderType, vertexConsumers, buffer, isReRender, packedLight, packedOverlay, renderColor);
 		matrices.pop();
 
@@ -74,10 +80,14 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 		Vec3d prevPos = Vec3d.ZERO;
 		for (Object o : parts) {
 			SkeletonSharkPart skeletonSharkPart = (SkeletonSharkPart) o;
-
-			Vec3d relativePos = skeletonSharkPart.getRelativePos();
-			PitchYawPair pair = lookAt(relativePos, prevPos);
-			prevPos = relativePos;
+			PitchYawPair pair;
+			if (skeletonSharkPart.name.contains("fin")) {
+				pair = lookAt(prevPos, Vec3d.ZERO);
+			} else {
+				Vec3d relativePos = skeletonSharkPart.getRelativePos();
+				pair = lookAt(relativePos, prevPos);
+				prevPos = relativePos;
+			}
 
 			state.addGeckolibData(DataTickets.ENTITY_PITCH, pair.pitch);
 			state.addGeckolibData(DataTickets.ENTITY_YAW, pair.yaw);
@@ -105,11 +115,6 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 	}
 
 	@Override
-	protected void applyRotations(R renderState, MatrixStack matrixStack, float nativeScale) {
-		super.applyRotations(renderState, matrixStack, nativeScale);
-	}
-
-	@Override
 	protected boolean shouldApplyFishLandTransforms() {
 		return false;
 	}
@@ -122,7 +127,7 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 		@Override
 		public void addAdditionalStateData(SkeletonSharkEntity skeleshark, GeoRenderState renderState) {
 			super.addAdditionalStateData(skeleshark, renderState);
-			renderState.addGeckolibData(SANS, skeleshark.getEcosystemLogic().isHunting());
+			renderState.addGeckolibData(SANS, skeleshark.isHunting());
 			renderState.addGeckolibData(PARTS, skeleshark.getSpecterEntityParts());
 		}
 	}
@@ -135,6 +140,10 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 		public static final BodyPartRenderer BODY_RENDERER = new BodyPartRenderer("body");
 		@SuppressWarnings("unused")
 		public static final BodyPartRenderer TAIL_RENDERER = new BodyPartRenderer("tail");
+		@SuppressWarnings("unused")
+		public static final BodyPartRenderer RFIN_RENDERER = new BodyPartRenderer("rfin");
+		@SuppressWarnings("unused")
+		public static final BodyPartRenderer LFIN_RENDERER = new BodyPartRenderer("lfin");
 
 		protected final BodyPartModel model;
 

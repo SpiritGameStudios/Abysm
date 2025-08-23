@@ -25,10 +25,12 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEnti
 import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.duck.LivingEntityDuck;
+import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
+import dev.spiritstudios.abysm.networking.NowHuntingS2CPayload;
 import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -99,6 +101,17 @@ public class AbysmClient implements ClientModInitializer {
 			if (entity instanceof LivingEntityDuck duck) {
 				duck.abysm$setBlue(payload.isBlue());
 			}
+		});
+
+		ClientPlayNetworking.registerGlobalReceiver(NowHuntingS2CPayload.ID, (payload, context) -> {
+			World world = context.player().getWorld();
+			Entity entity = world.getEntityById(payload.entityId());
+			if (!(entity instanceof EcologicalEntity ecologicalEntity)) {
+				return;
+			}
+			boolean hunting = payload.hunting();
+			ecologicalEntity.setHunting(hunting);
+			ecologicalEntity.setHuntTicks(hunting ? Integer.MAX_VALUE : 0);
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {

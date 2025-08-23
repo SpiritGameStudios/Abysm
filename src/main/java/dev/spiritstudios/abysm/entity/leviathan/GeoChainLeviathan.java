@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
+import dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -23,6 +24,7 @@ import net.minecraft.server.network.DebugInfoSender;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.profiler.Profilers;
@@ -33,6 +35,7 @@ import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class GeoChainLeviathan extends Leviathan implements GeoEntity {
@@ -107,9 +110,9 @@ public abstract class GeoChainLeviathan extends Leviathan implements GeoEntity {
 		for (int index = 0; index < parts.size(); index++) {
 			LeviathanPart leviathanPart = parts.get(index);
 
-			double originalPartX = leviathanPart.getX();
-			double originalPartY = leviathanPart.getY();
-			double originalPartZ = leviathanPart.getZ();
+			final double originalPartX = leviathanPart.getX();
+			final double originalPartY = leviathanPart.getY();
+			final double originalPartZ = leviathanPart.getZ();
 
 			EnderDragonFrameTracker.Frame frame2 = this.frameTracker.getFrame(12 + index * 2);
 			float changedYaw = (
@@ -119,10 +122,30 @@ public abstract class GeoChainLeviathan extends Leviathan implements GeoEntity {
 			float cosNewYaw = MathHelper.cos(changedYaw);
 			float distanceToMain = this.getDistanceToMainBody(leviathanPart);
 			float perPart = (index + 1) * leviathanPart.getWidth();
-			this.movePart(leviathanPart,
-				(sinYaw * distanceToMain + sinNewYaw * perPart) * sinR,
-				frame2.y() - frame.y() - (perPart + distanceToMain) * cosR,
-				-(cosYaw * distanceToMain + cosNewYaw * perPart) * sinR);
+
+			double dx = (sinYaw * distanceToMain + sinNewYaw * perPart) * sinR;
+			double dy = frame2.y() - frame.y() - (perPart + distanceToMain) * cosR;
+			double dz = -(cosYaw * distanceToMain + cosNewYaw * perPart) * sinR;
+			this.movePart(leviathanPart, dx, dy, dz);
+
+			if (this instanceof SkeletonSharkEntity shark && Objects.equals(leviathanPart.name, "body")) {
+				Vec3d vec3d = new Vec3d(dz, 0 , -dx).normalize().multiply(0.7);
+				double finY = dy - 0.3;
+
+				final double rX = shark.rfin.getX();
+				final double rY = shark.rfin.getY();
+				final double rZ = shark.rfin.getZ();
+
+				final double lX = shark.lfin.getX();
+				final double lY = shark.lfin.getY();
+				final double lZ = shark.lfin.getZ();
+
+				this.movePart(shark.rfin, dx + vec3d.x, finY, dz + vec3d.z);
+				this.movePart(shark.lfin, dx - vec3d.x, finY, dz - vec3d.z);
+
+				this.updatePartLastPos(shark.rfin, rX, rY, rZ);
+				this.updatePartLastPos(shark.lfin, lX, lY, lZ);
+			}
 
 			this.updatePartLastPos(leviathanPart, originalPartX, originalPartY, originalPartZ);
 		}

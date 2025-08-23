@@ -18,6 +18,7 @@ import dev.spiritstudios.abysm.item.AbysmPotions;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
 import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
+import dev.spiritstudios.abysm.networking.NowHuntingS2CPayload;
 import dev.spiritstudios.abysm.networking.UpdateDensityBlobBlockC2SPayload;
 import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
@@ -136,6 +137,7 @@ public class Abysm implements ModInitializer {
 
 		PayloadTypeRegistry.playS2C().register(HappyEntityParticlesS2CPayload.ID, HappyEntityParticlesS2CPayload.PACKET_CODEC);
 		PayloadTypeRegistry.playS2C().register(EntityUpdateBlueS2CPayload.ID, EntityUpdateBlueS2CPayload.PACKET_CODEC);
+		PayloadTypeRegistry.playS2C().register(NowHuntingS2CPayload.ID, NowHuntingS2CPayload.PACKET_CODEC);
 
 		ServerPlayNetworking.registerGlobalReceiver(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload.Receiver.INSTANCE);
 		ServerPlayNetworking.registerGlobalReceiver(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload.Receiver.INSTANCE);
