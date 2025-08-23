@@ -201,6 +201,24 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 		return living.getType() != EntityType.PLAYER;
 	}
 
+	protected Optional<LivingEntity> findNearestTarget(Predicate<LivingEntity> targetPredicate) {
+		return this.getBrain()
+			.getOptionalRegisteredMemory(MemoryModuleType.MOBS)
+			.stream()
+			.flatMap(Collection::stream)
+			.filter(this::isValidTarget)
+			.filter(targetPredicate)
+			.findFirst();
+	}
+
+	protected Optional<LivingEntity> findNearestTarget(EntityType<? extends LivingEntity> entityType) {
+		return findNearestTarget(living -> living.getType() == entityType);
+	}
+
+	protected void onTargetFound(LivingEntity living) {
+		this.getBrain().remember(MemoryModuleType.NEAREST_ATTACKABLE, living);
+	}
+
 	public static class AttackablesSensor extends NearestLivingEntitiesSensor<Leviathan> {
 		@Override
 		public Set<MemoryModuleType<?>> getOutputMemoryModules() {
@@ -209,22 +227,12 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 
 		protected void sense(ServerWorld serverWorld, Leviathan leviathan) {
 			super.sense(serverWorld, leviathan);
-			findNearestTarget(leviathan, living -> living.getType() == EntityType.PLAYER)
-				.or(() -> findNearestTarget(leviathan, leviathan::isValidNonPlayerTarget))
+			leviathan.findNearestTarget(EntityType.PLAYER)
+				.or(() -> leviathan.findNearestTarget(leviathan::isValidNonPlayerTarget))
 				.ifPresentOrElse(
-					living -> leviathan.getBrain().remember(MemoryModuleType.NEAREST_ATTACKABLE, living),
+					leviathan::onTargetFound,
 					() -> leviathan.getBrain().forget(MemoryModuleType.NEAREST_ATTACKABLE)
 				);
-		}
-
-		private static Optional<LivingEntity> findNearestTarget(Leviathan leviathan, Predicate<LivingEntity> targetPredicate) {
-			return leviathan.getBrain()
-				.getOptionalRegisteredMemory(MemoryModuleType.MOBS)
-				.stream()
-				.flatMap(Collection::stream)
-				.filter(leviathan::isValidTarget)
-				.filter(targetPredicate)
-				.findFirst();
 		}
 	}
 }

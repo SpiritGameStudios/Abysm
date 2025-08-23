@@ -5,7 +5,7 @@ import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.SimpleVanillaSchoolingFishEntity;
+import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
@@ -109,7 +109,7 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	}
 
 	public static DefaultAttributeContainer.Builder createRayAttributes() {
-		return SimpleVanillaSchoolingFishEntity.createPredatoryFishAttributes()
+		return SimpleEcoSchoolingFishEntity.createPredatoryFishAttributes()
 			.add(EntityAttributes.MOVEMENT_SPEED, 1.0F)
 			.add(EntityAttributes.MAX_HEALTH, 14)
 			.add(EntityAttributes.ATTACK_DAMAGE, 5);

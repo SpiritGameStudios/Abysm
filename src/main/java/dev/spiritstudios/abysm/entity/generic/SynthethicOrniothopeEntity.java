@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.entity.generic;
 
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.SimpleVanillaSchoolingFishEntity;
+import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
@@ -16,7 +16,7 @@ import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public class SynthethicOrniothopeEntity extends SimpleVanillaSchoolingFishEntity {
+public class SynthethicOrniothopeEntity extends SimpleEcoSchoolingFishEntity {
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.synthethic_orniothope.idle");
 
 	public SynthethicOrniothopeEntity(EntityType<SynthethicOrniothopeEntity> entityType, World world) {

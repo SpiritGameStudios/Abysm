@@ -150,7 +150,7 @@ public class AbysmEntityTypes {
 	public static final EntityType<SkeletonSharkEntity> SKELETON_SHARK = register(
 		"skeleton_shark",
 		EntityType.Builder.create(SkeletonSharkEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(1F, 1F)
+			.dimensions(1F, 0.8F).eyeHeight(0.5F)
 	);
 
 	private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {

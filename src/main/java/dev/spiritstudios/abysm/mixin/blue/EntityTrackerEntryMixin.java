@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.mixin;
+package dev.spiritstudios.abysm.mixin.blue;
 
 import dev.spiritstudios.abysm.duck.LivingEntityDuck;
 import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;

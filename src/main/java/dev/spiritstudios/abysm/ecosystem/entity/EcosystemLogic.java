@@ -60,7 +60,11 @@ public class EcosystemLogic {
 		this.breedTicks++;
 
 		if (this.isHunting) {
-			this.huntTicks--;
+			if (this.huntTicks >= 0) {
+				this.huntTicks--;
+			} else {
+				this.huntTicks = 0;
+			}
 		}
 
 		// I do think it would be fun if there were some particles of some sort to display being who is favored in a hunt

@@ -35,7 +35,7 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import static dev.spiritstudios.abysm.entity.SimpleVanillaSchoolingFishEntity.ANIM_CONTROLLER_STRING;
+import static dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity.ANIM_CONTROLLER_STRING;
 
 @SuppressWarnings("unused")
 public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEntity {

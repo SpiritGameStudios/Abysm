@@ -2,18 +2,15 @@ package dev.spiritstudios.abysm.entity.ruins;
 
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
-import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.entity.PlantEater;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.SimpleVanillaSchoolingFishEntity;
+import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.ai.goal.FollowGroupLeaderGoal;
@@ -39,8 +36,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -51,13 +46,10 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-@SuppressWarnings("unused")
-public class LectorfinEntity extends SimpleVanillaSchoolingFishEntity implements PlantEater {
-	// use nbt if sync is unnecessary
+public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements PlantEater {
 	protected static final TrackedData<Integer> ENCHANTMENT_LEVEL = DataTracker.registerData(LectorfinEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	protected static final TrackedData<RegistryEntry<FishEnchantment>> ENCHANTMENT = DataTracker.registerData(LectorfinEntity.class, AbysmTrackedDataHandlers.FISH_ENCHANTMENT);
 
-	protected EcosystemLogic ecosystemLogic;
 	protected @Nullable RegistryEntry<FishEnchantment> previousEnchantment = null;
 
 	@Nullable
@@ -67,7 +59,6 @@ public class LectorfinEntity extends SimpleVanillaSchoolingFishEntity implements
 
 	public LectorfinEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
-		this.ecosystemLogic = createEcosystemLogic(this);
 	}
 
 	@Override
@@ -129,32 +120,14 @@ public class LectorfinEntity extends SimpleVanillaSchoolingFishEntity implements
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		this.alertEcosystemOfSpawn();
-		return super.initialize(world, difficulty, spawnReason, entityData);
-	}
-
-	@Override
 	public void tick() {
 		super.tick();
-		this.tickEcosystemLogic();
 		if (!this.getWorld().isClient) {
 			this.tickEnchantment();
 			if (this.age % 200 == 0) {
 				this.heal(0.34F * this.getMaxHealth());
 			}
 		}
-	}
-
-	@Override
-	public void onRemove(RemovalReason reason) {
-		this.alertEcosystemOfDeath();
-		super.onRemove(reason);
-	}
-
-	@Override
-	public EcosystemLogic getEcosystemLogic() {
-		return this.ecosystemLogic;
 	}
 
 	@Override
@@ -299,6 +272,7 @@ public class LectorfinEntity extends SimpleVanillaSchoolingFishEntity implements
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public static class EscapeWhenNearDeathGoal extends EscapeDangerGoal {
 
 		public EscapeWhenNearDeathGoal(LectorfinEntity mob, double speed) {
@@ -324,6 +298,7 @@ public class LectorfinEntity extends SimpleVanillaSchoolingFishEntity implements
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public static class FleeWhenWeakGoal<T extends LivingEntity> extends FleeEntityGoal<T> {
 
 		public FleeWhenWeakGoal(LectorfinEntity mob, Class<T> fleeFromType, float distance, double slowSpeed, double fastSpeed) {

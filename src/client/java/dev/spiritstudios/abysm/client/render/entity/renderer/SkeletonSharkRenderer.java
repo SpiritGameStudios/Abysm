@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkEntity.HUNTING;
+
 public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRenderState> extends AbstractFishEntityRenderer<SkeletonSharkEntity, R> {
 
 	public static final DataTicket<Boolean> SANS = DataTicket.create("sans", Boolean.class);
@@ -78,6 +80,7 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 
 		List<Object> parts = state.getGeckolibData(PARTS);
 		Vec3d prevPos = Vec3d.ZERO;
+		final float inverseScale = 1 / state.baseScale;
 		for (Object o : parts) {
 			SkeletonSharkPart skeletonSharkPart = (SkeletonSharkPart) o;
 			PitchYawPair pair;
@@ -95,7 +98,7 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 
 			BodyPartRenderer renderer = BodyPartRenderer.RENDERERS.get(skeletonSharkPart.name);
 			if (renderer != null) {
-				Vec3d pos = skeletonSharkPart.getLerpedPos(tickProgress).subtract(skelepos);
+				Vec3d pos = skeletonSharkPart.getLerpedPos(tickProgress).subtract(skelepos).multiply(inverseScale);
 				matrices.push();
 				matrices.translate(pos.x, pos.y, pos.z);
 
@@ -127,7 +130,7 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 		@Override
 		public void addAdditionalStateData(SkeletonSharkEntity skeleshark, GeoRenderState renderState) {
 			super.addAdditionalStateData(skeleshark, renderState);
-			renderState.addGeckolibData(SANS, skeleshark.isHunting());
+			renderState.addGeckolibData(SANS, skeleshark.getAttachedOrElse(HUNTING, false));
 			renderState.addGeckolibData(PARTS, skeleshark.getSpecterEntityParts());
 		}
 	}

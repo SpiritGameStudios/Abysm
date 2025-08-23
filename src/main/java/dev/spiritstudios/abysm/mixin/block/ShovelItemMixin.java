@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.mixin;
+package dev.spiritstudios.abysm.mixin.block;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.spiritstudios.abysm.block.AbysmBlocks;

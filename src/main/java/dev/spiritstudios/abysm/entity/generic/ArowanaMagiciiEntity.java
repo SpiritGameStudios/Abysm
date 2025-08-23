@@ -2,10 +2,10 @@ package dev.spiritstudios.abysm.entity.generic;
 
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.SimpleVanillaSchoolingFishEntity;
+import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.item.AbysmItems;
-import dev.spiritstudios.abysm.mixin.SchoolingFishEntityAccessor;
+import dev.spiritstudios.abysm.mixin.ecosystem.goal.SchoolingFishEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -20,7 +20,7 @@ import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public class ArowanaMagiciiEntity extends SimpleVanillaSchoolingFishEntity {
+public class ArowanaMagiciiEntity extends SimpleEcoSchoolingFishEntity {
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.arowana_magicii.idle");
 
 	public ArowanaMagiciiEntity(EntityType<ArowanaMagiciiEntity> entityType, World world) {
@@ -36,7 +36,7 @@ public class ArowanaMagiciiEntity extends SimpleVanillaSchoolingFishEntity {
 
 	public void moveTowardLeader() {
 		if (this.hasLeader()) {
-			this.getNavigation().startMovingTo(((SchoolingFishEntityAccessor)this).getLeader(), 3.0F);
+			this.getNavigation().startMovingTo(((SchoolingFishEntityAccessor)this).abysm$getLeader(), 3.0F);
 		}
 	}
 

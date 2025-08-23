@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.mixin;
+package dev.spiritstudios.abysm.mixin.block;
 
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
 import net.minecraft.block.BlockState;

@@ -13,7 +13,7 @@
 			"bones": [
 				{
 					"name": "head",
-					"pivot": [0, 6, 10],
+					"pivot": [0, 5, 0],
 					"cubes": [
 						{"origin": [-3.5, 4, -7], "size": [7, 4, 13], "uv": [56, 61]},
 						{"origin": [-3.5, 8, -1], "size": [7, 3, 7], "uv": [70, 78]}
@@ -22,7 +22,7 @@
 				{
 					"name": "blue",
 					"parent": "head",
-					"pivot": [-2.5, 6, 5],
+					"pivot": [0, 5, 0],
 					"cubes": [
 						{"origin": [4.5, 4, -2], "size": [0, 8, 8], "uv": [0, 112], "mirror": true},
 						{"origin": [-4.5, 4, -2], "size": [0, 8, 8], "uv": [0, 112]}
@@ -31,7 +31,7 @@
 				{
 					"name": "jaw",
 					"parent": "head",
-					"pivot": [0, 4, 6],
+					"pivot": [0, 5, 0],
 					"cubes": [
 						{"origin": [-3.5, 0, -6], "size": [7, 4, 12], "uv": [0, 70]}
 					]

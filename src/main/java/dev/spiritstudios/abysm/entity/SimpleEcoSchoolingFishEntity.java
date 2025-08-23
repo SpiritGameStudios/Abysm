@@ -4,7 +4,7 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
-import dev.spiritstudios.abysm.mixin.FishEntityAccessor;
+import dev.spiritstudios.abysm.mixin.ecosystem.goal.FishEntityAccessor;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MovementType;
@@ -29,12 +29,12 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class SimpleVanillaSchoolingFishEntity extends SchoolingFishEntity implements GeoEntity, EcologicalEntity {
+public abstract class SimpleEcoSchoolingFishEntity extends SchoolingFishEntity implements GeoEntity, EcologicalEntity {
 	public static final String ANIM_CONTROLLER_STRING = "default";
 	protected EcosystemLogic ecosystemLogic;
 	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-	public SimpleVanillaSchoolingFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
+	public SimpleEcoSchoolingFishEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
 	}
@@ -109,7 +109,7 @@ public abstract class SimpleVanillaSchoolingFishEntity extends SchoolingFishEnti
 
 		@Override
 		public boolean canStart() {
-			return ((FishEntityAccessor)fish).invokeHasSelfControl() && super.canStart();
+			return ((FishEntityAccessor)fish).abysm$invokeHasSelfControl() && super.canStart();
 		}
 	}
 }
