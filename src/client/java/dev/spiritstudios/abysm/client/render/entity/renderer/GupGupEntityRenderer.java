@@ -38,6 +38,4 @@ public class GupGupEntityRenderer<R extends LivingEntityRenderState & GeoRenderS
 			renderState.addGeckolibData(VARIANT_TICKET, animatable.getVariant());
 		}
 	}
-
-
 }

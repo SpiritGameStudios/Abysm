@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.entity.floralreef.*;
 import dev.spiritstudios.abysm.entity.generic.ArowanaMagiciiEntity;
 import dev.spiritstudios.abysm.entity.generic.GupGupEntity;
 import dev.spiritstudios.abysm.entity.generic.SnapperEntity;
+import dev.spiritstudios.abysm.entity.generic.SynthethicOrniothopeEntity;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
 import dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkEntity;
@@ -74,6 +75,16 @@ public class AbysmEntityTypes {
 			.eyeHeight(0.35f)
 			.maxTrackingRange(4)
 	);
+
+	public static final EntityType<SynthethicOrniothopeEntity> SYNTHETHIC_ORNIOTHOPE = register(
+		"synthethic_orniothope",
+		EntityType.Builder
+			.create(SynthethicOrniothopeEntity::new, SpawnGroup.WATER_AMBIENT)
+			.dimensions(0.4f, 0.5f)
+			.eyeHeight(0.35f)
+			.maxTrackingRange(4)
+	);
+
 
 	public static final EntityType<BloomrayEntity> BLOOMRAY = register(
 		"bloomray",
@@ -161,6 +172,7 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(SNAPPER, SnapperEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(GUP_GUP, GupGupEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(AROWANA_MAGICII, ArowanaMagiciiEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(SYNTHETHIC_ORNIOTHOPE, SynthethicOrniothopeEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createRayAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());

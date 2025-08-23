@@ -19,6 +19,7 @@ public class AbysmSpawnRestrictions {
 		registerStandardEcoWC(AbysmEntityTypes.SNAPPER);
 		registerStandardEcoWC(AbysmEntityTypes.GUP_GUP);
 		registerStandardEcoWC(AbysmEntityTypes.AROWANA_MAGICII);
+		registerStandardEcoWC(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE);
 		registerStandardEcoWC(AbysmEntityTypes.BLOOMRAY);
 		registerStandardEcoWC(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY);
 		registerStandardWC(AbysmEntityTypes.MAN_O_WAR);

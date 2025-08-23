@@ -124,6 +124,11 @@ public final class AbysmItems {
 		settings -> new SpawnEggItem(AbysmEntityTypes.AROWANA_MAGICII, settings)
 	);
 
+	public static final Item SYNTHETHIC_ORNIOTHOPE_SPAWN_EGG = register(
+		"synthethic_orniothope_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE, settings)
+	);
+
 	public static final Item BLOOMRAY_SPAWN_EGG = register(
 		"bloomray_spawn_egg",
 		settings -> new SpawnEggItem(AbysmEntityTypes.BLOOMRAY, settings)

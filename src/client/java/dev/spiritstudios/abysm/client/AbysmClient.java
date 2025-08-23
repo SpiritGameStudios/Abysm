@@ -66,6 +66,8 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.SNAPPER, SimpleFishRenderer.factory("snapper", false));
 		EntityRendererRegistry.register(AbysmEntityTypes.GUP_GUP, GupGupEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.AROWANA_MAGICII, SimpleFishRenderer.factory("arowana_magicii", false));
+		EntityRendererRegistry.register(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE, SimpleFishRenderer.factory("synthethic_orniothope", false));
+
 		EntityRendererRegistry.register(AbysmEntityTypes.RETICULATED_FLIPRAY, FliprayEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.SKELETON_SHARK, SkeletonSharkRenderer::new);
 

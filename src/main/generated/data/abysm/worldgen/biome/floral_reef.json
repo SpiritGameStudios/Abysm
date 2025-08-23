@@ -189,8 +189,20 @@
       },
       {
         "type": "abysm:paddlefish",
-        "maxCount": 16,
-        "minCount": 8,
+        "maxCount": 8,
+        "minCount": 4,
+        "weight": 50
+      },
+      {
+        "type": "abysm:gup_gup",
+        "maxCount": 30,
+        "minCount": 20,
+        "weight": 50
+      },
+      {
+        "type": "abysm:arowana_magicii",
+        "maxCount": 8,
+        "minCount": 5,
         "weight": 50
       }
     ],

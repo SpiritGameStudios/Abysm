@@ -14,6 +14,7 @@ import dev.spiritstudios.abysm.entity.floralreef.BigFloralFishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.floralreef.PaddlefishEntity;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
+import dev.spiritstudios.abysm.entity.generic.SynthethicOrniothopeEntity;
 import dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkEntity;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
@@ -79,8 +80,17 @@ public class AbysmEcosystemTypes {
 		"arowana_magicii",
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.AROWANA_MAGICII)
-			.setTargetPopulation(50)
+			.setTargetPopulation(4)
 			.setPredators(AbysmEntityTypes.SKELETON_SHARK)
+	);
+
+	// TODO
+	public static final EcosystemType<SynthethicOrniothopeEntity> SYNTHETHIC_ORNIOTHOPE = register(
+		"synthethic_orniothope",
+		EcosystemType.Builder
+			.create(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE)
+			.setPredators(AbysmEntityTypes.BLOOMRAY)
+			.setTargetPopulation(4)
 	);
 
 	public static final EcosystemType<BloomrayEntity> BLOOMRAY = register(

@@ -6,6 +6,7 @@ import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -40,7 +41,7 @@ public record EcosystemAreaPos(int x, int z) {
 		int zDiff = Math.abs(pos1.z - pos2.z) + 1;
 		final int directionX = pos1.x < pos2.x ? 1 : -1;
 		final int directionZ = pos1.z < pos2.z ? 1 : -1;
-		return StreamSupport.stream(new Spliterators.AbstractSpliterator<>(xDiff * zDiff, 64) {
+		return StreamSupport.stream(new Spliterators.AbstractSpliterator<>((long) xDiff * zDiff, Spliterator.SIZED) {
 			@Nullable
 			private EcosystemAreaPos position;
 

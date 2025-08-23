@@ -57,6 +57,11 @@ public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGup
 	}
 
 	@Override
+	public int getLimitPerChunk() {
+		return 50;
+	}
+
+	@Override
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);
 		builder.add(VARIANT, GupGupEntityVariant.getDefaultEntry(this.getRegistryManager()));
