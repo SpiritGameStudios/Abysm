@@ -9,6 +9,7 @@ import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.leviathan.GeoChainLeviathan;
+import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
 import dev.spiritstudios.abysm.entity.leviathan.LeviathanPart;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -18,38 +19,49 @@ import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.boss.BossBar;
+import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
+import software.bernie.geckolib.animatable.processing.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
 
 import java.util.List;
 
 public class SkeletonSharkEntity extends GeoChainLeviathan implements EcologicalEntity {
 
-	public final List<LeviathanPart> parts;
+	public final List<SkeletonSharkPart> parts;
 	public final EcosystemLogic ecosystemLogic = this.createEcosystemLogic(this);
 
 	public SkeletonSharkEntity(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
-		ImmutableList.Builder<LeviathanPart> builder = ImmutableList.builder();
-		float width = entityType.getWidth();
-		float height = entityType.getHeight();
-		for (int i = 0; i < 4; i++) {
-			LeviathanPart part = new LeviathanPart(this, "tail" + i, width, height);
-			part.setRelativePos(new Vec3d(0, 0, i + 1));
-			builder.add(part);
-		}
+		ImmutableList.Builder<SkeletonSharkPart> builder = ImmutableList.builder();
+		builder.add(new SkeletonSharkPart(this, "body", 2F, 1F, -0.1F));
+		builder.add(new SkeletonSharkPart(this, "tail", 2F, 1F, 1F));
 		this.parts = builder.build();
 	}
 
 	@Override
-	public List<? extends LeviathanPart> getSpecterEntityParts() {
+	protected @NotNull ServerBossBar createBossBar(EntityType<? extends WaterCreatureEntity> entityType, World world) {
+		ServerBossBar bar = super.createBossBar(entityType, world);
+		bar.setColor(BossBar.Color.WHITE);
+		return bar;
+	}
+
+	@Override
+	public List<SkeletonSharkPart> getSpecterEntityParts() {
 		return this.parts;
+	}
+
+	@Override
+	public float getDistanceToMainBody(LeviathanPart leviathanPart) {
+		return leviathanPart instanceof SkeletonSharkPart part ? part.originalDistance : super.getDistanceToMainBody(leviathanPart);
 	}
 
 	@Override
@@ -59,9 +71,9 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
-		//AnimationController<SkeletonSharkEntity> animController = new AnimationController<>(0, event -> event.setAndContinue(IDLE_ANIM));
+		AnimationController<SkeletonSharkEntity> animController = new AnimationController<>(0, event -> PlayState.STOP);
 
-		//registrar.add(animController);
+		registrar.add(animController);
 	}
 
 	@Override
@@ -93,8 +105,8 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 	}
 
 	public static DefaultAttributeContainer.Builder createSansAttributes() {
-		return MobEntity.createMobAttributes()
-			/*.add()*/;
+		return Leviathan.createLeviathanAttributes()
+			.add(EntityAttributes.ATTACK_DAMAGE, 15);
 	}
 
 	@Override
@@ -105,5 +117,10 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 		this.goalSelector.add(4, new SwimAroundGoal(this, 1.0, 10));
 		this.goalSelector.add(4, new LookAroundGoal(this));
 		this.targetSelector.add(1, new HuntPreyGoal(this, false));
+	}
+
+	@Override
+	public float damageResist() {
+		return 200F;
 	}
 }

@@ -117,7 +117,7 @@ public abstract class GeoChainLeviathan extends Leviathan implements GeoEntity {
 				) * MathHelper.RADIANS_PER_DEGREE;
 			float sinNewYaw = MathHelper.sin(changedYaw);
 			float cosNewYaw = MathHelper.cos(changedYaw);
-			float distanceToMain = this.getDistanceToMainBody();
+			float distanceToMain = this.getDistanceToMainBody(leviathanPart);
 			float perPart = (index + 1) * leviathanPart.getWidth();
 			this.movePart(leviathanPart,
 				(sinYaw * distanceToMain + sinNewYaw * perPart) * sinR,
@@ -132,7 +132,7 @@ public abstract class GeoChainLeviathan extends Leviathan implements GeoEntity {
 		return this.getSpecterEntityParts();
 	}
 
-	public float getDistanceToMainBody() {
+	public float getDistanceToMainBody(LeviathanPart leviathanPart) {
 		return 0.5F;
 	}
 

@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.renderer.AbstractFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.RecursiveRenderer;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
@@ -56,7 +57,7 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 		}
 		FishEnchantmentRenderer renderer = ENCHANTMENT_RENDERERS.get(fishEnchantment.rendererId());
 		if (renderer != null) {
-			renderer.render(state, matrices, vertexConsumers, light, overlay, color, this::renderRecursively);
+			renderer.render(state, matrices, vertexConsumers, light, overlay, color, RecursiveRenderer.create(this));
 		}
 	}
 

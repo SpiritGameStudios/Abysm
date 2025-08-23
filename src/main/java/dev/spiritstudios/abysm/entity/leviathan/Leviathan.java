@@ -63,7 +63,11 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 
 	@Override
 	public boolean damage(ServerWorld world, DamageSource source, float amount) {
-		return super.damage(world, source, source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY) ? amount : Math.min(1f, amount));
+		return super.damage(world, source, source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY) ? amount : Math.min(this.damageResist(), amount));
+	}
+
+	public float damageResist() {
+		return 1;
 	}
 
 	public static DefaultAttributeContainer.Builder createLeviathanAttributes() {

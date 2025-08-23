@@ -139,9 +139,8 @@ public class AbysmEntityTypes {
 	public static final EntityType<SkeletonSharkEntity> SKELETON_SHARK = register(
 		"skeleton_shark",
 		EntityType.Builder.create(SkeletonSharkEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(1.7F, 0.2F)
+			.dimensions(1F, 1F)
 	);
-
 
 	private static <T extends Entity> EntityType<T> register(RegistryKey<EntityType<?>> key, EntityType.Builder<T> type) {
 		return Registry.register(Registries.ENTITY_TYPE, key, type.build(key));
@@ -167,8 +166,9 @@ public class AbysmEntityTypes {
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());
 		FabricDefaultAttributeRegistry.register(LECTORFIN, LectorfinEntity.createPredatoryFishAttributes());
 		FabricDefaultAttributeRegistry.register(MYSTERIOUS_BLOB, MysteriousBlobEntity.createVaseAttributes());
-		FabricDefaultAttributeRegistry.register(TEST_LEVIATHAN, Leviathan.createLeviathanAttributes());
 		FabricDefaultAttributeRegistry.register(RETICULATED_FLIPRAY, ReticulatedFliprayEntity.createRayAttributes());
+		FabricDefaultAttributeRegistry.register(TEST_LEVIATHAN, Leviathan.createLeviathanAttributes());
+		FabricDefaultAttributeRegistry.register(SKELETON_SHARK, SkeletonSharkEntity.createSansAttributes());
 	}
 
 }

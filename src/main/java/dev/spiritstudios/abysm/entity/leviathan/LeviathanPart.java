@@ -19,13 +19,6 @@ public class LeviathanPart extends EntityPart<Leviathan> {
 	public void setRelativePos(Vec3d relativePos) {
 		super.setRelativePos(relativePos);
 		this.setPosition(this.owner.getPos().add(relativePos));
-		if (!(this.getWorld() instanceof ServerWorld)) {
-			return;
-		}
-		/*PlayerLookup.tracking(this.owner).forEach(serverPlayerEntity -> {
-			serverPlayerEntity.networkHandler.sendPacket(EntityPositionSyncS2CPacket.create(this));
-		});
-		 */
 	}
 
 	@SuppressWarnings("SimplifiableConditionalExpression")

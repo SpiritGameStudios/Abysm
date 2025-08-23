@@ -29,7 +29,7 @@ public class AbysmEcosystemTypes {
 		"small_floral_fish",
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.SMALL_FLORAL_FISH)
-			.setPredators(AbysmEntityTypes.BLOOMRAY)
+			.setPredators(AbysmEntityTypes.BLOOMRAY, AbysmEntityTypes.SKELETON_SHARK)
 			.setPlants(AbysmBlocks.PURPLE_SCABIOSA, AbysmBlocks.PINK_SCABIOSA, AbysmBlocks.RED_SCABIOSA)
 			.setTargetPopulation(7)
 			.setUnfavoredHuntSpeed(-0.35f)
@@ -40,7 +40,7 @@ public class AbysmEcosystemTypes {
 		"big_floral_fish",
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.BIG_FLORAL_FISH)
-			.setPredators(AbysmEntityTypes.BLOOMRAY)
+			.setPredators(AbysmEntityTypes.BLOOMRAY, AbysmEntityTypes.SKELETON_SHARK)
 			.setTargetPopulation(5)
 			.setUnfavoredHuntSpeed(-0.25f)
 			.setLitterSize(1, 2)
@@ -50,7 +50,7 @@ public class AbysmEcosystemTypes {
 		"paddlefish",
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.PADDLEFISH)
-			.setPredators(AbysmEntityTypes.BLOOMRAY)
+			.setPredators(AbysmEntityTypes.BLOOMRAY, AbysmEntityTypes.SKELETON_SHARK)
 			.setPlants(AbysmBlocks.ROSY_BLOOMSHROOM, AbysmBlocks.MAUVE_BLOOMSHROOM, AbysmBlocks.SUNNY_BLOOMSHROOM)
 			.setTargetPopulation(7)
 	);
@@ -60,7 +60,7 @@ public class AbysmEcosystemTypes {
 		"snapper",
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.SNAPPER)
-			.setPredators(AbysmEntityTypes.BLOOMRAY)
+			.setPredators(AbysmEntityTypes.BLOOMRAY, AbysmEntityTypes.SKELETON_SHARK)
 			.setPrey(EntityType.PLAYER)
 			.setTargetPopulation(5)
 	);
@@ -71,6 +71,7 @@ public class AbysmEcosystemTypes {
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.GUP_GUP)
 			.setTargetPopulation(50)
+			.setPredators(AbysmEntityTypes.SKELETON_SHARK)
 	);
 
 	// TODO
@@ -79,12 +80,14 @@ public class AbysmEcosystemTypes {
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.AROWANA_MAGICII)
 			.setTargetPopulation(50)
+			.setPredators(AbysmEntityTypes.SKELETON_SHARK)
 	);
 
 	public static final EcosystemType<BloomrayEntity> BLOOMRAY = register(
 		"bloomray",
 		EcosystemType.Builder.create(AbysmEntityTypes.BLOOMRAY)
 			.setPrey(AbysmEntityTypes.SMALL_FLORAL_FISH, AbysmEntityTypes.BIG_FLORAL_FISH)
+			.setPredators(AbysmEntityTypes.SKELETON_SHARK)
 			.setTargetPopulation(3)
 			.setHuntTicks(400, 1000) // 20 seconds, 50 seconds
 			.setHuntFavorChance(0.9f)
@@ -103,6 +106,7 @@ public class AbysmEcosystemTypes {
 		EcosystemType.Builder.create(AbysmEntityTypes.LECTORFIN)
 			.setPlants(AbysmBlocks.GOLDEN_LAZULI_OREFURL,
 				AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT)
+			.setPredators(AbysmEntityTypes.SKELETON_SHARK)
 			.setTargetPopulation(10)
 	);
 
@@ -116,6 +120,15 @@ public class AbysmEcosystemTypes {
 		"skeleton_shark",
 		EcosystemType.Builder.create(AbysmEntityTypes.SKELETON_SHARK)
 			.setTargetPopulation(2)
+			.setPrey(AbysmEntityTypes.LECTORFIN,
+				AbysmEntityTypes.SMALL_FLORAL_FISH,
+				AbysmEntityTypes.BIG_FLORAL_FISH,
+				AbysmEntityTypes.AROWANA_MAGICII,
+				AbysmEntityTypes.PADDLEFISH,
+				AbysmEntityTypes.GUP_GUP,
+				AbysmEntityTypes.SNAPPER,
+				AbysmEntityTypes.BLOOMRAY,
+				EntityType.PLAYER)
 	);
 
 //	public static <T extends MobEntity & EcologicalEntity> EcosystemType<T> register(EcosystemType.Builder<T> builder) {

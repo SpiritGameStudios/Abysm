@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin;
 
+import dev.spiritstudios.abysm.client.render.entity.renderer.RecursiveRenderer;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -14,7 +15,7 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public abstract class FishEnchantmentRenderer {
 
-	protected ExtraModel model;
+	protected final ExtraModel model;
 
 	public FishEnchantmentRenderer(ExtraModel model) {
 		this.model = model;
@@ -43,11 +44,6 @@ public abstract class FishEnchantmentRenderer {
 		for (GeoBone group : bakedGeoModel.topLevelBones()) {
 			recursiveRenderer.render(state, matrices, group, renderLayer, vertexConsumers, vertexConsumer, true, light, overlay, color);
 		}
-	}
-
-	@FunctionalInterface
-	public interface RecursiveRenderer<R extends LivingEntityRenderState & GeoRenderState> {
-		void render(R state, MatrixStack matrices, GeoBone bone, @Nullable RenderLayer renderLayer, VertexConsumerProvider vertexConsumers, @Nullable VertexConsumer vertexConsumer, boolean isReRender, int light, int overlay, int color);
 	}
 
 	public static class ExtraModel extends LectorfinEntityRenderer.LectorfinEntityModel {
