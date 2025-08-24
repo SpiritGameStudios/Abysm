@@ -50,8 +50,8 @@ public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGup
 			this,
 			2.0F,
 			100 * MathHelper.RADIANS_PER_DEGREE,
-			70 * MathHelper.RADIANS_PER_DEGREE,
-			0.1F, 0.4F, 0.4F, 0.005F, 2F,
+			160 * MathHelper.RADIANS_PER_DEGREE,
+			0.25F, 0.6F, 0.2F, 0.05F, 2F,
 			0.025F, 0.05F
 		));
 	}

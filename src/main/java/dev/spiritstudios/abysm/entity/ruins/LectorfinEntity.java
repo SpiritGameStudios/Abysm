@@ -4,8 +4,8 @@ import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.PlantEater;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
@@ -40,13 +40,15 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements PlantEater {
+	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.lectorfin.idle");
+
 	protected static final TrackedData<Integer> ENCHANTMENT_LEVEL = DataTracker.registerData(LectorfinEntity.class, TrackedDataHandlerRegistry.INTEGER);
 	protected static final TrackedData<RegistryEntry<FishEnchantment>> ENCHANTMENT = DataTracker.registerData(LectorfinEntity.class, AbysmTrackedDataHandlers.FISH_ENCHANTMENT);
 
@@ -113,10 +115,8 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 	}
 
 	@Override
-	public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
-		AnimationController<LectorfinEntity> animController = new AnimationController<>(ANIM_CONTROLLER_STRING, 5, event -> PlayState.STOP);
-
-		registrar.add(animController);
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(0, event -> event.setAndContinue(IDLE_ANIM)));
 	}
 
 	@Override

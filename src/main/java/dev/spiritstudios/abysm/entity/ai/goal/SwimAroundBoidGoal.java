@@ -115,7 +115,7 @@ public class SwimAroundBoidGoal extends Goal {
 			entity.getRandom().nextFloat() * randomCoefficient,
 			entity.getRandom().nextFloat() * randomCoefficient,
 			entity.getRandom().nextFloat() * randomCoefficient
-		);
+		).subtract(randomCoefficient / 2.0F);
 
 
 		Vec3d avoidAir = Vec3d.ZERO;
