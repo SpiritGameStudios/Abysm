@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.data.variant.GupGupEntityVariant;
+import dev.spiritstudios.abysm.data.variant.SnapperEntityVariant;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.worldgen.densityfunction.DensityBlob;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
@@ -21,6 +22,8 @@ public class AbysmRegistries {
 		DynamicRegistries.registerSynced(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT, BloomrayEntityVariant.CODEC);
 		DynamicRegistries.registerSynced(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT, ElectricOoglyBooglyVariant.CODEC);
 		DynamicRegistries.registerSynced(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT, GupGupEntityVariant.CODEC);
+		DynamicRegistries.registerSynced(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT, SnapperEntityVariant.CODEC);
+
 		DynamicRegistries.registerSynced(AbysmRegistryKeys.FISH_ENCHANTMENT, FishEnchantment.CODEC);
 	}
 }

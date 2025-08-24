@@ -1,0 +1,6 @@
+{
+  "name": {
+    "translate": "abysm.entity.snapper.depth"
+  },
+  "texture": "abysm:textures/entity/depth_snapper.png"
+}

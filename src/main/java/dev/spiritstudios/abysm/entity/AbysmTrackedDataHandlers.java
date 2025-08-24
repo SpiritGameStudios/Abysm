@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.data.variant.GupGupEntityVariant;
+import dev.spiritstudios.abysm.data.variant.SnapperEntityVariant;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricTrackedDataRegistry;
 import net.minecraft.entity.data.TrackedDataHandler;
@@ -18,6 +19,7 @@ public final class AbysmTrackedDataHandlers {
 	public static final TrackedDataHandler<RegistryEntry<BloomrayEntityVariant>> BLOOMRAY_VARIANT = register("bloomray_variant", BloomrayEntityVariant.ENTRY_PACKET_CODEC);
 	public static final TrackedDataHandler<RegistryEntry<ElectricOoglyBooglyVariant>> ELECTRIC_OOGLY_BOOGLY_VARIANT = register("electric_oogly_boogly_variant", ElectricOoglyBooglyVariant.ENTRY_PACKET_CODEC);
 	public static final TrackedDataHandler<RegistryEntry<GupGupEntityVariant>> GUP_GUP_VARIANT = register("gup_gup_variant", GupGupEntityVariant.ENTRY_PACKET_CODEC);
+	public static final TrackedDataHandler<RegistryEntry<SnapperEntityVariant>> SNAPPER_VARIANT = register("snapper_variant", SnapperEntityVariant.ENTRY_PACKET_CODEC);
 
 	public static final TrackedDataHandler<RegistryEntry<FishEnchantment>> FISH_ENCHANTMENT = register("fish_enchantment", FishEnchantment.ENTRY_PACKET_CODEC);
 

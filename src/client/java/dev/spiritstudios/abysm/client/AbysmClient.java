@@ -22,6 +22,7 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.MysteriousBlobEntit
 import dev.spiritstudios.abysm.client.render.entity.renderer.SimpleFishRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.SkeletonSharkRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.SnapperEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.duck.LivingEntityDuck;
@@ -63,7 +64,7 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.MYSTERIOUS_BLOB, MysteriousBlobEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.TEST_LEVIATHAN, LehydrathanEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.PADDLEFISH, SimpleFishRenderer.factory("paddlefish", false));
-		EntityRendererRegistry.register(AbysmEntityTypes.SNAPPER, SimpleFishRenderer.factory("snapper", false));
+		EntityRendererRegistry.register(AbysmEntityTypes.SNAPPER, SnapperEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.GUP_GUP, GupGupEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.AROWANA_MAGICII, SimpleFishRenderer.factory("arowana_magicii", false));
 		EntityRendererRegistry.register(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE, SimpleFishRenderer.factory("synthethic_orniothope", false));

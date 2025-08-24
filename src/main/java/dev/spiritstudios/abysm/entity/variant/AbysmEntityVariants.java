@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.data.variant.AbstractEntityVariant;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.data.variant.GupGupEntityVariant;
+import dev.spiritstudios.abysm.data.variant.SnapperEntityVariant;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.particle.SimpleParticleType;
@@ -88,6 +89,22 @@ public class AbysmEntityVariants {
 	}
 	// endregion
 
+	// region snapper
+	public static final RegistryKey<SnapperEntityVariant> CHROMATIC = ofSnapper("chromatic");
+	public static final RegistryKey<SnapperEntityVariant> DEPTH = ofSnapper("depth");
+	public static void snapperBootstrap(Registerable<SnapperEntityVariant> registerable) {
+		registerSnapper(
+			registerable,
+			CHROMATIC
+		);
+
+		registerSnapper(
+			registerable,
+			DEPTH
+		);
+	}
+	// endregion
+
 	private static RegistryKey<BloomrayEntityVariant> ofBloomray(String path) {
 		return of(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT, path);
 	}
@@ -99,6 +116,11 @@ public class AbysmEntityVariants {
 	private static RegistryKey<GupGupEntityVariant> ofGupGup(String path) {
 		return of(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT, path);
 	}
+
+	private static RegistryKey<SnapperEntityVariant> ofSnapper(String path) {
+		return of(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT, path);
+	}
+
 
 	private static <T extends AbstractEntityVariant> RegistryKey<T> of(RegistryKey<Registry<T>> key, String path) {
 		return RegistryKey.of(key, Abysm.id(path));
@@ -122,6 +144,13 @@ public class AbysmEntityVariants {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + ".png");
 		Text name = Text.translatable("abysm.entity.gup_gup." + key.getValue().getPath());
 		GupGupEntityVariant variant = new GupGupEntityVariant(name, variantPath);
+		register(registry, key, variant);
+	}
+
+	private static void registerSnapper(Registerable<SnapperEntityVariant> registry, RegistryKey<SnapperEntityVariant> key) {
+		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + "_snapper.png");
+		Text name = Text.translatable("abysm.entity.snapper." + key.getValue().getPath());
+		SnapperEntityVariant variant = new SnapperEntityVariant(name, variantPath);
 		register(registry, key, variant);
 	}
 
