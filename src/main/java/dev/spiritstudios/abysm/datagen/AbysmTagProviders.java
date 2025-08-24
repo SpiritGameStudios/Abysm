@@ -675,6 +675,11 @@ public class AbysmTagProviders {
 				.addOptionalTag(
 					BiomeTags.IS_DEEP_OCEAN
 				);
+
+			getOrCreateTagBuilder(AbysmBiomeTags.SPAWNS_VARIANT_DEPTH_SNAPPER)
+				.add(
+					AbysmBiomes.DEEP_SEA_RUINS
+				);
 			// endregion
 		}
 	}
