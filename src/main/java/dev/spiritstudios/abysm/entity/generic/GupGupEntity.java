@@ -121,22 +121,22 @@ public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGup
 		return AbysmEcosystemTypes.GUP_GUP;
 	}
 
-	// TODO: SoundEvents
 	@Override
 	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
-		return AbysmSoundEvents.ENTITY_PADDLEFISH_HURT;
+		return AbysmSoundEvents.ENTITY_GUP_GUP_HURT;
 	}
 
 	@Override
 	protected @Nullable SoundEvent getDeathSound() {
-		return AbysmSoundEvents.ENTITY_PADDLEFISH_DEATH;
+		return AbysmSoundEvents.ENTITY_GUP_GUP_DEATH;
 	}
 
 	@Override
 	protected SoundEvent getFlopSound() {
-		return AbysmSoundEvents.ENTITY_PADDLEFISH_FLOP;
+		return AbysmSoundEvents.ENTITY_GUP_GUP_FLOP;
 	}
 
+	// TODO: Bucket
 	@Override
 	public ItemStack getBucketItem() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
