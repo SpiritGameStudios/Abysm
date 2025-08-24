@@ -40,22 +40,22 @@ public class SynthethicOrniothopeEntity extends SimpleEcoSchoolingFishEntity {
 		return AbysmEcosystemTypes.SYNTHETHIC_ORNIOTHOPE;
 	}
 
-	// TODO: SoundEvents
 	@Override
 	protected @Nullable SoundEvent getHurtSound(DamageSource source) {
-		return AbysmSoundEvents.ENTITY_PADDLEFISH_HURT;
+		return AbysmSoundEvents.ENTITY_SYNTHETHIC_ORNIOTHOPE_HURT;
 	}
 
 	@Override
 	protected @Nullable SoundEvent getDeathSound() {
-		return AbysmSoundEvents.ENTITY_PADDLEFISH_DEATH;
+		return AbysmSoundEvents.ENTITY_SYNTHETHIC_ORNIOTHOPE_DEATH;
 	}
 
 	@Override
 	protected SoundEvent getFlopSound() {
-		return AbysmSoundEvents.ENTITY_PADDLEFISH_FLOP;
+		return AbysmSoundEvents.ENTITY_SYNTHETHIC_ORNIOTHOPE_FLOP;
 	}
 
+	// TODO: Bucket
 	@Override
 	public ItemStack getBucketItem() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);

@@ -1,4 +1,112 @@
 {
+  "entity.arowana_magicii.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.arowana_magicii.death"
+  },
+  "entity.arowana_magicii.flop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop1"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop2"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop3"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.arowana_magicii.flop"
+  },
+  "entity.arowana_magicii.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:entity/fish/hurt1",
+      "minecraft:entity/fish/hurt2",
+      "minecraft:entity/fish/hurt3",
+      "minecraft:entity/fish/hurt4"
+    ],
+    "subtitle": "subtitles.abysm.entity.arowana_magicii.hurt"
+  },
+  "entity.big_floral_fish.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.big_floral_fish.death"
+  },
+  "entity.big_floral_fish.flop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop1"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop2"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop3"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.big_floral_fish.flop"
+  },
+  "entity.big_floral_fish.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:entity/fish/hurt1",
+      "minecraft:entity/fish/hurt2",
+      "minecraft:entity/fish/hurt3",
+      "minecraft:entity/fish/hurt4"
+    ],
+    "subtitle": "subtitles.abysm.entity.big_floral_fish.hurt"
+  },
   "entity.bloomray.ambient": {
     "category": "neutral",
     "sounds": [
@@ -16,6 +124,362 @@
       }
     ],
     "subtitle": "subtitles.abysm.entity.bloomray.ambient"
+  },
+  "entity.bloomray.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.bloomray.death"
+  },
+  "entity.bloomray.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:entity/fish/hurt1",
+      "minecraft:entity/fish/hurt2",
+      "minecraft:entity/fish/hurt3",
+      "minecraft:entity/fish/hurt4"
+    ],
+    "subtitle": "subtitles.abysm.entity.bloomray.hurt"
+  },
+  "entity.gup_gup.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.gup_gup.death"
+  },
+  "entity.gup_gup.flop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop1"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop2"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop3"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.gup_gup.flop"
+  },
+  "entity.gup_gup.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:entity/fish/hurt1",
+      "minecraft:entity/fish/hurt2",
+      "minecraft:entity/fish/hurt3",
+      "minecraft:entity/fish/hurt4"
+    ],
+    "subtitle": "subtitles.abysm.entity.gup_gup.hurt"
+  },
+  "entity.lectorfin.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.lectorfin.death"
+  },
+  "entity.lectorfin.flop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop1"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop2"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop3"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.lectorfin.flop"
+  },
+  "entity.lectorfin.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:entity/fish/hurt1",
+      "minecraft:entity/fish/hurt2",
+      "minecraft:entity/fish/hurt3",
+      "minecraft:entity/fish/hurt4"
+    ],
+    "subtitle": "subtitles.abysm.entity.lectorfin.hurt"
+  },
+  "entity.paddlefish.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.paddlefish.death"
+  },
+  "entity.paddlefish.flop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop1"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop2"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop3"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.paddlefish.flop"
+  },
+  "entity.paddlefish.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:entity/fish/hurt1",
+      "minecraft:entity/fish/hurt2",
+      "minecraft:entity/fish/hurt3",
+      "minecraft:entity/fish/hurt4"
+    ],
+    "subtitle": "subtitles.abysm.entity.paddlefish.hurt"
+  },
+  "entity.reticulated_flipray.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.reticulated_flipray.death"
+  },
+  "entity.reticulated_flipray.flop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop1"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop2"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop3"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.reticulated_flipray.flop"
+  },
+  "entity.reticulated_flipray.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:entity/fish/hurt1",
+      "minecraft:entity/fish/hurt2",
+      "minecraft:entity/fish/hurt3",
+      "minecraft:entity/fish/hurt4"
+    ],
+    "subtitle": "subtitles.abysm.entity.reticulated_flipray.hurt"
+  },
+  "entity.small_floral_fish.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.small_floral_fish.death"
+  },
+  "entity.small_floral_fish.flop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop1"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop2"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop3"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.small_floral_fish.flop"
+  },
+  "entity.small_floral_fish.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:entity/fish/hurt1",
+      "minecraft:entity/fish/hurt2",
+      "minecraft:entity/fish/hurt3",
+      "minecraft:entity/fish/hurt4"
+    ],
+    "subtitle": "subtitles.abysm.entity.small_floral_fish.hurt"
+  },
+  "entity.synthethic_orniothope.death": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt1"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt2"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt3"
+      },
+      {
+        "pitch": 0.8,
+        "name": "minecraft:entity/fish/hurt4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.synthethic_orniothope.death"
+  },
+  "entity.synthethic_orniothope.flop": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop1"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop2"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop3"
+      },
+      {
+        "volume": 0.3,
+        "name": "minecraft:entity/fish/flop4"
+      }
+    ],
+    "subtitle": "subtitles.abysm.entity.synthethic_orniothope.flop"
+  },
+  "entity.synthethic_orniothope.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "minecraft:entity/fish/hurt1",
+      "minecraft:entity/fish/hurt2",
+      "minecraft:entity/fish/hurt3",
+      "minecraft:entity/fish/hurt4"
+    ],
+    "subtitle": "subtitles.abysm.entity.synthethic_orniothope.hurt"
   },
   "item.harpoon.hit": {
     "category": "neutral",

@@ -34,6 +34,26 @@ public class AbysmSoundEvents {
 	public static final SoundEvent ENTITY_PADDLEFISH_DEATH = register("entity.paddlefish.death");
 	public static final SoundEvent ENTITY_PADDLEFISH_FLOP = register("entity.paddlefish.flop");
 
+	public static final SoundEvent ENTITY_GUP_GUP_HURT = register("entity.gup_gup.hurt");
+	public static final SoundEvent ENTITY_GUP_GUP_DEATH = register("entity.gup_gup.death");
+	public static final SoundEvent ENTITY_GUP_GUP_FLOP = register("entity.gup_gup.flop");
+
+	public static final SoundEvent ENTITY_AROWANA_MAGICII_HURT = register("entity.arowana_magicii.hurt");
+	public static final SoundEvent ENTITY_AROWANA_MAGICII_DEATH = register("entity.arowana_magicii.death");
+	public static final SoundEvent ENTITY_AROWANA_MAGICII_FLOP = register("entity.arowana_magicii.flop");
+
+	public static final SoundEvent ENTITY_SYNTHETHIC_ORNIOTHOPE_HURT = register("entity.synthethic_orniothope.hurt");
+	public static final SoundEvent ENTITY_SYNTHETHIC_ORNIOTHOPE_DEATH = register("entity.synthethic_orniothope.death");
+	public static final SoundEvent ENTITY_SYNTHETHIC_ORNIOTHOPE_FLOP = register("entity.synthethic_orniothope.flop");
+
+	public static final SoundEvent ENTITY_RETICULATED_FLIPRAY_HURT = register("entity.reticulated_flipray.hurt");
+	public static final SoundEvent ENTITY_RETICULATED_FLIPRAY_DEATH = register("entity.reticulated_flipray.death");
+	public static final SoundEvent ENTITY_RETICULATED_FLIPRAY_FLOP = register("entity.reticulated_flipray.flop");
+
+	public static final SoundEvent ENTITY_LECTORFIN_HURT = register("entity.lectorfin.hurt");
+	public static final SoundEvent ENTITY_LECTORFIN_DEATH = register("entity.lectorfin.death");
+	public static final SoundEvent ENTITY_LECTORFIN_FLOP = register("entity.lectorfin.flop");
+
 	public static final SoundEvent ITEM_OOZEBALL_APPLY = register("item.oozeball.apply");
 
 	public static final SoundEvent ITEM_HARPOON_LAUNCH = register("item.harpoon.launch");

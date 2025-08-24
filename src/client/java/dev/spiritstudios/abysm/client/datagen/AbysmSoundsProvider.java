@@ -96,6 +96,29 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.category(SoundCategory.NEUTRAL)
 		);
 
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_BLOOMRAY_HURT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.bloomray.hurt")
+				.sound(ofVanillaFile("entity/fish/hurt1"))
+				.sound(ofVanillaFile("entity/fish/hurt2"))
+				.sound(ofVanillaFile("entity/fish/hurt3"))
+				.sound(ofVanillaFile("entity/fish/hurt4"))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_BLOOMRAY_DEATH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.bloomray.death")
+				.sound(ofVanillaFile("entity/fish/hurt1").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
+				.category(SoundCategory.NEUTRAL)
+		);
 
 		exporter.add(
 			AbysmSoundEvents.ITEM_OOZEBALL_APPLY,
@@ -189,6 +212,294 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 //				.sound(ofFile("entity/harpoon/retract6").volume(0.8F).pitch(0.8F))
 //				.sound(ofFile("entity/harpoon/retract7").volume(0.8F))
 //				.sound(ofFile("entity/harpoon/retract7").volume(0.8F).pitch(1.2F))
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_PADDLEFISH_HURT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.paddlefish.hurt")
+				.sound(ofVanillaFile("entity/fish/hurt1"))
+				.sound(ofVanillaFile("entity/fish/hurt2"))
+				.sound(ofVanillaFile("entity/fish/hurt3"))
+				.sound(ofVanillaFile("entity/fish/hurt4"))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_PADDLEFISH_DEATH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.paddlefish.death")
+				.sound(ofVanillaFile("entity/fish/hurt1").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_PADDLEFISH_FLOP,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.paddlefish.flop")
+				.sound(ofVanillaFile("entity/fish/flop1").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_BIG_FLORAL_FISH_HURT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.big_floral_fish.hurt")
+				.sound(ofVanillaFile("entity/fish/hurt1"))
+				.sound(ofVanillaFile("entity/fish/hurt2"))
+				.sound(ofVanillaFile("entity/fish/hurt3"))
+				.sound(ofVanillaFile("entity/fish/hurt4"))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_BIG_FLORAL_FISH_DEATH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.big_floral_fish.death")
+				.sound(ofVanillaFile("entity/fish/hurt1").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_BIG_FLORAL_FISH_FLOP,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.big_floral_fish.flop")
+				.sound(ofVanillaFile("entity/fish/flop1").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_SMALL_FLORAL_FISH_HURT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.small_floral_fish.hurt")
+				.sound(ofVanillaFile("entity/fish/hurt1"))
+				.sound(ofVanillaFile("entity/fish/hurt2"))
+				.sound(ofVanillaFile("entity/fish/hurt3"))
+				.sound(ofVanillaFile("entity/fish/hurt4"))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_SMALL_FLORAL_FISH_DEATH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.small_floral_fish.death")
+				.sound(ofVanillaFile("entity/fish/hurt1").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_SMALL_FLORAL_FISH_FLOP,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.small_floral_fish.flop")
+				.sound(ofVanillaFile("entity/fish/flop1").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_GUP_GUP_HURT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.gup_gup.hurt")
+				.sound(ofVanillaFile("entity/fish/hurt1"))
+				.sound(ofVanillaFile("entity/fish/hurt2"))
+				.sound(ofVanillaFile("entity/fish/hurt3"))
+				.sound(ofVanillaFile("entity/fish/hurt4"))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_GUP_GUP_DEATH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.gup_gup.death")
+				.sound(ofVanillaFile("entity/fish/hurt1").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_GUP_GUP_FLOP,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.gup_gup.flop")
+				.sound(ofVanillaFile("entity/fish/flop1").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_AROWANA_MAGICII_HURT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.arowana_magicii.hurt")
+				.sound(ofVanillaFile("entity/fish/hurt1"))
+				.sound(ofVanillaFile("entity/fish/hurt2"))
+				.sound(ofVanillaFile("entity/fish/hurt3"))
+				.sound(ofVanillaFile("entity/fish/hurt4"))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_AROWANA_MAGICII_DEATH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.arowana_magicii.death")
+				.sound(ofVanillaFile("entity/fish/hurt1").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_AROWANA_MAGICII_FLOP,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.arowana_magicii.flop")
+				.sound(ofVanillaFile("entity/fish/flop1").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_SYNTHETHIC_ORNIOTHOPE_HURT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.synthethic_orniothope.hurt")
+				.sound(ofVanillaFile("entity/fish/hurt1"))
+				.sound(ofVanillaFile("entity/fish/hurt2"))
+				.sound(ofVanillaFile("entity/fish/hurt3"))
+				.sound(ofVanillaFile("entity/fish/hurt4"))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_SYNTHETHIC_ORNIOTHOPE_DEATH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.synthethic_orniothope.death")
+				.sound(ofVanillaFile("entity/fish/hurt1").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_SYNTHETHIC_ORNIOTHOPE_FLOP,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.synthethic_orniothope.flop")
+				.sound(ofVanillaFile("entity/fish/flop1").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_RETICULATED_FLIPRAY_HURT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.reticulated_flipray.hurt")
+				.sound(ofVanillaFile("entity/fish/hurt1"))
+				.sound(ofVanillaFile("entity/fish/hurt2"))
+				.sound(ofVanillaFile("entity/fish/hurt3"))
+				.sound(ofVanillaFile("entity/fish/hurt4"))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_RETICULATED_FLIPRAY_DEATH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.reticulated_flipray.death")
+				.sound(ofVanillaFile("entity/fish/hurt1").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_RETICULATED_FLIPRAY_FLOP,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.reticulated_flipray.flop")
+				.sound(ofVanillaFile("entity/fish/flop1").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_LECTORFIN_HURT,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.lectorfin.hurt")
+				.sound(ofVanillaFile("entity/fish/hurt1"))
+				.sound(ofVanillaFile("entity/fish/hurt2"))
+				.sound(ofVanillaFile("entity/fish/hurt3"))
+				.sound(ofVanillaFile("entity/fish/hurt4"))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_LECTORFIN_DEATH,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.lectorfin.death")
+				.sound(ofVanillaFile("entity/fish/hurt1").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
+				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
+				.category(SoundCategory.NEUTRAL)
+		);
+
+		// TODO: Custom sounds (optional)
+		exporter.add(
+			AbysmSoundEvents.ENTITY_LECTORFIN_FLOP,
+			SoundTypeBuilder.of()
+				.subtitle("subtitles.abysm.entity.lectorfin.flop")
+				.sound(ofVanillaFile("entity/fish/flop1").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
+				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
+				.category(SoundCategory.NEUTRAL)
 		);
 	}
 
