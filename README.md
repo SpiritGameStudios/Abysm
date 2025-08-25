@@ -10,7 +10,7 @@ Something stirs in the depths. Its call demands an answer.
 
 <img alt="Made for Mod Garden: Nature" height="40" src="https://raw.githubusercontent.com/ModGardenEvent/art/refs/heads/main/badge/svg/nature/compact.svg">
 
-##  About
+## 📖 About
 
 Everyone has wondered what lies beneath the [waves](https://modrinth.com/mod/tidal); at the bottom of the ocean, beyond our grasp in that seemingly *infinite* abyss. Abysm is a mod about that curiosity. Breathing new life into the oceans of Minecraft, one biome at a time.
 
@@ -18,7 +18,7 @@ Originally created with lots of love for Mod Garden: Nature by Spirit Studios & 
 
 This is our biggest project ever, we hope you enjoy it!
 
-##  FAQ
+## ❓ FAQ
 * Forge? <br/>
 No. Please do not ask us for a forge port.
 
