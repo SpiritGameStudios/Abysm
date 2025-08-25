@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(EntityPart.class)
 public interface EntityPartAccessor {
 
-	@Accessor("dimensions")
+	@Accessor(value = "dimensions", remap = false)
 	EntityDimensions abysm$getDimensions();
 
 	@Mutable
-	@Accessor("dimensions")
+	@Accessor(value = "dimensions", remap = false)
 	void abysm$setDimensions(EntityDimensions updated);
 }
