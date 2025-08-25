@@ -62,7 +62,7 @@ public class AbysmEcosystemTypes {
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.SNAPPER)
 			.setPredators(AbysmEntityTypes.BLOOMRAY, AbysmEntityTypes.SKELETON_SHARK)
-			.setPrey(EntityType.PLAYER)
+			//.setPrey(EntityType.PLAYER)
 			.setTargetPopulation(5)
 	);
 
@@ -123,7 +123,8 @@ public class AbysmEcosystemTypes {
 	public static final EcosystemType<ReticulatedFliprayEntity> RETICULATED_FLIPRAY = register(
 		"reticulated_flipray",
 		EcosystemType.Builder.create(AbysmEntityTypes.RETICULATED_FLIPRAY)
-			.setTargetPopulation(3)
+			.setTargetPopulation(2)
+
 	);
 
 	public static final EcosystemType<SkeletonSharkEntity> SKELETON_SHARK = register(

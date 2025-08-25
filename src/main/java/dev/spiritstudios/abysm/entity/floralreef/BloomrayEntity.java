@@ -5,8 +5,10 @@ import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
+import dev.spiritstudios.abysm.entity.ai.GracefulLookControl;
+import dev.spiritstudios.abysm.entity.ai.GracefulMoveControl;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
@@ -17,8 +19,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.control.AquaticMoveControl;
-import net.minecraft.entity.ai.control.YawAdjustingLookControl;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
@@ -62,8 +62,8 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	public BloomrayEntity(EntityType<? extends WaterCreatureEntity> entityType, World world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
-		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.1F, true);
-		this.lookControl = new YawAdjustingLookControl(this, 20);
+		this.moveControl = new GracefulMoveControl(this, 85, 10, 0.02F, 0.1F, true);
+		this.lookControl = new GracefulLookControl(this, 20);
 	}
 
 	@Override

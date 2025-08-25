@@ -20,7 +20,7 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.LehydrathanEntityRe
 import dev.spiritstudios.abysm.client.render.entity.renderer.ManOWarEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.MysteriousBlobEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.SimpleFishRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.SkeletonSharkRenderer;
+import dev.spiritstudios.abysm.client.render.entity.renderer.SkeletonSharkEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.SnapperEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
@@ -70,7 +70,7 @@ public class AbysmClient implements ClientModInitializer {
 		EntityRendererRegistry.register(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE, SimpleFishRenderer.factory("synthethic_orniothope", false));
 
 		EntityRendererRegistry.register(AbysmEntityTypes.RETICULATED_FLIPRAY, FliprayEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.SKELETON_SHARK, SkeletonSharkRenderer::new);
+		EntityRendererRegistry.register(AbysmEntityTypes.SKELETON_SHARK, SkeletonSharkEntityRenderer::new);
 
 		ArmorRenderer.register(new FlippersRenderer(), AbysmItems.FLIPPERS);
 

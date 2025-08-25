@@ -169,6 +169,12 @@
     ],
     "underground_water_creature": [
       {
+        "type": "abysm:lectorfin",
+        "maxCount": 8,
+        "minCount": 5,
+        "weight": 50
+      },
+      {
         "type": "minecraft:glow_squid",
         "maxCount": 6,
         "minCount": 4,
@@ -176,12 +182,6 @@
       }
     ],
     "water_ambient": [
-      {
-        "type": "abysm:lectorfin",
-        "maxCount": 16,
-        "minCount": 8,
-        "weight": 50
-      },
       {
         "type": "abysm:gup_gup",
         "maxCount": 30,
@@ -195,7 +195,14 @@
         "weight": 40
       }
     ],
-    "water_creature": []
+    "water_creature": [
+      {
+        "type": "abysm:reticulated_flipray",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 1
+      }
+    ]
   },
   "temperature": 0.5
 }

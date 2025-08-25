@@ -106,6 +106,11 @@ public final class FloralReefBiome extends AbysmBiome {
 				SpawnGroup.WATER_AMBIENT,
 				50,
 				new SpawnSettings.SpawnEntry(AbysmEntityTypes.AROWANA_MAGICII, 5, 8)
+			)
+			.spawn(
+				SpawnGroup.WATER_AMBIENT,
+				50,
+				new SpawnSettings.SpawnEntry(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE, 5, 8)
 			);
 
 		DefaultBiomeFeatures.addBatsAndMonsters(builder);

@@ -1,14 +1,21 @@
 package dev.spiritstudios.abysm.entity;
 
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
+import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnLocation;
 import net.minecraft.entity.SpawnLocationTypes;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.WorldAccess;
 
 public class AbysmSpawnRestrictions {
 
@@ -23,17 +30,17 @@ public class AbysmSpawnRestrictions {
 		registerStandardEcoWC(AbysmEntityTypes.BLOOMRAY);
 		registerStandardEcoWC(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY);
 		registerStandardWC(AbysmEntityTypes.MAN_O_WAR);
-		registerStandardEcoWC(AbysmEntityTypes.LECTORFIN);
+		registerWC(AbysmEntityTypes.LECTORFIN, and(LectorfinEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
 		registerStandardEcoWC(AbysmEntityTypes.RETICULATED_FLIPRAY);
 		registerStandardEcoWC(AbysmEntityTypes.SKELETON_SHARK);
 	}
 
 	private static <T extends WaterCreatureEntity> void registerStandardEcoWC(EntityType<T> type) {
-		registerWC(type, and(WaterCreatureEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
+		registerWC(type, and(AbysmSpawnRestrictions::canSpawn, EcologicalEntity::canSpawnInEcosystem));
 	}
 
 	private static <T extends WaterCreatureEntity> void registerStandardWC(EntityType<T> type) {
-		registerWC(type, WaterCreatureEntity::canSpawn);
+		registerWC(type, AbysmSpawnRestrictions::canSpawn);
 	}
 
 	private static <T extends WaterCreatureEntity> void registerWC(EntityType<T> type, SpawnRestriction.SpawnPredicate<T> predicate) {
@@ -51,5 +58,10 @@ public class AbysmSpawnRestrictions {
 				pos, random) ->
 			one.test(type, world, spawnReason, pos, random) &&
 				two.test(type, world, spawnReason, pos, random);
+	}
+
+	public static boolean canSpawn(EntityType<? extends WaterCreatureEntity> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
+		int i = world.getSeaLevel();
+		return pos.getY() <= i && world.getFluidState(pos.down()).isIn(FluidTags.WATER) && world.getBlockState(pos.up()).isOf(Blocks.WATER);
 	}
 }

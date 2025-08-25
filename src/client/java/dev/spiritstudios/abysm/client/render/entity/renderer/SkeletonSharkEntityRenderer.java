@@ -30,13 +30,13 @@ import java.util.Map;
 
 import static dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkEntity.HUNTING;
 
-public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRenderState> extends AbstractFishEntityRenderer<SkeletonSharkEntity, R> {
+public class SkeletonSharkEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends AbstractFishEntityRenderer<SkeletonSharkEntity, R> {
 
 	public static final DataTicket<Boolean> SANS = DataTicket.create("sans", Boolean.class);
 	public static final DataTicket<List> PARTS = DataTicket.create("parts", List.class);
 	public static final DataTicket<Boolean> HACKY_ROTATE_ANYWAY = DataTicket.create("hacky_rotate_anyway", Boolean.class);
 
-	public SkeletonSharkRenderer(EntityRendererFactory.Context context) {
+	public SkeletonSharkEntityRenderer(EntityRendererFactory.Context context) {
 		super(context, new EntityModel());
 		this.addRenderLayer(new AutoGlowingGeoLayer<>(this) {
 			@Override
@@ -105,7 +105,7 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 				matrices.push();
 				applyRotations(state, matrices, state.baseScale);
 				matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-pair.pitch));
-				renderer.render(state, matrices, vertexConsumers, packedLight, packedOverlay, renderColor, RecursiveRenderer.create(this));
+				renderer.render(state, renderType, matrices, vertexConsumers, packedLight, packedOverlay, renderColor, RecursiveRenderer.create(this));
 				matrices.pop();
 
 				matrices.pop();
@@ -157,9 +157,11 @@ public class SkeletonSharkRenderer<R extends LivingEntityRenderState & GeoRender
 
 		@SuppressWarnings("unused")
 		public <R extends LivingEntityRenderState & GeoRenderState> void render(
-			R state, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, int color, RecursiveRenderer<R> recursiveRenderer) {
+			R state, @Nullable RenderLayer renderLayer, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, int color, RecursiveRenderer<R> recursiveRenderer) {
 
-			RenderLayer renderLayer = this.model.getRenderType(state, this.model.getTextureResource(state));
+			if (renderLayer == null) {
+				renderLayer = this.model.getRenderType(state, this.model.getTextureResource(state));
+			}
 
 			@Nullable VertexConsumer vertexConsumer;
 			if (renderLayer == null) {

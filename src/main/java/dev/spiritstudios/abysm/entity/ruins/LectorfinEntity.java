@@ -9,8 +9,11 @@ import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.ai.goal.FollowGroupLeaderGoal;
@@ -36,6 +39,8 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -253,6 +258,10 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 	@Override
 	public ItemStack getBucketItem() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
+	}
+
+	public static boolean canSpawn(EntityType<Entity> entityEntityType, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
+		return pos.getY() <= world.getSeaLevel() - 33 && world.getBlockState(pos).isOf(Blocks.WATER);
 	}
 
 	public static class LectorfinRevengeGoal extends RevengeGoal {

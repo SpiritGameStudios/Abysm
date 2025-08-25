@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.SimpleFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.SwimAroundBoidGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.item.AbysmItems;
@@ -14,13 +15,17 @@ import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.EscapeDangerGoal;
+import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
@@ -44,7 +49,10 @@ public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGup
 
 	@Override
 	protected void initGoals() {
-		super.initGoals();
+		// No super, there will be lots of these so we don't want to add goals we don't need.
+		this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25));
+		this.goalSelector.add(2, new FleeEntityGoal<>(this, PlayerEntity.class, 8.0F, 1.6, 1.4, EntityPredicates.EXCEPT_SPECTATOR::test));
+		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
 		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
 		this.goalSelector.add(4, new SwimAroundBoidGoal(
 			this,
@@ -112,7 +120,7 @@ public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGup
 			d = 1.0;
 		}
 
-		d *= 64.0 * 5;
+		d *= 64.0 * 5; // 5x vanilla draw distance
 		return distance < d * d;
 	}
 

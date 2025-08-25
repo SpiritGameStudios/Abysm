@@ -71,8 +71,7 @@ public class AbysmEntityTypes {
 		"arowana_magicii",
 		EntityType.Builder
 			.create(ArowanaMagiciiEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(0.4f, 0.5f)
-			.eyeHeight(0.35f)
+			.dimensions(0.7F, 0.4F).eyeHeight(0.26F)
 			.maxTrackingRange(4)
 	);
 
@@ -131,7 +130,7 @@ public class AbysmEntityTypes {
 	public static final EntityType<LectorfinEntity> LECTORFIN = register(
 		"lectorfin",
 		EntityType.Builder.create(LectorfinEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(0.52F, 0.3F).eyeHeight(0.195F)
+			.dimensions(0.7F, 0.4F).eyeHeight(0.26F)
 			.maxTrackingRange(4)
 	);
 
@@ -168,11 +167,11 @@ public class AbysmEntityTypes {
 	public static void init() {
 		FabricDefaultAttributeRegistry.register(SMALL_FLORAL_FISH, SmallFloralFishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BIG_FLORAL_FISH, BigFloralFishEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(PADDLEFISH, PaddlefishEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(SNAPPER, SnapperEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(GUP_GUP, GupGupEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(AROWANA_MAGICII, ArowanaMagiciiEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(SYNTHETHIC_ORNIOTHOPE, SynthethicOrniothopeEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(PADDLEFISH, LectorfinEntity.createPredatoryFishAttributes());
+		FabricDefaultAttributeRegistry.register(SNAPPER, LectorfinEntity.createPredatoryFishAttributes());
+		FabricDefaultAttributeRegistry.register(GUP_GUP, LectorfinEntity.createPredatoryFishAttributes());
+		FabricDefaultAttributeRegistry.register(AROWANA_MAGICII, ArowanaMagiciiEntity.createPredatoryFishAttributes());
+		FabricDefaultAttributeRegistry.register(SYNTHETHIC_ORNIOTHOPE, SynthethicOrniothopeEntity.createPredatoryFishAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createRayAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());

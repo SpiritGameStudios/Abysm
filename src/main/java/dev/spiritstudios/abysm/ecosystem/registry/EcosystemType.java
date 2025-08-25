@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Range;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @param entityType         This mob's EntityType - used for sorting/finding/tracking.
@@ -31,9 +32,9 @@ import java.util.Optional;
  */
 public record EcosystemType<T extends LivingEntity & EcologicalEntity>(
 	EntityType<T> entityType,
-	ImmutableSet<EntityType<? extends LivingEntity>> predators,
-	ImmutableSet<EntityType<? extends LivingEntity>> prey,
-	ImmutableSet<Block> plants,
+	Set<EntityType<? extends LivingEntity>> predators,
+	Set<EntityType<? extends LivingEntity>> prey,
+	Set<Block> plants,
 	int targetPopulation,
 	int minHuntTicks, int maxHuntTicks, float huntFavorChance,
 	float favoredHuntSpeed, float unfavoredHuntSpeed,
