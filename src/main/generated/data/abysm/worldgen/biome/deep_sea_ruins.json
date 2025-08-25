@@ -195,7 +195,14 @@
         "weight": 40
       }
     ],
-    "water_creature": []
+    "water_creature": [
+      {
+        "type": "abysm:reticulated_flipray",
+        "maxCount": 2,
+        "minCount": 1,
+        "weight": 1
+      }
+    ]
   },
   "temperature": 0.5
 }

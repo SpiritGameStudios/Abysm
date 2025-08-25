@@ -123,7 +123,8 @@ public class AbysmEcosystemTypes {
 	public static final EcosystemType<ReticulatedFliprayEntity> RETICULATED_FLIPRAY = register(
 		"reticulated_flipray",
 		EcosystemType.Builder.create(AbysmEntityTypes.RETICULATED_FLIPRAY)
-			.setTargetPopulation(3)
+			.setTargetPopulation(2)
+
 	);
 
 	public static final EcosystemType<SkeletonSharkEntity> SKELETON_SHARK = register(

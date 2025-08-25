@@ -71,8 +71,7 @@ public class AbysmEntityTypes {
 		"arowana_magicii",
 		EntityType.Builder
 			.create(ArowanaMagiciiEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(0.4f, 0.5f)
-			.eyeHeight(0.35f)
+			.dimensions(0.7F, 0.4F).eyeHeight(0.26F)
 			.maxTrackingRange(4)
 	);
 
@@ -131,7 +130,7 @@ public class AbysmEntityTypes {
 	public static final EntityType<LectorfinEntity> LECTORFIN = register(
 		"lectorfin",
 		EntityType.Builder.create(LectorfinEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(0.52F, 0.3F).eyeHeight(0.195F)
+			.dimensions(0.7F, 0.4F).eyeHeight(0.26F)
 			.maxTrackingRange(4)
 	);
 

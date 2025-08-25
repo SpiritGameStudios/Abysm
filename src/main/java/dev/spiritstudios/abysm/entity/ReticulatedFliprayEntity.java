@@ -4,6 +4,8 @@ import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
+import dev.spiritstudios.abysm.entity.ai.GracefulLookControl;
+import dev.spiritstudios.abysm.entity.ai.GracefulMoveControl;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
@@ -13,8 +15,6 @@ import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.control.AquaticMoveControl;
-import net.minecraft.entity.ai.control.YawAdjustingLookControl;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
@@ -40,8 +40,8 @@ public class ReticulatedFliprayEntity extends SimpleFishEntity implements Ecolog
 	public ReticulatedFliprayEntity(EntityType<? extends SimpleFishEntity> entityType, World world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
-		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.02F, 0.1F, true);
-		this.lookControl = new YawAdjustingLookControl(this, 20);
+		this.moveControl = new GracefulMoveControl(this, 90, 5, 0.02F, 0.1F, true);
+		this.lookControl = new GracefulLookControl(this, 30);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class ReticulatedFliprayEntity extends SimpleFishEntity implements Ecolog
 		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
 		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
 		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
-		this.goalSelector.add(4, new SwimAroundGoal(this, 1.0, 10));
+		this.goalSelector.add(4, new SwimAroundGoal(this, 0.5F, 10));
 		this.goalSelector.add(4, new LookAroundGoal(this));
 		this.targetSelector.add(1, new HuntPreyGoal(this, false));
 	}
@@ -118,5 +118,10 @@ public class ReticulatedFliprayEntity extends SimpleFishEntity implements Ecolog
 	@Override
 	public ItemStack getBucketItem() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
+	}
+
+	@Override
+	public int getLimitPerChunk() {
+		return 1;
 	}
 }
