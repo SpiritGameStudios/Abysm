@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.entity;
 
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
+import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnLocation;
@@ -23,7 +24,7 @@ public class AbysmSpawnRestrictions {
 		registerStandardEcoWC(AbysmEntityTypes.BLOOMRAY);
 		registerStandardEcoWC(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY);
 		registerStandardWC(AbysmEntityTypes.MAN_O_WAR);
-		registerStandardEcoWC(AbysmEntityTypes.LECTORFIN);
+		registerWC(AbysmEntityTypes.LECTORFIN, and(LectorfinEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
 		registerStandardEcoWC(AbysmEntityTypes.RETICULATED_FLIPRAY);
 		registerStandardEcoWC(AbysmEntityTypes.SKELETON_SHARK);
 	}

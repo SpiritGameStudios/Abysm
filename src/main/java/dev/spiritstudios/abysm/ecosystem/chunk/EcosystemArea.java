@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.ecosystem.chunk;
 
-import com.google.common.collect.ImmutableSet;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class EcosystemArea {
@@ -119,7 +119,7 @@ public class EcosystemArea {
 
 	public void huntEcosystemType(EcosystemType<?> ecosystemType) {
 		// Choose random predator in this EcosystemArea to accept the task
-		ImmutableSet<EntityType<? extends LivingEntity>> predators = ecosystemType.predators();
+		Set<EntityType<? extends LivingEntity>> predators = ecosystemType.predators();
 		if(predators.isEmpty()) return;
 
 		// I don't know why I can't use List<EcosystemType<?>> and Optional#get() on the map function, but the types were messing up in a way I don't know how
