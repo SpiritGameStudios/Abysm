@@ -62,7 +62,7 @@ public class AbysmEcosystemTypes {
 		EcosystemType.Builder
 			.create(AbysmEntityTypes.SNAPPER)
 			.setPredators(AbysmEntityTypes.BLOOMRAY, AbysmEntityTypes.SKELETON_SHARK)
-			.setPrey(EntityType.PLAYER)
+			//.setPrey(EntityType.PLAYER)
 			.setTargetPopulation(5)
 	);
 

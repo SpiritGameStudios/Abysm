@@ -168,11 +168,11 @@ public class AbysmEntityTypes {
 	public static void init() {
 		FabricDefaultAttributeRegistry.register(SMALL_FLORAL_FISH, SmallFloralFishEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(BIG_FLORAL_FISH, BigFloralFishEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(PADDLEFISH, PaddlefishEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(SNAPPER, SnapperEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(GUP_GUP, GupGupEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(AROWANA_MAGICII, ArowanaMagiciiEntity.createFishAttributes());
-		FabricDefaultAttributeRegistry.register(SYNTHETHIC_ORNIOTHOPE, SynthethicOrniothopeEntity.createFishAttributes());
+		FabricDefaultAttributeRegistry.register(PADDLEFISH, LectorfinEntity.createPredatoryFishAttributes());
+		FabricDefaultAttributeRegistry.register(SNAPPER, LectorfinEntity.createPredatoryFishAttributes());
+		FabricDefaultAttributeRegistry.register(GUP_GUP, LectorfinEntity.createPredatoryFishAttributes());
+		FabricDefaultAttributeRegistry.register(AROWANA_MAGICII, ArowanaMagiciiEntity.createPredatoryFishAttributes());
+		FabricDefaultAttributeRegistry.register(SYNTHETHIC_ORNIOTHOPE, SynthethicOrniothopeEntity.createPredatoryFishAttributes());
 		FabricDefaultAttributeRegistry.register(BLOOMRAY, BloomrayEntity.createRayAttributes());
 		FabricDefaultAttributeRegistry.register(ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyEntity.createFishAttributes());
 		FabricDefaultAttributeRegistry.register(MAN_O_WAR, ManOWarEntity.createManOWarAttributes());

@@ -12,6 +12,7 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.World;
@@ -70,10 +71,5 @@ public class ArowanaMagiciiEntity extends SimpleEcoSchoolingFishEntity {
 	@Override
 	public ItemStack getBucketItem() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
-	}
-
-	public static DefaultAttributeContainer.Builder createFishAttributes() {
-		return MobEntity.createMobAttributes()
-			.add(EntityAttributes.MAX_HEALTH, 3.0);
 	}
 }

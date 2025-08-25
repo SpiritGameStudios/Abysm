@@ -21,7 +21,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class SimpleFishEntity  extends FishEntity implements EcologicalEntity, GeoEntity {
+public abstract class SimpleFishEntity extends FishEntity implements EcologicalEntity, GeoEntity {
 	protected EcosystemLogic ecosystemLogic;
 	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
