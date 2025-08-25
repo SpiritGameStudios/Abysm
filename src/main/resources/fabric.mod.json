@@ -43,6 +43,8 @@
 		"minecraft": "1.21.5",
 		"fabric-api": "*",
 		"specter-core": "*",
+		"biolith": "*",
+		"geckolib": ">=5.1.0",
 		"java": ">=21"
 	},
 	"custom": {
