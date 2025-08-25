@@ -97,5 +97,6 @@ modrinth {
 	dependencies {
 		required.version("fabric-api", libs.versions.fabric.api.get())
 		required.version("geckolib", libs.versions.geckolib.get())
+		required.version("biolith", libs.versions.biolith.get())
 	}
 }
