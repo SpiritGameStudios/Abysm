@@ -8,11 +8,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 
 public class AbysmDebugRenderers {
-	public static final Identifier ECOSYSTEM_DEBUG_RENDERER_ID = Abysm.id("ecosystem_debug_renderer");
-	public static final Identifier ECOSYSTEM_ENTITY_DEBUG_RENDERER_ID = Abysm.id("ecosystem_entity_debug_renderer");
+	public static final Identifier ECOSYSTEM_ID = Abysm.id("ecosystem");
+	public static final Identifier ECOSYSTEM_ENTITY_ID = Abysm.id("ecosystem_entity");
 
 	public static void init() {
-		DebugRendererRegistry.register(ECOSYSTEM_DEBUG_RENDERER_ID, new EcosystemDebugRenderer(MinecraftClient.getInstance()));
-		DebugRendererRegistry.register(ECOSYSTEM_ENTITY_DEBUG_RENDERER_ID, new EcosystemEntityDebugRenderer(MinecraftClient.getInstance()));
+		DebugRendererRegistry.register(ECOSYSTEM_ID, new EcosystemDebugRenderer(MinecraftClient.getInstance()));
+		DebugRendererRegistry.register(ECOSYSTEM_ENTITY_ID, new EcosystemEntityDebugRenderer(MinecraftClient.getInstance()));
 	}
 }
