@@ -8,7 +8,7 @@ import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
-import static dev.spiritstudios.abysm.client.render.entity.renderer.SkeletonSharkRenderer.PARTS;
+import static dev.spiritstudios.abysm.client.render.entity.renderer.SkeletonSharkEntityRenderer.PARTS;
 
 public class LehydrathanEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<Lehydrathan, R> {
 
