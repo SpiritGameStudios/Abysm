@@ -12,7 +12,10 @@ Something stirs in the depths. Its call demands an answer.
 
 ## 📖 About
 
-Everyone has wondered what lies beneath the [waves](https://modrinth.com/mod/tidal-waves); at the bottom of the ocean, beyond our grasp in that seemingly *infinite* abyss. Abysm is a mod about that curiosity. Breathing new life into the oceans of Minecraft, one biome at a time.
+Everyone has wondered what lies beneath the [waves](https://modrinth.com/mod/tidal-waves); at the bottom of the ocean, beyond our grasp in that seemingly *infinite* abyss.
+
+Abysm is a mod about that curiosity. Breathing new life into the oceans of Minecraft, one biome at a time.
+
 These oceans will get deeper over time as we implement as many of our ideas for this mod as we can. Join us as we descend ever deeper into the ocean than anyone before.
 
 Originally created with lots of love for Mod Garden: Nature by Spirit Studios & friends. <3
