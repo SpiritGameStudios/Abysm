@@ -32,5 +32,5 @@ If you want to suggest something, join the [discord](https://discord.gg/TTmx7d2a
 * Can you port/backport to `X` version? <br/>
 Probably not. Multi-version projects are hard :<
 
-## Special Thanks
+## ♥ Special Thanks
 Special thanks to Unknown Worlds for creating Subnautica, which this mod is heavily inspired by.
