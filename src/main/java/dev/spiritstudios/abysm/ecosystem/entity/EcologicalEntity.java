@@ -128,23 +128,25 @@ public interface EcologicalEntity {
 		this.applyHuntSpeeds(!hunterFavored);
 	}
 
+	// FIXME - Figure out how we want to do movement speed changes for fish,
+	//  or leave the mechanic scrapped for now
 	default void applyHuntSpeeds(boolean selfIsFavored) {
 		// FIXME - Sometimes entities crash with the custom attributes modifier
 		// FIXME - Movement speed increases doesn't do anything for the fish
 		// FIXME - Hunters give up on hunting prey too easily because they get too far away too fast (partially above issue)
 		// FIXME - Fish repopulating can't get close enough to their chosen mate because they don't speed up
-		EcosystemType<?> ecosystemType = this.getEcosystemType();
-		MobEntity self = (MobEntity) this;
-		EntityAttributeInstance speedAttributeInstance = self.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
-		if (speedAttributeInstance != null) {
-			if(selfIsFavored) {
-				float favoredSpeed = ecosystemType.favoredHuntSpeed();
-				speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(favoredSpeed));
-			} else {
-				float unfavoredSpeed = ecosystemType.unfavoredHuntSpeed();
-				speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofUnfavoredSpeed(unfavoredSpeed));
-			}
-		}
+//		EcosystemType<?> ecosystemType = this.getEcosystemType();
+//		MobEntity self = (MobEntity) this;
+//		EntityAttributeInstance speedAttributeInstance = self.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
+//		if (speedAttributeInstance != null) {
+//			if(selfIsFavored) {
+//				float favoredSpeed = ecosystemType.favoredHuntSpeed();
+//				speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofFavoredSpeed(favoredSpeed));
+//			} else {
+//				float unfavoredSpeed = ecosystemType.unfavoredHuntSpeed();
+//				speedAttributeInstance.addTemporaryModifier(AbysmEntityAttributeModifiers.ofUnfavoredSpeed(unfavoredSpeed));
+//			}
+//		}
 	}
 
 	/**
@@ -157,11 +159,11 @@ public interface EcologicalEntity {
 		this.setBeingHunted(false);
 		this.setHuntTicks(0);
 		this.setFavoredInHunt(false);
-
-		MobEntity self = (MobEntity) this;
-		EntityAttributeInstance speedAttributeInstance = self.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
-		speedAttributeInstance.removeModifier(AbysmEntityAttributeModifiers.FAVORED_HUNT_SPEED_MODIFIER_ID);
-		speedAttributeInstance.removeModifier(AbysmEntityAttributeModifiers.UNFAVORED_HUNT_SPEED_MODIFIER_ID);
+//
+//		MobEntity self = (MobEntity) this;
+//		EntityAttributeInstance speedAttributeInstance = self.getAttributeInstance(EntityAttributes.MOVEMENT_SPEED);
+//		speedAttributeInstance.removeModifier(AbysmEntityAttributeModifiers.FAVORED_HUNT_SPEED_MODIFIER_ID);
+//		speedAttributeInstance.removeModifier(AbysmEntityAttributeModifiers.UNFAVORED_HUNT_SPEED_MODIFIER_ID);
 	}
 
 	default boolean shouldFailHunt() {
