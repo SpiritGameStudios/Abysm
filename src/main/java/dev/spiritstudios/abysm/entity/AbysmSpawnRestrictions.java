@@ -30,7 +30,7 @@ public class AbysmSpawnRestrictions {
 		registerStandardEcoWC(AbysmEntityTypes.BLOOMRAY);
 		registerStandardEcoWC(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY);
 		registerStandardWC(AbysmEntityTypes.MAN_O_WAR);
-		registerWC(AbysmEntityTypes.LECTORFIN, and(LectorfinEntity::canSpawn, EcologicalEntity::canSpawnInEcosystem));
+		registerStandardEcoWC(AbysmEntityTypes.LECTORFIN);
 		registerStandardEcoWC(AbysmEntityTypes.RETICULATED_FLIPRAY);
 		registerStandardEcoWC(AbysmEntityTypes.SKELETON_SHARK);
 	}

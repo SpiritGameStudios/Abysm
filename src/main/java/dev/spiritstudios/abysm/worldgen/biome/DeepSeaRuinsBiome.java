@@ -75,7 +75,7 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 		SpawnSettings.Builder builder = new SpawnSettings.Builder()
 			.spawn(
 				SpawnGroup.UNDERGROUND_WATER_CREATURE,
-				50,
+				70,
 				new SpawnSettings.SpawnEntry(AbysmEntityTypes.LECTORFIN, 5, 8)
 			)
 			.spawn(

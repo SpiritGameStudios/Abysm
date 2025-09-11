@@ -143,7 +143,7 @@ public class AbysmEntityTypes {
 	public static final EntityType<ReticulatedFliprayEntity> RETICULATED_FLIPRAY = register(
 		"reticulated_flipray",
 		EntityType.Builder.create(ReticulatedFliprayEntity::new, SpawnGroup.WATER_AMBIENT)
-			.dimensions(1.7F, 0.2F)
+			.dimensions(1.3F, 0.2F)
 	);
 
 	public static final EntityType<SkeletonSharkEntity> SKELETON_SHARK = register(
