@@ -17,6 +17,14 @@ public class AbysmSoundEvents {
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_SEASIDE = registerReference("music.overworld.seaside");
 	// MUSIC DISCS
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_RENAISSANCE = registerReference("records.renaissance");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_PADDLEBOARD = registerReference("records.paddleboard");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_KORALLENFLIEDER = registerReference("records.korallenflieder");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_WAKE = registerReference("records.wake");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_CICHLID = registerReference("records.cichlid");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_COLOSSAL_CODECS = registerReference("records.colossal_codecs");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_ABYSM = registerReference("records.abysm");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_TILAPIA = registerReference("records.tilapia");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_NO = registerReference("records.no");
 	// SOUNDS
 	public static final SoundEvent ENTITY_BLOOMRAY_AMBIENT = register("entity.bloomray.ambient");
 	public static final SoundEvent ENTITY_BLOOMRAY_HURT = register("entity.bloomray.hurt");

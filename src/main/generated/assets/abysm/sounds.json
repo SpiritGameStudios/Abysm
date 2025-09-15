@@ -692,12 +692,84 @@
       }
     ]
   },
+  "records.abysm": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "name": "abysm:records/abysm_mono"
+      }
+    ]
+  },
+  "records.cichlid": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "name": "abysm:records/cichlid_mono"
+      }
+    ]
+  },
+  "records.colossal_codecs": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "name": "abysm:records/colossal_codecs_mono"
+      }
+    ]
+  },
+  "records.korallenflieder": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "name": "abysm:records/korallenflieder_mono"
+      }
+    ]
+  },
+  "records.no": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "name": "abysm:records/no_mono"
+      }
+    ]
+  },
+  "records.paddleboard": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "name": "abysm:records/paddleboard_mono"
+      }
+    ]
+  },
   "records.renaissance": {
     "category": "record",
     "sounds": [
       {
         "stream": true,
         "name": "abysm:records/renaissance"
+      }
+    ]
+  },
+  "records.tilapia": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "name": "abysm:records/tilapia_mono"
+      }
+    ]
+  },
+  "records.wake": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "name": "abysm:records/wake_mono"
       }
     ]
   }

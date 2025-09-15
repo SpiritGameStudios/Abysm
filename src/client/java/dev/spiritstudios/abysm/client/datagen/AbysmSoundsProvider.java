@@ -85,6 +85,54 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofFile("records/renaissance").stream(true))
 				.category(SoundCategory.RECORDS)
 		);
+		exporter.add(
+			AbysmSoundEvents.MUSIC_DISC_PADDLEBOARD,
+			SoundTypeBuilder.of()
+				.sound(ofFile("records/paddleboard_mono").stream(true))
+				.category(SoundCategory.MUSIC)
+		);
+		exporter.add(
+			AbysmSoundEvents.MUSIC_DISC_KORALLENFLIEDER,
+			SoundTypeBuilder.of()
+				.sound(ofFile("records/korallenflieder_mono").stream(true))
+				.category(SoundCategory.MUSIC)
+		);
+		exporter.add(
+			AbysmSoundEvents.MUSIC_DISC_WAKE,
+			SoundTypeBuilder.of()
+				.sound(ofFile("records/wake_mono").stream(true))
+				.category(SoundCategory.MUSIC)
+		);
+		exporter.add(
+			AbysmSoundEvents.MUSIC_DISC_CICHLID,
+			SoundTypeBuilder.of()
+				.sound(ofFile("records/cichlid_mono").stream(true))
+				.category(SoundCategory.MUSIC)
+		);
+		exporter.add(
+			AbysmSoundEvents.MUSIC_DISC_COLOSSAL_CODECS,
+			SoundTypeBuilder.of()
+				.sound(ofFile("records/colossal_codecs_mono").stream(true))
+				.category(SoundCategory.MUSIC)
+		);
+		exporter.add(
+			AbysmSoundEvents.MUSIC_DISC_ABYSM,
+			SoundTypeBuilder.of()
+				.sound(ofFile("records/abysm_mono").stream(true))
+				.category(SoundCategory.MUSIC)
+		);
+		exporter.add(
+			AbysmSoundEvents.MUSIC_DISC_TILAPIA,
+			SoundTypeBuilder.of()
+				.sound(ofFile("records/tilapia_mono").stream(true))
+				.category(SoundCategory.MUSIC)
+		);
+		exporter.add(
+			AbysmSoundEvents.MUSIC_DISC_NO,
+			SoundTypeBuilder.of()
+				.sound(ofFile("records/no_mono").stream(true))
+				.category(SoundCategory.MUSIC)
+		);
 
 		exporter.add(
 			AbysmSoundEvents.ENTITY_BLOOMRAY_AMBIENT,
