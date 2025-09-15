@@ -35,7 +35,6 @@ public class MysteriousBlobEntityRenderer<R extends LivingEntityRenderState & Ge
 	@Override
 	protected void applyRotations(R renderState, MatrixStack matrixStack, float nativeScale) {
 		super.applyRotations(renderState, matrixStack, nativeScale);
-		matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
 	}
 
 	@SuppressWarnings("OverrideOnly")
