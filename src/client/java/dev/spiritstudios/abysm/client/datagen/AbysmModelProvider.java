@@ -278,7 +278,15 @@ public class AbysmModelProvider extends FabricModelProvider {
 			AbysmItems.MAN_O_WAR_SPAWN_EGG,
 			AbysmItems.LECTORFIN_SPAWN_EGG,
 
-			AbysmItems.MUSIC_DISC_RENAISSANCE
+			AbysmItems.MUSIC_DISC_RENAISSANCE,
+			AbysmItems.MUSIC_DISC_PADDLEBOARD,
+			AbysmItems.MUSIC_DISC_KORALLENFLIEDER,
+			AbysmItems.MUSIC_DISC_WAKE,
+			AbysmItems.MUSIC_DISC_CICHLID,
+			AbysmItems.MUSIC_DISC_COLOSSAL_CODECS,
+			AbysmItems.MUSIC_DISC_ABYSM,
+			AbysmItems.MUSIC_DISC_TILAPIA,
+			AbysmItems.MUSIC_DISC_NO
 		);
 
 		generator.registerCondition(

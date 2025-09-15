@@ -346,6 +346,30 @@
       "id": "abysm:music_disc_renaissance"
     },
     {
+      "id": "abysm:music_disc_paddleboard"
+    },
+    {
+      "id": "abysm:music_disc_korallenflieder"
+    },
+    {
+      "id": "abysm:music_disc_wake"
+    },
+    {
+      "id": "abysm:music_disc_cichlid"
+    },
+    {
+      "id": "abysm:music_disc_colossal_codecs"
+    },
+    {
+      "id": "abysm:music_disc_abysm"
+    },
+    {
+      "id": "abysm:music_disc_tilapia"
+    },
+    {
+      "id": "abysm:music_disc_no"
+    },
+    {
       "components": {
         "minecraft:potion_contents": {
           "potion": "abysm:blue"

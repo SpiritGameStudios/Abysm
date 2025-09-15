@@ -1,0 +1,8 @@
+{
+	"comparator_output": 13,
+	"description": {
+		"translate": "jukebox_song.abysm.korallenflieder"
+	},
+	"length_in_seconds": 203.0,
+	"sound_event": "abysm:records.korallenflieder"
+}

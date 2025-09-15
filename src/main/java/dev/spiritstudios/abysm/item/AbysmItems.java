@@ -149,12 +149,80 @@ public final class AbysmItems {
 		settings -> new SpawnEggItem(AbysmEntityTypes.LECTORFIN, settings)
 	);
 
+	// THE DISC THAT'S ACTUALLY INTENTIONAL
+
 	public static final Item MUSIC_DISC_RENAISSANCE = register(
 		"music_disc_renaissance",
 		new Item.Settings()
 			.maxCount(1)
 			.rarity(Rarity.RARE)
 			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("renaissance")))
+	);
+
+	// MG EVENT ONE-OFF DISCS THAT FUCKING DOUBLES THE FILESIZE
+
+	public static final Item MUSIC_DISC_PADDLEBOARD = register(
+		"music_disc_paddleboard",
+		new Item.Settings()
+			.maxCount(1)
+			.rarity(Rarity.RARE)
+			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("paddleboard")))
+	);
+
+	public static final Item MUSIC_DISC_KORALLENFLIEDER = register(
+		"music_disc_korallenflieder",
+		new Item.Settings()
+			.maxCount(1)
+			.rarity(Rarity.RARE)
+			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("korallenflieder")))
+	);
+
+	public static final Item MUSIC_DISC_WAKE = register(
+		"music_disc_wake",
+		new Item.Settings()
+			.maxCount(1)
+			.rarity(Rarity.RARE)
+			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("wake")))
+	);
+
+	public static final Item MUSIC_DISC_CICHLID = register(
+		"music_disc_cichlid",
+		new Item.Settings()
+			.maxCount(1)
+			.rarity(Rarity.RARE)
+			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("cichlid")))
+	);
+
+	public static final Item MUSIC_DISC_COLOSSAL_CODECS = register(
+		"music_disc_colossal_codecs",
+		new Item.Settings()
+			.maxCount(1)
+			.rarity(Rarity.RARE)
+			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("colossal_codecs")))
+	);
+
+	public static final Item MUSIC_DISC_ABYSM = register(
+		"music_disc_abysm",
+		new Item.Settings()
+			.maxCount(1)
+			.rarity(Rarity.RARE)
+			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("abysm")))
+	);
+
+	public static final Item MUSIC_DISC_TILAPIA = register(
+		"music_disc_tilapia",
+		new Item.Settings()
+			.maxCount(1)
+			.rarity(Rarity.RARE)
+			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("tilapia")))
+	);
+
+	public static final Item MUSIC_DISC_NO = register(
+		"music_disc_no",
+		new Item.Settings()
+			.maxCount(1)
+			.rarity(Rarity.RARE)
+			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("no")))
 	);
 
 	private static RegistryKey<Item> keyOf(String id) {
