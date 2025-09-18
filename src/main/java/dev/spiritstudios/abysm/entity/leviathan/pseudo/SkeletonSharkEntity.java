@@ -193,7 +193,7 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 		return Leviathan.createLeviathanAttributes()
 				.add(EntityAttributes.MAX_HEALTH, 2000)
 				.add(EntityAttributes.ATTACK_DAMAGE, 8)
-				.add(EntityAttributes.SCALE, 3);
+				.add(EntityAttributes.SCALE, 2.25);
 	}
 
 	@Override
