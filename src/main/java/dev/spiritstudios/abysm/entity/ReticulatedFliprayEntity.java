@@ -23,6 +23,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -123,5 +124,9 @@ public class ReticulatedFliprayEntity extends SimpleFishEntity implements Ecolog
 	@Override
 	public int getLimitPerChunk() {
 		return 1;
+	}
+
+	@Override
+	public void onBubbleColumnCollision(boolean drag) {
 	}
 }

@@ -91,11 +91,13 @@ modrinth {
 	projectId.set(mod.id)
 	versionNumber.set(mod.version)
 	uploadFile.set(tasks.remapJar)
+	versionType = "alpha"
 	gameVersions.addAll(libs.versions.minecraft.get())
 	loaders.addAll("fabric", "quilt")
 	syncBodyFrom.set(rootProject.file("README.md").readText())
 	dependencies {
 		required.version("fabric-api", libs.versions.fabric.api.get())
 		required.version("geckolib", libs.versions.geckolib.get())
+		required.version("biolith", libs.versions.biolith.get())
 	}
 }
