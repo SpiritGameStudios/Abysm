@@ -191,9 +191,10 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 
 	public static DefaultAttributeContainer.Builder createSansAttributes() {
 		return Leviathan.createLeviathanAttributes()
-				.add(EntityAttributes.MAX_HEALTH, 2000)
-				.add(EntityAttributes.ATTACK_DAMAGE, 8)
-				.add(EntityAttributes.SCALE, 3);
+			.add(EntityAttributes.MAX_HEALTH, 2000)
+			.add(EntityAttributes.ATTACK_DAMAGE, 8)
+			.add(EntityAttributes.SCALE, 2.25)
+			.add(EntityAttributes.MOVEMENT_SPEED, 1.25);
 	}
 
 	@Override

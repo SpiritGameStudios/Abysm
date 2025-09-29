@@ -186,6 +186,12 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
+	protected void onDeflected(@Nullable Entity deflector, boolean fromAttack) {
+		super.onDeflected(deflector, fromAttack);
+		this.beginReturn(true);
+	}
+
+	@Override
 	public void writeCustomDataToNbt(NbtCompound nbt) {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putInt("slot", this.slot);

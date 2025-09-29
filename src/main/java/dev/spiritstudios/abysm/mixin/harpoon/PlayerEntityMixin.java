@@ -40,9 +40,6 @@ public abstract class PlayerEntityMixin extends LivingEntity implements HarpoonO
 			return;
 		}
 		this.onLanding();
-		if (!this.isLogicalSideForUpdatingMovement()) {
-			return;
-		}
 		Vec3d vec3d = this.harpoon.getPos().subtract(this.getEyePos());
 		if (this.isSubmergedInWater()) {
 			this.addVelocity(vec3d.normalize().multiply(0.2, 0.22, 0.2));
