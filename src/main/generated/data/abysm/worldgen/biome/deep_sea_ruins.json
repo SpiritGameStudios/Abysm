@@ -172,7 +172,7 @@
         "type": "abysm:lectorfin",
         "maxCount": 8,
         "minCount": 5,
-        "weight": 50
+        "weight": 70
       },
       {
         "type": "minecraft:glow_squid",
@@ -195,14 +195,7 @@
         "weight": 40
       }
     ],
-    "water_creature": [
-      {
-        "type": "abysm:reticulated_flipray",
-        "maxCount": 2,
-        "minCount": 1,
-        "weight": 1
-      }
-    ]
+    "water_creature": []
   },
   "temperature": 0.5
 }
