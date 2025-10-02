@@ -40,6 +40,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		FabricDataGenerator.Pack pack = dataGenerator.createPack();
 
 		// region assets
+		pack.addProvider(AbysmEquipmentAssetProvider::new);
 		pack.addProvider(AbysmModelProvider::new);
 		pack.addProvider(AbysmSoundsProvider::new);
 		// endregion

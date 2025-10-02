@@ -473,22 +473,50 @@ public class AbysmTagProviders {
 			// region vanilla item tags
 			valueLookupBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
 				.add(
-					AbysmItems.FLIPPERS
+					AbysmItems.FLIPPERS,
+					AbysmItems.DIVING_BOOTS
+				);
+
+			valueLookupBuilder(ItemTags.LEG_ARMOR_ENCHANTABLE)
+				.add(
+					AbysmItems.DIVING_LEGGINGS
+				);
+
+			valueLookupBuilder(ItemTags.CHEST_ARMOR_ENCHANTABLE)
+				.add(
+					AbysmItems.DIVING_CHESTPLATE
+				);
+
+			valueLookupBuilder(ItemTags.HEAD_ARMOR_ENCHANTABLE)
+				.add(
+					AbysmItems.DIVING_HELMET
 				);
 
 			valueLookupBuilder(ItemTags.ARMOR_ENCHANTABLE)
 				.add(
-					AbysmItems.FLIPPERS
+					AbysmItems.FLIPPERS,
+					AbysmItems.DIVING_BOOTS,
+					AbysmItems.DIVING_LEGGINGS,
+					AbysmItems.DIVING_CHESTPLATE,
+					AbysmItems.DIVING_HELMET
 				);
 
 			valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
 				.add(
-					AbysmItems.FLIPPERS
+					AbysmItems.FLIPPERS,
+					AbysmItems.DIVING_BOOTS,
+					AbysmItems.DIVING_LEGGINGS,
+					AbysmItems.DIVING_CHESTPLATE,
+					AbysmItems.DIVING_HELMET
 				);
 
 			valueLookupBuilder(ItemTags.EQUIPPABLE_ENCHANTABLE)
 				.add(
-					AbysmItems.FLIPPERS
+					AbysmItems.FLIPPERS,
+					AbysmItems.DIVING_BOOTS,
+					AbysmItems.DIVING_LEGGINGS,
+					AbysmItems.DIVING_CHESTPLATE,
+					AbysmItems.DIVING_HELMET
 				);
 
 			valueLookupBuilder(ItemTags.VANISHING_ENCHANTABLE)

@@ -10,6 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.NbtComponent;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.EntityBucketItem;
@@ -22,6 +24,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Pair;
 import net.minecraft.util.Rarity;
 
 import java.util.function.Function;
@@ -52,6 +55,46 @@ public final class AbysmItems {
 					"flippers_swimming_speed_multiplier",
 					0.05
 			).toComponent(AttributeModifierSlot.FEET))
+	);
+
+	public static final Item DIVING_BOOTS = register(
+			"diving_boots",
+			AbysmArmorMaterials.applyWithModel(
+					new Item.Settings().maxCount(1),
+					AbysmArmorMaterials.DIVING_SUIT,
+					EquipmentType.BOOTS,
+					AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_boots_oxygen", 3.0)
+			)
+	);
+
+	public static final Item DIVING_LEGGINGS = register(
+			"diving_leggings",
+			AbysmArmorMaterials.applyWithModel(
+					new Item.Settings().maxCount(1),
+					AbysmArmorMaterials.DIVING_SUIT,
+					EquipmentType.LEGGINGS,
+					AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_leggings_oxygen", 3.0)
+			)
+	);
+
+	public static final Item DIVING_CHESTPLATE = register(
+			"diving_chestplate",
+			AbysmArmorMaterials.applyWithModel(
+					new Item.Settings().maxCount(1),
+					AbysmArmorMaterials.DIVING_SUIT,
+					EquipmentType.CHESTPLATE,
+					AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_chestplate_oxygen", 3.0)
+			)
+	);
+
+	public static final Item DIVING_HELMET = register(
+			"diving_helmet",
+			AbysmArmorMaterials.applyWithoutModel(
+					new Item.Settings().maxCount(1),
+					AbysmArmorMaterials.DIVING_SUIT,
+					EquipmentType.HELMET,
+					AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_helmet_oxygen", 3.0)
+			)
 	);
 
 	public static final Item HARPOON = register(
