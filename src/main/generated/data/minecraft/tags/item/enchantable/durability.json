@@ -1,5 +1,9 @@
 {
   "values": [
-    "abysm:flippers"
+    "abysm:flippers",
+    "abysm:diving_boots",
+    "abysm:diving_leggings",
+    "abysm:diving_chestplate",
+    "abysm:diving_helmet"
   ]
 }

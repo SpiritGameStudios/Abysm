@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "abysm:diving"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "abysm:diving"
+      }
+    ]
+  }
+}

@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.client.datagen;
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.client.render.HarpoonLoadedProperty;
+import dev.spiritstudios.abysm.item.AbysmArmorMaterials;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -22,9 +23,12 @@ import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.data.family.BlockFamily;
 import net.minecraft.item.Item;
+import net.minecraft.item.equipment.EquipmentAsset;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 
@@ -254,6 +258,18 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 	@Override
 	public void generateItemModels(ItemModelGenerator generator) {
+		generator.register(AbysmItems.DIVING_HELMET);
+
+		registerArmorSet(
+				generator,
+				AbysmArmorMaterials.DIVING_SUIT_ASSET,
+				false,
+				AbysmItems.DIVING_BOOTS,
+				AbysmItems.DIVING_LEGGINGS,
+				AbysmItems.DIVING_CHESTPLATE,
+				null // special-cased
+		);
+
 		registerGenerated(generator,
 			AbysmItems.LAPIS_BULB,
 			AbysmItems.GOLD_LEAF,
@@ -295,6 +311,32 @@ public class AbysmModelProvider extends FabricModelProvider {
 			ItemModels.basic(ModelIds.getItemSubModelId(AbysmItems.HARPOON, "_loaded")),
 			ItemModels.basic(ModelIds.getItemModelId(AbysmItems.HARPOON))
 		);
+	}
+
+	private void registerArmorSet(
+			final ItemModelGenerator generator,
+			final RegistryKey<EquipmentAsset> asset,
+			final boolean dyeable,
+			final @Nullable Item boots,
+			final @Nullable Item leggings,
+			final @Nullable Item chestplate,
+			final @Nullable Item helmet
+	) {
+		if (boots != null) {
+			generator.registerArmor(boots, asset, ItemModelGenerator.BOOTS_TRIM_ID_PREFIX, dyeable);
+		}
+
+		if (leggings != null) {
+			generator.registerArmor(leggings, asset, ItemModelGenerator.LEGGINGS_TRIM_ID_PREFIX, dyeable);
+		}
+
+		if (chestplate != null) {
+			generator.registerArmor(chestplate, asset, ItemModelGenerator.CHESTPLATE_TRIM_ID_PREFIX, dyeable);
+		}
+
+		if (helmet != null) {
+			generator.registerArmor(helmet, asset, ItemModelGenerator.HELMET_TRIM_ID_PREFIX, dyeable);
+		}
 	}
 
 	private void registerGenerated(ItemModelGenerator generator, Item... items) {
