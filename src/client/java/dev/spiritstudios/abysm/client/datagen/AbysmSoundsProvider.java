@@ -32,9 +32,9 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 			AbysmSoundEvents.MUSIC_OVERWORLD_FLORAL_REEF,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/cichlid").stream(true).volume(0.4F).weight(2)) // Original biome-exclusive song
-				.sound(AXOLOTL)
-				.sound(DRAGON_FISH)
-				.sound(TILAPIA)
+//				.sound(AXOLOTL)
+//				.sound(DRAGON_FISH)
+//				.sound(TILAPIA)
 				.category(SoundCategory.MUSIC)
 		);
 
@@ -42,9 +42,9 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 			AbysmSoundEvents.MUSIC_OVERWORLD_DEEP_SEA_RUINS,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/colossal_codecs").stream(true).volume(0.4F).weight(2)) // Original biome-exclusive song
-				.sound(DRAGON_FISH)
-				.sound(SHUNIJI)
-				.sound(TILAPIA)
+//				.sound(DRAGON_FISH)
+//				.sound(SHUNIJI)
+//				.sound(TILAPIA)
 				.category(SoundCategory.MUSIC)
 		);
 
@@ -52,9 +52,9 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 			AbysmSoundEvents.MUSIC_OVERWORLD_PEARLESCENT_SEA,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/wake").stream(true).volume(0.4F).weight(2)) // Original biome-exclusive song
-				.sound(AXOLOTL)
-				.sound(SHUNIJI)
-				.sound(TILAPIA)
+//				.sound(AXOLOTL)
+//				.sound(SHUNIJI)
+//				.sound(TILAPIA)
 				.category(SoundCategory.MUSIC)
 		);
 

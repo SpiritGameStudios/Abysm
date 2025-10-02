@@ -11,5 +11,4 @@ public class AbysmConfig extends Config<AbysmConfig> {
 	public static final AbysmConfig INSTANCE = HOLDER.get();
 
 	public final Value<Boolean> underwaterSoundFilters = booleanValue(true).build();
-
 }

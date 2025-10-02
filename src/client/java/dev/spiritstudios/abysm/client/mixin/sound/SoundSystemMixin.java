@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.client.mixin.sound;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import dev.spiritstudios.abysm.AbysmConfig;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.registry.tags.AbysmSoundEventTags;
 import net.minecraft.client.MinecraftClient;
@@ -28,6 +29,7 @@ public abstract class SoundSystemMixin {
 		ClientPlayerEntity player = client.player;
 
 		if (player == null ||
+			!AbysmConfig.INSTANCE.underwaterSoundFilters.get() ||
 			!player.isSubmergedInWater() ||
 			instance.getCategory() == SoundCategory.MUSIC ||
 			instance.getCategory() == SoundCategory.AMBIENT ||

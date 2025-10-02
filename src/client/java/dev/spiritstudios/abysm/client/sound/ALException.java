@@ -1,5 +1,8 @@
 package dev.spiritstudios.abysm.client.sound;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import static org.lwjgl.openal.AL10.*;
 
 public class ALException extends RuntimeException {
@@ -10,6 +13,8 @@ public class ALException extends RuntimeException {
 	public ALException(int code) {
 		this(code, errorMessage(code));
 	}
+
+	private static final Logger LOGGER = LogManager.getLogger();
 
 	public static String errorMessage(int code) {
 		return switch (code) {
@@ -26,6 +31,6 @@ public class ALException extends RuntimeException {
 		int code = alGetError();
 
 		if (code == AL_NO_ERROR) return;
-		throw new ALException(code);
+		LOGGER.error("OpenAL ERROR [{}]: {}", code, errorMessage(code));
 	}
 }
