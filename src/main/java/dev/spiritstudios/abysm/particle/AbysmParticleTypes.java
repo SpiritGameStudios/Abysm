@@ -15,7 +15,7 @@ import net.minecraft.registry.RegistryKeys;
 
 import java.util.function.Function;
 
-public class AbysmParticleTypes {
+public final class AbysmParticleTypes {
 	public static final SimpleParticleType ROSEBLOOM_GLIMMER = registerSimple("rosebloom_glimmer", false);
 	public static final SimpleParticleType SUNBLOOM_GLIMMER = registerSimple("sunbloom_glimmer", false);
 	public static final SimpleParticleType MALLOWBLOOM_GLIMMER = registerSimple("mallowbloom_glimmer", false);

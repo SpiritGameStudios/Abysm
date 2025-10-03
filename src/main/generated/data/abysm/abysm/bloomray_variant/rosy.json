@@ -2,6 +2,7 @@
   "glimmer": {
     "type": "abysm:rosebloom_glimmer"
   },
+  "spawn_conditions": [],
   "thorns": {
     "type": "abysm:sodalite_thorns"
   },

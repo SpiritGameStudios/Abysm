@@ -32,28 +32,20 @@ public record UpdateDensityBlobBlockC2SPayload(BlockPos pos, String finalState,
 		return ID;
 	}
 
-	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<UpdateDensityBlobBlockC2SPayload> {
-		public static final Receiver INSTANCE = new Receiver();
-
-		protected Receiver() {
+	public static void receive(UpdateDensityBlobBlockC2SPayload payload, ServerPlayNetworking.Context context) {
+		PlayerEntity player = context.player();
+		if (!player.isCreativeLevelTwoOp()) {
+			return;
 		}
-
-		@Override
-		public void receive(UpdateDensityBlobBlockC2SPayload payload, ServerPlayNetworking.Context context) {
-			PlayerEntity player = context.player();
-			if (!player.isCreativeLevelTwoOp()) {
-				return;
-			}
-			World world = player.getWorld();
-			BlockPos blockPos = payload.pos;
-			if (!(world.getBlockEntity(blockPos) instanceof DensityBlobBlockEntity blockEntity)) {
-				return;
-			}
-			BlockState blockState = world.getBlockState(blockPos);
-			blockEntity.setFinalState(payload.finalState);
-			blockEntity.setBlobsSamplerIdentifier(payload.blobsSamplerIdentifier);
-			blockEntity.markDirty();
-			world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
+		World world = player.getWorld();
+		BlockPos blockPos = payload.pos;
+		if (!(world.getBlockEntity(blockPos) instanceof DensityBlobBlockEntity blockEntity)) {
+			return;
 		}
+		BlockState blockState = world.getBlockState(blockPos);
+		blockEntity.setFinalState(payload.finalState);
+		blockEntity.setBlobsSamplerIdentifier(payload.blobsSamplerIdentifier);
+		blockEntity.markDirty();
+		world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
 	}
 }

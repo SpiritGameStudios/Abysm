@@ -15,12 +15,14 @@ import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.VariantSelectorProvider;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.spawn.SpawnContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -103,12 +105,12 @@ public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGup
 
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		this.getRegistryManager().getOrThrow(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT)
-			.getRandom(this.random)
-			.ifPresentOrElse(
-				this::setVariant,
-				() -> setVariant(GupGupEntityVariant.getDefaultEntry(world.getRegistryManager()))
-			);
+		VariantSelectorProvider.select(
+			this.getRegistryManager().getOrThrow(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT).streamEntries(),
+			RegistryEntry::value, random,
+			SpawnContext.of(world, this.getBlockPos())
+		).ifPresent(this::setVariant);
+
 		this.alertEcosystemOfSpawn();
 		return super.initialize(world, difficulty, spawnReason, entityData);
 	}

@@ -1,16 +1,22 @@
 package dev.spiritstudios.abysm.data.variant;
 
+import com.mojang.datafixers.Products;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
+import net.minecraft.entity.VariantSelectorProvider;
 import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.spawn.SpawnCondition;
+import net.minecraft.entity.spawn.SpawnConditionSelectors;
+import net.minecraft.entity.spawn.SpawnContext;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * Abstract class containing basic necessary fields for entity texture variants, along with helper methods. (Not to be confused with Entity Pattern Variants!)<br><br>
@@ -36,15 +42,25 @@ import org.jetbrains.annotations.NotNull;
  * @see BloomrayEntityVariant
  * @see BloomrayEntity
  */
-public abstract class AbstractEntityVariant {
+public abstract class AbstractEntityVariant implements VariantSelectorProvider<SpawnContext, SpawnCondition> {
 	// TODO - Easier default id getting
 	// TODO - Easier random entry getting
 	public final Text name;
 	public final Identifier texture;
+	public final SpawnConditionSelectors spawnConditions;
 
-	public AbstractEntityVariant(Text name, Identifier texture) {
+	public static <T extends AbstractEntityVariant> Products.P3<RecordCodecBuilder.Mu<T>, Text, Identifier, SpawnConditionSelectors> fillFields(RecordCodecBuilder.Instance<T> instance) {
+		return instance.group(
+			TextCodecs.CODEC.fieldOf("name").forGetter(variant -> variant.name),
+			Identifier.CODEC.fieldOf("texture").forGetter(variant -> variant.texture),
+			SpawnConditionSelectors.CODEC.fieldOf("spawn_conditions").forGetter(variant -> variant.spawnConditions)
+		);
+	}
+
+	public AbstractEntityVariant(Text name, Identifier texture, SpawnConditionSelectors spawnConditions) {
 		this.name = name;
 		this.texture = texture;
+		this.spawnConditions = spawnConditions;
 	}
 
 	// If there's a better/cleaner way of doing this child-class-fills-in-static-params-with-its-own-static-method
@@ -66,12 +82,8 @@ public abstract class AbstractEntityVariant {
 		return texture;
 	}
 
-	// Helper methods for creating variant codecs
-	protected static @NotNull <T extends AbstractEntityVariant> RecordCodecBuilder<T, Text> getNameCodec() {
-		return TextCodecs.CODEC.fieldOf("name").forGetter(variant -> variant.name);
-	}
-
-	protected static @NotNull <T extends AbstractEntityVariant> RecordCodecBuilder<T, Identifier> getTextureCodec() {
-		return Identifier.CODEC.fieldOf("texture").forGetter(variant -> variant.texture);
+	@Override
+	public List<Selector<SpawnContext, SpawnCondition>> getSelectors() {
+		return this.spawnConditions.selectors();
 	}
 }

@@ -9,11 +9,11 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(PersistentProjectileEntity.class)
 public interface PersistentProjectileEntityAccessor {
 	@Invoker("setPierceLevel")
-	void abysm$invokeSetPierceLevel(byte level);
+	void invokeSetPierceLevel(byte level);
 
 	@Accessor("piercedEntities")
-	IntOpenHashSet abysm$getPiercedEntities();
+	IntOpenHashSet getPiercedEntities();
 
 	@Accessor("piercedEntities")
-	void abysm$setPiercedEntities(IntOpenHashSet piercedEntities);
+	void setPiercedEntities(IntOpenHashSet piercedEntities);
 }

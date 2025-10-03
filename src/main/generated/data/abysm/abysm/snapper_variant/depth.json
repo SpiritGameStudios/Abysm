@@ -1,4 +1,13 @@
 {
+  "spawn_conditions": [
+    {
+      "condition": {
+        "type": "minecraft:biome",
+        "biomes": "#abysm:spawns_variant/depth_snapper"
+      },
+      "priority": 1
+    }
+  ],
   "name": {
     "translate": "abysm.entity.snapper.depth"
   },

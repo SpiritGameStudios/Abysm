@@ -13,7 +13,7 @@ import dev.spiritstudios.abysm.worldgen.densityfunction.DensityBlob;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 
-public class AbysmRegistryKeys {
+public final class AbysmRegistryKeys {
 	public static final RegistryKey<Registry<EcosystemType<?>>> ECOSYSTEM_TYPE = ofKey("ecosystem_type");
 	public static final RegistryKey<Registry<MapCodec<? extends DensityBlob>>> DENSITY_BLOB_TYPE = ofKey("density_blob_type");
 

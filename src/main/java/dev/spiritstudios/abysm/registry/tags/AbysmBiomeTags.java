@@ -5,7 +5,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.world.biome.Biome;
 
-public class AbysmBiomeTags {
+public final class AbysmBiomeTags {
 	public static final TagKey<Biome> DEEP_SEA_RUINS_HAS_STRUCTURE = of("has_structure/deep_sea_ruins");
 
 	public static final TagKey<Biome> SPAWNS_VARIANT_DEPTH_SNAPPER = of("spawns_variant/depth_snapper");

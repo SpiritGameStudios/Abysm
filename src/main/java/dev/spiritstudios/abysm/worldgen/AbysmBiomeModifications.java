@@ -12,7 +12,7 @@ import net.minecraft.world.biome.BiomeKeys;
 
 import java.util.function.Predicate;
 
-public class AbysmBiomeModifications {
+public final class AbysmBiomeModifications {
 	public static void init() {
 		// Kind of beaches, right?
 
@@ -23,6 +23,9 @@ public class AbysmBiomeModifications {
 			BiomeKeys.RIVER
 		).or(BiomeSelectors.tag(BiomeTags.PLAYS_UNDERWATER_MUSIC));
 
-		BiomeModifications.create(Abysm.id("seasides")).add(ModificationPhase.ADDITIONS, seaside, context -> context.getEffects().setMusic(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_SEASIDE)));
+		BiomeModifications.create(Abysm.id("seasides"))
+			.add(ModificationPhase.ADDITIONS, seaside, context -> {
+				context.getEffects().setMusic(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_SEASIDE));
+			});
 	}
 }

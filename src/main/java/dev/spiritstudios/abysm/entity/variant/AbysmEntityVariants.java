@@ -8,10 +8,14 @@ import dev.spiritstudios.abysm.data.variant.GupGupEntityVariant;
 import dev.spiritstudios.abysm.data.variant.SnapperEntityVariant;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
+import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
+import net.minecraft.entity.spawn.BiomeSpawnCondition;
+import net.minecraft.entity.spawn.SpawnConditionSelectors;
 import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.registry.Registerable;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
@@ -93,14 +97,21 @@ public class AbysmEntityVariants {
 	public static final RegistryKey<SnapperEntityVariant> CHROMATIC = ofSnapper("chromatic");
 	public static final RegistryKey<SnapperEntityVariant> DEPTH = ofSnapper("depth");
 	public static void snapperBootstrap(Registerable<SnapperEntityVariant> registerable) {
+		var biomeLookup = registerable.getRegistryLookup(RegistryKeys.BIOME);
+
 		registerSnapper(
 			registerable,
-			CHROMATIC
+			CHROMATIC,
+			SpawnConditionSelectors.EMPTY
 		);
 
 		registerSnapper(
 			registerable,
-			DEPTH
+			DEPTH,
+			SpawnConditionSelectors.createSingle(
+				new BiomeSpawnCondition(biomeLookup.getOrThrow(AbysmBiomeTags.SPAWNS_VARIANT_DEPTH_SNAPPER)),
+				1
+			)
 		);
 	}
 	// endregion
@@ -129,28 +140,28 @@ public class AbysmEntityVariants {
 	private static void registerBloomrayVariant(Registerable<BloomrayEntityVariant> registry, RegistryKey<BloomrayEntityVariant> key, BloomrayEntityVariant.HideableCrownType crownType, SimpleParticleType glimmer, SimpleParticleType thorns) {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + "_bloomray.png");
 		Text name = Text.translatable("abysm.entity.bloomray." + key.getValue().getPath());
-		BloomrayEntityVariant variant = new BloomrayEntityVariant(name, variantPath, crownType, glimmer, thorns);
+		BloomrayEntityVariant variant = new BloomrayEntityVariant(name, variantPath, SpawnConditionSelectors.EMPTY, crownType, glimmer, thorns);
 		register(registry, key, variant);
 	}
 
 	private static void registerOoglyBoogly(Registerable<ElectricOoglyBooglyVariant> registry, RegistryKey<ElectricOoglyBooglyVariant> key, int electricityColor, boolean deadly) {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + "_boogly.png");
 		Text name = Text.translatable("abysm.entity.electric_oogly_boogly." + key.getValue().getPath());
-		ElectricOoglyBooglyVariant variant = new ElectricOoglyBooglyVariant(name, variantPath, electricityColor, deadly);
+		ElectricOoglyBooglyVariant variant = new ElectricOoglyBooglyVariant(name, variantPath, SpawnConditionSelectors.EMPTY, electricityColor, deadly);
 		register(registry, key, variant);
 	}
 
 	private static void registerGupGup(Registerable<GupGupEntityVariant> registry, RegistryKey<GupGupEntityVariant> key) {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + ".png");
 		Text name = Text.translatable("abysm.entity.gup_gup." + key.getValue().getPath());
-		GupGupEntityVariant variant = new GupGupEntityVariant(name, variantPath);
+		GupGupEntityVariant variant = new GupGupEntityVariant(name, variantPath, SpawnConditionSelectors.EMPTY);
 		register(registry, key, variant);
 	}
 
-	private static void registerSnapper(Registerable<SnapperEntityVariant> registry, RegistryKey<SnapperEntityVariant> key) {
+	private static void registerSnapper(Registerable<SnapperEntityVariant> registry, RegistryKey<SnapperEntityVariant> key, SpawnConditionSelectors spawnConditions) {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + "_snapper.png");
 		Text name = Text.translatable("abysm.entity.snapper." + key.getValue().getPath());
-		SnapperEntityVariant variant = new SnapperEntityVariant(name, variantPath);
+		SnapperEntityVariant variant = new SnapperEntityVariant(name, variantPath, spawnConditions);
 		register(registry, key, variant);
 	}
 

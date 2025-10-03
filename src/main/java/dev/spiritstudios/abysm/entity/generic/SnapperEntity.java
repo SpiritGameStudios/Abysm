@@ -7,18 +7,15 @@ import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.SimpleFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
-import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.TargetPredicate;
+import net.minecraft.entity.VariantSelectorProvider;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
@@ -34,7 +31,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
@@ -129,18 +125,11 @@ public class SnapperEntity extends SimpleFishEntity implements Variantable<Snapp
 
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		SpawnContext context = SpawnContext.of(world, this.getBlockPos());
-
-		Registry<SnapperEntityVariant> registry = this.getRegistryManager().getOrThrow(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT);
-
-		if (context.biome().isIn(AbysmBiomeTags.SPAWNS_VARIANT_DEPTH_SNAPPER)) {
-			registry.getOptional(AbysmEntityVariants.DEPTH).ifPresentOrElse(
-				this::setVariant,
-				() -> setVariant(SnapperEntityVariant.getDefaultEntry(world.getRegistryManager()))
-			);
-		} else {
-			setVariant(SnapperEntityVariant.getDefaultEntry(world.getRegistryManager()));
-		}
+		VariantSelectorProvider.select(
+			this.getRegistryManager().getOrThrow(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT).streamEntries(),
+			RegistryEntry::value, random,
+			SpawnContext.of(world, this.getBlockPos())
+		).ifPresent(this::setVariant);
 
 		return super.initialize(world, difficulty, spawnReason, entityData);
 	}

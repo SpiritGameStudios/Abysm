@@ -15,12 +15,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.VariantSelectorProvider;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.spawn.SpawnContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -58,11 +60,11 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		this.getRegistryManager().getOrThrow(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT).getRandom(this.random)
-			.ifPresentOrElse(
-				this::setVariant,
-				() -> setVariant(ElectricOoglyBooglyVariant.getDefaultEntry(world.getRegistryManager()))
-			);
+		VariantSelectorProvider.select(
+			this.getRegistryManager().getOrThrow(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT).streamEntries(),
+			RegistryEntry::value, random,
+			SpawnContext.of(world, this.getBlockPos())
+		).ifPresent(this::setVariant);
 
 		return super.initialize(world, difficulty, spawnReason, entityData);
 	}

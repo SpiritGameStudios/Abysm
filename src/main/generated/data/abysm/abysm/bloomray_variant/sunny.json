@@ -2,6 +2,7 @@
   "glimmer": {
     "type": "abysm:sunbloom_glimmer"
   },
+  "spawn_conditions": [],
   "thorns": {
     "type": "abysm:anyolite_thorns"
   },

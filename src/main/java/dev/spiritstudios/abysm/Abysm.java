@@ -51,7 +51,7 @@ import net.minecraft.world.gen.trunk.TrunkPlacerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Abysm implements ModInitializer {
+public final class Abysm implements ModInitializer {
 	public static final String MODID = "abysm";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
@@ -139,8 +139,8 @@ public class Abysm implements ModInitializer {
 		PayloadTypeRegistry.playS2C().register(EntityUpdateBlueS2CPayload.ID, EntityUpdateBlueS2CPayload.PACKET_CODEC);
 		PayloadTypeRegistry.playS2C().register(NowHuntingS2CPayload.ID, NowHuntingS2CPayload.PACKET_CODEC);
 
-		ServerPlayNetworking.registerGlobalReceiver(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload.Receiver.INSTANCE);
-		ServerPlayNetworking.registerGlobalReceiver(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload.Receiver.INSTANCE);
+		ServerPlayNetworking.registerGlobalReceiver(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload::receive);
+		ServerPlayNetworking.registerGlobalReceiver(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload::receive);
 	}
 
 	public static Identifier id(String path) {

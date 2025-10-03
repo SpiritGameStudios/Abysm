@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.block.Block;
+import net.minecraft.entity.spawn.SpawnConditionSelectors;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -21,12 +22,11 @@ import net.minecraft.util.StringIdentifiable;
 
 public class BloomrayEntityVariant extends AbstractEntityVariant {
 	public static final Codec<BloomrayEntityVariant> CODEC = RecordCodecBuilder.create(
-		instance -> instance.group(
-			getNameCodec(),
-			getTextureCodec(),
-			HideableCrownType.CODEC.fieldOf("crown").forGetter(variant -> variant.hideableCrownType),
-			ParticleTypes.TYPE_CODEC.fieldOf("glimmer").forGetter(variant -> variant.glimmerParticle),
-			ParticleTypes.TYPE_CODEC.fieldOf("thorns").forGetter(variant -> variant.thornsParticle)
+		instance -> fillFields(instance).and(instance.group(
+				HideableCrownType.CODEC.fieldOf("crown").forGetter(variant -> variant.hideableCrownType),
+				ParticleTypes.TYPE_CODEC.fieldOf("glimmer").forGetter(variant -> variant.glimmerParticle),
+				ParticleTypes.TYPE_CODEC.fieldOf("thorns").forGetter(variant -> variant.thornsParticle)
+			)
 		).apply(instance, BloomrayEntityVariant::new)
 	);
 
@@ -46,8 +46,8 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 	public final ParticleEffect glimmerParticle;
 	public final ParticleEffect thornsParticle;
 
-	public BloomrayEntityVariant(Text name, Identifier texture, HideableCrownType hideableCrownType, ParticleEffect glimmerParticle, ParticleEffect thornsParticle) {
-		super(name, texture);
+	public BloomrayEntityVariant(Text name, Identifier texture, SpawnConditionSelectors spawnConditions, HideableCrownType hideableCrownType, ParticleEffect glimmerParticle, ParticleEffect thornsParticle) {
+		super(name, texture, spawnConditions);
 		this.hideableCrownType = hideableCrownType;
 		this.glimmerParticle = glimmerParticle;
 		this.thornsParticle = thornsParticle;

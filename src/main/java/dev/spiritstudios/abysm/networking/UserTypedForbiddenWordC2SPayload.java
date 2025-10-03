@@ -23,21 +23,11 @@ public record UserTypedForbiddenWordC2SPayload() implements CustomPayload {
 		return ID;
 	}
 
-	public static class Receiver implements ServerPlayNetworking.PlayPayloadHandler<UserTypedForbiddenWordC2SPayload> {
-
-		public static final Receiver INSTANCE = new Receiver();
-
-		protected Receiver() {
-
-		}
-
-		@Override
-		public void receive(UserTypedForbiddenWordC2SPayload payload, ServerPlayNetworking.Context context) {
-			ServerPlayerEntity player = context.player();
-			ServerWorld serverWorld = player.getServerWorld();
-			context.player().damage(serverWorld,
-				new DamageSource(AbysmDamageTypes.getOrThrow(serverWorld, AbysmDamageTypes.PRESSURE)),
-				Float.MAX_VALUE);
-		}
+	public static void receive(UserTypedForbiddenWordC2SPayload ignored, ServerPlayNetworking.Context context) {
+		ServerPlayerEntity player = context.player();
+		ServerWorld serverWorld = player.getServerWorld();
+		context.player().damage(serverWorld,
+			new DamageSource(AbysmDamageTypes.getOrThrow(serverWorld, AbysmDamageTypes.PRESSURE)),
+			Float.MAX_VALUE);
 	}
 }

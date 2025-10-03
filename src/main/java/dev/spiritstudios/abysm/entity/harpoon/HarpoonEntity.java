@@ -39,6 +39,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class HarpoonEntity extends PersistentProjectileEntity {
 	public static final float VELOCITY_POWER = 5f;
+	public static final int MAX_RANGE = 128;
+
+	// Range in which to slow down so the harpoon doesn't clip through the player
+	public static final int SLOWDOWN_RANGE = 8;
+
 	public static final TrackedData<Boolean> RETURNING = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	public static final TrackedData<Boolean> IN_BLOCK = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 	public static final TrackedData<Boolean> GRAPPLING = DataTracker.registerData(HarpoonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -67,16 +72,14 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		);
 
 		this.setOwner(owner);
+
 		Vec3d velocity = owner.getRotationVec(1.0F).multiply(VELOCITY_POWER);
 		this.setVelocity(velocity);
 		this.setNoGravity(true);
 		this.slot = slot;
 
 		if (weapon != null) {
-			this.haul = AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.HAUL);
-			setGrappling(AbysmEnchantments.hasEnchantment(weapon, world, AbysmEnchantments.GRAPPLING));
-			this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).isBlessed();
-			this.dataTracker.set(ENCHANTED, weapon.hasGlint());
+			updateWeaponFlags(weapon);
 		}
 
 		double d = velocity.horizontalLength();
@@ -87,6 +90,13 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 		this.lastYaw = this.getYaw();
 		this.lastPitch = this.getPitch();
+	}
+
+	private void updateWeaponFlags(ItemStack weapon) {
+		this.haul = AbysmEnchantments.hasEnchantment(weapon, getWorld(), AbysmEnchantments.HAUL);
+		setGrappling(AbysmEnchantments.hasEnchantment(weapon, getWorld(), AbysmEnchantments.GRAPPLING));
+		this.blessed = weapon.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY).isBlessed();
+		this.dataTracker.set(ENCHANTED, weapon.hasGlint());
 	}
 
 	@Override
@@ -102,6 +112,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	@Override
 	protected void initDataTracker(DataTracker.Builder builder) {
 		super.initDataTracker(builder);
+
 		builder.add(RETURNING, false);
 		builder.add(GRAPPLING, false);
 		builder.add(IN_BLOCK, false);
@@ -132,7 +143,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		PlayerEntity playerEntity = this.getPlayer();
 		if (playerEntity != null) {
 			double d = playerEntity.getEyePos().subtract(blockHitResult.getPos()).length();
-			this.setLength(Math.max((float)d * 0.5F - 3.0F, 1.5F));
+			this.setLength(Math.max((float) d * 0.5F - 3.0F, 1.5F));
 		}
 	}
 
@@ -169,15 +180,15 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 				this.discard();
 			}
 
-			if (owner.isSneaking() || this.squaredDistanceTo(owner) > (256 * 256)) {
+			if (owner.isSneaking() || this.squaredDistanceTo(owner) > (MAX_RANGE * MAX_RANGE)) {
 				this.beginReturn(true);
-			} else if ((this.inGroundTime > 4 || (this.ticksAlive > 60 && this.inGroundTime < 1) || this.squaredDistanceTo(owner) > (256 * 256)) && !isGrappling()) {
+			} else if ((this.inGroundTime > 4 || this.ticksAlive > 60 && this.inGroundTime < 1) && !isGrappling()) {
 				this.beginReturn(true);
 			}
 		}
 
 		if (this.isReturning()) {
-			boolean closeEnough = this.squaredDistanceTo(owner) < (8 * 8);
+			boolean closeEnough = this.squaredDistanceTo(owner) < (SLOWDOWN_RANGE * SLOWDOWN_RANGE);
 			this.setVelocity(owner.getEyePos().subtract(this.getPos()).normalize()
 				.multiply(closeEnough ? 0.65 : VELOCITY_POWER));
 		}
@@ -196,7 +207,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		super.writeCustomDataToNbt(nbt);
 		nbt.putInt("slot", this.slot);
 		nbt.putInt("ticksAlive", this.ticksAlive);
-		nbt.putBoolean("in_block", this.isInBlock());
+		nbt.putBoolean("inBlock", this.isInBlock());
 		nbt.putFloat("length", this.getLength());
 	}
 
@@ -205,8 +216,10 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		super.readCustomDataFromNbt(nbt);
 		this.slot = nbt.getInt("slot", -1);
 		this.ticksAlive = nbt.getInt("ticksAlive", 0);
-		this.setInBlock(nbt.getBoolean("in_block", false));
+		this.setInBlock(nbt.getBoolean("inBlock", false));
 		this.setLength(nbt.getFloat("length", 0.0F));
+
+		updateWeaponFlags(this.getItemStack());
 	}
 
 	@Override
@@ -223,6 +236,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		if (this.isReturning()) {
 			return; // lol
 		}
+
 		this.setNoClip(true);
 		this.dataTracker.set(RETURNING, true);
 		if (playSound) {
@@ -278,12 +292,12 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		byte pierceLevel = this.getPierceLevel();
 
 		if (pierceLevel > 0) {
-			((PersistentProjectileEntityAccessor) this).abysm$invokeSetPierceLevel((byte) (pierceLevel - 1));
+			((PersistentProjectileEntityAccessor) this).invokeSetPierceLevel((byte) (pierceLevel - 1));
 
-			IntOpenHashSet pierced = ((PersistentProjectileEntityAccessor) this).abysm$getPiercedEntities();
+			IntOpenHashSet pierced = ((PersistentProjectileEntityAccessor) this).getPiercedEntities();
 			if (pierced == null) {
 				pierced = new IntOpenHashSet(pierceLevel);
-				((PersistentProjectileEntityAccessor) this).abysm$setPiercedEntities(pierced);
+				((PersistentProjectileEntityAccessor) this).setPiercedEntities(pierced);
 			}
 
 			pierced.add(entity.getId());
@@ -319,25 +333,27 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		this.getDataTracker().set(IN_BLOCK, inBlock);
 	}
 
-	private void setGrappling(boolean grappling) {
-		this.getDataTracker().set(GRAPPLING, grappling);
-	}
-
-
-	private void setLength(float length) {
-		this.getDataTracker().set(LENGTH, length);
-	}
-
 	public boolean isInBlock() {
 		return this.getDataTracker().get(IN_BLOCK);
+	}
+
+
+	private void setGrappling(boolean grappling) {
+		this.getDataTracker().set(GRAPPLING, grappling);
 	}
 
 	public boolean isGrappling() {
 		return this.getDataTracker().get(GRAPPLING);
 	}
 
+
 	public boolean isEnchanted() {
 		return this.dataTracker.get(ENCHANTED);
+	}
+
+
+	private void setLength(float length) {
+		this.getDataTracker().set(LENGTH, length);
 	}
 
 	public float getLength() {

@@ -19,6 +19,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.VariantSelectorProvider;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SwimAroundGoal;
@@ -30,6 +31,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.entity.spawn.SpawnContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
@@ -98,12 +100,12 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 
 	@Override
 	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		this.getRegistryManager().getOrThrow(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT)
-			.getRandom(this.random)
-			.ifPresentOrElse(
-				this::setVariant,
-				() -> setVariant(BloomrayEntityVariant.getDefaultEntry(world.getRegistryManager()))
-			);
+		VariantSelectorProvider.select(
+			this.getRegistryManager().getOrThrow(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT).streamEntries(),
+			RegistryEntry::value, random,
+			SpawnContext.of(world, this.getBlockPos())
+		).ifPresent(this::setVariant);
+
 		this.alertEcosystemOfSpawn();
 		return super.initialize(world, difficulty, spawnReason, entityData);
 	}

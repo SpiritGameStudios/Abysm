@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
+import net.minecraft.entity.spawn.SpawnConditionSelectors;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
@@ -17,12 +18,10 @@ import net.minecraft.util.dynamic.Codecs;
 
 public class ElectricOoglyBooglyVariant extends AbstractEntityVariant {
 	public static final Codec<ElectricOoglyBooglyVariant> CODEC = RecordCodecBuilder.create(
-		instance -> instance.group(
-			getNameCodec(),
-			getTextureCodec(),
+		instance -> fillFields(instance).and(instance.group(
 			Codecs.RGB.fieldOf("electricity_color").forGetter(variant -> variant.electricityColor),
 			Codec.BOOL.fieldOf("deadly").forGetter(variant -> variant.deadly)
-		).apply(instance, ElectricOoglyBooglyVariant::new)
+		)).apply(instance, ElectricOoglyBooglyVariant::new)
 	);
 
 	public static final Codec<RegistryEntry<ElectricOoglyBooglyVariant>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
@@ -40,8 +39,8 @@ public class ElectricOoglyBooglyVariant extends AbstractEntityVariant {
 	public final int electricityColor;
 	public final boolean deadly;
 
-	public ElectricOoglyBooglyVariant(Text name, Identifier texture, int electricityColor, boolean deadly) {
-		super(name, texture);
+	public ElectricOoglyBooglyVariant(Text name, Identifier texture, SpawnConditionSelectors spawnConditions, int electricityColor, boolean deadly) {
+		super(name, texture, spawnConditions);
 		this.electricityColor = electricityColor;
 		this.deadly = deadly;
 	}

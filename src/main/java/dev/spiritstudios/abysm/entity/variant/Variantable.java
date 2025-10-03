@@ -20,5 +20,4 @@ public interface Variantable<T extends AbstractEntityVariant> {
 	 * Set this Entity's EntityVariant using the actual variant.
 	 */
 	void setVariant(RegistryEntry<T> variant);
-
 }
