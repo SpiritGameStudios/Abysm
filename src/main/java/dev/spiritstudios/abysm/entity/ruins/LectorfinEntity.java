@@ -29,14 +29,12 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.SchoolingFishEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
@@ -75,31 +73,30 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 		builder.add(ENCHANTMENT, FishEnchantment.getDefaultEntry(this.getRegistryManager()));
 	}
 
-	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
 
-		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+	@Override
+	protected void readCustomData(ReadView view) {
+		super.readCustomData(view);
 
 		this.dataTracker.set(
 			ENCHANTMENT,
-			nbt.get("fishEnchantment", FishEnchantment.ENTRY_CODEC, ops)
+			view.read("fishEnchantment", FishEnchantment.ENTRY_CODEC)
 				.orElse(FishEnchantment.getDefaultEntry(this.getRegistryManager()))
 		);
 
-		this.dataTracker.set(ENCHANTMENT_LEVEL, nbt.getInt("enchantmentLevel", 0));
+		this.dataTracker.set(ENCHANTMENT_LEVEL, view.getInt("enchantmentLevel", 0));
 
-		this.ticksUntilHunger = nbt.getInt("ticksUntilHunger", 0);
+		this.ticksUntilHunger = view.getInt("ticksUntilHunger", 0);
 	}
 
-	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		RegistryOps<NbtElement> ops = getRegistryManager().getOps(NbtOps.INSTANCE);
 
-		nbt.put("fishEnchantment", FishEnchantment.ENTRY_CODEC, ops, this.getEnchantment());
-		nbt.putInt("enchantmentLevel", this.getEnchantmentLevel());
-		nbt.putInt("ticksUntilHunger", this.ticksUntilHunger);
+	@Override
+	protected void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
+
+		view.put("fishEnchantment", FishEnchantment.ENTRY_CODEC, this.getEnchantment());
+		view.putInt("enchantmentLevel", this.getEnchantmentLevel());
+		view.putInt("ticksUntilHunger", this.ticksUntilHunger);
 	}
 
 	public int getEnchantmentLevel() {

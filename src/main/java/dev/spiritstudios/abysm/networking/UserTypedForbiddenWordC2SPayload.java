@@ -25,9 +25,11 @@ public record UserTypedForbiddenWordC2SPayload() implements CustomPayload {
 
 	public static void receive(UserTypedForbiddenWordC2SPayload ignored, ServerPlayNetworking.Context context) {
 		ServerPlayerEntity player = context.player();
-		ServerWorld serverWorld = player.getServerWorld();
-		context.player().damage(serverWorld,
-			new DamageSource(AbysmDamageTypes.getOrThrow(serverWorld, AbysmDamageTypes.PRESSURE)),
-			Float.MAX_VALUE);
+		ServerWorld world = player.getWorld();
+		context.player().damage(
+			world,
+			new DamageSource(AbysmDamageTypes.getOrThrow(world, AbysmDamageTypes.PRESSURE)),
+			Float.MAX_VALUE
+		);
 	}
 }

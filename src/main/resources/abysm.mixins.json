@@ -12,7 +12,6 @@
 		"blue.BatEntityMixin",
 		"blue.BlazeEntityMixin",
 		"blue.EntityMixin",
-		"blue.FlyingEntityMixin",
 		"blue.LivingEntityMixin",
 		"blue.PlayerEntityMixin",
 		"ecosystem.ServerWorldMixin",

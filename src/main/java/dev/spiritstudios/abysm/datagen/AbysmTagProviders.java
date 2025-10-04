@@ -21,6 +21,7 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.family.BlockFamily;
+import net.minecraft.data.tag.ProvidedTagBuilder;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.RegistryKeys;
@@ -78,7 +79,7 @@ public class AbysmTagProviders {
 			// endregion
 
 			// region Block tags
-			getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
+			valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
 				.add(
 					AbysmBlocks.POLISHED_FLOROPUMICE,
 					AbysmBlocks.CHISLED_FLOROPUMICE,
@@ -92,13 +93,13 @@ public class AbysmTagProviders {
 				.add(AbysmBlocks.OOZETRICKLE_CORD)
 				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
 
-			getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
+			valueLookupBuilder(BlockTags.AXE_MINEABLE)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.add(AbysmBlocks.OOZETRICKLE_CORD)
 				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
 
-			getOrCreateTagBuilder(BlockTags.SHOVEL_MINEABLE)
+			valueLookupBuilder(BlockTags.SHOVEL_MINEABLE)
 				.addOptionalTag(AbysmBlockTags.NECTARSAP)
 				.add(
 					AbysmBlocks.DREGLOAM,
@@ -108,14 +109,14 @@ public class AbysmTagProviders {
 					AbysmBlocks.SILT
 				);
 
-			getOrCreateTagBuilder(BlockTags.HOE_MINEABLE)
+			valueLookupBuilder(BlockTags.HOE_MINEABLE)
 				.addOptionalTag(AbysmBlockTags.NECTARSAP)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.add(AbysmBlocks.OOZETRICKLE_CORD)
 				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
 
-			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_TREES)
+			valueLookupBuilder(BlockTags.REPLACEABLE_BY_TREES)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS)
 				.add(
@@ -123,7 +124,7 @@ public class AbysmTagProviders {
 					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS
 				);
 
-			getOrCreateTagBuilder(BlockTags.REPLACEABLE_BY_MUSHROOMS)
+			valueLookupBuilder(BlockTags.REPLACEABLE_BY_MUSHROOMS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS)
 				.add(
@@ -131,35 +132,35 @@ public class AbysmTagProviders {
 					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS
 				);
 
-			getOrCreateTagBuilder(BlockTags.COMBINATION_STEP_SOUND_BLOCKS)
+			valueLookupBuilder(BlockTags.COMBINATION_STEP_SOUND_BLOCKS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
 				.add(
 					AbysmBlocks.OOZETRICKLE_FILAMENTS
 				);
 
-			getOrCreateTagBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
+			valueLookupBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS);
 
-			getOrCreateTagBuilder(BlockTags.ENDERMAN_HOLDABLE)
+			valueLookupBuilder(BlockTags.ENDERMAN_HOLDABLE)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
 				.add(
 					AbysmBlocks.OOZETRICKLE_FILAMENTS
 				);
 
-			getOrCreateTagBuilder(BlockTags.SCULK_REPLACEABLE)
+			valueLookupBuilder(BlockTags.SCULK_REPLACEABLE)
 				.add(
 					AbysmBlocks.FLOROPUMICE
 				)
 				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
 
-			getOrCreateTagBuilder(BlockTags.SCULK_REPLACEABLE_WORLD_GEN)
+			valueLookupBuilder(BlockTags.SCULK_REPLACEABLE_WORLD_GEN)
 				.add(
 					AbysmBlocks.FLOROPUMICE
 				)
 				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
 
-			getOrCreateTagBuilder(BlockTags.SMALL_DRIPLEAF_PLACEABLE)
+			valueLookupBuilder(BlockTags.SMALL_DRIPLEAF_PLACEABLE)
 				.add(
 					AbysmBlocks.DREGLOAM,
 					AbysmBlocks.OOZING_DREGLOAM,
@@ -167,18 +168,18 @@ public class AbysmTagProviders {
 					AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 				);
 
-			getOrCreateTagBuilder(BlockTags.DRAGON_IMMUNE)
+			valueLookupBuilder(BlockTags.DRAGON_IMMUNE)
 				.add(
 					AbysmBlocks.DENSITY_BLOB_BLOCK
 				);
 
-			getOrCreateTagBuilder(BlockTags.WITHER_IMMUNE)
+			valueLookupBuilder(BlockTags.WITHER_IMMUNE)
 				.add(
 					AbysmBlocks.DENSITY_BLOB_BLOCK
 				);
 
 
-			getOrCreateTagBuilder(BlockTags.DIRT)
+			valueLookupBuilder(BlockTags.DIRT)
 				.add(
 					AbysmBlocks.DREGLOAM,
 					AbysmBlocks.OOZING_DREGLOAM,
@@ -186,23 +187,23 @@ public class AbysmTagProviders {
 					AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 				);
 
-			getOrCreateTagBuilder(BlockTags.LEAVES)
+			valueLookupBuilder(BlockTags.LEAVES)
 				.add(
 					AbysmBlocks.ROSEBLOOM_PETALEAVES,
 					AbysmBlocks.SUNBLOOM_PETALEAVES,
 					AbysmBlocks.MALLOWBLOOM_PETALEAVES
 				);
 
-			getOrCreateTagBuilder(BlockTags.FLOWERS)
+			valueLookupBuilder(BlockTags.FLOWERS)
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMING_CROWNS)
 				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
 
-			getOrCreateTagBuilder(BlockTags.SMALL_FLOWERS)
+			valueLookupBuilder(BlockTags.SMALL_FLOWERS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS);
 
-			getOrCreateTagBuilder(BlockTags.FLOWER_POTS)
+			valueLookupBuilder(BlockTags.FLOWER_POTS)
 				.add(
 					AbysmBlocks.POTTED_ROSY_SPRIGS,
 					AbysmBlocks.POTTED_SUNNY_SPRIGS,
@@ -218,117 +219,117 @@ public class AbysmTagProviders {
 				);
 
 			// conventional tags
-			getOrCreateTagBuilder(ConventionalBlockTags.FLOWERS)
+			valueLookupBuilder(ConventionalBlockTags.FLOWERS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMING_CROWNS)
 				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
 
-			getOrCreateTagBuilder(ConventionalBlockTags.SMALL_FLOWERS)
+			valueLookupBuilder(ConventionalBlockTags.SMALL_FLOWERS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS);
 
 			// abysm tags
-			getOrCreateTagBuilder(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON)
+			valueLookupBuilder(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON)
 				.add(
 					AbysmBlocks.FLOROPUMICE,
 					Blocks.SAND
 				)
 				.addOptionalTag(AbysmBlockTags.BLOOMED_FLOROPUMICE);
 
-			getOrCreateTagBuilder(AbysmBlockTags.OOZE_VEGETATION_PLANTABLE_ON)
+			valueLookupBuilder(AbysmBlockTags.OOZE_VEGETATION_PLANTABLE_ON)
 				.add(
 					AbysmBlocks.OOZING_DREGLOAM,
 					AbysmBlocks.DREGLOAM_OOZE
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.ALSO_PRESERVES_LEAVES)
+			valueLookupBuilder(AbysmBlockTags.ALSO_PRESERVES_LEAVES)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.NECTARSAP);
 
-			getOrCreateTagBuilder(AbysmBlockTags.IS_AIR_OR_WATER)
+			valueLookupBuilder(AbysmBlockTags.IS_AIR_OR_WATER)
 				.addOptionalTag(BlockTags.AIR)
 				.add(Blocks.WATER);
 
-			getOrCreateTagBuilder(AbysmBlockTags.OOZE_REPLACEABLE)
+			valueLookupBuilder(AbysmBlockTags.OOZE_REPLACEABLE)
 				.add(AbysmBlocks.DREGLOAM);
 
-			getOrCreateTagBuilder(AbysmBlockTags.BLOOMED_FLOROPUMICE_REPLACEABLE)
+			valueLookupBuilder(AbysmBlockTags.BLOOMED_FLOROPUMICE_REPLACEABLE)
 				.add(AbysmBlocks.FLOROPUMICE);
 
 
-			getOrCreateTagBuilder(AbysmBlockTags.BLOOMED_FLOROPUMICE)
+			valueLookupBuilder(AbysmBlockTags.BLOOMED_FLOROPUMICE)
 				.add(
 					AbysmBlocks.ROSEBLOOMED_FLOROPUMICE,
 					AbysmBlocks.SUNBLOOMED_FLOROPUMICE,
 					AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.FLOWERY_SPRIGS)
+			valueLookupBuilder(AbysmBlockTags.FLOWERY_SPRIGS)
 				.add(
 					AbysmBlocks.ROSY_SPRIGS,
 					AbysmBlocks.SUNNY_SPRIGS,
 					AbysmBlocks.MAUVE_SPRIGS
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.BLOOM_PETALS)
+			valueLookupBuilder(AbysmBlockTags.BLOOM_PETALS)
 				.add(
 					AbysmBlocks.ROSEBLOOM_PETALS,
 					AbysmBlocks.SUNBLOOM_PETALS,
 					AbysmBlocks.MALLOWBLOOM_PETALS
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.SMALL_BLOOMSHROOMS)
+			valueLookupBuilder(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.add(
 					AbysmBlocks.ROSY_BLOOMSHROOM,
 					AbysmBlocks.SUNNY_BLOOMSHROOM,
 					AbysmBlocks.MAUVE_BLOOMSHROOM
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.BLOOMSHROOM_STEMS)
+			valueLookupBuilder(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.SUNNY_BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.MAUVE_BLOOMSHROOM_STEMS);
 
-			getOrCreateTagBuilder(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS)
+			valueLookupBuilder(AbysmBlockTags.ROSY_BLOOMSHROOM_STEMS)
 				.add(
 					AbysmBlocks.ROSY_BLOOMSHROOM_STEM,
 					AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.SUNNY_BLOOMSHROOM_STEMS)
+			valueLookupBuilder(AbysmBlockTags.SUNNY_BLOOMSHROOM_STEMS)
 				.add(
 					AbysmBlocks.SUNNY_BLOOMSHROOM_STEM,
 					AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.MAUVE_BLOOMSHROOM_STEMS)
+			valueLookupBuilder(AbysmBlockTags.MAUVE_BLOOMSHROOM_STEMS)
 				.add(
 					AbysmBlocks.MAUVE_BLOOMSHROOM_STEM,
 					AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.BLOOMSHROOM_CAPS)
+			valueLookupBuilder(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.add(
 					AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 					AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
 					AbysmBlocks.MAUVE_BLOOMSHROOM_CAP
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.NECTARSAP)
+			valueLookupBuilder(AbysmBlockTags.NECTARSAP)
 				.add(
 					AbysmBlocks.SWEET_NECTARSAP,
 					AbysmBlocks.SOUR_NECTARSAP,
 					AbysmBlocks.BITTER_NECTARSAP
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.BLOOMING_CROWNS)
+			valueLookupBuilder(AbysmBlockTags.BLOOMING_CROWNS)
 				.add(
 					AbysmBlocks.BLOOMING_SODALITE_CROWN,
 					AbysmBlocks.BLOOMING_ANYOLITE_CROWN,
 					AbysmBlocks.BLOOMING_MELILITE_CROWN
 				);
 
-			getOrCreateTagBuilder(AbysmBlockTags.SCABIOSAS)
+			valueLookupBuilder(AbysmBlockTags.SCABIOSAS)
 				.add(
 					AbysmBlocks.WHITE_SCABIOSA,
 					AbysmBlocks.ORANGE_SCABIOSA,
@@ -348,7 +349,7 @@ public class AbysmTagProviders {
 					AbysmBlocks.BLACK_SCABIOSA
 				);
 
-			this.getOrCreateTagBuilder(AbysmBlockTags.DEEP_SEA_RUINS_REPLACEABLE)
+			this.valueLookupBuilder(AbysmBlockTags.DEEP_SEA_RUINS_REPLACEABLE)
 				.add(
 					AbysmBlocks.SMOOTH_FLOROPUMICE,
 					AbysmBlocks.SMOOTH_FLOROPUMICE_SLAB,
@@ -387,7 +388,7 @@ public class AbysmTagProviders {
 		}
 
 		public void addFamilyToTag(BlockFamily family, TagKey<Block> tag) {
-			FabricTagBuilder builder = getOrCreateTagBuilder(tag);
+			ProvidedTagBuilder<Block, Block> builder = valueLookupBuilder(tag);
 
 			// family.getVariants() gives a HashMap, so sort it for consistent ordering
 			Collection<Block> blocks = family.getVariants().values();
@@ -428,7 +429,7 @@ public class AbysmTagProviders {
 		public void addBlockToTags(BlockFamily family, BlockFamily.Variant variant, TagKey<Block> tag) {
 			Block block = family.getVariant(variant);
 			if (block != null) {
-				getOrCreateTagBuilder(tag).add(block);
+				valueLookupBuilder(tag).add(block);
 			}
 		}
 
@@ -438,9 +439,9 @@ public class AbysmTagProviders {
 
 		public void addBlockToTags(@Nullable Block block, boolean isWooden, TagKey<Block> baseTag, TagKey<Block> woodTag) {
 			if (block != null) {
-				getOrCreateTagBuilder(baseTag).add(block);
+				valueLookupBuilder(baseTag).add(block);
 				if (isWooden) {
-					getOrCreateTagBuilder(woodTag).add(block);
+					valueLookupBuilder(woodTag).add(block);
 				}
 			}
 		}
@@ -451,12 +452,12 @@ public class AbysmTagProviders {
 
 		public void addBlockToTags(@Nullable Block block, boolean isWooden, boolean isStone, TagKey<Block> baseTag, TagKey<Block> woodTag, TagKey<Block> stoneTag) {
 			if (block != null) {
-				getOrCreateTagBuilder(baseTag).add(block);
+				valueLookupBuilder(baseTag).add(block);
 				if (isWooden) {
-					getOrCreateTagBuilder(woodTag).add(block);
+					valueLookupBuilder(woodTag).add(block);
 				}
 				if (isStone) {
-					getOrCreateTagBuilder(stoneTag).add(block);
+					valueLookupBuilder(stoneTag).add(block);
 				}
 			}
 		}
@@ -470,38 +471,38 @@ public class AbysmTagProviders {
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 			// region vanilla item tags
-			getOrCreateTagBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
+			valueLookupBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
 				.add(
 					AbysmItems.FLIPPERS
 				);
 
-			getOrCreateTagBuilder(ItemTags.ARMOR_ENCHANTABLE)
+			valueLookupBuilder(ItemTags.ARMOR_ENCHANTABLE)
 				.add(
 					AbysmItems.FLIPPERS
 				);
 
-			getOrCreateTagBuilder(ItemTags.DURABILITY_ENCHANTABLE)
+			valueLookupBuilder(ItemTags.DURABILITY_ENCHANTABLE)
 				.add(
 					AbysmItems.FLIPPERS
 				);
 
-			getOrCreateTagBuilder(ItemTags.EQUIPPABLE_ENCHANTABLE)
+			valueLookupBuilder(ItemTags.EQUIPPABLE_ENCHANTABLE)
 				.add(
 					AbysmItems.FLIPPERS
 				);
 
-			getOrCreateTagBuilder(ItemTags.VANISHING_ENCHANTABLE)
+			valueLookupBuilder(ItemTags.VANISHING_ENCHANTABLE)
 				.add(
 					AbysmItems.HARPOON
 				);
 
-			getOrCreateTagBuilder(ItemTags.FISHES)
+			valueLookupBuilder(ItemTags.FISHES)
 				.add(
 					AbysmItems.SMALL_FLORAL_FISH,
 					AbysmItems.BIG_FLORAL_FISH
 				);
 
-			getOrCreateTagBuilder(ItemTags.WOLF_FOOD)
+			valueLookupBuilder(ItemTags.WOLF_FOOD)
 				.add(
 					AbysmItems.SMALL_FLORAL_FISH,
 					AbysmItems.BIG_FLORAL_FISH
@@ -509,7 +510,7 @@ public class AbysmTagProviders {
 			// endregion
 
 			// region abysm item tags
-			getOrCreateTagBuilder(AbysmItemTags.HARPOON_ENCHANTABLE)
+			valueLookupBuilder(AbysmItemTags.HARPOON_ENCHANTABLE)
 				.add(
 					AbysmItems.HARPOON
 				);
@@ -569,117 +570,78 @@ public class AbysmTagProviders {
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 			// region vanilla tags
-			getOrCreateTagBuilder(BiomeTags.IS_OVERWORLD)
-				.add(
-					AbysmBiomes.FLORAL_REEF,
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(BiomeTags.IS_OVERWORLD)
+				.add(AbysmBiomes.FLORAL_REEF)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(BiomeTags.MINESHAFT_BLOCKING)
-				.add(
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(BiomeTags.MINESHAFT_BLOCKING)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(BiomeTags.WATER_ON_MAP_OUTLINES) // add these biomes here since they aren't in IS_OCEAN
-				.add(
-					AbysmBiomes.FLORAL_REEF,
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(BiomeTags.WATER_ON_MAP_OUTLINES) // add these biomes here since they aren't in IS_OCEAN
+				.add(AbysmBiomes.FLORAL_REEF)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(BiomeTags.SPAWNS_COLD_VARIANT_FROGS)
-				.add(
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(BiomeTags.SPAWNS_COLD_VARIANT_FROGS)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(BiomeTags.SPAWNS_COLD_VARIANT_FARM_ANIMALS)
-				.add(
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(BiomeTags.SPAWNS_COLD_VARIANT_FARM_ANIMALS)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS)
-				.add(
-					AbysmBiomes.FLORAL_REEF
-				);
+			builder(BiomeTags.SPAWNS_WARM_VARIANT_FARM_ANIMALS)
+				.add(AbysmBiomes.FLORAL_REEF);
 			// endregion
 
 			// region convention tags
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_OVERWORLD)
-				.add(
-					AbysmBiomes.FLORAL_REEF,
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_TEMPERATE)
-				.add(
-					AbysmBiomes.FLORAL_REEF,
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_OVERWORLD)
+				.add(AbysmBiomes.FLORAL_REEF)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_WET)
-				.add(
-					AbysmBiomes.FLORAL_REEF,
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_TEMPERATE)
+				.add(AbysmBiomes.FLORAL_REEF)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_WET_OVERWORLD)
-				.add(
-					AbysmBiomes.FLORAL_REEF,
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_WET)
+				.add(AbysmBiomes.FLORAL_REEF)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_TEMPERATE_OVERWORLD)
-				.add(
-					AbysmBiomes.FLORAL_REEF,
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_WET_OVERWORLD)
+				.add(AbysmBiomes.FLORAL_REEF)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_OCEAN) // Using only the conventional tag here since the vanilla one overrides the music
-				.add(
-					AbysmBiomes.FLORAL_REEF,
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_TEMPERATE_OVERWORLD)
+				.add(AbysmBiomes.FLORAL_REEF)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_DEEP_OCEAN)
-				.add(
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_OCEAN) // Using only the conventional tag here since the vanilla one overrides the music
+				.add(AbysmBiomes.FLORAL_REEF)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_UNDERGROUND)
-				.add(
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_DEEP_OCEAN)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_MAGICAL)
-				.add(
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_UNDERGROUND)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_RARE)
-				.add(
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_MAGICAL)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_FLORAL)
-				.add(
-					AbysmBiomes.FLORAL_REEF
-				);
+			builder(ConventionalBiomeTags.IS_RARE)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 
-			getOrCreateTagBuilder(ConventionalBiomeTags.IS_AQUATIC)
-				.add(
-					AbysmBiomes.FLORAL_REEF,
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(ConventionalBiomeTags.IS_FLORAL)
+				.add(AbysmBiomes.FLORAL_REEF);
+
+			builder(ConventionalBiomeTags.IS_AQUATIC)
+				.add(AbysmBiomes.FLORAL_REEF)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 			// endregion
 
 			// region abysm tags
-			getOrCreateTagBuilder(AbysmBiomeTags.DEEP_SEA_RUINS_HAS_STRUCTURE)
-				.addOptionalTag(
-					BiomeTags.IS_DEEP_OCEAN
-				);
+			builder(AbysmBiomeTags.DEEP_SEA_RUINS_HAS_STRUCTURE)
+				.addOptionalTag(BiomeTags.IS_DEEP_OCEAN);
 
-			getOrCreateTagBuilder(AbysmBiomeTags.SPAWNS_VARIANT_DEPTH_SNAPPER)
-				.add(
-					AbysmBiomes.DEEP_SEA_RUINS
-				);
+			builder(AbysmBiomeTags.SPAWNS_VARIANT_DEPTH_SNAPPER)
+				.add(AbysmBiomes.DEEP_SEA_RUINS);
 			// endregion
 		}
 	}
@@ -692,14 +654,14 @@ public class AbysmTagProviders {
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 			// region vanilla entity tags
-			getOrCreateTagBuilder(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
+			valueLookupBuilder(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
 					AbysmEntityTypes.PADDLEFISH
 				);
 
-			getOrCreateTagBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
+			valueLookupBuilder(EntityTypeTags.CAN_BREATHE_UNDER_WATER)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
@@ -717,7 +679,7 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.SKELETON_SHARK
 				);
 
-			getOrCreateTagBuilder(EntityTypeTags.AQUATIC)
+			valueLookupBuilder(EntityTypeTags.AQUATIC)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
@@ -735,7 +697,7 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.SKELETON_SHARK
 				);
 
-			getOrCreateTagBuilder(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH)
+			valueLookupBuilder(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH)
 				.add(
 					AbysmEntityTypes.SMALL_FLORAL_FISH,
 					AbysmEntityTypes.BIG_FLORAL_FISH,
@@ -745,24 +707,24 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.LECTORFIN
 				);
 
-			getOrCreateTagBuilder(EntityTypeTags.IMPACT_PROJECTILES)
+			valueLookupBuilder(EntityTypeTags.IMPACT_PROJECTILES)
 				.add(
 					AbysmEntityTypes.FLYING_HARPOON
 				);
 
-			getOrCreateTagBuilder(ConventionalEntityTypeTags.BOSSES)
+			valueLookupBuilder(ConventionalEntityTypeTags.BOSSES)
 				.add(AbysmEntityTypes.MYSTERIOUS_BLOB);
 			// endregion
 
 			// region abysm entity tags
-			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_FRIEND)
+			valueLookupBuilder(AbysmEntityTypeTags.MAN_O_WAR_FRIEND)
 				.add(
 					EntityType.PUFFERFISH,
 					AbysmEntityTypes.MAN_O_WAR,
 					AbysmEntityTypes.SKELETON_SHARK
 				);
 
-			getOrCreateTagBuilder(AbysmEntityTypeTags.MAN_O_WAR_PREY)
+			valueLookupBuilder(AbysmEntityTypeTags.MAN_O_WAR_PREY)
 				.add(
 					EntityType.SALMON,
 					EntityType.COD,
@@ -772,7 +734,7 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.LECTORFIN
 				);
 
-			getOrCreateTagBuilder(AbysmEntityTypeTags.HARPOON_UNHAULABLE)
+			valueLookupBuilder(AbysmEntityTypeTags.HARPOON_UNHAULABLE)
 				.forceAddTag(ConventionalEntityTypeTags.BOSSES)
 				.add(
 					EntityType.ENDER_DRAGON,
@@ -782,11 +744,11 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.MYSTERIOUS_BLOB
 				);
 
-			getOrCreateTagBuilder(AbysmEntityTypeTags.LEHYDRATHAN_HUNT_TARGETS)
+			valueLookupBuilder(AbysmEntityTypeTags.LEHYDRATHAN_HUNT_TARGETS)
 				.add(EntityType.GLOW_SQUID)
 				.add(AbysmEntityTypes.SKELETON_SHARK);
 
-			getOrCreateTagBuilder(EntityTypeTags.UNDEAD)
+			valueLookupBuilder(EntityTypeTags.UNDEAD)
 				.add(AbysmEntityTypes.SKELETON_SHARK);
 			// endregion
 		}
@@ -800,13 +762,26 @@ public class AbysmTagProviders {
 
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-			getOrCreateTagBuilder(DamageTypeTags.IS_PROJECTILE).add(AbysmDamageTypes.HARPOON);
-			getOrCreateTagBuilder(DamageTypeTags.ALWAYS_KILLS_ARMOR_STANDS).add(AbysmDamageTypes.HARPOON);
-			getOrCreateTagBuilder(DamageTypeTags.PANIC_CAUSES).add(AbysmDamageTypes.CNIDOCYTE_STING).add(AbysmDamageTypes.HARPOON);
+			builder(DamageTypeTags.IS_PROJECTILE)
+				.add(AbysmDamageTypes.HARPOON);
 
-			getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ARMOR).add(AbysmDamageTypes.CNIDOCYTE_STING).add(AbysmDamageTypes.PRESSURE);
-			getOrCreateTagBuilder(DamageTypeTags.BYPASSES_EFFECTS).add(AbysmDamageTypes.PRESSURE);
-			getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(AbysmDamageTypes.CNIDOCYTE_STING).add(AbysmDamageTypes.PRESSURE);
+			builder(DamageTypeTags.ALWAYS_KILLS_ARMOR_STANDS)
+				.add(AbysmDamageTypes.HARPOON);
+
+			builder(DamageTypeTags.PANIC_CAUSES)
+				.add(AbysmDamageTypes.CNIDOCYTE_STING)
+				.add(AbysmDamageTypes.HARPOON);
+
+			builder(DamageTypeTags.BYPASSES_ARMOR)
+				.add(AbysmDamageTypes.CNIDOCYTE_STING)
+				.add(AbysmDamageTypes.PRESSURE);
+
+			builder(DamageTypeTags.BYPASSES_EFFECTS)
+				.add(AbysmDamageTypes.PRESSURE);
+
+			builder(DamageTypeTags.BYPASSES_ENCHANTMENTS)
+				.add(AbysmDamageTypes.CNIDOCYTE_STING)
+				.add(AbysmDamageTypes.PRESSURE);
 		}
 	}
 
@@ -818,7 +793,7 @@ public class AbysmTagProviders {
 
 		@Override
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-			getOrCreateTagBuilder(AbysmSoundEventTags.UNEFFECTED_BY_WATER);
+			builder(AbysmSoundEventTags.UNEFFECTED_BY_WATER);
 		}
 	}
 }

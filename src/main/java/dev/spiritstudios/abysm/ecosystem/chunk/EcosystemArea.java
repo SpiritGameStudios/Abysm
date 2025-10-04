@@ -224,9 +224,9 @@ public class EcosystemArea {
 		PopInfo popInfo = this.populations.get(ecosystemType);
 		if (popInfo == null || popInfo.isEmpty()) return null;
 
-		List<Integer> entityIds = popInfo.getEntityIds().stream().toList();
-		int index = this.world.getRandom().nextInt(entityIds.size());
-		int entityId = entityIds.get(index);
+		int[] entityIds = popInfo.getEntityIds().intStream().toArray();
+		int index = this.world.getRandom().nextInt(entityIds.length);
+		int entityId = entityIds[index];
 		return (MobEntity) this.world.getEntityById(entityId);
 	}
 

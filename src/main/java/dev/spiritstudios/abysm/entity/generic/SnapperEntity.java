@@ -27,14 +27,12 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.spawn.SpawnContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -103,24 +101,15 @@ public class SnapperEntity extends SimpleFishEntity implements Variantable<Snapp
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-
-		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
-
-		nbt.put("variant", SnapperEntityVariant.ENTRY_CODEC, ops, this.dataTracker.get(VARIANT));
+	protected void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
+		view.put("variant", SnapperEntityVariant.ENTRY_CODEC, this.dataTracker.get(VARIANT));
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-
-		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
-
-		this.setVariant(
-			nbt.get("variant", SnapperEntityVariant.ENTRY_CODEC, ops)
-				.orElse(SnapperEntityVariant.getDefaultEntry(this.getRegistryManager()))
-		);
+	protected void readCustomData(ReadView view) {
+		super.readCustomData(view);
+		view.read("variant", SnapperEntityVariant.ENTRY_CODEC).ifPresent(this::setVariant);
 	}
 
 	@Override

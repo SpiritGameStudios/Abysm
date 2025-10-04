@@ -20,9 +20,9 @@ import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.ReadView;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -70,8 +70,9 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
+	protected void readCustomData(ReadView view) {
+		super.readCustomData(view);
+
 		if (this.hasCustomName()) {
 			this.bossBar.setName(this.getDisplayName());
 		}

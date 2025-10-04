@@ -7,10 +7,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Util;
 import net.minecraft.world.ServerWorldAccess;
@@ -28,7 +29,7 @@ import java.util.List;
  *     <ul>
  *         <li>Implement this interface and fill in the required methods.</li>
  *         <li>Override the Entity#initDataTracker method to include your DataTracked EntityVariant. This syncs your variant.</li>
- *         <li>Override the Entity#writeCustomDataToNbt and Entity#readCustomDataFromNbt to call {@link Patternable#writeEntityPatternNbt(RegistryOps, NbtCompound)} and {@link Patternable#readEntityPatternNbt(Entity, RegistryOps, NbtCompound)} respectively. These keep your variants persistent on world save.</li>
+ *         <li>Override the Entity#writeCustomDataToNbt and Entity#readCustomDataFromNbt to call {@link Patternable#writeEntityPattern(RegistryOps, NbtCompound)} and {@link Patternable#readEntityPattern(Entity, RegistryOps, NbtCompound)} respectively. These keep your variants persistent on world save.</li>
  *         <li>Override the MobEntity#initialize method to call {@link Patternable#getPatternForInitialize(ServerWorldAccess, Entity, EntityData)}, which sets your entity's variant upon spawning.</li>
  *     </ul>
  *     <li>For the entity renderer:</li>
@@ -137,15 +138,15 @@ public interface Patternable {
 	/**
 	 * Write this entity's pattern to the world's nbt.
 	 */
-	default void writeEntityPatternNbt(RegistryOps<NbtElement> ops, NbtCompound nbt) {
-		this.getEntityPattern().writeNbt(ops, nbt);
+	default void writeEntityPattern(WriteView view) {
+		view.put("entity_pattern", EntityPattern.CODEC, getEntityPattern());
 	}
 
 	/**
 	 * Read an entity pattern from the world's nbt.
 	 */
-	default void readEntityPatternNbt(Entity self, RegistryOps<NbtElement> ops, NbtCompound nbt) {
-		EntityPattern.fromNbt(ops, nbt).ifPresentOrElse(
+	default void readEntityPattern(Entity self, ReadView view) {
+		view.read("entity_pattern", EntityPattern.CODEC).ifPresentOrElse(
 			this::setEntityPattern,
 			() -> {
 				Abysm.LOGGER.warn("Could not read EntityPattern for {}! Using fallback pattern instead.", self.getType());

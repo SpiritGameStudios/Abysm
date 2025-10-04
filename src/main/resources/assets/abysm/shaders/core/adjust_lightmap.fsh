@@ -1,7 +1,10 @@
 #version 150
 
 uniform sampler2D InSampler;
-uniform float BrightenSkyFactor;
+
+layout(std140) uniform DynamicTransforms {
+	float BrightenSkyFactor;
+};
 
 in vec2 texCoord;
 

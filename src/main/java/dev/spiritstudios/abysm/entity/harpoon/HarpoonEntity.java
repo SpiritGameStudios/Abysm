@@ -26,10 +26,11 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
@@ -203,21 +204,21 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		nbt.putInt("slot", this.slot);
-		nbt.putInt("ticksAlive", this.ticksAlive);
-		nbt.putBoolean("inBlock", this.isInBlock());
-		nbt.putFloat("length", this.getLength());
+	public void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
+		view.putInt("slot", this.slot);
+		view.putInt("ticksAlive", this.ticksAlive);
+		view.putBoolean("inBlock", this.isInBlock());
+		view.putFloat("length", this.getLength());
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		this.slot = nbt.getInt("slot", -1);
-		this.ticksAlive = nbt.getInt("ticksAlive", 0);
-		this.setInBlock(nbt.getBoolean("inBlock", false));
-		this.setLength(nbt.getFloat("length", 0.0F));
+	public void readCustomData(ReadView view) {
+		super.readCustomData(view);
+		this.slot = view.getInt("slot", -1);
+		this.ticksAlive = view.getInt("ticksAlive", 0);
+		this.setInBlock(view.getBoolean("inBlock", false));
+		this.setLength(view.getFloat("length", 0.0F));
 
 		updateWeaponFlags(this.getItemStack());
 	}

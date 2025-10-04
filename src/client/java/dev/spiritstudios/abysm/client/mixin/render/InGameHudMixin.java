@@ -2,10 +2,10 @@ package dev.spiritstudios.abysm.client.mixin.render;
 
 import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ColorHelper;
@@ -48,19 +48,19 @@ public class InGameHudMixin {
 		int scaledWidth = context.getScaledWindowWidth();
 		int scaledHeight = context.getScaledWindowHeight();
 
-		context.getMatrices().push();
+		context.getMatrices().pushMatrix();
 
 		float scale = MathHelper.lerp(blueStrength, 2.0F, 1.5F);
-		context.getMatrices().translate(scaledWidth / 2.0F, scaledHeight / 2.0F, 0.0F);
-		context.getMatrices().scale(scale, scale, scale);
-		context.getMatrices().translate(-scaledWidth / 2.0F, -scaledHeight / 2.0F, 0.0F);
+		context.getMatrices().translate(scaledWidth / 2.0F, scaledHeight / 2.0F);
+		context.getMatrices().scale(scale, scale);
+		context.getMatrices().translate(-scaledWidth / 2.0F, -scaledHeight / 2.0F);
 
 		float red = 0.08F * blueStrength;
 		float green = 0.15F * blueStrength;
 		float blue = 0.3F * blueStrength;
 
 		context.drawTexture(
-			identifier -> RenderLayer.getGuiNauseaOverlay(),
+			RenderPipelines.GUI_NAUSEA_OVERLAY,
 			NAUSEA_TEXTURE,
 			0, 0,
 			0.0F, 0.0F,
@@ -68,6 +68,6 @@ public class InGameHudMixin {
 			scaledWidth, scaledHeight,
 			ColorHelper.fromFloats(1.0F, red, green, blue));
 
-		context.getMatrices().pop();
+		context.getMatrices().popMatrix();
 	}
 }

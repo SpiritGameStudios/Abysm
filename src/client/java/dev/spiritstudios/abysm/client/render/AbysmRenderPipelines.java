@@ -10,7 +10,8 @@ import net.minecraft.client.gl.UniformType;
 import net.minecraft.client.render.VertexFormats;
 
 import static dev.spiritstudios.abysm.Abysm.id;
-import static net.minecraft.client.gl.RenderPipelines.MATRICES_COLOR_FOG_SNIPPET;
+import static net.minecraft.client.gl.RenderPipelines.GLOBALS_SNIPPET;
+import static net.minecraft.client.gl.RenderPipelines.TRANSFORMS_PROJECTION_FOG_SNIPPET;
 
 public class AbysmRenderPipelines {
 	public static final RenderPipeline ADJUST_LIGHTMAP = register(
@@ -19,7 +20,7 @@ public class AbysmRenderPipelines {
 			.withVertexShader("core/blit_screen")
 			.withFragmentShader(id("core/adjust_lightmap"))
 			.withSampler("InSampler")
-			.withUniform("BrightenSkyFactor", UniformType.FLOAT)
+			.withUniform("LightmapAdjustmentInfo", UniformType.UNIFORM_BUFFER)
 			.withDepthWrite(false)
 			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
 			.withVertexFormat(VertexFormats.POSITION, VertexFormat.DrawMode.QUADS)
@@ -34,12 +35,10 @@ public class AbysmRenderPipelines {
 		.build();
 
 	public static final RenderPipeline MAN_O_WAR_TENTACLES = register(
-		RenderPipeline.builder(MATRICES_COLOR_FOG_SNIPPET)
+		RenderPipeline.builder(TRANSFORMS_PROJECTION_FOG_SNIPPET, GLOBALS_SNIPPET)
 			.withLocation(id("pipeline/man_o_war_tentacles"))
 			.withVertexShader(id("core/rendertype_man_o_war_tentacles"))
 			.withFragmentShader("core/rendertype_lines")
-			.withUniform("LineWidth", UniformType.FLOAT)
-			.withUniform("ScreenSize", UniformType.VEC2)
 			.withSampler("Sampler2")
 			.withBlend(BlendFunction.TRANSLUCENT)
 			.withCull(true)

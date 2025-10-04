@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(PersistentProjectileEntity.class)
 public abstract class PersistentProjectileEntityMixin {
-	@ModifyExpressionValue(method = "writeCustomDataToNbt", at = @At(value = "FIELD", target = "Lnet/minecraft/item/ItemStack;CODEC:Lcom/mojang/serialization/Codec;"))
+	@ModifyExpressionValue(method = "writeCustomData", at = @At(value = "FIELD", target = "Lnet/minecraft/item/ItemStack;CODEC:Lcom/mojang/serialization/Codec;"))
 	private Codec<ItemStack> encodeOptional(Codec<ItemStack> original) {
 		if ((PersistentProjectileEntity) (Object) this instanceof HarpoonEntity) {
 			return ItemStack.OPTIONAL_CODEC;

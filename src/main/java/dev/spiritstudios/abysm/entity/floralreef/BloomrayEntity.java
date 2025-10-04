@@ -32,13 +32,11 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.spawn.SpawnContext;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.particle.ParticleEffect;
-import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
@@ -80,22 +78,15 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
-
-		nbt.put("variant", BloomrayEntityVariant.ENTRY_CODEC, ops, this.dataTracker.get(VARIANT));
+	protected void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
+		view.put("view", BloomrayEntityVariant.ENTRY_CODEC, this.dataTracker.get(VARIANT));
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
-
-		this.setVariant(
-			nbt.get("variant", BloomrayEntityVariant.ENTRY_CODEC, ops)
-				.orElse(BloomrayEntityVariant.getDefaultEntry(this.getRegistryManager()))
-		);
+	protected void readCustomData(ReadView view) {
+		super.readCustomData(view);
+		view.read("variant", BloomrayEntityVariant.ENTRY_CODEC).ifPresent(this::setVariant);
 	}
 
 	@Override

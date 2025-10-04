@@ -13,10 +13,8 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.RegistryOps;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -69,19 +67,15 @@ public abstract class AbstractFloralFishEntity extends FishEntity implements Geo
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		RegistryOps<NbtElement> ops = getRegistryManager().getOps(NbtOps.INSTANCE);
-
-		this.writeEntityPatternNbt(ops, nbt);
+	public void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
+		this.writeEntityPattern(view);
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		RegistryOps<NbtElement> ops = getRegistryManager().getOps(NbtOps.INSTANCE);
-
-		this.readEntityPatternNbt(this, ops, nbt);
+	public void readCustomData(ReadView view) {
+		super.readCustomData(view);
+		this.readEntityPattern(this, view);
 	}
 
 	@Nullable

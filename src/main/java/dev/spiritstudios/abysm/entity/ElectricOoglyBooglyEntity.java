@@ -21,15 +21,13 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.spawn.SpawnContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -193,26 +191,23 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+	public void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
 
-		nbt.put("variant", ElectricOoglyBooglyVariant.ENTRY_CODEC, ops, this.dataTracker.get(VARIANT));
+		view.put("variant", ElectricOoglyBooglyVariant.ENTRY_CODEC, this.dataTracker.get(VARIANT));
 
-		nbt.putBoolean("blowingUpWithMind", this.isBlowingUpWithMind());
-		nbt.putInt("ticksSinceBlowingUp", this.ticksSinceBlowingUp);
+		view.putBoolean("blowingUpWithMind", this.isBlowingUpWithMind());
+		view.putInt("ticksSinceBlowingUp", this.ticksSinceBlowingUp);
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		RegistryOps<NbtElement> ops = this.getRegistryManager().getOps(NbtOps.INSTANCE);
+	public void readCustomData(ReadView view) {
+		super.readCustomData(view);
 
-		this.setVariant(nbt.get("variant", ElectricOoglyBooglyVariant.ENTRY_CODEC, ops)
-			.orElse(ElectricOoglyBooglyVariant.getDefaultEntry(this.getRegistryManager())));
+		view.read("variant", ElectricOoglyBooglyVariant.ENTRY_CODEC).ifPresent(this::setVariant);
 
-		this.setIsBlowingUpWithMind(nbt.getBoolean("blowingUpWithMind", false));
-		this.ticksSinceBlowingUp = nbt.getInt("ticksSinceBlowingUp", 0);
+		this.setIsBlowingUpWithMind(view.getBoolean("blowingUpWithMind", this.isBlowingUpWithMind()));
+		this.ticksSinceBlowingUp = view.getInt("ticksSinceBlowingUp", this.ticksSinceBlowingUp);
 	}
 
 	public boolean isBlowingUpWithMind() {

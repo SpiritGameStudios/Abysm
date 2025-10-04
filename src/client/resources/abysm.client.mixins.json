@@ -1,28 +1,28 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "dev.spiritstudios.abysm.client.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "client": [
-    "ChatScreenMixin",
-    "ClientPlayerEntityMixin",
-    "harpoon.PlayerEntityRendererMixin",
-    "leviathan.ClientPlayNetworkHandlerMixin",
-    "render.BackgroundRendererMixin",
-    "render.ClientPlayerEntityMixin",
-    "render.EntityRenderDispatcherMixin",
-    "render.EntityRendererMixin",
-    "render.GlResourceManagerMixin",
-    "render.HeldItemRendererMixin",
-    "render.InGameHudMixin",
-    "render.LightmapTextureManagerMixin",
-    "render.LivingEntityRenderStateMixin",
-    "render.WaterSuspendParticleMixin",
-    "render.WorldRendererMixin",
-    "sound.SoundSystemMixin",
-    "sound.SourceAccessor"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+	"required": true,
+	"minVersion": "0.8",
+	"package": "dev.spiritstudios.abysm.client.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"ChatScreenMixin",
+		"ClientPlayerEntityMixin",
+		"harpoon.PlayerEntityRendererMixin",
+		"leviathan.ClientPlayNetworkHandlerMixin",
+		"render.ClientPlayerEntityMixin",
+		"render.EntityRenderDispatcherMixin",
+		"render.EntityRendererMixin",
+		"render.FogRendererMixin",
+		"render.HeldItemRendererMixin",
+		"render.InGameHudMixin",
+		"render.LightmapTextureManagerMixin",
+		"render.LivingEntityRenderStateMixin",
+		"render.WaterFogModifierMixin",
+		"render.WaterSuspendParticleMixin",
+		"render.WorldRendererMixin",
+		"sound.SoundSystemMixin",
+		"sound.SourceAccessor"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

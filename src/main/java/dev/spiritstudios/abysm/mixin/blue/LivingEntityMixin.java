@@ -12,8 +12,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.storage.ReadView;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -111,14 +111,14 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Li
 	private void abysm$tryUpdateIsBlue(boolean isBlue) {
 		if (this.abysm$isBlue != isBlue) {
 			this.abysm$setBlue(isBlue);
-			if (!this.getEntityWorld().isClient) {
+			if (!this.getWorld().isClient) {
 				new EntityUpdateBlueS2CPayload(this.getId(), isBlue).send(this);
 			}
 		}
 	}
 
-	@Inject(method = "readCustomDataFromNbt", at = @At("RETURN"))
-	private void checkBlue(NbtCompound nbt, CallbackInfo ci) {
+	@Inject(method = "readCustomData", at = @At("RETURN"))
+	private void checkBlue(ReadView view, CallbackInfo ci) {
 		this.abysm$tryUpdateIsBlue(BlueEffect.hasBlueEffect((LivingEntity) (Object) this));
 	}
 

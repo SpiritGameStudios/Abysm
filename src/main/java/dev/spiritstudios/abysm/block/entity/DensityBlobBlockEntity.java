@@ -5,6 +5,8 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.math.BlockPos;
 
 public class DensityBlobBlockEntity extends BlockEntity {
@@ -34,18 +36,19 @@ public class DensityBlobBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-		super.writeNbt(nbt, registries);
-		nbt.putString(FINAL_STATE_KEY, this.finalState);
-		nbt.putString(BLOBS_SAMPLER_IDENTIFIER, this.blobsSamplerIdentifier);
+	protected void writeData(WriteView view) {
+		super.writeData(view);
+		view.putString(FINAL_STATE_KEY, this.finalState);
+		view.putString(BLOBS_SAMPLER_IDENTIFIER, this.blobsSamplerIdentifier);
 	}
 
 	@Override
-	protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-		super.readNbt(nbt, registries);
-		this.finalState = nbt.getString(FINAL_STATE_KEY, "minecraft:air");
-		this.blobsSamplerIdentifier = nbt.getString(BLOBS_SAMPLER_IDENTIFIER, "abysm:empty");
+	protected void readData(ReadView view) {
+		super.readData(view);
+		this.finalState = view.getString(FINAL_STATE_KEY, "minecraft:air");
+		this.blobsSamplerIdentifier = view.getString(BLOBS_SAMPLER_IDENTIFIER, "abysm:empty");
 	}
+
 
 	public BlockEntityUpdateS2CPacket toUpdatePacket() {
 		return BlockEntityUpdateS2CPacket.create(this);

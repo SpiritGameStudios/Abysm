@@ -29,7 +29,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.vehicle.AbstractBoatEntity;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.registry.tag.FluidTags;
@@ -38,6 +37,8 @@ import net.minecraft.server.ServerTask;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.util.TypeFilter;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.Box;
@@ -201,15 +202,15 @@ public class ManOWarEntity extends WaterCreatureEntity {
 	}
 
 	@Override
-	public void writeCustomDataToNbt(NbtCompound nbt) {
-		super.writeCustomDataToNbt(nbt);
-		nbt.putInt("breedingAge", this.getBreedingAge());
+	protected void readCustomData(ReadView view) {
+		super.readCustomData(view);
+		this.setBreedingAge(view.getInt("breedingAge", 0));
 	}
 
 	@Override
-	public void readCustomDataFromNbt(NbtCompound nbt) {
-		super.readCustomDataFromNbt(nbt);
-		this.setBreedingAge(nbt.getInt("breedingAge", 0));
+	protected void writeCustomData(WriteView view) {
+		super.writeCustomData(view);
+		view.putInt("breedingAge", this.getBreedingAge());
 	}
 
 	@Override

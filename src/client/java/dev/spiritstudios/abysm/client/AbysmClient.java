@@ -34,14 +34,14 @@ import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
 import dev.spiritstudios.abysm.networking.NowHuntingS2CPayload;
 import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.BlockRenderLayer;
 import net.minecraft.client.render.item.property.bool.BooleanProperties;
 import net.minecraft.entity.Entity;
 import net.minecraft.particle.ParticleEffect;
@@ -50,6 +50,10 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class AbysmClient implements ClientModInitializer {
+	public static float underwaterVisibilityMultiplier = 1.0F;
+	public static float nextUnderwaterVisibilityMultiplier = 1.0F;
+
+
 	@Override
 	public void onInitializeClient() {
 		BooleanProperties.ID_MAPPER.put(Abysm.id("harpoon_loaded"), HarpoonLoadedProperty.CODEC);
@@ -127,8 +131,8 @@ public class AbysmClient implements ClientModInitializer {
 
 		ModMenuHelper.addConfig(Abysm.MODID, AbysmConfig.HOLDER.id());
 
-		BlockRenderLayerMap.INSTANCE.putBlocks(
-			RenderLayer.getCutout(),
+		BlockRenderLayerMap.putBlocks(
+			BlockRenderLayer.CUTOUT,
 			AbysmBlocks.ROSY_SPRIGS,
 			AbysmBlocks.POTTED_ROSY_SPRIGS,
 			AbysmBlocks.SUNNY_SPRIGS,
@@ -181,8 +185,8 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.OOZETRICKLE_LANTERN
 		);
 
-		BlockRenderLayerMap.INSTANCE.putBlocks(
-			RenderLayer.getCutoutMipped(),
+		BlockRenderLayerMap.putBlocks(
+			BlockRenderLayer.CUTOUT_MIPPED,
 			AbysmBlocks.ROSEBLOOM_PETALEAVES,
 			AbysmBlocks.SUNBLOOM_PETALEAVES,
 			AbysmBlocks.MALLOWBLOOM_PETALEAVES,
@@ -190,8 +194,8 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.OOZETRICKLE_CORD
 		);
 
-		BlockRenderLayerMap.INSTANCE.putBlocks(
-			RenderLayer.getTranslucent(),
+		BlockRenderLayerMap.putBlocks(
+			BlockRenderLayer.TRANSLUCENT,
 			AbysmBlocks.SWEET_NECTARSAP,
 			AbysmBlocks.SOUR_NECTARSAP,
 			AbysmBlocks.BITTER_NECTARSAP

@@ -4,9 +4,11 @@ import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.textures.GpuTexture;
+import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.textures.TextureFormat;
 import dev.spiritstudios.abysm.client.render.LightmapAdjustment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gl.MappableRingBuffer;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -25,14 +27,22 @@ public abstract class LightmapTextureManagerMixin {
 	@Shadow @Final private MinecraftClient client;
 	@Shadow @Final private GpuTexture glTexture;
 
+	@Shadow
+	@Final
+	private GpuTextureView glTextureView;
 	@Unique private GpuTexture abysm$secondaryGlTexture;
+	@Unique private GpuTextureView abysm$secondaryView;
+	@Unique
+	private MappableRingBuffer abysm$uniformBuffer;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void initDummy(GameRenderer renderer, MinecraftClient client, CallbackInfo ci) {
 		GpuDevice gpuDevice = RenderSystem.getDevice();
-		this.abysm$secondaryGlTexture = gpuDevice.createTexture("Light Texture", TextureFormat.RGBA8, 16, 16, 1);
+		this.abysm$secondaryGlTexture = gpuDevice.createTexture("Abysm Light Texture", GpuTexture.USAGE_COPY_SRC | GpuTexture.USAGE_TEXTURE_BINDING | GpuTexture.USAGE_RENDER_ATTACHMENT, TextureFormat.RGBA8, 16, 16, 1, 1);
 		this.abysm$secondaryGlTexture.setTextureFilter(FilterMode.LINEAR, false);
 		gpuDevice.createCommandEncoder().clearColorTexture(this.abysm$secondaryGlTexture, 0xFFFFFFFF);
+		this.abysm$uniformBuffer = new MappableRingBuffer(() -> "Abysm Lightmap Adjustment UBO", 130, LightmapAdjustment.UBO_SIZE);
+
 	}
 
 	@Inject(method = "close", at = @At("RETURN"))
@@ -47,6 +57,6 @@ public abstract class LightmapTextureManagerMixin {
 		// player should not be null
 		Objects.requireNonNull(player);
 
-		LightmapAdjustment.adjustLightmap(player, this.glTexture, this.abysm$secondaryGlTexture, tickProgress);
+		LightmapAdjustment.adjustLightmap(player, this.glTexture, this.glTextureView, this.abysm$secondaryGlTexture, this.abysm$secondaryView, abysm$uniformBuffer, tickProgress);
 	}
 }

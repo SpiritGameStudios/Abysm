@@ -34,7 +34,7 @@ public final class AbysmCodecs {
 	public static DataResult<Integer> parseColor(String name) {
 		if (name.startsWith("#")) {
 			try {
-				int color = Integer.parseInt(name.substring(1), 16);
+				int color = Integer.parseUnsignedInt(name.substring(1), 16);
 				return DataResult.success(color, Lifecycle.stable());
 			} catch (NumberFormatException ignored) {
 				return DataResult.error(() -> "Invalid color value: " + name);
