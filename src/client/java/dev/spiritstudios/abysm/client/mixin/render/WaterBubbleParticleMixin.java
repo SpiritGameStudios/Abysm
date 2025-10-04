@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.client.mixin.render;
 
-import dev.spiritstudios.specter.api.core.math.Easing;
 import net.minecraft.client.particle.SpriteBillboardParticle;
 import net.minecraft.client.particle.WaterBubbleParticle;
 import net.minecraft.client.world.ClientWorld;
@@ -18,28 +17,21 @@ public abstract class WaterBubbleParticleMixin extends SpriteBillboardParticle {
 		super(clientWorld, d, e, f);
 	}
 
-	@Inject(method = "tick", at = @At("TAIL"))
+	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/WaterBubbleParticle;markDead()V"))
 	private void pop(CallbackInfo ci) {
-		if (this.dead) {
-			world.addParticleClient(
-				ParticleTypes.BUBBLE_POP,
-				x, y, z,
-				0F, 0F, 0F
-			);
+		world.addParticleClient(
+			ParticleTypes.BUBBLE_POP,
+			x, y, z,
+			0F, 0F, 0F
+		);
 
-			world.playSoundClient(
-				x, y, z,
-				SoundEvents.BLOCK_BUBBLE_COLUMN_BUBBLE_POP,
-				SoundCategory.BLOCKS,
-				0.25F,
-				1.0F + 0.1F * Math.max(0, random.nextInt(10) - 5 + 1),
-				false
-			);
-		}
-	}
-
-	@Override
-	public float getSize(float tickDelta) {
-		return (float) Easing.QUINT.out(Math.min(age + tickDelta, getMaxAge()), 0, scale, getMaxAge());
+		world.playSoundClient(
+			x, y, z,
+			SoundEvents.BLOCK_BUBBLE_COLUMN_BUBBLE_POP,
+			SoundCategory.BLOCKS,
+			0.25F,
+			1.0F + 0.1F * Math.max(0, random.nextInt(10) - 5 + 1),
+			false
+		);
 	}
 }
