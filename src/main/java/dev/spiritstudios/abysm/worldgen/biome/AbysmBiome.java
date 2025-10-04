@@ -56,7 +56,27 @@ public abstract class AbysmBiome {
 
 	public abstract BiomeEffects.Builder createEffects();
 
-	public abstract GenerationSettings.Builder createGenerationSettings(RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup);
+	public GenerationSettings.Builder createGenerationSettings(RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
+		GenerationSettings.LookupBackedBuilder builder = new GenerationSettings.LookupBackedBuilder(featureLookup, carverLookup);
+
+		addBasicFeatures(builder);
+
+		DefaultBiomeFeatures.addDefaultOres(builder);
+		DefaultBiomeFeatures.addDefaultDisks(builder);
+		DefaultBiomeFeatures.addWaterBiomeOakTrees(builder);
+		DefaultBiomeFeatures.addDefaultFlowers(builder);
+		DefaultBiomeFeatures.addDefaultGrass(builder);
+		DefaultBiomeFeatures.addDefaultMushrooms(builder);
+		DefaultBiomeFeatures.addDefaultVegetation(builder, true);
+
+		createGenerationSettings(builder);
+
+		return builder;
+	}
+
+	public GenerationSettings.Builder createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+		return builder;
+	}
 
 	public abstract SpawnSettings.Builder createSpawnSettings();
 

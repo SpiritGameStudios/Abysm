@@ -25,6 +25,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
 		if (!(this.getWorld() instanceof ServerWorld world)) {
 			return;
 		}
+		// check diving suit
 		float pressure = PressureFinder.getPressure(world, this.getBlockPos());
 		if (pressure >= 40f) {
 			this.damage(world,

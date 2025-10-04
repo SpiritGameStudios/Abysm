@@ -1,8 +1,10 @@
-package dev.spiritstudios.abysm.worldgen.biome;
+package dev.spiritstudios.abysm.worldgen.biome.custom;
 
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
+import dev.spiritstudios.abysm.worldgen.biome.AbysmBiome;
+import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import dev.spiritstudios.abysm.worldgen.noise.AbysmNoiseParameters;
 import net.minecraft.block.Blocks;
@@ -29,6 +31,7 @@ import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
 import static net.minecraft.world.gen.surfacebuilder.MaterialRules.stoneDepth;
 
 public final class DeepSeaRuinsBiome extends AbysmBiome {
+
 	public DeepSeaRuinsBiome() {
 		super(AbysmBiomes.DEEP_SEA_RUINS, 0.5F, true, 0.5F);
 	}
@@ -45,19 +48,7 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 	}
 
 	@Override
-	public GenerationSettings.Builder createGenerationSettings(RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
-		GenerationSettings.LookupBackedBuilder builder = new GenerationSettings.LookupBackedBuilder(featureLookup, carverLookup);
-
-		addBasicFeatures(builder);
-
-		DefaultBiomeFeatures.addDefaultOres(builder);
-		DefaultBiomeFeatures.addDefaultDisks(builder);
-		DefaultBiomeFeatures.addWaterBiomeOakTrees(builder);
-		DefaultBiomeFeatures.addDefaultFlowers(builder);
-		DefaultBiomeFeatures.addDefaultGrass(builder);
-		DefaultBiomeFeatures.addDefaultMushrooms(builder);
-		DefaultBiomeFeatures.addDefaultVegetation(builder, true);
-
+	public GenerationSettings.Builder createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
 		builder
 			.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES)
 			.feature(GenerationStep.Feature.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_CLAY_DREGLOAM)

@@ -20,11 +20,11 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 	// Music & sounds created by WorldWidePixel (unless otherwise stated). Made with love and a bowl :3
 
 	// EXTRA VANILLA SONGS (by C418)
-	private final SoundTypeBuilder.EntryBuilder AXOLOTL = ofVanillaFile("music/game/water/axolotl").stream(true).volume(0.4F).weight(1);
-	private final SoundTypeBuilder.EntryBuilder DRAGON_FISH = ofVanillaFile("music/game/water/dragon_fish").stream(true).volume(0.4F).weight(1);
-	private final SoundTypeBuilder.EntryBuilder SHUNIJI = ofVanillaFile("music/game/water/shuniji").stream(true).volume(0.4F).weight(1);
+	private final SoundTypeBuilder.EntryBuilder axolotl = ofVanillaFile("music/game/water/axolotl").stream(true).volume(0.4F).weight(1);
+	private final SoundTypeBuilder.EntryBuilder dragonFish = ofVanillaFile("music/game/water/dragon_fish").stream(true).volume(0.4F).weight(1);
+	private final SoundTypeBuilder.EntryBuilder shuniji = ofVanillaFile("music/game/water/shuniji").stream(true).volume(0.4F).weight(1);
 	// GENERAL UNDERWATER
-	private final SoundTypeBuilder.EntryBuilder TILAPIA = ofFile("music/game/tilapia").stream(true).volume(0.4F);
+	private final SoundTypeBuilder.EntryBuilder tilapia = ofFile("music/game/tilapia").stream(true).volume(0.4F);
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup, SoundExporter exporter) {
@@ -32,9 +32,9 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 			AbysmSoundEvents.MUSIC_OVERWORLD_FLORAL_REEF,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/cichlid").stream(true).volume(0.4F).weight(2)) // Original biome-exclusive song
-				.sound(AXOLOTL)
-				.sound(DRAGON_FISH)
-				.sound(TILAPIA)
+				.sound(axolotl)
+				.sound(dragonFish)
+				.sound(tilapia)
 				.category(SoundCategory.MUSIC)
 		);
 
@@ -42,9 +42,9 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 			AbysmSoundEvents.MUSIC_OVERWORLD_DEEP_SEA_RUINS,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/colossal_codecs").stream(true).volume(0.4F).weight(2)) // Original biome-exclusive song
-				.sound(DRAGON_FISH)
-				.sound(SHUNIJI)
-				.sound(TILAPIA)
+				.sound(dragonFish)
+				.sound(shuniji)
+				.sound(tilapia)
 				.category(SoundCategory.MUSIC)
 		);
 
@@ -52,9 +52,9 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 			AbysmSoundEvents.MUSIC_OVERWORLD_PEARLESCENT_SEA,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/wake").stream(true).volume(0.4F).weight(2)) // Original biome-exclusive song
-				.sound(AXOLOTL)
-				.sound(SHUNIJI)
-				.sound(TILAPIA)
+				.sound(axolotl)
+				.sound(shuniji)
+				.sound(tilapia)
 				.category(SoundCategory.MUSIC)
 		);
 
@@ -62,6 +62,25 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 			AbysmSoundEvents.MUSIC_OVERWORLD_THE_ENTWINED,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/abysm").stream(true).volume(0.4F)) // The Entwined only plays this one song.
+				.category(SoundCategory.MUSIC)
+		);
+
+		exporter.add(
+			AbysmSoundEvents.MUSIC_OVERWORLD_INKDEPTH_REALM,
+			SoundTypeBuilder.of()
+				.sound(ofFile("music/game/mare_ad_horizontum").stream(true).volume(0.4F).weight(2)) // Original biome-exclusive song, I will compose this at a later date
+				.sound(axolotl)
+				.sound(shuniji)
+				.sound(tilapia)
+				.category(SoundCategory.MUSIC)
+		);
+
+		exporter.add(
+			AbysmSoundEvents.MUSIC_OVERWORLD_GLOWING_CAVES,
+			SoundTypeBuilder.of()
+				.sound(axolotl)
+				.sound(shuniji)
+				.sound(tilapia)
 				.category(SoundCategory.MUSIC)
 		);
 

@@ -84,7 +84,6 @@ public class AbysmEntityTypes {
 			.maxTrackingRange(4)
 	);
 
-
 	public static final EntityType<BloomrayEntity> BLOOMRAY = register(
 		"bloomray",
 		EntityType.Builder

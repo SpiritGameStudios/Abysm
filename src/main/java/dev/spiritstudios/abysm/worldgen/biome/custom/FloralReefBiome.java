@@ -1,8 +1,10 @@
-package dev.spiritstudios.abysm.worldgen.biome;
+package dev.spiritstudios.abysm.worldgen.biome.custom;
 
 import com.terraformersmc.biolith.api.biome.BiomePlacement;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
+import dev.spiritstudios.abysm.worldgen.biome.AbysmBiome;
+import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.SpawnGroup;
@@ -49,19 +51,7 @@ public final class FloralReefBiome extends AbysmBiome {
 	}
 
 	@Override
-	public GenerationSettings.Builder createGenerationSettings(RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
-		GenerationSettings.LookupBackedBuilder builder = new GenerationSettings.LookupBackedBuilder(featureLookup, carverLookup);
-
-		addBasicFeatures(builder);
-
-		DefaultBiomeFeatures.addDefaultOres(builder);
-		DefaultBiomeFeatures.addDefaultDisks(builder);
-		DefaultBiomeFeatures.addWaterBiomeOakTrees(builder);
-		DefaultBiomeFeatures.addDefaultFlowers(builder);
-		DefaultBiomeFeatures.addDefaultGrass(builder);
-		DefaultBiomeFeatures.addDefaultMushrooms(builder);
-		DefaultBiomeFeatures.addDefaultVegetation(builder, true);
-
+	public GenerationSettings.Builder createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
 		builder
 			.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.FLOROPUMICE_STALAGMITES)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.MIXED_BLOOMED_PATCH)

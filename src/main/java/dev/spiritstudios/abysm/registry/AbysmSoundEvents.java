@@ -13,6 +13,8 @@ public class AbysmSoundEvents {
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_DEEP_SEA_RUINS = registerReference("music.overworld.deep_sea_ruins");
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_PEARLESCENT_SEA = registerReference("music.overworld.pearlescent_sea");
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_THE_ENTWINED = registerReference("music.overworld.the_entwined");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_INKDEPTH_REALM = registerReference("music.overworld.inkdepth_realm");
+	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_GLOWING_CAVES = registerReference("music.overworld.glowing_caves");
 	// VANILLA BIOMES
 	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_SEASIDE = registerReference("music.overworld.seaside");
 	// MUSIC DISCS
