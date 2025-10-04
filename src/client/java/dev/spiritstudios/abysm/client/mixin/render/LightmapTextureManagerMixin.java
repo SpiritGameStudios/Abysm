@@ -54,6 +54,8 @@ public abstract class LightmapTextureManagerMixin {
 	@Inject(method = "close", at = @At("RETURN"))
 	private void closeDummy(CallbackInfo ci) {
 		this.abysm$secondaryGlTexture.close();
+		this.abysm$secondaryView.close();
+		this.abysm$uniformBuffer.close();
 	}
 
 	@Inject(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V"))
