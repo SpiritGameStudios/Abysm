@@ -73,11 +73,6 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 				SpawnGroup.WATER_AMBIENT,
 				40,
 				new SpawnSettings.SpawnEntry(AbysmEntityTypes.AROWANA_MAGICII, 5, 8)
-			)
-			.spawn(
-				SpawnGroup.WATER_CREATURE,
-				1,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.RETICULATED_FLIPRAY, 1, 2)
 			);
 
 		DefaultBiomeFeatures.addBatsAndMonsters(builder);
