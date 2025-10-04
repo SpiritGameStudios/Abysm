@@ -7,14 +7,10 @@ import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.block.BlockState;
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -158,20 +154,5 @@ public class HarpoonItem extends Item {
 	@Override
 	public boolean canBeEnchantedWith(ItemStack stack, RegistryEntry<Enchantment> enchantment, EnchantingContext context) {
 		return super.canBeEnchantedWith(stack, enchantment, context) || enchantment.matchesId(PIERCING);
-	}
-
-	public static AttributeModifiersComponent createAttributes(float attackDamage, float attackSpeed) {
-		return AttributeModifiersComponent.builder()
-			.add(
-				EntityAttributes.ATTACK_DAMAGE,
-				new EntityAttributeModifier(Item.BASE_ATTACK_DAMAGE_MODIFIER_ID, attackDamage - 1, EntityAttributeModifier.Operation.ADD_VALUE),
-				AttributeModifierSlot.MAINHAND
-			)
-			.add(
-				EntityAttributes.ATTACK_SPEED,
-				new EntityAttributeModifier(Item.BASE_ATTACK_SPEED_MODIFIER_ID, attackSpeed - 4, EntityAttributeModifier.Operation.ADD_VALUE),
-				AttributeModifierSlot.MAINHAND
-			)
-			.build();
 	}
 }

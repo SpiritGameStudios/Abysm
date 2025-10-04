@@ -251,7 +251,8 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 		if (!(world instanceof ServerWorld serverWorld)) return;
 
 		Entity entity = hitResult.getEntity();
-		float damage = this.isSubmergedInWater() ? 8.0F : 3.5F;
+		float damage = this.isSubmergedInWater() ? 12.0F : 4.5F;
+
 		Entity owner = this.getOwner();
 
 		ItemStack weapon = this.getWeaponStack();

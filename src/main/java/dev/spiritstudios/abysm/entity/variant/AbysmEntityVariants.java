@@ -102,7 +102,7 @@ public class AbysmEntityVariants {
 		registerSnapper(
 			registerable,
 			CHROMATIC,
-			SpawnConditionSelectors.EMPTY
+			SpawnConditionSelectors.createFallback(0)
 		);
 
 		registerSnapper(
@@ -140,21 +140,21 @@ public class AbysmEntityVariants {
 	private static void registerBloomrayVariant(Registerable<BloomrayEntityVariant> registry, RegistryKey<BloomrayEntityVariant> key, BloomrayEntityVariant.HideableCrownType crownType, SimpleParticleType glimmer, SimpleParticleType thorns) {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + "_bloomray.png");
 		Text name = Text.translatable("abysm.entity.bloomray." + key.getValue().getPath());
-		BloomrayEntityVariant variant = new BloomrayEntityVariant(name, variantPath, SpawnConditionSelectors.EMPTY, crownType, glimmer, thorns);
+		BloomrayEntityVariant variant = new BloomrayEntityVariant(name, variantPath, SpawnConditionSelectors.createFallback(0), crownType, glimmer, thorns);
 		register(registry, key, variant);
 	}
 
 	private static void registerOoglyBoogly(Registerable<ElectricOoglyBooglyVariant> registry, RegistryKey<ElectricOoglyBooglyVariant> key, int electricityColor, boolean deadly) {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + "_boogly.png");
 		Text name = Text.translatable("abysm.entity.electric_oogly_boogly." + key.getValue().getPath());
-		ElectricOoglyBooglyVariant variant = new ElectricOoglyBooglyVariant(name, variantPath, SpawnConditionSelectors.EMPTY, electricityColor, deadly);
+		ElectricOoglyBooglyVariant variant = new ElectricOoglyBooglyVariant(name, variantPath, SpawnConditionSelectors.createFallback(0), electricityColor, deadly);
 		register(registry, key, variant);
 	}
 
 	private static void registerGupGup(Registerable<GupGupEntityVariant> registry, RegistryKey<GupGupEntityVariant> key) {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + ".png");
 		Text name = Text.translatable("abysm.entity.gup_gup." + key.getValue().getPath());
-		GupGupEntityVariant variant = new GupGupEntityVariant(name, variantPath, SpawnConditionSelectors.EMPTY);
+		GupGupEntityVariant variant = new GupGupEntityVariant(name, variantPath, SpawnConditionSelectors.createFallback(0));
 		register(registry, key, variant);
 	}
 

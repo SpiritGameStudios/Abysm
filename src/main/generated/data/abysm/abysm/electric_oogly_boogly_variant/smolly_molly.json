@@ -1,5 +1,9 @@
 {
-  "spawn_conditions": [],
+  "spawn_conditions": [
+    {
+      "priority": 0
+    }
+  ],
   "name": {
     "translate": "abysm.entity.electric_oogly_boogly.smolly_molly"
   },

@@ -2,7 +2,11 @@
   "glimmer": {
     "type": "abysm:mallowbloom_glimmer"
   },
-  "spawn_conditions": [],
+  "spawn_conditions": [
+    {
+      "priority": 0
+    }
+  ],
   "thorns": {
     "type": "abysm:melilite_thorns"
   },

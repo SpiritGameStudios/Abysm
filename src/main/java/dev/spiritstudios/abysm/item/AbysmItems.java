@@ -67,7 +67,6 @@ public final class AbysmItems {
 			.maxDamage(250)
 			.enchantable(1)
 			.rarity(Rarity.RARE)
-			.attributeModifiers(HarpoonItem.createAttributes(2.2f, 2.2f))
 	);
 
 	public static final Item SMALL_FLORAL_FISH = register(
