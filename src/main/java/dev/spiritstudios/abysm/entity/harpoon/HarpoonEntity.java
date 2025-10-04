@@ -131,7 +131,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
 
 		if (component.loaded()) return true;
 
-		invStack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().loaded(true).build());
+		invStack.set(AbysmDataComponentTypes.HARPOON, component.builder().loaded(true).build());
 		return true;
 	}
 

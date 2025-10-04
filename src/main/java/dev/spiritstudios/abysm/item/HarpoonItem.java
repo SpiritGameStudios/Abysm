@@ -35,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class HarpoonItem extends Item {
-
 	public static final Identifier PIERCING = Identifier.ofVanilla("piercing");
 
 	public HarpoonItem(Settings settings) {
@@ -56,11 +55,19 @@ public class HarpoonItem extends Item {
 				}
 				HarpoonEntity harpoon = new HarpoonEntity(world, user, slot, stack);
 				world.spawnEntity(harpoon);
-				stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().loaded(false).ticksSinceShot(0).build());
+				stack.set(
+					AbysmDataComponentTypes.HARPOON,
+					component.builder()
+						.loaded(false)
+						.ticksSinceShot(0)
+						.build()
+				);
 				world.playSoundFromEntity(null, harpoon, AbysmSoundEvents.ITEM_HARPOON_LAUNCH, SoundCategory.PLAYERS, 1.0F, 1.0F);
 				if (AbysmEnchantments.hasEnchantment(stack, world, AbysmEnchantments.HAUL)) {
 					user.getItemCooldownManager().set(stack, 120);
 				}
+
+				stack.damage(1, user);
 			} else {
 				user.getItemCooldownManager().set(stack, 10);
 			}
@@ -86,9 +93,9 @@ public class HarpoonItem extends Item {
 		HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
 		int ticksSinceLastShot = component.ticksSinceShot();
 		if (ticksSinceLastShot >= 0 && ticksSinceLastShot < 200) {
-			stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().ticksSinceShot(ticksSinceLastShot + 1).build());
+			stack.set(AbysmDataComponentTypes.HARPOON, component.builder().ticksSinceShot(ticksSinceLastShot + 1).build());
 		} else if (ticksSinceLastShot >= 200 && !component.loaded()) {
-			stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().loaded(true).build());
+			stack.set(AbysmDataComponentTypes.HARPOON, component.builder().loaded(true).build());
 		}
 		super.inventoryTick(stack, world, entity, slot);
 	}
@@ -124,13 +131,13 @@ public class HarpoonItem extends Item {
 			HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
 			ItemStack componentStack = component.stack();
 			if (componentStack.isEmpty() && slotStack.isOf(Items.HEART_OF_THE_SEA)) {
-				stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().stack(slotStack.copyWithCount(1)).build());
+				stack.set(AbysmDataComponentTypes.HARPOON, component.builder().stack(slotStack.copyWithCount(1)).build());
 				slotStack.decrement(1);
 				return true;
 			}
 			if (slotStack.isEmpty() && !componentStack.isEmpty()) {
 				slot.setStack(componentStack.copy());
-				stack.set(AbysmDataComponentTypes.HARPOON, component.buildNew().stack(ItemStack.EMPTY).build());
+				stack.set(AbysmDataComponentTypes.HARPOON, component.builder().stack(ItemStack.EMPTY).build());
 				return true;
 			}
 			final int maxCount = slotStack.getMaxCount();

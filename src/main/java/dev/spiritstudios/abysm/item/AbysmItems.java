@@ -63,7 +63,11 @@ public final class AbysmItems {
 		"harpoon",
 		HarpoonItem::new,
 		new Item.Settings()
-			.maxCount(1).rarity(Rarity.RARE).attributeModifiers(HarpoonItem.createAttributes(2.2f, 2.2f))
+			.maxCount(1)
+			.maxDamage(250)
+			.enchantable(1)
+			.rarity(Rarity.RARE)
+			.attributeModifiers(HarpoonItem.createAttributes(2.2f, 2.2f))
 	);
 
 	public static final Item SMALL_FLORAL_FISH = register(
@@ -79,7 +83,9 @@ public final class AbysmItems {
 	public static final Item SMALL_FLORAL_FISH_BUCKET = register(
 		"small_floral_fish_bucket",
 		settings -> new EntityBucketItem(AbysmEntityTypes.SMALL_FLORAL_FISH, Fluids.WATER, SoundEvents.ITEM_BUCKET_EMPTY_FISH, settings),
-		new Item.Settings().maxCount(1).component(DataComponentTypes.BUCKET_ENTITY_DATA, NbtComponent.DEFAULT)
+		new Item.Settings()
+			.maxCount(1)
+			.component(DataComponentTypes.BUCKET_ENTITY_DATA, NbtComponent.DEFAULT)
 	);
 
 	public static final Item BIG_FLORAL_FISH_BUCKET = register(

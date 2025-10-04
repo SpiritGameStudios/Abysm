@@ -12,7 +12,6 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
 
@@ -51,11 +50,9 @@ public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 
 	@Override
 	public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
-		MutableText loaded = this.loaded() ?
-			Text.translatable("item.abysm.harpoon.loaded") :
-			Text.translatable("item.abysm.harpoon.not_loaded");
-
-		textConsumer.accept(loaded.formatted(Formatting.YELLOW, Formatting.UNDERLINE));
+		if (this.loaded()) {
+			textConsumer.accept(Text.translatable("item.abysm.harpoon.loaded"));
+		}
 
 		if (isBlessed()) {
 			textConsumer.accept(scrollingGradient(Text.translatable("item.abysm.harpoon.blessed"), SEVEN_HUNDRED, RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK, false));
@@ -81,7 +78,7 @@ public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 	}
 
 
-	public Builder buildNew() {
+	public Builder builder() {
 		return new Builder().stack(this.stack()).loaded(this.loaded()).ticksSinceShot(this.ticksSinceShot());
 	}
 
