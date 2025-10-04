@@ -3,14 +3,13 @@ package dev.spiritstudios.abysm.item;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.component.AbysmFoodComponents;
+import dev.spiritstudios.abysm.entity.AbysmAttribute;
 import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.component.type.NbtComponent;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.EntityBucketItem;
@@ -48,15 +47,11 @@ public final class AbysmItems {
 		new Item.Settings()
 			.maxCount(1)
 			.armor(ArmorMaterials.TURTLE_SCUTE, EquipmentType.BOOTS)
-			.attributeModifiers(AttributeModifiersComponent.builder().add(
-				AbysmEntityAttributes.SWIMMING_SPEED,
-				new EntityAttributeModifier(
-					Abysm.id("flippers_swimming_speed_multiplier"),
-					0.05,
-					EntityAttributeModifier.Operation.ADD_VALUE
-				),
-				AttributeModifierSlot.FEET
-			).build())
+			.attributeModifiers(AbysmAttribute.ofAdd(
+					AbysmEntityAttributes.SWIMMING_SPEED,
+					"flippers_swimming_speed_multiplier",
+					0.05
+			).toComponent(AttributeModifierSlot.FEET))
 	);
 
 	public static final Item HARPOON = register(
