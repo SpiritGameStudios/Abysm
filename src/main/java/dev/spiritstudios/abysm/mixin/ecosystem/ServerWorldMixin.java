@@ -21,7 +21,7 @@ import java.util.concurrent.Executor;
 import java.util.function.BooleanSupplier;
 
 @Mixin(ServerWorld.class)
-public class ServerWorldMixin implements EcosystemManagedWorld {
+public abstract class ServerWorldMixin implements EcosystemManagedWorld {
 	@Unique
 	public EcosystemAreaManager abysm$ecosystemAreaManager = null;
 

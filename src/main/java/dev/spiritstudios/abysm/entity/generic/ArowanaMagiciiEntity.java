@@ -8,11 +8,7 @@ import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.mixin.ecosystem.goal.SchoolingFishEntityAccessor;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.World;
@@ -40,7 +36,6 @@ public class ArowanaMagiciiEntity extends SimpleEcoSchoolingFishEntity {
 			this.getNavigation().startMovingTo(((SchoolingFishEntityAccessor)this).abysm$getLeader(), 3.0F);
 		}
 	}
-
 
 	@Override
 	public EcosystemType<?> getEcosystemType() {

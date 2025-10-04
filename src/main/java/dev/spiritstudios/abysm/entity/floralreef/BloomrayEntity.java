@@ -80,7 +80,7 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	@Override
 	protected void writeCustomData(WriteView view) {
 		super.writeCustomData(view);
-		view.put("view", BloomrayEntityVariant.ENTRY_CODEC, this.dataTracker.get(VARIANT));
+		view.put("variant", BloomrayEntityVariant.ENTRY_CODEC, this.dataTracker.get(VARIANT));
 	}
 
 	@Override
