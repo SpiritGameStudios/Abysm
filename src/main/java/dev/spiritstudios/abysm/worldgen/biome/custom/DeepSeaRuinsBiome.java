@@ -9,7 +9,6 @@ import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import dev.spiritstudios.abysm.worldgen.noise.AbysmNoiseParameters;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicType;
 import net.minecraft.util.math.VerticalSurfaceType;
@@ -18,9 +17,7 @@ import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.OverworldBiomeCreator;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.carver.ConfiguredCarver;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
-import net.minecraft.world.gen.feature.PlacedFeature;
 
 import static net.minecraft.world.gen.surfacebuilder.MaterialRules.MaterialRule;
 import static net.minecraft.world.gen.surfacebuilder.MaterialRules.block;
@@ -42,13 +39,13 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 			.waterColor(0x1C7A56)
 			.waterFogColor(0x06140F)
 			.fogColor(0xC0D8FF)
-			.skyColor(OverworldBiomeCreator.getSkyColor(temperature))
+			.skyColor(OverworldBiomeCreator.getSkyColor(this.temperature))
 			.moodSound(BiomeMoodSound.CAVE)
 			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_DEEP_SEA_RUINS));
 	}
 
 	@Override
-	public GenerationSettings.Builder createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
 		builder
 			.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES)
 			.feature(GenerationStep.Feature.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_CLAY_DREGLOAM)
@@ -57,8 +54,6 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.OOZE_PATCH)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SEAGRASS_CAVE)
 			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_GOLDEN_LAZULI_OREFURL);
-
-		return builder;
 	}
 
 	@Override

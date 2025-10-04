@@ -46,6 +46,6 @@ public final class AbysmBiomes {
 	}
 
 	public static void addAllToGenerator() {
-		for (AbysmBiome biome : BIOMES) biome.addToGenerator();
+		BIOMES.forEach(AbysmBiome::addToGenerator);
 	}
 }

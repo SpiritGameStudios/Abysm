@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.data.fishenchantment;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.entity.AbysmAttribute;
+import dev.spiritstudios.abysm.entity.attribute.AbysmAttribute;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import net.minecraft.entity.attribute.EntityAttribute;

@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.item;
 
 import com.google.common.collect.ImmutableList;
-import dev.spiritstudios.abysm.entity.AbysmAttribute;
+import dev.spiritstudios.abysm.entity.attribute.AbysmAttribute;
 import dev.spiritstudios.abysm.mixin.accessors.ArmorMaterialsAccessor;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;

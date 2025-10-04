@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.entity;
+package dev.spiritstudios.abysm.entity.attribute;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -16,14 +16,15 @@ import java.util.List;
 
 /**
  * @author Ampflower
- **/
+ */
+@SuppressWarnings("JavadocDeclaration")
 public record AbysmAttribute(
 		RegistryEntry<EntityAttribute> attribute,
 		EntityAttributeModifier modifier
 ) {
 	/**
 	 * @author SkyNotTheLimit
-	 * */
+	 */
 	public static final Codec<AbysmAttribute> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
 							EntityAttribute.CODEC.fieldOf("type").forGetter(AbysmAttribute::attribute),
@@ -34,7 +35,7 @@ public record AbysmAttribute(
 
 	/**
 	 * @author SkyNotTheLimit
-	 * */
+	 */
 	public static final PacketCodec<RegistryByteBuf, AbysmAttribute> PACKET_CODEC = PacketCodec.tuple(
 			EntityAttribute.PACKET_CODEC, AbysmAttribute::attribute,
 			EntityAttributeModifier.PACKET_CODEC, AbysmAttribute::modifier,
@@ -58,6 +59,7 @@ public record AbysmAttribute(
 		return new AbysmAttribute(attribute, abysmId, value, EntityAttributeModifier.Operation.ADD_VALUE);
 	}
 
+	@SuppressWarnings("unused")
 	public static AbysmAttribute ofMultipliedBase(
 			final RegistryEntry<EntityAttribute> attribute,
 			final String abysmId,
@@ -66,6 +68,7 @@ public record AbysmAttribute(
 		return new AbysmAttribute(attribute, abysmId, value, EntityAttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 	}
 
+	@SuppressWarnings("unused")
 	public static AbysmAttribute ofMultipliedTotal(
 			final RegistryEntry<EntityAttribute> attribute,
 			final String abysmId,
@@ -88,7 +91,8 @@ public record AbysmAttribute(
 
 	/**
 	 * @author SkyNotTheLimit
-	 * */
+	 */
+	@SuppressWarnings("unused")
 	public boolean matches(RegistryEntry<EntityAttribute> attribute, Identifier modifierId) {
 		return attribute.equals(this.attribute) && this.modifier.idMatches(modifierId);
 	}

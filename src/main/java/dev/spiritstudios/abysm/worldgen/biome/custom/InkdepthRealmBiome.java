@@ -25,15 +25,14 @@ public final class InkdepthRealmBiome extends AbysmBiome {
 			.waterColor(0x111112)
 			.waterFogColor(0x111112)
 			.fogColor(0x111112)
-			.skyColor(OverworldBiomeCreator.getSkyColor(temperature))
+			.skyColor(OverworldBiomeCreator.getSkyColor(this.temperature))
 			.moodSound(BiomeMoodSound.CAVE)
 			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_INKDEPTH_REALM));
 	}
 
 	@Override
-	public GenerationSettings.Builder createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
 		// ???
-		return builder;
 	}
 
 	@Override

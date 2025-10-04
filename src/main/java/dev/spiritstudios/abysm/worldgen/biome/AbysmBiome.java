@@ -41,15 +41,15 @@ public abstract class AbysmBiome {
 
 	public void bootstrap(Registerable<Biome> registerable, RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
 		registerable.register(
-			key,
+			this.key,
 			new Biome.Builder()
-				.precipitation(precipitation)
-				.temperature(temperature)
-				.downfall(downfall)
+				.precipitation(this.precipitation)
+				.temperature(this.temperature)
+				.downfall(this.downfall)
 				.effects(createEffects().build())
 				.spawnSettings(createSpawnSettings().build())
 				.generationSettings(createGenerationSettings(featureLookup, carverLookup).build())
-				.temperatureModifier(temperatureModifier)
+				.temperatureModifier(this.temperatureModifier)
 				.build()
 		);
 	}
@@ -74,8 +74,7 @@ public abstract class AbysmBiome {
 		return builder;
 	}
 
-	public GenerationSettings.Builder createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
-		return builder;
+	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
 	}
 
 	public abstract SpawnSettings.Builder createSpawnSettings();

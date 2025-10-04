@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.entity;
+package dev.spiritstudios.abysm.entity.attribute;
 
 import dev.spiritstudios.abysm.Abysm;
 import net.minecraft.entity.attribute.EntityAttributeModifier;

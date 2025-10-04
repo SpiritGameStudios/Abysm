@@ -1,11 +1,8 @@
 package dev.spiritstudios.abysm.worldgen.biome.custom;
 
-import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiome;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicType;
 import net.minecraft.world.biome.BiomeEffects;
@@ -26,15 +23,14 @@ public final class GlowingCavesBiome extends AbysmBiome {
 			.waterColor(0x0B0B21)
 			.waterFogColor(0x252529)
 			.fogColor(0xDBDBFF)
-			.skyColor(OverworldBiomeCreator.getSkyColor(temperature))
+			.skyColor(OverworldBiomeCreator.getSkyColor(this.temperature))
 			.moodSound(BiomeMoodSound.CAVE)
 			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_GLOWING_CAVES));
 	}
 
 	@Override
-	public GenerationSettings.Builder createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
 		// ???
-		return builder;
 	}
 
 	@Override

@@ -25,15 +25,14 @@ public final class TheEntwinedBiome extends AbysmBiome {
 			.waterColor(0x000F5C)
 			.waterFogColor(0x241961)
 			.fogColor(0xC0C9ff)
-			.skyColor(OverworldBiomeCreator.getSkyColor(temperature))
+			.skyColor(OverworldBiomeCreator.getSkyColor(this.temperature))
 			.moodSound(BiomeMoodSound.CAVE)
 			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_THE_ENTWINED));
 	}
 
 	@Override
-	public GenerationSettings.Builder createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
 		// place entanglers
-		return builder;
 	}
 
 	@Override

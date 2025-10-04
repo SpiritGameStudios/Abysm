@@ -25,15 +25,14 @@ public final class PearlescentSeaBiome extends AbysmBiome {
 			.waterColor(0xDAB9ED)
 			.waterFogColor(0xB796E3)
 			.fogColor(0xF2E8FF)
-			.skyColor(OverworldBiomeCreator.getSkyColor(temperature))
+			.skyColor(OverworldBiomeCreator.getSkyColor(this.temperature))
 			.moodSound(BiomeMoodSound.CAVE)
 			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_PEARLESCENT_SEA));
 	}
 
 	@Override
-	public GenerationSettings.Builder createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
 		// weird unlocking mechanism I have no idea
-		return builder;
 	}
 
 	@Override

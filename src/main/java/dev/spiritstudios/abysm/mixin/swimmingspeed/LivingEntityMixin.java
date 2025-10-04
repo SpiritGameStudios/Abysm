@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.swimmingspeed;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import dev.spiritstudios.abysm.entity.AbysmEntityAttributes;
+import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
