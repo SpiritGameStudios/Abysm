@@ -6,7 +6,7 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.ReticulatedFliprayEntity;
-import dev.spiritstudios.abysm.entity.floralreef.ElectricOoglyBooglyEntity;
+import dev.spiritstudios.abysm.entity.ElectricOoglyBooglyEntity;
 import dev.spiritstudios.abysm.entity.generic.ArowanaMagiciiEntity;
 import dev.spiritstudios.abysm.entity.generic.GupGupEntity;
 import dev.spiritstudios.abysm.entity.generic.SnapperEntity;

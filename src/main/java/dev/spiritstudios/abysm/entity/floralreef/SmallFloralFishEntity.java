@@ -5,6 +5,7 @@ import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
+import dev.spiritstudios.abysm.entity.ElectricOoglyBooglyEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.SwimAroundBoidGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;

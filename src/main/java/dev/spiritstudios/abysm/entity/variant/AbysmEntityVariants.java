@@ -7,6 +7,7 @@ import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.data.variant.GupGupEntityVariant;
 import dev.spiritstudios.abysm.data.variant.SnapperEntityVariant;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
+import dev.spiritstudios.abysm.particle.OoglyBooglyFumesParticleEffect;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
 import net.minecraft.entity.spawn.BiomeSpawnCondition;
@@ -57,10 +58,10 @@ public class AbysmEntityVariants {
 	public static final RegistryKey<ElectricOoglyBooglyVariant> ELECTRIC_ZOOGLY = ofOoglyBoogly("electric_zoogly");
 
 	public static void ooglyBooglyBootstrap(Registerable<ElectricOoglyBooglyVariant> registerable) {
-		registerOoglyBoogly(registerable, ELECTRIC_OOGLY_BOOGLY, ColorHelper.fromFloats(1f, 0.75f, 1f, 0.75f), false);
-		registerOoglyBoogly(registerable, ELLY_EEGY_BOOGLY, ColorHelper.fromFloats(1f, 0.75f, 0.9f, 1f), false);
-		registerOoglyBoogly(registerable, SMOLLY_MOLLY, ColorHelper.fromFloats(1f, 1f, 0.9f, 1f), false);
-		registerOoglyBoogly(registerable, ELECTRIC_ZOOGLY, ColorHelper.fromFloats(1f, 1f, 0.75f, 0.85f), true);
+		registerOoglyBoogly(registerable, ELECTRIC_OOGLY_BOOGLY, ColorHelper.fromFloats(1f, 0.75f, 1f, 0.75f), 0F);
+		registerOoglyBoogly(registerable, ELLY_EEGY_BOOGLY, ColorHelper.fromFloats(1f, 0.75f, 0.9f, 1f), 0F);
+		registerOoglyBoogly(registerable, SMOLLY_MOLLY, ColorHelper.fromFloats(1f, 1f, 0.9f, 1f), 0F);
+		registerOoglyBoogly(registerable, ELECTRIC_ZOOGLY, ColorHelper.fromFloats(1f, 1f, 0.75f, 0.85f), 8F);
 	}
 	// endregion
 
@@ -144,10 +145,10 @@ public class AbysmEntityVariants {
 		register(registry, key, variant);
 	}
 
-	private static void registerOoglyBoogly(Registerable<ElectricOoglyBooglyVariant> registry, RegistryKey<ElectricOoglyBooglyVariant> key, int electricityColor, boolean deadly) {
+	private static void registerOoglyBoogly(Registerable<ElectricOoglyBooglyVariant> registry, RegistryKey<ElectricOoglyBooglyVariant> key, int electricityColor, float explosionPower) {
 		Identifier variantPath = Abysm.id("textures/entity/" + key.getValue().getPath() + "_boogly.png");
 		Text name = Text.translatable("abysm.entity.electric_oogly_boogly." + key.getValue().getPath());
-		ElectricOoglyBooglyVariant variant = new ElectricOoglyBooglyVariant(name, variantPath, SpawnConditionSelectors.createFallback(0), electricityColor, deadly);
+		ElectricOoglyBooglyVariant variant = new ElectricOoglyBooglyVariant(name, variantPath, SpawnConditionSelectors.createFallback(0), new OoglyBooglyFumesParticleEffect(electricityColor, explosionPower > 0F), explosionPower);
 		register(registry, key, variant);
 	}
 

@@ -1,4 +1,10 @@
 {
+  "explosion_power": 8.0,
+  "fumes": {
+    "type": "abysm:oogly_boogly_fumes",
+    "color": "#ffffbfd8",
+    "deadly": true
+  },
   "spawn_conditions": [
     {
       "priority": 0
@@ -7,7 +13,5 @@
   "name": {
     "translate": "abysm.entity.electric_oogly_boogly.electric_zoogly"
   },
-  "texture": "abysm:textures/entity/electric_zoogly_boogly.png",
-  "electricity_color": -16424,
-  "deadly": true
+  "texture": "abysm:textures/entity/electric_zoogly_boogly.png"
 }

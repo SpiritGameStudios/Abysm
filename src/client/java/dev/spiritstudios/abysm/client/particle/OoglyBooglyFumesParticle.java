@@ -11,9 +11,9 @@ import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 public class OoglyBooglyFumesParticle extends SpriteBillboardParticle {
 	private final SpriteProvider provider;
@@ -23,7 +23,7 @@ public class OoglyBooglyFumesParticle extends SpriteBillboardParticle {
 	protected OoglyBooglyFumesParticle(ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ, OoglyBooglyFumesParticleEffect params, SpriteProvider provider) {
 		super(clientWorld, x, y, z, velX, velY, velZ);
 		this.provider = provider;
-		this.deadly = params.isDeadly();
+		this.deadly = params.deadly();
 		this.velocityX = 0;
 		this.velocityY = 0.015f;
 		this.velocityZ = 0;
@@ -32,9 +32,7 @@ public class OoglyBooglyFumesParticle extends SpriteBillboardParticle {
 		this.lastAngle = angle;
 
 		// Cool wheel effect thihng idk math at 2am is hard
-//		float offsetX = MathHelper.cos(this.angle);
-//		float offsetZ = MathHelper.sin(this.angle);
-//		this.setBoundingBox(this.getBoundingBox().offset(-offsetX, 0, offsetZ));
+
 		float offsetX = MathHelper.sin(this.angle);
 		float offsetZ = MathHelper.cos(this.angle);
 		this.setBoundingBox(this.getBoundingBox().offset(offsetX, 0, offsetZ));
@@ -46,8 +44,15 @@ public class OoglyBooglyFumesParticle extends SpriteBillboardParticle {
 		this.maxAge = 12;
 		this.scale = 0.75f;
 
-		Vector3f color = params.getColor();
-		this.setColor(color.x, color.y, color.z);
+		int color = params.color();
+
+		this.setColor(
+			ColorHelper.getRedFloat(color),
+			ColorHelper.getGreenFloat(color),
+			ColorHelper.getBlueFloat(color)
+		);
+		this.setAlpha(ColorHelper.getAlphaFloat(color));
+
 		this.setSpriteForAge(this.provider);
 	}
 
@@ -68,7 +73,7 @@ public class OoglyBooglyFumesParticle extends SpriteBillboardParticle {
 
 	@Override
 	public int getBrightness(float tint) {
-		if(this.deadly) {
+		if (this.deadly) {
 			return 15728880; // LightmapTextureManager.pack(15, 15)
 		}
 		return 13631632; // LightmapTextureManager.pack(9, 13)

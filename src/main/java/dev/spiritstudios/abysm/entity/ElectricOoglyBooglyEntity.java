@@ -1,14 +1,11 @@
-package dev.spiritstudios.abysm.entity.floralreef;
+package dev.spiritstudios.abysm.entity;
 
 import dev.spiritstudios.abysm.data.variant.ElectricOoglyBooglyVariant;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
-import dev.spiritstudios.abysm.entity.SimpleFishEntity;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
-import dev.spiritstudios.abysm.particle.OoglyBooglyFumesParticleEffect;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.Entity;
@@ -93,9 +90,8 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 			}
 			if (this.ticksSinceBlowingUp >= 200) {
 				if (!this.getWorld().isClient) {
-					float power = this.getVariant().isDeadly() ? 8f : 0f;
 					ServerWorld serverWorld = (ServerWorld) this.getWorld();
-					serverWorld.createExplosion(this, this.getX(), this.getY(), this.getZ(), power, World.ExplosionSourceType.MOB);
+					serverWorld.createExplosion(this, this.getX(), this.getY(), this.getZ(), getVariant().explosionPower, World.ExplosionSourceType.MOB);
 					this.discard();
 				}
 			}
@@ -154,10 +150,8 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 	}
 
 	private void spawnFumesParticle() {
-		ElectricOoglyBooglyVariant variant = this.getVariant();
-
 		this.getWorld().addParticleClient(
-			new OoglyBooglyFumesParticleEffect(variant.getElectricityColor(), variant.isDeadly()),
+			getVariant().fumesParticle,
 			this.getX(),
 			this.getY() - 0.35f,
 			this.getZ(),

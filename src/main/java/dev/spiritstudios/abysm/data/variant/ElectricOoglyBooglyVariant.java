@@ -8,19 +8,20 @@ import net.minecraft.entity.spawn.SpawnConditionSelectors;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryFixedCodec;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.Codecs;
 
 public class ElectricOoglyBooglyVariant extends AbstractEntityVariant {
 	public static final Codec<ElectricOoglyBooglyVariant> CODEC = RecordCodecBuilder.create(
 		instance -> fillFields(instance).and(instance.group(
-			Codecs.RGB.fieldOf("electricity_color").forGetter(variant -> variant.electricityColor),
-			Codec.BOOL.fieldOf("deadly").forGetter(variant -> variant.deadly)
+			ParticleTypes.TYPE_CODEC.fieldOf("fumes").forGetter(variant -> variant.fumesParticle),
+			Codec.FLOAT.fieldOf("explosion_power").forGetter(variant -> variant.explosionPower)
 		)).apply(instance, ElectricOoglyBooglyVariant::new)
 	);
 
@@ -36,21 +37,13 @@ public class ElectricOoglyBooglyVariant extends AbstractEntityVariant {
 		return lookup.getOrThrow(AbysmEntityVariants.ELECTRIC_OOGLY_BOOGLY);
 	}
 
-	public final int electricityColor;
-	public final boolean deadly;
+	public final ParticleEffect fumesParticle;
+	public final float explosionPower;
 
-	public ElectricOoglyBooglyVariant(Text name, Identifier texture, SpawnConditionSelectors spawnConditions, int electricityColor, boolean deadly) {
+	public ElectricOoglyBooglyVariant(Text name, Identifier texture, SpawnConditionSelectors spawnConditions, ParticleEffect fumesParticle, float explosionPower) {
 		super(name, texture, spawnConditions);
-		this.electricityColor = electricityColor;
-		this.deadly = deadly;
-	}
 
-	public int getElectricityColor() {
-		return electricityColor;
+		this.fumesParticle = fumesParticle;
+		this.explosionPower = explosionPower;
 	}
-
-	public boolean isDeadly() {
-		return deadly;
-	}
-
 }
