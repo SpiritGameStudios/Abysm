@@ -6,9 +6,6 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.ElectricOoglyBooglyEntity;
-import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
-import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
-import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.item.AbysmItems;
@@ -16,7 +13,6 @@ import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.RegistryEntryLookup;
@@ -55,16 +51,6 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 	public void onRemove(RemovalReason reason) {
 		this.alertEcosystemOfDeath();
 		super.onRemove(reason);
-	}
-
-	@Override
-	protected void initGoals() {
-		super.initGoals();
-
-		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
-		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
-		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
-		this.targetSelector.add(1, new HuntPreyGoal(this, false));
 	}
 
 	@Override

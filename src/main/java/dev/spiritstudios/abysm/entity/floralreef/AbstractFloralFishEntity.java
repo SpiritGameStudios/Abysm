@@ -48,6 +48,12 @@ public abstract class AbstractFloralFishEntity extends SimpleEcoSchoolingFishEnt
 	}
 
 	@Override
+	protected void initGoals() {
+		super.initGoals();
+		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this, 1.0F));
+	}
+
+	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
 		AnimationController<AbstractFloralFishEntity> animController = new AnimationController<>(5, event -> PlayState.STOP);
 
