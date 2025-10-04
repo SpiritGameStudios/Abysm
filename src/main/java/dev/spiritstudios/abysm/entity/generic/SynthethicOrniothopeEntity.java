@@ -27,7 +27,11 @@ public class SynthethicOrniothopeEntity extends SimpleEcoSchoolingFishEntity {
 	protected void initGoals() {
 		super.initGoals();
 		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this, 1.0F));
-		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
+	}
+
+	@Override
+	public int getMaxGroupSize() {
+		return 3;
 	}
 
 	@Override

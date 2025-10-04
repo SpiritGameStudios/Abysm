@@ -53,11 +53,6 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 		this.thornsParticle = thornsParticle;
 	}
 
-	// Getter method(s)
-	public HideableCrownType getHideableCrownType() {
-		return hideableCrownType;
-	}
-
 	// Hiding crown type
 	// Uses this hard-coded enum instead of a block codec to hopefully reduce lag with the block finding AI
 	public enum HideableCrownType implements StringIdentifiable {

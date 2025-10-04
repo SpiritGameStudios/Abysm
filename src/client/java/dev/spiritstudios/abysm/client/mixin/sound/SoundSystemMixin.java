@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 
 @Mixin(SoundSystem.class)
 public abstract class SoundSystemMixin {
-	@WrapOperation(method = "play(Lnet/minecraft/client/sound/SoundInstance;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/Channel$SourceManager;run(Ljava/util/function/Consumer;)V"))
+	@WrapOperation(method = "play(Lnet/minecraft/client/sound/SoundInstance;)Lnet/minecraft/client/sound/SoundSystem$PlayResult;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/sound/Channel$SourceManager;run(Ljava/util/function/Consumer;)V"))
 	private static void play(Channel.SourceManager sourceManager, Consumer<Source> action, Operation<Void> original, @Local(argsOnly = true) SoundInstance instance) {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ClientPlayerEntity player = client.player;
@@ -31,7 +31,7 @@ public abstract class SoundSystemMixin {
 			!player.isSubmergedInWater() ||
 			instance.getCategory() == SoundCategory.MUSIC ||
 			instance.getCategory() == SoundCategory.AMBIENT ||
-			instance.getCategory() == SoundCategory.MASTER ||
+			instance.getCategory() == SoundCategory.UI ||
 			Registries.SOUND_EVENT.getEntry(instance.getId())
 				.map(entry -> entry.isIn(AbysmSoundEventTags.UNEFFECTED_BY_WATER))
 				.orElse(false)) {

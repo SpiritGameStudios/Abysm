@@ -2,22 +2,20 @@ package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.SimpleFishEntity;
-import dev.spiritstudios.abysm.entity.ai.goal.SwimAroundBoidGoal;
+import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-public class PaddlefishEntity extends SimpleFishEntity {
+public class PaddlefishEntity extends SimpleEcoSchoolingFishEntity {
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.paddlefish.idle");
 
 	public PaddlefishEntity(EntityType<PaddlefishEntity> entityType, World world) {
@@ -27,15 +25,7 @@ public class PaddlefishEntity extends SimpleFishEntity {
 	@Override
 	protected void initGoals() {
 		super.initGoals();
-
-		this.goalSelector.add(4, new SwimAroundBoidGoal(
-			this,
-			2.5F,
-			100 * MathHelper.RADIANS_PER_DEGREE,
-			70 * MathHelper.RADIANS_PER_DEGREE,
-			0.5F, 0.4F, 0.4F, 0.005F, 0.75F,
-			0.05F, 0.15F
-		));
+		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this, 1.0F));
 	}
 
 	@Override

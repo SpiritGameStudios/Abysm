@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.entity.floralreef;
 
 import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.entity.pattern.Patternable;
 import net.minecraft.component.ComponentType;
@@ -11,7 +12,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.passive.FishEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
@@ -21,17 +21,13 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public abstract class AbstractFloralFishEntity extends FishEntity implements GeoEntity, Patternable {
-	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-
+public abstract class AbstractFloralFishEntity extends SimpleEcoSchoolingFishEntity implements GeoEntity, Patternable {
 	public static final List<Integer> PATTERN_COLORS = List.of(
 		DyeColor.WHITE.getEntityColor(), DyeColor.BLACK.getEntityColor(),
 		DyeColor.BLUE.getEntityColor(), DyeColor.LIGHT_BLUE.getEntityColor(), DyeColor.CYAN.getEntityColor(),
@@ -126,10 +122,5 @@ public abstract class AbstractFloralFishEntity extends FishEntity implements Geo
 	@Override
 	public List<Integer> getPatternColors() {
 		return PATTERN_COLORS;
-	}
-
-	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache() {
-		return geoCache;
 	}
 }

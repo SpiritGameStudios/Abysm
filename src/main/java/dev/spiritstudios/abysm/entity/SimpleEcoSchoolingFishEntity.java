@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
+import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.mixin.ecosystem.goal.FishEntityAccessor;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -65,6 +66,7 @@ public abstract class SimpleEcoSchoolingFishEntity extends SchoolingFishEntity i
 		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
 		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
 		this.targetSelector.add(1, new HuntPreyGoal(this, false));
+		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
 	}
 
 	public static DefaultAttributeContainer.Builder createPredatoryFishAttributes() {
