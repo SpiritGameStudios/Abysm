@@ -1,5 +1,7 @@
 package dev.spiritstudios.abysm.client.mixin.render;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.FilterMode;
@@ -28,21 +30,25 @@ public abstract class LightmapTextureManagerMixin {
 	@Shadow @Final private GpuTexture glTexture;
 
 	@Shadow
-	@Final
-	private GpuTextureView glTextureView;
+	@Final private GpuTextureView glTextureView;
 	@Unique private GpuTexture abysm$secondaryGlTexture;
 	@Unique private GpuTextureView abysm$secondaryView;
-	@Unique
-	private MappableRingBuffer abysm$uniformBuffer;
+	@Unique private MappableRingBuffer abysm$uniformBuffer;
 
 	@Inject(method = "<init>", at = @At("RETURN"))
 	private void initDummy(GameRenderer renderer, MinecraftClient client, CallbackInfo ci) {
 		GpuDevice gpuDevice = RenderSystem.getDevice();
-		this.abysm$secondaryGlTexture = gpuDevice.createTexture("Abysm Light Texture", GpuTexture.USAGE_COPY_SRC | GpuTexture.USAGE_TEXTURE_BINDING | GpuTexture.USAGE_RENDER_ATTACHMENT, TextureFormat.RGBA8, 16, 16, 1, 1);
+		this.abysm$secondaryGlTexture = gpuDevice.createTexture("Abysm Light Texture", GpuTexture.USAGE_COPY_DST | GpuTexture.USAGE_TEXTURE_BINDING, TextureFormat.RGBA8, 16, 16, 1, 1);
 		this.abysm$secondaryGlTexture.setTextureFilter(FilterMode.LINEAR, false);
-		gpuDevice.createCommandEncoder().clearColorTexture(this.abysm$secondaryGlTexture, 0xFFFFFFFF);
+		this.abysm$secondaryView = gpuDevice.createTextureView(abysm$secondaryGlTexture);
+
 		this.abysm$uniformBuffer = new MappableRingBuffer(() -> "Abysm Lightmap Adjustment UBO", 130, LightmapAdjustment.UBO_SIZE);
 
+	}
+
+	@WrapOperation(method = "<init>", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/GpuDevice;createTexture(Ljava/lang/String;ILcom/mojang/blaze3d/textures/TextureFormat;IIII)Lcom/mojang/blaze3d/textures/GpuTexture;"))
+	private GpuTexture addCopySrc(GpuDevice instance, String label, int usage, TextureFormat textureFormat, int width, int height, int depthOrLayers, int mipLevels, Operation<GpuTexture> original) {
+		return original.call(instance, label, usage | GpuTexture.USAGE_COPY_SRC, textureFormat, width, height, depthOrLayers, mipLevels);
 	}
 
 	@Inject(method = "close", at = @At("RETURN"))

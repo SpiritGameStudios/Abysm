@@ -52,6 +52,7 @@ public class LightmapAdjustment {
 			// update main texture
 			try (RenderPass renderPass = commandEncoder.createRenderPass(() -> "Adjust lightmap", mainTextureView, OptionalInt.empty())) {
 				renderPass.setPipeline(AbysmRenderPipelines.ADJUST_LIGHTMAP);
+				RenderSystem.bindDefaultUniforms(renderPass);
 				renderPass.setUniform("LightmapAdjustmentInfo", uniformBuffer.getBlocking());
 				renderPass.setVertexBuffer(0, RenderSystem.getQuadVertexBuffer());
 				renderPass.setIndexBuffer(indexBuffer, shapeIndexBuffer.getIndexType());
