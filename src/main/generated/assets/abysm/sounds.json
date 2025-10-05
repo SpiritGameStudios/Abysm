@@ -646,6 +646,52 @@
       }
     ]
   },
+  "music.overworld.glowing_caves": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "minecraft:music/game/water/axolotl"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "minecraft:music/game/water/shuniji"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/tilapia"
+      }
+    ]
+  },
+  "music.overworld.inkdepth_realm": {
+    "category": "music",
+    "sounds": [
+      {
+        "stream": true,
+        "volume": 0.4,
+        "weight": 2,
+        "name": "abysm:music/game/mare_ad_horizontum"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "minecraft:music/game/water/axolotl"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "minecraft:music/game/water/shuniji"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/tilapia"
+      }
+    ]
+  },
   "music.overworld.pearlescent_sea": {
     "category": "music",
     "sounds": [
