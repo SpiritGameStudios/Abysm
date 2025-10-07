@@ -1,22 +1,40 @@
 package dev.spiritstudios.abysm.item;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import dev.spiritstudios.abysm.entity.attribute.AbysmAttribute;
 import dev.spiritstudios.abysm.mixin.accessors.ArmorMaterialsAccessor;
+import dev.spiritstudios.abysm.registry.tags.AbysmItemTags;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
 import net.minecraft.component.type.EquippableComponent;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.equipment.ArmorMaterial;
 import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Util;
+
+import java.util.List;
 
 /**
  * @author Ampflower
  **/
 public final class AbysmArmorMaterials {
+
+	/**
+	 * @author SkyNotTheLimit (do I even need this line?)
+	 * Echo please help me fix this terrible code
+	 */
+	public static final ImmutableMap<EquipmentSlot, TagKey<Item>> DIVING_SUITS_BY_SLOT = Util.make(ImmutableMap.<EquipmentSlot, TagKey<Item>>builder(), builder -> {
+		builder.put(EquipmentSlot.HEAD, AbysmItemTags.DIVING_SUIT_HELMETS);
+		builder.put(EquipmentSlot.CHEST, AbysmItemTags.DIVING_SUIT_CHESTPLATES);
+		builder.put(EquipmentSlot.LEGS, AbysmItemTags.DIVING_SUIT_LEGGINGS);
+		builder.put(EquipmentSlot.FEET, AbysmItemTags.DIVING_SUIT_BOOTS);
+	}).build();
 
 	public static final ArmorMaterial DIVING_SUIT = new ArmorMaterial(
 			20,

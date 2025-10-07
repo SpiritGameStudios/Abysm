@@ -21,6 +21,11 @@ public final class AbysmItemTags {
 
 	public static final TagKey<Item> HARPOON_ENCHANTABLE = of("enchantable/harpoon");
 
+	public static final TagKey<Item> DIVING_SUIT_HELMETS = of("diving_suit/helmets");
+	public static final TagKey<Item> DIVING_SUIT_CHESTPLATES = of("diving_suit/chestplates");
+	public static final TagKey<Item> DIVING_SUIT_LEGGINGS = of("diving_suit/leggings");
+	public static final TagKey<Item> DIVING_SUIT_BOOTS = of("diving_suit/boots");
+
 	private static TagKey<Item> of(String id) {
 		return TagKey.of(RegistryKeys.ITEM, Abysm.id(id));
 	}

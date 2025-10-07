@@ -542,6 +542,11 @@ public class AbysmTagProviders {
 				.add(
 					AbysmItems.HARPOON
 				);
+
+			valueLookupBuilder(AbysmItemTags.DIVING_SUIT_HELMETS).add(AbysmItems.DIVING_HELMET);
+			valueLookupBuilder(AbysmItemTags.DIVING_SUIT_CHESTPLATES).add(AbysmItems.DIVING_CHESTPLATE);
+			valueLookupBuilder(AbysmItemTags.DIVING_SUIT_LEGGINGS).add(AbysmItems.DIVING_LEGGINGS);
+			valueLookupBuilder(AbysmItemTags.DIVING_SUIT_BOOTS).add(AbysmItems.DIVING_BOOTS);
 			// endregion
 
 			// region copy block tags
