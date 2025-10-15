@@ -11,7 +11,7 @@ import net.minecraft.server.world.ServerWorld;
 
 public class SalinationEffect extends StatusEffect {
 
-	public static final int FLOWER_CONTACT_EFFECT_DURATION = 40;
+	public static final int BRINE_CONTACT_EFFECT_DURATION = 30;
 
 	protected SalinationEffect(StatusEffectCategory category, int color) {
 		super(category, color);
@@ -20,17 +20,15 @@ public class SalinationEffect extends StatusEffect {
 	@Override
 	public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
 		RegistryEntry<DamageType> damageType = AbysmDamageTypes.getOrThrow(world, AbysmDamageTypes.SALINATION);
-		DamageSource source = new DamageSource(damageType, entity);
-
-		entity.damage(world, source, 2);
-		entity.updateLimbs(true);
+		entity.damage(world, new DamageSource(damageType, entity), 2);
+		// passing in the entity as the attacker causes random "convulsions"--as if being shot by skeletons from many angles
 
 		return true;
 	}
 
 	@Override
 	public boolean canApplyUpdateEffect(int duration, int amplifier) {
-		int i = FLOWER_CONTACT_EFFECT_DURATION >> amplifier;
+		int i = BRINE_CONTACT_EFFECT_DURATION >> amplifier;
 		return i == 0 || duration % i == 0;
 	}
 

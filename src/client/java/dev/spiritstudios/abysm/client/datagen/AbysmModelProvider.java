@@ -8,7 +8,6 @@ import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
@@ -203,7 +202,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 	}
 
 	private void registerMonare(BlockStateModelGenerator generator) {
-		generator.registerItemModel(AbysmBlocks.MONARE);
+		generator.registerItemModel(AbysmBlocks.MONARE.asItem(), generator.uploadItemModel(AbysmBlocks.MONARE.asItem()));
 		generator.registerSimpleState(AbysmBlocks.MONARE);
 	}
 
@@ -212,7 +211,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 		Identifier model = Models.TEMPLATE_CAULDRON_FULL.upload(AbysmBlocks.BRINE_CAULDRON, textureMap, generator.modelCollector);
 
 		generator.registerSimpleState(AbysmBlocks.BRINE);
-		generator.blockStateCollector.accept(createSingletonBlockState(Blocks.LAVA_CAULDRON, createWeightedVariant(model)));
+		generator.blockStateCollector.accept(createSingletonBlockState(AbysmBlocks.BRINE_CAULDRON, createWeightedVariant(model)));
 	}
 
 	private void registerGrassLike(BlockStateModelGenerator generator, Block block, Block baseBlock) {

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "abysm:block/monare"
+    "layer0": "abysm:item/monare"
   }
 }

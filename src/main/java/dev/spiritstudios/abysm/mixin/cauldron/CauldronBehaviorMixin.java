@@ -45,8 +45,8 @@ public interface CauldronBehaviorMixin {
     @SuppressWarnings("UnreachableCode")
     @Inject(method = "registerBucketBehavior", at = @At("TAIL"))
     private static void registerBrineBucket(Map<Item, CauldronBehavior> behavior, CallbackInfo ci) {
-        behavior.put(AbysmItems.BRINE_BUCKET, (state, world, pos, player, hand, stack) ->
-            isUnderwater(world, pos) ? ActionResult.CONSUME : fillCauldron(world, pos, player, hand, stack, AbysmBlocks.BRINE_CAULDRON.getDefaultState(), SoundEvents.ITEM_BUCKET_EMPTY));
+//        behavior.put(AbysmItems.BRINE_BUCKET, (state, world, pos, player, hand, stack) ->
+//            isUnderwater(world, pos) ? ActionResult.CONSUME : fillCauldron(world, pos, player, hand, stack, AbysmBlocks.BRINE_CAULDRON.getDefaultState(), SoundEvents.ITEM_BUCKET_EMPTY));
     }
 
 }

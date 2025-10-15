@@ -746,21 +746,26 @@ public final class AbysmBlocks {
 	public static final FluidBlock BRINE = register(
 		"brine",
 		settings -> new FluidBlock(AbysmFluids.BRINE, settings),
-		AbstractBlock.Settings.copy(Blocks.WATER).mapColor(MapColor.EMERALD_GREEN)
+		AbstractBlock.Settings.copy(Blocks.WATER).mapColor(MapColor.EMERALD_GREEN).luminance(state -> 2)
 	);
 
 	public static final BrineCauldronBlock BRINE_CAULDRON = register(
 		"brine_cauldron",
         BrineCauldronBlock::new,
-		AbstractBlock.Settings.copy(Blocks.LAVA_CAULDRON).luminance(state -> 0)
+		AbstractBlock.Settings.copy(Blocks.LAVA_CAULDRON).luminance(state -> 2)
 	);
 
 	public static final MonareBlock MONARE = register(
 		"monare",
 		MonareBlock::new,
-		AbstractBlock.Settings.copy(ROSY_SPRIGS)
+		AbstractBlock.Settings.create()
 			.mapColor(MapColor.BRIGHT_TEAL)
 			.sounds(BlockSoundGroup.SLIME)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 3)
+			.breakInstantly()
+			.nonOpaque()
+			.replaceable()
 	);
 	// endregion
 

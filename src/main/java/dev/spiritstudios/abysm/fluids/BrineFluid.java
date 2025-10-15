@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.fluids;
 
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
+import dev.spiritstudios.abysm.entity.effect.SalinationEffect;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -14,7 +15,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -98,12 +98,12 @@ public abstract class BrineFluid extends FlowableFluid {
 	@Override
 	protected void onEntityCollision(World world, BlockPos pos, Entity entity, EntityCollisionHandler handler) {
 		if (entity instanceof LivingEntity living)
-			living.addStatusEffect(new StatusEffectInstance(AbysmStatusEffects.SALINATION));
+			living.addStatusEffect(new StatusEffectInstance(AbysmStatusEffects.SALINATION, SalinationEffect.BRINE_CONTACT_EFFECT_DURATION, 1));
 	}
 
 	@Override
 	public int getMaxFlowDistance(WorldView world) {
-		return 2;
+		return 4;
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public abstract class BrineFluid extends FlowableFluid {
 
 	@Override
 	public boolean matchesType(Fluid fluid) {
-		return fluid == Fluids.WATER || fluid == Fluids.FLOWING_WATER;
+		return fluid == AbysmFluids.BRINE || fluid == AbysmFluids.FLOWING_BRINE;
 	}
 
 	@Override
