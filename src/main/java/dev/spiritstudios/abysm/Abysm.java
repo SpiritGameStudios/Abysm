@@ -6,17 +6,19 @@ import dev.spiritstudios.abysm.command.AbysmCommands;
 import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributeModifiers;
-import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
+import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributeModifiers;
+import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
+import dev.spiritstudios.abysm.fluids.AbysmCauldronBehaviors;
 import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.item.AbysmPotions;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
+import dev.spiritstudios.abysm.mixin.cauldron.CauldronBehaviorAccessor;
 import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
 import dev.spiritstudios.abysm.networking.NowHuntingS2CPayload;
@@ -44,6 +46,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
@@ -122,6 +126,26 @@ public final class Abysm implements ModInitializer {
 		AbysmSoundEvents.init();
 		AbysmParticleTypes.init();
 		AbysmCommands.init();
+
+		AbysmCauldronBehaviors.BUCKETABLE_MAPS.forEach(behavior -> {
+			behavior.put(
+				AbysmItems.BRINE_BUCKET,
+				(
+					state,
+					world,
+					pos,
+					player,
+					hand,
+					stack
+				) -> {
+					if (CauldronBehaviorAccessor.isUnderwater(world, pos)) {
+						return ActionResult.CONSUME;
+					} else {
+						return CauldronBehaviorAccessor.fillCauldron(world, pos, player, hand, stack, AbysmBlocks.BRINE_CAULDRON.getDefaultState(), SoundEvents.ITEM_BUCKET_EMPTY);
+					}
+				}
+			);
+		});
 	}
 
 	private <T> void registerFields(Registry<T> registry, Class<?> toRegister, Class<?> clazz) {
