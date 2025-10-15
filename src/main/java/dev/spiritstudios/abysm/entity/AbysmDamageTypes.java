@@ -17,6 +17,7 @@ public class AbysmDamageTypes {
 	public static final RegistryKey<DamageType> HARPOON = of("harpoon");
 	public static final RegistryKey<DamageType> CNIDOCYTE_STING = of("cnidocyte_sting");
 	public static final RegistryKey<DamageType> PRESSURE = of("pressure");
+	public static final RegistryKey<DamageType> SALINATION = of("salination");
 
 	private static RegistryKey<DamageType> of(String path) {
 		return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Abysm.id(path));
@@ -35,6 +36,7 @@ public class AbysmDamageTypes {
 		damageTypes.put(HARPOON, new DamageType("abysm.harpoon", 0.1F));
 		damageTypes.put(CNIDOCYTE_STING, new DamageType("abysm.cnidocyte_sting", 0.2F));
 		damageTypes.put(PRESSURE, new DamageType("abysm.pressure", 0.1F));
+		damageTypes.put(SALINATION, new DamageType("abysm.salination", 0.5F));
 		return damageTypes.build();
 	}
 

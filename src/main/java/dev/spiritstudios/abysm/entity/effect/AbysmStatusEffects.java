@@ -12,6 +12,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 public class AbysmStatusEffects {
 
 	public static final RegistryEntry<StatusEffect> BLUE = register("blue", new BlueEffect(StatusEffectCategory.NEUTRAL, 0x3F5FFF).fadeTicks(20, 30, 30));
+	public static final RegistryEntry<StatusEffect> SALINATION = register("salination", new SalinationEffect(StatusEffectCategory.HARMFUL, 0xA1E182).fadeTicks(20, 30, 30));
 
 	private static RegistryEntry<StatusEffect> register(String id, StatusEffect statusEffect) {
 		return Registry.registerReference(Registries.STATUS_EFFECT, keyOf(id), statusEffect);

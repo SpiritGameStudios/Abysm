@@ -28,6 +28,7 @@ import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.duck.LivingEntityDuck;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
@@ -36,6 +37,8 @@ import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
+import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -182,7 +185,8 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.GOLDEN_LAZULI_OREFURL,
 			AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT,
 
-			AbysmBlocks.OOZETRICKLE_LANTERN
+			AbysmBlocks.OOZETRICKLE_LANTERN,
+			AbysmBlocks.MONARE
 		);
 
 		BlockRenderLayerMap.putBlocks(
@@ -198,8 +202,16 @@ public class AbysmClient implements ClientModInitializer {
 			BlockRenderLayer.TRANSLUCENT,
 			AbysmBlocks.SWEET_NECTARSAP,
 			AbysmBlocks.SOUR_NECTARSAP,
-			AbysmBlocks.BITTER_NECTARSAP
+			AbysmBlocks.BITTER_NECTARSAP,
+			AbysmBlocks.BRINE
 		);
+
+		BlockRenderLayerMap.putFluids(BlockRenderLayer.TRANSLUCENT, AbysmFluids.BRINE, AbysmFluids.FLOWING_BRINE);
+
+		FluidRenderHandlerRegistry.INSTANCE.register(AbysmFluids.BRINE, AbysmFluids.FLOWING_BRINE, new SimpleFluidRenderHandler(
+			Abysm.id("block/brine_still"),
+			Abysm.id("block/brine_flow")
+		));
 
 		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> OozetrickleLanternBlock.getColor(state.get(OozetrickleLanternBlock.LIGHT)), AbysmBlocks.OOZETRICKLE_LANTERN);
 	}

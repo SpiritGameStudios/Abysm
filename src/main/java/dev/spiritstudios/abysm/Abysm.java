@@ -13,6 +13,7 @@ import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
 import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
+import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.item.AbysmPotions;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
@@ -84,6 +85,7 @@ public final class Abysm implements ModInitializer {
 
 		// register blocks & items
 		AbysmBlocks.init();
+		AbysmFluids.init();
 		AbysmDataComponentTypes.init();
 		AbysmItems.init();
 		RegistryHelper.registerBlockEntityTypes(AbysmBlockEntityTypes.class, MODID);

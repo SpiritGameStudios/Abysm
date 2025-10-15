@@ -8,17 +8,8 @@ import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.block.Block;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.BlockStateVariantMap;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.ItemModels;
-import net.minecraft.client.data.Model;
-import net.minecraft.client.data.ModelIds;
-import net.minecraft.client.data.Models;
-import net.minecraft.client.data.TextureKey;
-import net.minecraft.client.data.TextureMap;
-import net.minecraft.client.data.TexturedModel;
-import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
+import net.minecraft.block.Blocks;
+import net.minecraft.client.data.*;
 import net.minecraft.client.render.model.json.ModelVariantOperator;
 import net.minecraft.client.render.model.json.WeightedVariant;
 import net.minecraft.data.family.BlockFamily;
@@ -146,6 +137,11 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 		// region misc plants
 		generator.registerRoots(AbysmBlocks.ANTENNAE_PLANT, AbysmBlocks.POTTED_ANTENNAE_PLANT);
+		registerMonare(generator);
+		// endregion
+
+		// region brine
+		registerBrine(generator);
 		// endregion
 
 		// region dregloam
@@ -204,6 +200,19 @@ public class AbysmModelProvider extends FabricModelProvider {
 	private void registerBloomCrown(BlockStateModelGenerator generator, Block block) {
 		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(AbysmTexturedModels.BLOOMING_CROWN.upload(block, generator.modelCollector));
 		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_DEFAULT_ROTATION_OPERATIONS));
+	}
+
+	private void registerMonare(BlockStateModelGenerator generator) {
+		generator.registerItemModel(AbysmBlocks.MONARE);
+		generator.registerSimpleState(AbysmBlocks.MONARE);
+	}
+
+	private void registerBrine(BlockStateModelGenerator generator) {
+		TextureMap textureMap = TextureMap.cauldron(TextureMap.getSubId(AbysmBlocks.BRINE, "_still"));
+		Identifier model = Models.TEMPLATE_CAULDRON_FULL.upload(AbysmBlocks.BRINE_CAULDRON, textureMap, generator.modelCollector);
+
+		generator.registerSimpleState(AbysmBlocks.BRINE);
+		generator.blockStateCollector.accept(createSingletonBlockState(Blocks.LAVA_CAULDRON, createWeightedVariant(model)));
 	}
 
 	private void registerGrassLike(BlockStateModelGenerator generator, Block block, Block baseBlock) {

@@ -4,6 +4,7 @@ import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
@@ -26,12 +27,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.BiomeTags;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.registry.tag.EntityTypeTags;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.tag.*;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
@@ -49,6 +45,7 @@ public class AbysmTagProviders {
 		pack.addProvider(EntityTypeTagProvider::new);
 		pack.addProvider(DamageTypeTagProvider::new);
 		pack.addProvider(SoundEventTagProvider::new);
+		pack.addProvider(FluidTagProvider::new);
 	}
 
 	private static class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
@@ -222,10 +219,12 @@ public class AbysmTagProviders {
 			valueLookupBuilder(ConventionalBlockTags.FLOWERS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMING_CROWNS)
-				.addOptionalTag(AbysmBlockTags.SCABIOSAS);
+				.addOptionalTag(AbysmBlockTags.SCABIOSAS)
+				.add(AbysmBlocks.MONARE);
 
 			valueLookupBuilder(ConventionalBlockTags.SMALL_FLOWERS)
-				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS);
+				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
+				.add(AbysmBlocks.MONARE);
 
 			// abysm tags
 			valueLookupBuilder(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON)
@@ -535,6 +534,8 @@ public class AbysmTagProviders {
 					AbysmItems.SMALL_FLORAL_FISH,
 					AbysmItems.BIG_FLORAL_FISH
 				);
+
+			valueLookupBuilder(ConventionalItemTags.BUCKETS).add(AbysmItems.BRINE_BUCKET);
 			// endregion
 
 			// region abysm item tags
@@ -807,6 +808,7 @@ public class AbysmTagProviders {
 
 			builder(DamageTypeTags.BYPASSES_ARMOR)
 				.add(AbysmDamageTypes.CNIDOCYTE_STING)
+				.add(AbysmDamageTypes.SALINATION)
 				.add(AbysmDamageTypes.PRESSURE);
 
 			builder(DamageTypeTags.BYPASSES_EFFECTS)
@@ -814,6 +816,7 @@ public class AbysmTagProviders {
 
 			builder(DamageTypeTags.BYPASSES_ENCHANTMENTS)
 				.add(AbysmDamageTypes.CNIDOCYTE_STING)
+				.add(AbysmDamageTypes.SALINATION)
 				.add(AbysmDamageTypes.PRESSURE);
 		}
 	}
@@ -828,5 +831,18 @@ public class AbysmTagProviders {
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 			builder(AbysmSoundEventTags.UNEFFECTED_BY_WATER);
 		}
+	}
+
+	private static class FluidTagProvider extends FabricTagProvider.FluidTagProvider {
+
+		public FluidTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+			super(output, registriesFuture);
+		}
+
+		@Override
+		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+			valueLookupBuilder(FluidTags.WATER).add(AbysmFluids.BRINE, AbysmFluids.FLOWING_BRINE);
+		}
+
 	}
 }

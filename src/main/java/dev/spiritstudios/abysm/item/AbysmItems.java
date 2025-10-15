@@ -6,16 +6,14 @@ import dev.spiritstudios.abysm.component.AbysmFoodComponents;
 import dev.spiritstudios.abysm.entity.attribute.AbysmAttribute;
 import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.EntityBucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.SpawnEggItem;
+import net.minecraft.item.*;
 import net.minecraft.item.equipment.ArmorMaterials;
 import net.minecraft.item.equipment.EquipmentType;
 import net.minecraft.registry.Registries;
@@ -133,6 +131,12 @@ public final class AbysmItems {
 		"paddlefish_bucket",
 		settings -> new EntityBucketItem(AbysmEntityTypes.PADDLEFISH, Fluids.WATER, SoundEvents.ITEM_BUCKET_EMPTY_FISH, settings),
 		new Item.Settings().maxCount(1).component(DataComponentTypes.BUCKET_ENTITY_DATA, NbtComponent.DEFAULT)
+	);
+
+	public static final Item BRINE_BUCKET = register(
+		"brine_bucket",
+		settings -> new BucketItem(AbysmFluids.BRINE, settings),
+		new Item.Settings().maxCount(1).recipeRemainder(Items.BUCKET)
 	);
 
 	public static final Item SMALL_FLORAL_FISH_SPAWN_EGG = register(

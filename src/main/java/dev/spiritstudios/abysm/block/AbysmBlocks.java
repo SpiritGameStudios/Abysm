@@ -1,20 +1,11 @@
 package dev.spiritstudios.abysm.block;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import dev.spiritstudios.abysm.item.PlaceableOnWaterOrBlockItem;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.AbstractPlantStemBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ChainBlock;
-import net.minecraft.block.FlowerPotBlock;
-import net.minecraft.block.MapColor;
-import net.minecraft.block.PillarBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.WallBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.item.BlockItem;
@@ -748,6 +739,28 @@ public final class AbysmBlocks {
 			.solid()
 			.nonOpaque()
 			.ticksRandomly()
+	);
+	// endregion
+
+	// region brine
+	public static final FluidBlock BRINE = register(
+		"brine",
+		settings -> new FluidBlock(AbysmFluids.BRINE, settings),
+		AbstractBlock.Settings.copy(Blocks.WATER).mapColor(MapColor.EMERALD_GREEN)
+	);
+
+	public static final BrineCauldronBlock BRINE_CAULDRON = register(
+		"brine_cauldron",
+        BrineCauldronBlock::new,
+		AbstractBlock.Settings.copy(Blocks.LAVA_CAULDRON).luminance(state -> 0)
+	);
+
+	public static final MonareBlock MONARE = register(
+		"monare",
+		MonareBlock::new,
+		AbstractBlock.Settings.copy(ROSY_SPRIGS)
+			.mapColor(MapColor.BRIGHT_TEAL)
+			.sounds(BlockSoundGroup.SLIME)
 	);
 	// endregion
 

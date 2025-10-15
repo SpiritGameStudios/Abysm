@@ -105,7 +105,8 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 
 			AbysmBlocks.SILT,
 			AbysmBlocks.CHISELED_SILT,
-			AbysmBlocks.CUT_SILT
+			AbysmBlocks.CUT_SILT,
+			AbysmBlocks.MONARE
 		);
 
 		forEach(this::addPottedPlantDrops,
