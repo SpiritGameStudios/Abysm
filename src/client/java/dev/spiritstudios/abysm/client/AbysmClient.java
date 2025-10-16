@@ -186,7 +186,8 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT,
 
 			AbysmBlocks.OOZETRICKLE_LANTERN,
-			AbysmBlocks.MONARE
+			AbysmBlocks.MONARE_VASE,
+			AbysmBlocks.BRINE_BRACKEN
 		);
 
 		BlockRenderLayerMap.putBlocks(
@@ -206,11 +207,11 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.BRINE
 		);
 
-		BlockRenderLayerMap.putFluids(BlockRenderLayer.TRANSLUCENT, AbysmFluids.BRINE, AbysmFluids.FLOWING_BRINE);
+		BlockRenderLayerMap.putFluids(BlockRenderLayer.CUTOUT_MIPPED, AbysmFluids.BRINE, AbysmFluids.FLOWING_BRINE);
 
 		FluidRenderHandlerRegistry.INSTANCE.register(AbysmFluids.BRINE, AbysmFluids.FLOWING_BRINE, new SimpleFluidRenderHandler(
 			Abysm.id("block/brine_still"),
-			Abysm.id("block/brine_flow")
+			Abysm.id("block/brine_flowing")
 		));
 
 		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> OozetrickleLanternBlock.getColor(state.get(OozetrickleLanternBlock.LIGHT)), AbysmBlocks.OOZETRICKLE_LANTERN);

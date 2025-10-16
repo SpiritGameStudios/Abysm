@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross_emissive",
+  "textures": {
+    "cross": "abysm:block/brine_bracken",
+    "cross_emissive": "abysm:block/brine_bracken_emissive"
+  }
+}

@@ -55,6 +55,8 @@ dependencies {
 	include(libs.biolith)
 	modImplementation(libs.biolith)
 
+	modCompileOnly(libs.sodium)
+
 	modRuntimeOnly(libs.sodium)
 	modRuntimeOnly(libs.modmenu)
 

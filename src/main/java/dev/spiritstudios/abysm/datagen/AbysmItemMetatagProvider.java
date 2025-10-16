@@ -38,7 +38,8 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 			SUNBLOOM_PETALS,
 			MALLOWBLOOM_PETALS,
 
-			OOZETRICKLE_FILAMENTS
+			OOZETRICKLE_FILAMENTS,
+			BRINE_BRACKEN
 		);
 
 		putBlocks(compostingChance, 0.5F,
@@ -76,7 +77,7 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 			BLACK_SCABIOSA,
 
 			ANTENNAE_PLANT,
-			MONARE
+			MONARE_VASE
 		);
 
 		putBlocks(compostingChance, 0.85F,
@@ -90,7 +91,11 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 
 			MAUVE_BLOOMSHROOM_STEM,
 			MAUVE_BLOOMSHROOM_HYPHAE,
-			MAUVE_BLOOMSHROOM_CAP
+			MAUVE_BLOOMSHROOM_CAP,
+
+			MONARE_VASE_PETAL,
+			MONARE_VASE_BULB,
+			MONARE_VASE_BLOCK
 		);
 
 		putBlocks(compostingChance, 1.0F,

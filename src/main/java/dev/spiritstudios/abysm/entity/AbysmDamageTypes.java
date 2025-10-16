@@ -2,6 +2,8 @@ package dev.spiritstudios.abysm.entity;
 
 import com.google.common.collect.ImmutableMap;
 import dev.spiritstudios.abysm.Abysm;
+import net.minecraft.entity.damage.DamageEffects;
+import net.minecraft.entity.damage.DamageScaling;
 import net.minecraft.entity.damage.DamageType;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registerable;
@@ -36,7 +38,7 @@ public class AbysmDamageTypes {
 		damageTypes.put(HARPOON, new DamageType("abysm.harpoon", 0.1F));
 		damageTypes.put(CNIDOCYTE_STING, new DamageType("abysm.cnidocyte_sting", 0.2F));
 		damageTypes.put(PRESSURE, new DamageType("abysm.pressure", 0.1F));
-		damageTypes.put(SALINATION, new DamageType("abysm.salination", 0.5F));
+		damageTypes.put(SALINATION, new DamageType("abysm.salination", DamageScaling.NEVER, 0.2F, DamageEffects.FREEZING));
 		return damageTypes.build();
 	}
 

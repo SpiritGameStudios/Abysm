@@ -1,31 +1,35 @@
 {
-	"required": true,
-	"minVersion": "0.8",
-	"package": "dev.spiritstudios.abysm.client.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"client": [
-		"ChatScreenMixin",
-		"ClientPlayerEntityMixin",
-		"harpoon.PlayerEntityRendererMixin",
-		"leviathan.ClientPlayNetworkHandlerMixin",
-		"render.BubbleColumnUpParticleMixin",
-		"render.ClientPlayerEntityMixin",
-		"render.CurrentDownParticleMixin",
-		"render.EntityRenderDispatcherMixin",
-		"render.EntityRendererMixin",
-		"render.FogRendererMixin",
-		"render.HeldItemRendererMixin",
-		"render.InGameHudMixin",
-		"render.LightmapTextureManagerMixin",
-		"render.LivingEntityRenderStateMixin",
-		"render.WaterBubbleParticleMixin",
-		"render.WaterFogModifierMixin",
-		"render.WaterSuspendParticleMixin",
-		"render.WorldRendererMixin",
-		"sound.SoundSystemMixin",
-		"sound.SourceAccessor"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	}
+    "required": true,
+    "minVersion": "0.8",
+    "package": "dev.spiritstudios.abysm.client.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "client": [
+        "ChatScreenMixin",
+        "ClientPlayerEntityMixin",
+        "harpoon.PlayerEntityRendererMixin",
+        "leviathan.ClientPlayNetworkHandlerMixin",
+        "render.BubbleColumnUpParticleMixin",
+        "render.ClientPlayerEntityMixin",
+        "render.CurrentDownParticleMixin",
+        "render.EntityRenderDispatcherMixin",
+        "render.EntityRendererMixin",
+        "render.FluidRendererMixin",
+        "render.FogRendererMixin",
+        "render.HeldItemRendererMixin",
+        "render.InGameHudMixin",
+        "render.LightmapTextureManagerMixin",
+        "render.LivingEntityRendererMixin",
+        "render.LivingEntityRenderStateMixin",
+        "render.WaterBubbleParticleMixin",
+        "render.WaterFogModifierMixin",
+        "render.WaterSuspendParticleMixin",
+        "render.WorldRendererMixin",
+        "render.sodium.SodiumDefaultFluidRendererMixin",
+        "sound.SoundSystemMixin",
+        "sound.SourceAccessor"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "plugin": "dev.spiritstudios.abysm.client.AbysmClientMixinPlugin"
 }

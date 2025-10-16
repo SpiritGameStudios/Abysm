@@ -136,7 +136,9 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 		// region misc plants
 		generator.registerRoots(AbysmBlocks.ANTENNAE_PLANT, AbysmBlocks.POTTED_ANTENNAE_PLANT);
-		registerMonare(generator);
+		generator.registerTintableCrossBlockState(AbysmBlocks.BRINE_BRACKEN, BlockStateModelGenerator.CrossType.EMISSIVE_NOT_TINTED);
+		generator.registerItemModel(AbysmBlocks.BRINE_BRACKEN.asItem());
+		registerMonareVase(generator);
 		// endregion
 
 		// region brine
@@ -201,9 +203,13 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_DEFAULT_ROTATION_OPERATIONS));
 	}
 
-	private void registerMonare(BlockStateModelGenerator generator) {
-		generator.registerItemModel(AbysmBlocks.MONARE.asItem(), generator.uploadItemModel(AbysmBlocks.MONARE.asItem()));
-		generator.registerSimpleState(AbysmBlocks.MONARE);
+	private void registerMonareVase(BlockStateModelGenerator generator) {
+		generator.registerItemModel(AbysmBlocks.MONARE_VASE.asItem(), ModelIds.getBlockModelId(AbysmBlocks.MONARE_VASE));
+		generator.registerSimpleState(AbysmBlocks.MONARE_VASE);
+
+		generator.registerSimpleCubeAll(AbysmBlocks.MONARE_VASE_BLOCK);
+		generator.registerSimpleCubeAll(AbysmBlocks.MONARE_VASE_PETAL);
+		generator.registerSimpleCubeAll(AbysmBlocks.MONARE_VASE_BULB);
 	}
 
 	private void registerBrine(BlockStateModelGenerator generator) {

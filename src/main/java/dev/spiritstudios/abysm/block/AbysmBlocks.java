@@ -746,25 +746,75 @@ public final class AbysmBlocks {
 	public static final FluidBlock BRINE = register(
 		"brine",
 		settings -> new FluidBlock(AbysmFluids.BRINE, settings),
-		AbstractBlock.Settings.copy(Blocks.WATER).mapColor(MapColor.EMERALD_GREEN).luminance(state -> 2)
+		AbstractBlock.Settings.copy(Blocks.WATER).mapColor(MapColor.EMERALD_GREEN).luminance(state -> 6),
+		false
 	);
 
 	public static final BrineCauldronBlock BRINE_CAULDRON = register(
 		"brine_cauldron",
         BrineCauldronBlock::new,
-		AbstractBlock.Settings.copy(Blocks.LAVA_CAULDRON).luminance(state -> 2)
+		AbstractBlock.Settings.copy(Blocks.LAVA_CAULDRON).luminance(state -> 6),
+		false
 	);
 
-	public static final MonareBlock MONARE = register(
-		"monare",
-		MonareBlock::new,
+	public static final MonareVaseBlock MONARE_VASE = register(
+		"monare_vase",
+		MonareVaseBlock::new,
 		AbstractBlock.Settings.create()
 			.mapColor(MapColor.BRIGHT_TEAL)
-			.sounds(BlockSoundGroup.SLIME)
+			.sounds(BlockSoundGroup.SHROOMLIGHT)
 			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
+			.luminance(state -> 8)
+			.breakInstantly()
+			.dynamicBounds()
+			.nonOpaque()
+	);
+
+	public static final Block MONARE_VASE_BLOCK = register(
+		"monare_vase_block",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.BRIGHT_TEAL)
+			.strength(1.2F)
+			.sounds(BlockSoundGroup.WOOD)
+			.instrument(NoteBlockInstrument.BASS)
+			.luminance(state -> 3)
+	);
+
+	public static final Block MONARE_VASE_PETAL = register(
+		"monare_vase_petal",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.PINK)
+			.strength(0.1F)
+			.sounds(BlockSoundGroup.FLOWERBED)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 6)
+	);
+
+	public static final Block MONARE_VASE_BULB = register(
+		"monare_vase_bulb",
+		Block::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.PALE_YELLOW)
+			.sounds(BlockSoundGroup.SHROOMLIGHT)
+			.breakInstantly()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(state -> 15)
+	);
+
+	public static final BrineBrackenBlock BRINE_BRACKEN = register(
+		"brine_bracken",
+		BrineBrackenBlock::new,
+		AbstractBlock.Settings.create()
+			.mapColor(MapColor.BRIGHT_TEAL)
+			.sounds(BlockSoundGroup.GRASS)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.offset(AbstractBlock.OffsetType.XZ)
 			.luminance(state -> 3)
 			.breakInstantly()
-			.nonOpaque()
+			.noCollision()
 			.replaceable()
 	);
 	// endregion

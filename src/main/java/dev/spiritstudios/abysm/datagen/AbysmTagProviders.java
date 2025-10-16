@@ -94,7 +94,8 @@ public class AbysmTagProviders {
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.add(AbysmBlocks.OOZETRICKLE_CORD)
-				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
+				.add(AbysmBlocks.OOZETRICKLE_LANTERN)
+				.add(AbysmBlocks.MONARE_VASE_BLOCK);
 
 			valueLookupBuilder(BlockTags.SHOVEL_MINEABLE)
 				.addOptionalTag(AbysmBlockTags.NECTARSAP)
@@ -111,7 +112,8 @@ public class AbysmTagProviders {
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.add(AbysmBlocks.OOZETRICKLE_CORD)
-				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
+				.add(AbysmBlocks.OOZETRICKLE_LANTERN)
+				.add(AbysmBlocks.MONARE_VASE_PETAL);
 
 			valueLookupBuilder(BlockTags.REPLACEABLE_BY_TREES)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
@@ -119,7 +121,8 @@ public class AbysmTagProviders {
 				.add(
 					AbysmBlocks.OOZETRICKLE_FILAMENTS,
 					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS
-				);
+				)
+				.add(AbysmBlocks.BRINE_BRACKEN);
 
 			valueLookupBuilder(BlockTags.REPLACEABLE_BY_MUSHROOMS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
@@ -127,13 +130,15 @@ public class AbysmTagProviders {
 				.add(
 					AbysmBlocks.OOZETRICKLE_FILAMENTS,
 					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS
-				);
+				)
+				.add(AbysmBlocks.BRINE_BRACKEN);
 
 			valueLookupBuilder(BlockTags.COMBINATION_STEP_SOUND_BLOCKS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
 				.add(
 					AbysmBlocks.OOZETRICKLE_FILAMENTS
-				);
+				)
+				.add(AbysmBlocks.BRINE_BRACKEN);
 
 			valueLookupBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS);
@@ -143,7 +148,8 @@ public class AbysmTagProviders {
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
 				.add(
 					AbysmBlocks.OOZETRICKLE_FILAMENTS
-				);
+				)
+				.add(AbysmBlocks.BRINE_BRACKEN);
 
 			valueLookupBuilder(BlockTags.SCULK_REPLACEABLE)
 				.add(
@@ -220,11 +226,11 @@ public class AbysmTagProviders {
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMING_CROWNS)
 				.addOptionalTag(AbysmBlockTags.SCABIOSAS)
-				.add(AbysmBlocks.MONARE);
+				.add(AbysmBlocks.MONARE_VASE);
 
 			valueLookupBuilder(ConventionalBlockTags.SMALL_FLOWERS)
 				.addOptionalTag(AbysmBlockTags.SMALL_BLOOMSHROOMS)
-				.add(AbysmBlocks.MONARE);
+				.add(AbysmBlocks.MONARE_VASE);
 
 			// abysm tags
 			valueLookupBuilder(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON)

@@ -268,13 +268,19 @@
       "id": "abysm:oozetrickle_lantern"
     },
     {
-      "id": "abysm:brine"
+      "id": "abysm:monare_vase"
     },
     {
-      "id": "abysm:brine_cauldron"
+      "id": "abysm:monare_vase_block"
     },
     {
-      "id": "abysm:monare"
+      "id": "abysm:monare_vase_petal"
+    },
+    {
+      "id": "abysm:monare_vase_bulb"
+    },
+    {
+      "id": "abysm:brine_bracken"
     },
     {
       "id": "abysm:silt"

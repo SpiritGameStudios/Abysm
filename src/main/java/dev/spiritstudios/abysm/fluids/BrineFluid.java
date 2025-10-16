@@ -15,10 +15,10 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.fluid.FlowableFluid;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -86,7 +86,7 @@ public abstract class BrineFluid extends FlowableFluid {
 
 	@Override
 	protected boolean isInfinite(ServerWorld world) {
-		return world.getGameRules().getBoolean(GameRules.WATER_SOURCE_CONVERSION);
+		return false;
 	}
 
 	@Override
@@ -111,6 +111,21 @@ public abstract class BrineFluid extends FlowableFluid {
 		return AbysmBlocks.BRINE.getDefaultState().with(FluidBlock.LEVEL, getBlockStateLevel(state));
 	}
 
+	public static boolean canReplaceWithWater(ServerWorld world, BlockPos pos) {
+		BlockPos.Mutable mutable = new BlockPos.Mutable();
+		int i = 0;
+
+		for (Direction direction : Direction.Type.HORIZONTAL) {
+			BlockPos blockPos = mutable.set(pos, direction);
+			FluidState fluidState = world.getFluidState(blockPos);
+
+			if (fluidState.isEqualAndStill(Fluids.WATER))
+				i++;
+		}
+
+		return i >= 2;
+	}
+
 	@Override
 	public boolean matchesType(Fluid fluid) {
 		return fluid == AbysmFluids.BRINE || fluid == AbysmFluids.FLOWING_BRINE;
@@ -128,7 +143,7 @@ public abstract class BrineFluid extends FlowableFluid {
 
 	@Override
 	public boolean canBeReplacedWith(FluidState state, BlockView world, BlockPos pos, Fluid fluid, Direction direction) {
-		return direction == Direction.DOWN && !fluid.isIn(FluidTags.WATER);
+		return fluid.matchesType(Fluids.LAVA);
 	}
 
 	@Override

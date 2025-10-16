@@ -1,0 +1,211 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made by axialeaa using Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"plant_emissive": "abysm:block/monare_vase_emissive",
+		"particle": "abysm:block/monare_vase",
+		"plant": "abysm:block/monare_vase"
+	},
+	"elements": [
+		{
+			"name": "bottom",
+			"from": [6, 0, 6],
+			"to": [10, 5, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 0, 5]},
+			"faces": {
+				"north": {"uv": [0, 11, 4, 16], "texture": "#plant"},
+				"east": {"uv": [0, 11, 4, 16], "texture": "#plant"},
+				"south": {"uv": [0, 11, 4, 16], "texture": "#plant"},
+				"west": {"uv": [0, 11, 4, 16], "texture": "#plant"},
+				"up": {"uv": [4, 11, 0, 7], "texture": "#plant"},
+				"down": {"uv": [4, 3, 0, 7], "texture": "#plant", "cullface": "down"}
+			}
+		},
+		{
+			"name": "top",
+			"from": [6.5, 5, 6.5],
+			"to": [9.5, 9, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4.5, 5, 4.5]},
+			"faces": {
+				"north": {"uv": [4, 12, 7, 16], "texture": "#plant"},
+				"east": {"uv": [4, 12, 7, 16], "texture": "#plant"},
+				"south": {"uv": [4, 12, 7, 16], "texture": "#plant"},
+				"west": {"uv": [4, 12, 7, 16], "texture": "#plant"},
+				"up": {"uv": [7, 12, 4, 9], "texture": "#plant"}
+			}
+		},
+		{
+			"name": "bottom_emissive",
+			"from": [5.99, -0.01, 5.99],
+			"to": [10.01, 5.01, 10.01],
+			"light_emission": 12,
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2.5, 8]},
+			"faces": {
+				"north": {"uv": [0, 11, 4, 16], "texture": "#plant_emissive"},
+				"east": {"uv": [0, 11, 4, 16], "texture": "#plant_emissive"},
+				"south": {"uv": [0, 11, 4, 16], "texture": "#plant_emissive"},
+				"west": {"uv": [0, 11, 4, 16], "texture": "#plant_emissive"},
+				"up": {"uv": [4, 11, 0, 7], "texture": "#plant_emissive"},
+				"down": {"uv": [4, 3, 0, 7], "texture": "#plant_emissive", "cullface": "down"}
+			}
+		},
+		{
+			"name": "top_emissive",
+			"from": [6.49, 4.99, 6.49],
+			"to": [9.51, 9.01, 9.51],
+			"light_emission": 12,
+			"rotation": {"angle": 0, "axis": "y", "origin": [4.5, 5, 4.5]},
+			"faces": {
+				"north": {"uv": [4, 12, 7, 16], "texture": "#plant_emissive"},
+				"east": {"uv": [4, 12, 7, 16], "texture": "#plant_emissive"},
+				"south": {"uv": [4, 12, 7, 16], "texture": "#plant_emissive"},
+				"west": {"uv": [4, 12, 7, 16], "texture": "#plant_emissive"},
+				"up": {"uv": [7, 12, 4, 9], "texture": "#plant_emissive"}
+			}
+		},
+		{
+			"name": "nw_se",
+			"from": [6, 9, 8],
+			"to": [10, 18, 8],
+			"shade": false,
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [12, 7, 16, 16], "texture": "#plant"},
+				"south": {"uv": [12, 7, 16, 16], "texture": "#plant"}
+			}
+		},
+		{
+			"name": "ne_sw",
+			"from": [6, 9, 8],
+			"to": [10, 18, 8],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [12, 7, 16, 16], "texture": "#plant"},
+				"south": {"uv": [12, 7, 16, 16], "texture": "#plant"}
+			}
+		},
+		{
+			"name": "ne_sw_emissive",
+			"from": [6, 9, 8],
+			"to": [10, 18, 8],
+			"shade": false,
+			"light_emission": 12,
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [12, 7, 16, 16], "texture": "#plant_emissive"},
+				"south": {"uv": [12, 7, 16, 16], "texture": "#plant_emissive"}
+			}
+		},
+		{
+			"name": "nw_se_emissive",
+			"from": [6, 9, 8],
+			"to": [10, 18, 8],
+			"shade": false,
+			"light_emission": 12,
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [12, 7, 16, 16], "texture": "#plant_emissive"},
+				"south": {"uv": [12, 7, 16, 16], "texture": "#plant_emissive"}
+			}
+		},
+		{
+			"name": "s",
+			"from": [6, 9, 8],
+			"to": [10, 9, 13],
+			"shade": false,
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 9, 8], "rescale": true},
+			"faces": {
+				"up": {"uv": [11, 16, 7, 11], "texture": "#plant"},
+				"down": {"uv": [11, 11, 7, 16], "texture": "#plant"}
+			}
+		},
+		{
+			"name": "e",
+			"from": [8, 9, 6],
+			"to": [13, 9, 10],
+			"shade": false,
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [8, 9, 8], "rescale": true},
+			"faces": {
+				"up": {"uv": [7, 11, 11, 16], "rotation": 90, "texture": "#plant"},
+				"down": {"uv": [7, 11, 11, 16], "rotation": 90, "texture": "#plant"}
+			}
+		},
+		{
+			"name": "w",
+			"from": [3, 9, 6],
+			"to": [8, 9, 10],
+			"shade": false,
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [8, 9, 8], "rescale": true},
+			"faces": {
+				"up": {"uv": [7, 11, 11, 16], "rotation": 270, "texture": "#plant"},
+				"down": {"uv": [7, 11, 11, 16], "rotation": 270, "texture": "#plant"}
+			}
+		},
+		{
+			"name": "n",
+			"from": [6, 9, 3],
+			"to": [10, 9, 8],
+			"shade": false,
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, 9, 8], "rescale": true},
+			"faces": {
+				"up": {"uv": [7, 11, 11, 16], "texture": "#plant"},
+				"down": {"uv": [7, 11, 11, 16], "rotation": 180, "texture": "#plant"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [5, 45, 0],
+			"translation": [0, 2.5, 0.25],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"translation": [0, 2, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -135, 0],
+			"translation": [0, 2, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"gui": {
+			"rotation": [30, -135, 0],
+			"scale": [0.825, 0.825, 0.825]
+		},
+		"head": {
+			"translation": [0, 14, 0]
+		},
+		"fixed": {
+			"scale": [0.8, 0.8, 0.8]
+		}
+	},
+	"groups": [
+		{
+			"name": "receptacle",
+			"origin": [4.5, 5, 4.5],
+			"color": 0,
+			"children": [0, 1, 2, 3]
+		},
+		{
+			"name": "stamen",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"shade": false,
+			"children": [4, 5, 6, 7]
+		},
+		{
+			"name": "petals",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"shade": false,
+			"children": [8, 9, 10, 11]
+		}
+	]
+}
