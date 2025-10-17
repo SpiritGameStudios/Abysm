@@ -13,7 +13,6 @@
         "render.CurrentDownParticleMixin",
         "render.EntityRenderDispatcherMixin",
         "render.EntityRendererMixin",
-        "render.FluidRendererMixin",
         "render.FogRendererMixin",
         "render.HeldItemRendererMixin",
         "render.InGameHudMixin",
@@ -24,7 +23,6 @@
         "render.WaterFogModifierMixin",
         "render.WaterSuspendParticleMixin",
         "render.WorldRendererMixin",
-        "render.sodium.SodiumDefaultFluidRendererMixin",
         "sound.SoundSystemMixin",
         "sound.SourceAccessor"
     ],

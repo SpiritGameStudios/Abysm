@@ -6,7 +6,6 @@ import dev.spiritstudios.abysm.component.AbysmFoodComponents;
 import dev.spiritstudios.abysm.entity.attribute.AbysmAttribute;
 import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
@@ -135,7 +134,7 @@ public final class AbysmItems {
 
 	public static final Item BRINE_BUCKET = register(
 		"brine_bucket",
-		settings -> new BucketItem(AbysmFluids.BRINE, settings),
+		settings -> new PowderSnowBucketItem(AbysmBlocks.BRINE, SoundEvents.ITEM_BUCKET_EMPTY_POWDER_SNOW, settings),
 		new Item.Settings().maxCount(1).recipeRemainder(Items.BUCKET)
 	);
 

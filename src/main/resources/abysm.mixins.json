@@ -18,7 +18,6 @@
         "ecosystem.ServerWorldMixin",
         "ecosystem.goal.FishEntityAccessor",
         "ecosystem.goal.SchoolingFishEntityAccessor",
-        "fluid.WaterFluidMixin",
         "harpoon.LivingEntityMixin",
         "harpoon.PersistentProjectileEntityAccessor",
         "harpoon.PersistentProjectileEntityMixin",

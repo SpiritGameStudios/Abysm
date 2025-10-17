@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.block.BrineBlock;
 import dev.spiritstudios.abysm.client.render.HarpoonLoadedProperty;
 import dev.spiritstudios.abysm.item.AbysmEquipmentAssetKeys;
 import dev.spiritstudios.abysm.item.AbysmItems;
@@ -22,15 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 
-import static net.minecraft.client.data.BlockStateModelGenerator.CrossType;
-import static net.minecraft.client.data.BlockStateModelGenerator.NO_OP;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_180;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_90;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_180;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_270;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_90;
-import static net.minecraft.client.data.BlockStateModelGenerator.createSingletonBlockState;
-import static net.minecraft.client.data.BlockStateModelGenerator.createWeightedVariant;
+import static net.minecraft.client.data.BlockStateModelGenerator.*;
 
 public class AbysmModelProvider extends FabricModelProvider {
 	// Note - by default, the spore blossom model(used for scabiosa) is upside, which is why this is flipped
@@ -213,11 +206,25 @@ public class AbysmModelProvider extends FabricModelProvider {
 	}
 
 	private void registerBrine(BlockStateModelGenerator generator) {
-		TextureMap textureMap = TextureMap.cauldron(TextureMap.getSubId(AbysmBlocks.BRINE, "_still"));
-		Identifier model = Models.TEMPLATE_CAULDRON_FULL.upload(AbysmBlocks.BRINE_CAULDRON, textureMap, generator.modelCollector);
+		Block brine = AbysmBlocks.BRINE;
+		Block cauldron = AbysmBlocks.BRINE_CAULDRON;
 
-		generator.registerSimpleState(AbysmBlocks.BRINE);
-		generator.blockStateCollector.accept(createSingletonBlockState(AbysmBlocks.BRINE_CAULDRON, createWeightedVariant(model)));
+		TextureMap cauldronTextureMap = TextureMap.cauldron(TextureMap.getSubId(brine, "_still"));
+		Identifier cauldronModel = Models.TEMPLATE_CAULDRON_FULL.upload(cauldron, cauldronTextureMap, generator.modelCollector);
+
+		// cauldron
+		generator.blockStateCollector.accept(createSingletonBlockState(cauldron, createWeightedVariant(cauldronModel)));
+
+		Identifier up = TexturedModel.CUBE_ALL.upload(brine, generator.modelCollector);
+		Identifier down = ModelIds.getBlockSubModelId(brine, "_down");
+
+		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(brine)
+			.with(createBooleanModelMap(BrineBlock.UP, createWeightedVariant(up), createWeightedVariant(down)))
+		);
+
+		Item bucket = AbysmItems.BRINE_BUCKET;
+
+		generator.registerItemModel(bucket, Models.GENERATED.upload(bucket, TextureMap.layer0(bucket), generator.modelCollector));
 	}
 
 	private void registerGrassLike(BlockStateModelGenerator generator, Block block, Block baseBlock) {

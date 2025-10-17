@@ -4,7 +4,6 @@ import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
@@ -45,7 +44,6 @@ public class AbysmTagProviders {
 		pack.addProvider(EntityTypeTagProvider::new);
 		pack.addProvider(DamageTypeTagProvider::new);
 		pack.addProvider(SoundEventTagProvider::new);
-		pack.addProvider(FluidTagProvider::new);
 	}
 
 	private static class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
@@ -120,25 +118,31 @@ public class AbysmTagProviders {
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS)
 				.add(
 					AbysmBlocks.OOZETRICKLE_FILAMENTS,
-					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS
-				)
-				.add(AbysmBlocks.BRINE_BRACKEN);
+					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS,
+					AbysmBlocks.BRINE_BRACKEN,
+					AbysmBlocks.BRINE
+				);
 
 			valueLookupBuilder(BlockTags.REPLACEABLE_BY_MUSHROOMS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS)
 				.add(
 					AbysmBlocks.OOZETRICKLE_FILAMENTS,
-					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS
-				)
-				.add(AbysmBlocks.BRINE_BRACKEN);
+					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS,
+					AbysmBlocks.BRINE_BRACKEN,
+					AbysmBlocks.BRINE
+				);
+
+			valueLookupBuilder(BlockTags.GEODE_INVALID_BLOCKS)
+				.add(AbysmBlocks.BRINE);
 
 			valueLookupBuilder(BlockTags.COMBINATION_STEP_SOUND_BLOCKS)
 				.addOptionalTag(AbysmBlockTags.FLOWERY_SPRIGS)
 				.add(
 					AbysmBlocks.OOZETRICKLE_FILAMENTS
 				)
-				.add(AbysmBlocks.BRINE_BRACKEN);
+				.add(AbysmBlocks.BRINE_BRACKEN)
+				.add(AbysmBlocks.BRINE);
 
 			valueLookupBuilder(BlockTags.INSIDE_STEP_SOUND_BLOCKS)
 				.addOptionalTag(AbysmBlockTags.BLOOM_PETALS);
@@ -837,18 +841,5 @@ public class AbysmTagProviders {
 		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
 			builder(AbysmSoundEventTags.UNEFFECTED_BY_WATER);
 		}
-	}
-
-	private static class FluidTagProvider extends FabricTagProvider.FluidTagProvider {
-
-		public FluidTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-			super(output, registriesFuture);
-		}
-
-		@Override
-		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
-			valueLookupBuilder(FluidTags.WATER).add(AbysmFluids.BRINE, AbysmFluids.FLOWING_BRINE);
-		}
-
 	}
 }

@@ -15,7 +15,7 @@ import net.minecraft.util.math.random.Random;
 public class SalinationEffect extends StatusEffect {
 
 	public static final int BRINE_CONTACT_EFFECT_DURATION = 30;
-	private static final float CONVULSION_STRENGTH_PER_LEVEL = 0.1F;
+	private static final float CONVULSION_STRENGTH_PER_LEVEL = 0.2F;
 
 	protected SalinationEffect(StatusEffectCategory category, int color) {
 		super(category, color);
@@ -48,10 +48,12 @@ public class SalinationEffect extends StatusEffect {
 		double x = MathHelper.nextBetween(random, -1, 1);
 		double z = MathHelper.nextBetween(random, -1, 1);
 
-		Vec3d velocity = new Vec3d(x, entity.isOnGround() ? 0.4 : 0, z).normalize().multiply(convulsionStrength);
-		entity.velocityDirty = true;
+		Vec3d velocity = new Vec3d(x, 1, z).normalize();
+		velocity = velocity.multiply(convulsionStrength);
+		velocity = velocity.add(entity.getVelocity());
 
-        entity.setVelocity(velocity.add(entity.getVelocity()));
+		entity.velocityDirty = true;
+        entity.setVelocity(velocity);
 	}
 
 }

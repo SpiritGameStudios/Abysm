@@ -31,7 +31,7 @@ public final class AbysmItemGroups {
 		).forEach(pair -> {
 			ItemStack stack = new ItemStack(pair.value().asItem());
 			if (!stack.isEmpty()) {
-				if (stack.isOf(AbysmItems.LAPIS_BULB)) return; // avoid registering this item twice.
+				if (stack.isOf(AbysmItems.LAPIS_BULB) || stack.isOf(AbysmItems.BRINE_BUCKET)) return; // avoid registering these items twice.
 				items.add(stack);
 			}
 		});

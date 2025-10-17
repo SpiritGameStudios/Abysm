@@ -1,6 +1,9 @@
 {
   "variants": {
-    "": {
+    "up=false": {
+      "model": "abysm:block/brine_down"
+    },
+    "up=true": {
       "model": "abysm:block/brine"
     }
   }

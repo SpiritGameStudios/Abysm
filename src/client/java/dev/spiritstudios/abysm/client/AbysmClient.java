@@ -28,7 +28,6 @@ import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.duck.LivingEntityDuck;
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
@@ -37,8 +36,6 @@ import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
-import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -206,13 +203,6 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.BITTER_NECTARSAP,
 			AbysmBlocks.BRINE
 		);
-
-		BlockRenderLayerMap.putFluids(BlockRenderLayer.CUTOUT_MIPPED, AbysmFluids.BRINE, AbysmFluids.FLOWING_BRINE);
-
-		FluidRenderHandlerRegistry.INSTANCE.register(AbysmFluids.BRINE, AbysmFluids.FLOWING_BRINE, new SimpleFluidRenderHandler(
-			Abysm.id("block/brine_still"),
-			Abysm.id("block/brine_flowing")
-		));
 
 		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> OozetrickleLanternBlock.getColor(state.get(OozetrickleLanternBlock.LIGHT)), AbysmBlocks.OOZETRICKLE_LANTERN);
 	}

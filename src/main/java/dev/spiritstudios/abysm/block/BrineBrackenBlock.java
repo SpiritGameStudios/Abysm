@@ -1,11 +1,9 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
-import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PlantBlock;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -33,13 +31,10 @@ public class BrineBrackenBlock extends UnderwaterPlantBlock {
 
     @Override
     protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        if (super.canPlaceAt(state, world, pos))
-            return true;
-
         for (Direction direction : Direction.Type.HORIZONTAL) {
-            FluidState fluidState = world.getFluidState(pos.down().offset(direction));
+            BlockState blockState = world.getBlockState(pos.down().offset(direction));
 
-            if (fluidState.getFluid().matchesType(AbysmFluids.BRINE))
+            if (blockState.isOf(AbysmBlocks.BRINE))
                 return true;
         }
 

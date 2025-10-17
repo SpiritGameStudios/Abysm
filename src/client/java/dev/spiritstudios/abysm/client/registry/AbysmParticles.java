@@ -1,12 +1,6 @@
 package dev.spiritstudios.abysm.client.registry;
 
-import dev.spiritstudios.abysm.client.particle.BloomGlimmerParticle;
-import dev.spiritstudios.abysm.client.particle.BloomPetalParticle;
-import dev.spiritstudios.abysm.client.particle.OoglyBooglyElectricityParticle;
-import dev.spiritstudios.abysm.client.particle.OoglyBooglyFumesParticle;
-import dev.spiritstudios.abysm.client.particle.OoglyBooglySparkleParticle;
-import dev.spiritstudios.abysm.client.particle.PoggdrygllSporesParticle;
-import dev.spiritstudios.abysm.client.particle.SpiralingParticle;
+import dev.spiritstudios.abysm.client.particle.*;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.particle.ParticleFactory;
@@ -37,6 +31,7 @@ public class AbysmParticles {
 		register(AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY_SPECK, SpiralingParticle.ElectricitySpeck::new);
 
 		register(AbysmParticleTypes.POGGDRYGLL_SPORES, PoggdrygllSporesParticle.Factory::new);
+		register(AbysmParticleTypes.BRINE_SALT, BrineSaltParticle.Factory::new);
 	}
 
 	public static <T extends ParticleEffect> void register(ParticleType<T> type, ParticleFactory<T> provider) {

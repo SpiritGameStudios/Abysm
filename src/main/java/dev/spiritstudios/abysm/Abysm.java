@@ -14,7 +14,6 @@ import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributeModifiers;
 import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
 import dev.spiritstudios.abysm.fluids.AbysmCauldronBehaviors;
-import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.item.AbysmPotions;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
@@ -89,7 +88,6 @@ public final class Abysm implements ModInitializer {
 
 		// register blocks & items
 		AbysmBlocks.init();
-		AbysmFluids.init();
 		AbysmDataComponentTypes.init();
 		AbysmItems.init();
 		RegistryHelper.registerBlockEntityTypes(AbysmBlockEntityTypes.class, MODID);
@@ -129,7 +127,7 @@ public final class Abysm implements ModInitializer {
 
 		AbysmCauldronBehaviors.BUCKETABLE_MAPS.forEach(behavior -> {
 			behavior.put(
-				AbysmItems.BRINE_BUCKET,
+				AbysmBlocks.BRINE.asItem(),
 				(
 					state,
 					world,

@@ -1,7 +1,6 @@
 package dev.spiritstudios.abysm.block;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.fluids.AbysmFluids;
 import dev.spiritstudios.abysm.item.PlaceableOnWaterOrBlockItem;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
@@ -743,17 +742,25 @@ public final class AbysmBlocks {
 	// endregion
 
 	// region brine
-	public static final FluidBlock BRINE = register(
+	public static final BrineBlock BRINE = register(
 		"brine",
-		settings -> new FluidBlock(AbysmFluids.BRINE, settings),
-		AbstractBlock.Settings.copy(Blocks.WATER).mapColor(MapColor.EMERALD_GREEN).luminance(state -> 6),
+		BrineBlock::new,
+		AbstractBlock.Settings.copy(Blocks.POWDER_SNOW)
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.luminance(BrineBlock.LIGHT_LEVEL)
+			.mapColor(MapColor.EMERALD_GREEN)
+			.sounds(BlockSoundGroup.MUD)
+			.solidBlock(Blocks::never)
+			.strength(0.15F)
+			.noCollision(),
 		false
 	);
 
 	public static final BrineCauldronBlock BRINE_CAULDRON = register(
 		"brine_cauldron",
         BrineCauldronBlock::new,
-		AbstractBlock.Settings.copy(Blocks.LAVA_CAULDRON).luminance(state -> 6),
+		AbstractBlock.Settings.copy(Blocks.LAVA_CAULDRON)
+			.luminance(BrineBlock.LIGHT_LEVEL),
 		false
 	);
 
@@ -761,10 +768,10 @@ public final class AbysmBlocks {
 		"monare_vase",
 		MonareVaseBlock::new,
 		AbstractBlock.Settings.create()
-			.mapColor(MapColor.BRIGHT_TEAL)
-			.sounds(BlockSoundGroup.SHROOMLIGHT)
 			.pistonBehavior(PistonBehavior.DESTROY)
 			.offset(AbstractBlock.OffsetType.XZ)
+			.sounds(BlockSoundGroup.SHROOMLIGHT)
+			.mapColor(MapColor.BRIGHT_TEAL)
 			.luminance(state -> 8)
 			.breakInstantly()
 			.dynamicBounds()
@@ -775,43 +782,43 @@ public final class AbysmBlocks {
 		"monare_vase_block",
 		Block::new,
 		AbstractBlock.Settings.create()
-			.mapColor(MapColor.BRIGHT_TEAL)
-			.strength(1.2F)
-			.sounds(BlockSoundGroup.WOOD)
 			.instrument(NoteBlockInstrument.BASS)
+			.mapColor(MapColor.BRIGHT_TEAL)
+			.sounds(BlockSoundGroup.WOOD)
 			.luminance(state -> 3)
+			.strength(1.2F)
 	);
 
 	public static final Block MONARE_VASE_PETAL = register(
 		"monare_vase_petal",
 		Block::new,
 		AbstractBlock.Settings.create()
-			.mapColor(MapColor.PINK)
-			.strength(0.1F)
-			.sounds(BlockSoundGroup.FLOWERBED)
 			.pistonBehavior(PistonBehavior.DESTROY)
+			.sounds(BlockSoundGroup.FLOWERBED)
+			.mapColor(MapColor.PINK)
 			.luminance(state -> 6)
+			.strength(0.1F)
 	);
 
 	public static final Block MONARE_VASE_BULB = register(
 		"monare_vase_bulb",
 		Block::new,
 		AbstractBlock.Settings.create()
-			.mapColor(MapColor.PALE_YELLOW)
-			.sounds(BlockSoundGroup.SHROOMLIGHT)
-			.breakInstantly()
 			.pistonBehavior(PistonBehavior.DESTROY)
+			.sounds(BlockSoundGroup.SHROOMLIGHT)
+			.mapColor(MapColor.PALE_YELLOW)
 			.luminance(state -> 15)
+			.breakInstantly()
 	);
 
 	public static final BrineBrackenBlock BRINE_BRACKEN = register(
 		"brine_bracken",
 		BrineBrackenBlock::new,
 		AbstractBlock.Settings.create()
-			.mapColor(MapColor.BRIGHT_TEAL)
-			.sounds(BlockSoundGroup.GRASS)
 			.pistonBehavior(PistonBehavior.DESTROY)
 			.offset(AbstractBlock.OffsetType.XZ)
+			.sounds(BlockSoundGroup.GRASS)
+			.mapColor(MapColor.TEAL)
 			.luminance(state -> 3)
 			.breakInstantly()
 			.noCollision()
