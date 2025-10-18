@@ -77,7 +77,8 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 			BLACK_SCABIOSA,
 
 			ANTENNAE_PLANT,
-			MONARE_VASE
+			MONARE_VASE,
+			BOOMSHROOM
 		);
 
 		putBlocks(compostingChance, 0.85F,

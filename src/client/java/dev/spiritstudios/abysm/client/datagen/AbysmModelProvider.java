@@ -129,8 +129,10 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 		// region misc plants
 		generator.registerRoots(AbysmBlocks.ANTENNAE_PLANT, AbysmBlocks.POTTED_ANTENNAE_PLANT);
-		generator.registerTintableCrossBlockState(AbysmBlocks.BRINE_BRACKEN, BlockStateModelGenerator.CrossType.EMISSIVE_NOT_TINTED);
+		generator.registerTintableCrossBlockState(AbysmBlocks.BRINE_BRACKEN, CrossType.EMISSIVE_NOT_TINTED);
+		generator.registerTintableCrossBlockState(AbysmBlocks.BOOMSHROOM, CrossType.EMISSIVE_NOT_TINTED);
 		generator.registerItemModel(AbysmBlocks.BRINE_BRACKEN.asItem());
+		generator.registerItemModel(AbysmBlocks.BOOMSHROOM.asItem());
 		registerMonareVase(generator);
 		// endregion
 

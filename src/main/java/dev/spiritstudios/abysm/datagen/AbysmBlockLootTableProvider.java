@@ -141,6 +141,8 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.MALLOWBLOOM_PETALS
 		);
 
+		this.addDrop(AbysmBlocks.BOOMSHROOM, this::dropsWithSilkTouchOrShears);
+
 		this.addDrop(AbysmBlocks.OOZING_DREGLOAM, block -> this.dropsWithSilkTouch(
 			AbysmBlocks.OOZING_DREGLOAM,
 			this.addSurvivesExplosionCondition(

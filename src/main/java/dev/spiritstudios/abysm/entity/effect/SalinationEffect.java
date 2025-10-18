@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.entity.effect;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.registry.advancement.AbysmCriteria;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
+import net.minecraft.entity.AreaEffectCloudEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.DamageType;
@@ -17,6 +18,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
 
 public class SalinationEffect extends StatusEffect {
 
@@ -75,5 +77,29 @@ public class SalinationEffect extends StatusEffect {
         if (instance.getEffectType().equals(invertedHealingAndHarm ? StatusEffects.INSTANT_DAMAGE : StatusEffects.INSTANT_HEALTH))
             AbysmCriteria.HERO_BRINE.trigger(player);
     }
+
+    public static StatusEffectInstance createInstance(int duration, int amplifier) {
+		return new StatusEffectInstance(AbysmStatusEffects.SALINATION, duration, amplifier);
+	}
+
+	public static StatusEffectInstance createInstance(int duration) {
+		return createInstance(duration, 1);
+	}
+
+	public static StatusEffectInstance createDefaultInstance() {
+		return createInstance(BRINE_CONTACT_EFFECT_TIME);
+	}
+
+	public static void spawnBoomshroomAoeCloud(World world, Vec3d pos) {
+		AreaEffectCloudEntity aoe = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
+
+		aoe.setDuration(160);
+		aoe.setRadius(1.5F);
+		aoe.setRadiusOnUse(-0.5F);
+		aoe.addEffect(createInstance(300, 0));
+		aoe.setRadiusGrowth(-aoe.getRadius() / aoe.getDuration());
+
+		world.spawnEntity(aoe);
+	}
 
 }

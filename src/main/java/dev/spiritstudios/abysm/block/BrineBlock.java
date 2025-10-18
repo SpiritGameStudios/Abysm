@@ -1,6 +1,5 @@
 package dev.spiritstudios.abysm.block;
 
-import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
 import dev.spiritstudios.abysm.entity.effect.SalinationEffect;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import net.minecraft.block.*;
@@ -9,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCollisionHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleUtil;
@@ -63,7 +61,7 @@ public class BrineBlock extends WaterloggableTranslucentBlock implements FluidDr
     @Override
     protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler) {
         if (entity instanceof LivingEntity living)
-            living.addStatusEffect(new StatusEffectInstance(AbysmStatusEffects.SALINATION, SalinationEffect.BRINE_CONTACT_EFFECT_TIME, 1));
+            living.addStatusEffect(SalinationEffect.createDefaultInstance());
 
         entity.slowMovement(state, new Vec3d(0.8, 0.75, 0.8));
         handler.addEvent(CollisionEvent.EXTINGUISH);

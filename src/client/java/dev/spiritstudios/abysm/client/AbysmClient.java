@@ -184,7 +184,8 @@ public class AbysmClient implements ClientModInitializer {
 
 			AbysmBlocks.OOZETRICKLE_LANTERN,
 			AbysmBlocks.MONARE_VASE,
-			AbysmBlocks.BRINE_BRACKEN
+			AbysmBlocks.BRINE_BRACKEN,
+			AbysmBlocks.BOOMSHROOM
 		);
 
 		BlockRenderLayerMap.putBlocks(

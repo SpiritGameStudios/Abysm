@@ -823,6 +823,18 @@ public final class AbysmBlocks {
 			.noCollision()
 			.replaceable()
 	);
+
+	public static final BoomshroomBlock BOOMSHROOM = register(
+		"boomshroom",
+		BoomshroomBlock::new,
+		AbstractBlock.Settings.create()
+			.pistonBehavior(PistonBehavior.DESTROY)
+			.sounds(BlockSoundGroup.NETHER_WART)
+			.mapColor(MapColor.TEAL)
+			.luminance(state -> 3)
+			.breakInstantly()
+			.noCollision()
+	);
 	// endregion
 
 	// region silt

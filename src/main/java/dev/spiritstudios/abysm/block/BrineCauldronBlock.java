@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
-import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
+import dev.spiritstudios.abysm.entity.effect.SalinationEffect;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractCauldronBlock;
 import net.minecraft.block.Block;
@@ -10,7 +10,6 @@ import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCollisionHandler;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -56,7 +55,7 @@ public class BrineCauldronBlock extends AbstractCauldronBlock {
 	@Override
 	protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler) {
 		if (entity instanceof LivingEntity living)
-			living.addStatusEffect(new StatusEffectInstance(AbysmStatusEffects.SALINATION));
+			living.addStatusEffect(SalinationEffect.createDefaultInstance());
 	}
 
 	@Override

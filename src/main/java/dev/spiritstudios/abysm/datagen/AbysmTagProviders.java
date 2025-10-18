@@ -130,7 +130,8 @@ public class AbysmTagProviders {
 					AbysmBlocks.OOZETRICKLE_FILAMENTS,
 					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS,
 					AbysmBlocks.BRINE_BRACKEN,
-					AbysmBlocks.BRINE
+					AbysmBlocks.BRINE,
+					AbysmBlocks.BOOMSHROOM
 				);
 
 			valueLookupBuilder(BlockTags.GEODE_INVALID_BLOCKS)
