@@ -16,8 +16,8 @@ import net.minecraft.util.math.MathHelper;
 public class BrineSaltParticle extends AscendingParticle {
 
 	private static final float RANDOM_COLOR_MULTIPLIER = 0.1F;
-	private static final float MIN_SCALE = 0.6F;
-	private static final float MAX_SCALE = 2.0F;
+	private static final float MIN_SCALE = 1.0F;
+	private static final float MAX_SCALE = 4.0F;
 	private static final int COLOR = 0xFFFFF1C6;
 
 	public float rotationSpeed;

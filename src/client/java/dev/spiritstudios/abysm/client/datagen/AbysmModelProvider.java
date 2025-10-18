@@ -209,14 +209,14 @@ public class AbysmModelProvider extends FabricModelProvider {
 		Block brine = AbysmBlocks.BRINE;
 		Block cauldron = AbysmBlocks.BRINE_CAULDRON;
 
-		TextureMap cauldronTextureMap = TextureMap.cauldron(TextureMap.getSubId(brine, "_still"));
+		TextureMap cauldronTextureMap = TextureMap.cauldron(TextureMap.getId(brine));
 		Identifier cauldronModel = Models.TEMPLATE_CAULDRON_FULL.upload(cauldron, cauldronTextureMap, generator.modelCollector);
 
 		// cauldron
 		generator.blockStateCollector.accept(createSingletonBlockState(cauldron, createWeightedVariant(cauldronModel)));
 
-		Identifier up = TexturedModel.CUBE_ALL.upload(brine, generator.modelCollector);
-		Identifier down = ModelIds.getBlockSubModelId(brine, "_down");
+		Identifier down = ModelIds.getBlockModelId(brine);
+		Identifier up = ModelIds.getBlockSubModelId(brine, "_up");
 
 		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(brine)
 			.with(createBooleanModelMap(BrineBlock.UP, createWeightedVariant(up), createWeightedVariant(down)))

@@ -37,8 +37,8 @@
 		},
 		{
 			"name": "bottom_emissive",
-			"from": [5.99, -0.01, 5.99],
-			"to": [10.01, 5.01, 10.01],
+			"from": [6, 0, 6],
+			"to": [10, 5, 10],
 			"light_emission": 12,
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 2.5, 8]},
 			"faces": {
@@ -52,8 +52,8 @@
 		},
 		{
 			"name": "top_emissive",
-			"from": [6.49, 4.99, 6.49],
-			"to": [9.51, 9.01, 9.51],
+			"from": [6.5, 5, 6.5],
+			"to": [9.5, 9, 9.5],
 			"light_emission": 12,
 			"rotation": {"angle": 0, "axis": "y", "origin": [4.5, 5, 4.5]},
 			"faces": {

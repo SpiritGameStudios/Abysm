@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "hero_brine": {
+      "trigger": "abysm:hero_brine"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.adventure.abysm.hero_brine.description"
+    },
+    "hidden": true,
+    "icon": {
+      "count": 1,
+      "id": "abysm:brine_bucket"
+    },
+    "title": {
+      "translate": "advancements.adventure.abysm.hero_brine.title"
+    }
+  },
+  "requirements": [
+    [
+      "hero_brine"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

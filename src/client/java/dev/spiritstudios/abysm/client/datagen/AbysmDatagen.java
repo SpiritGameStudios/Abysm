@@ -1,13 +1,7 @@
 package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.datagen.AbysmBlockLootTableProvider;
-import dev.spiritstudios.abysm.datagen.AbysmBlockMetatagProvider;
-import dev.spiritstudios.abysm.datagen.AbysmEntityLootTableProvider;
-import dev.spiritstudios.abysm.datagen.AbysmFishingLootTableProvider;
-import dev.spiritstudios.abysm.datagen.AbysmItemMetatagProvider;
-import dev.spiritstudios.abysm.datagen.AbysmRecipeProvider;
-import dev.spiritstudios.abysm.datagen.AbysmTagProviders;
+import dev.spiritstudios.abysm.datagen.*;
 import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
@@ -78,6 +72,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 
 		// misc
 		pack.addProvider(AbysmRecipeProvider::new);
+		pack.addProvider(AbysmAdvancementProvider::new);
 		AbysmTagProviders.addAll(pack);
 
 		pack.addProvider(AbysmBlockMetatagProvider::new);

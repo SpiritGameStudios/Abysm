@@ -788,6 +788,18 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.MYSTERIOUS_BLOB
 				);
 
+			valueLookupBuilder(AbysmEntityTypeTags.IMMUNE_TO_SALINATION)
+				.forceAddTag(ConventionalEntityTypeTags.BOSSES)
+				.add(
+					EntityType.WARDEN,
+					EntityType.CREAKING,
+					EntityType.GLOW_SQUID
+				);
+
+			valueLookupBuilder(AbysmEntityTypeTags.NO_SALINATION_CONVULSING_MOBS)
+				.addTag(AbysmEntityTypeTags.IMMUNE_TO_SALINATION)
+				.add(EntityType.IRON_GOLEM);
+
 			valueLookupBuilder(AbysmEntityTypeTags.LEHYDRATHAN_HUNT_TARGETS)
 				.add(EntityType.GLOW_SQUID)
 				.add(AbysmEntityTypes.SKELETON_SHARK);

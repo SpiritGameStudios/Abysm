@@ -28,6 +28,7 @@ import dev.spiritstudios.abysm.recipe.AbysmBrewingRecipes;
 import dev.spiritstudios.abysm.registry.AbysmAttachments;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
+import dev.spiritstudios.abysm.registry.advancement.AbysmCriteria;
 import dev.spiritstudios.abysm.worldgen.AbysmBiomeModifications;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityBlobTypes;
@@ -42,6 +43,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.advancement.criterion.Criterion;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -105,6 +107,7 @@ public final class Abysm implements ModInitializer {
 
 		AbysmStatusEffects.init();
 		AbysmPotions.init();
+		registerFields(Registries.CRITERION, Criterion.class, AbysmCriteria.class);
 
 		// region worldgen
 		// structures
@@ -127,7 +130,7 @@ public final class Abysm implements ModInitializer {
 
 		AbysmCauldronBehaviors.BUCKETABLE_MAPS.forEach(behavior -> {
 			behavior.put(
-				AbysmBlocks.BRINE.asItem(),
+				AbysmItems.BRINE_BUCKET,
 				(
 					state,
 					world,
@@ -137,7 +140,7 @@ public final class Abysm implements ModInitializer {
 					stack
 				) -> {
 					if (CauldronBehaviorAccessor.isUnderwater(world, pos)) {
-						return ActionResult.CONSUME;
+                        return ActionResult.CONSUME;
 					} else {
 						return CauldronBehaviorAccessor.fillCauldron(world, pos, player, hand, stack, AbysmBlocks.BRINE_CAULDRON.getDefaultState(), SoundEvents.ITEM_BUCKET_EMPTY);
 					}

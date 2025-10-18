@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityCollisionHandler;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
@@ -39,7 +40,7 @@ public class BrineCauldronBlock extends AbstractCauldronBlock {
 
 	@Override
 	protected double getFluidHeight(BlockState state) {
-		return 0.9375;
+		return BRINE_SHAPE.getMax(Direction.Axis.Y) / 16;
 	}
 
 	@Override

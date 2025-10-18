@@ -30,13 +30,11 @@ import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.function.ToIntFunction;
 
 public class BrineBlock extends WaterloggableTranslucentBlock implements FluidDrainable {
 
-    public static final ToIntFunction<BlockState> LIGHT_LEVEL = state -> 10;
-    private static final float PARTICLE_EMIT_CHANCE = 0.2F;
     public static final BooleanProperty UP = Properties.UP;
+    private static final float PARTICLE_EMISSION_CHANCE = 0.3F;
 
     public BrineBlock(Settings settings) {
         super(settings);
@@ -64,11 +62,10 @@ public class BrineBlock extends WaterloggableTranslucentBlock implements FluidDr
 
     @Override
     protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler) {
-        if (entity instanceof LivingEntity living) {
-            entity.slowMovement(state, new Vec3d(0.8, 0.75, 0.8));
-            living.addStatusEffect(new StatusEffectInstance(AbysmStatusEffects.SALINATION, SalinationEffect.BRINE_CONTACT_EFFECT_DURATION, 1));
-        }
+        if (entity instanceof LivingEntity living)
+            living.addStatusEffect(new StatusEffectInstance(AbysmStatusEffects.SALINATION, SalinationEffect.BRINE_CONTACT_EFFECT_TIME, 1));
 
+        entity.slowMovement(state, new Vec3d(0.8, 0.75, 0.8));
         handler.addEvent(CollisionEvent.EXTINGUISH);
     }
 
@@ -92,7 +89,7 @@ public class BrineBlock extends WaterloggableTranslucentBlock implements FluidDr
 
     @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-        if (random.nextFloat() < PARTICLE_EMIT_CHANCE)
+        if (random.nextFloat() < PARTICLE_EMISSION_CHANCE)
             ParticleUtil.spawnParticles(world, pos, AbysmParticleTypes.BRINE_SALT, ConstantIntProvider.create(1), Direction.UP, () -> Vec3d.ZERO, 0.5);
     }
 
