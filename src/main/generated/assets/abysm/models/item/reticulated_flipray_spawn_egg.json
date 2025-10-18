@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "abysm:item/reticulated_flipray_spawn_egg"
+  }
+}

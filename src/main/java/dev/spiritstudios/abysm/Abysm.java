@@ -6,12 +6,12 @@ import dev.spiritstudios.abysm.command.AbysmCommands;
 import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributeModifiers;
-import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
 import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
+import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributeModifiers;
+import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
 import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.item.AbysmPotions;
@@ -37,12 +37,16 @@ import dev.spiritstudios.abysm.worldgen.tree.AbysmFoliagePlacerTypes;
 import dev.spiritstudios.abysm.worldgen.tree.AbysmTrunkPlacerTypes;
 import dev.spiritstudios.specter.api.registry.RegistryHelper;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.foliage.FoliagePlacerType;
@@ -77,6 +81,13 @@ public final class Abysm implements ModInitializer {
 		AbysmBiomeModifications.init();
 
 		EcosystemType.init();
+
+		// manually add item name component here since doing it normally results in it getting overwritten in the Item constructor
+		DefaultItemComponentEvents.MODIFY.register((callback) -> callback.modify(AbysmItems.MYSTERIOUS_BLOB_SPAWN_EGG, builder -> builder.add(
+				DataComponentTypes.ITEM_NAME,
+				Text.translatable("item.abysm.mysterious_blob_spawn_egg.fancy", Text.translatable("entity.abysm.mysterious_blob").formatted(Formatting.OBFUSCATED))
+			)
+		));
 	}
 
 	private void initRegistries() {

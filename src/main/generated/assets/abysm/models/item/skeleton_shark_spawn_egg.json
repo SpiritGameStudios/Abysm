@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "abysm:item/skeleton_shark_spawn_egg"
+  }
+}

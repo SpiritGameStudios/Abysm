@@ -3,9 +3,9 @@ package dev.spiritstudios.abysm.item;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.component.AbysmFoodComponents;
+import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.attribute.AbysmAttribute;
 import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
-import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import net.minecraft.block.Block;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.AttributeModifierSlot;
@@ -49,50 +49,50 @@ public final class AbysmItems {
 			.maxCount(1)
 			.armor(ArmorMaterials.TURTLE_SCUTE, EquipmentType.BOOTS)
 			.attributeModifiers(AbysmAttribute.ofAdd(
-					AbysmEntityAttributes.SWIMMING_SPEED,
-					"flippers_swimming_speed_multiplier",
-					0.05
+				AbysmEntityAttributes.SWIMMING_SPEED,
+				"flippers_swimming_speed_multiplier",
+				0.05
 			).toComponent(AttributeModifierSlot.FEET))
 	);
 
 	public static final Item DIVING_BOOTS = register(
-			"diving_boots",
-			AbysmArmorMaterials.applyWithModel(
-					new Item.Settings().maxCount(1),
-					AbysmArmorMaterials.DIVING_SUIT,
-					EquipmentType.BOOTS,
-					AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_boots_oxygen", 3.0)
-			)
+		"diving_boots",
+		AbysmArmorMaterials.applyWithModel(
+			new Item.Settings().maxCount(1),
+			AbysmArmorMaterials.DIVING_SUIT,
+			EquipmentType.BOOTS,
+			AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_boots_oxygen", 3.0)
+		)
 	);
 
 	public static final Item DIVING_LEGGINGS = register(
-			"diving_leggings",
-			AbysmArmorMaterials.applyWithModel(
-					new Item.Settings().maxCount(1),
-					AbysmArmorMaterials.DIVING_SUIT,
-					EquipmentType.LEGGINGS,
-					AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_leggings_oxygen", 3.0)
-			)
+		"diving_leggings",
+		AbysmArmorMaterials.applyWithModel(
+			new Item.Settings().maxCount(1),
+			AbysmArmorMaterials.DIVING_SUIT,
+			EquipmentType.LEGGINGS,
+			AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_leggings_oxygen", 3.0)
+		)
 	);
 
 	public static final Item DIVING_CHESTPLATE = register(
-			"diving_chestplate",
-			AbysmArmorMaterials.applyWithModel(
-					new Item.Settings().maxCount(1),
-					AbysmArmorMaterials.DIVING_SUIT,
-					EquipmentType.CHESTPLATE,
-					AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_chestplate_oxygen", 3.0)
-			)
+		"diving_chestplate",
+		AbysmArmorMaterials.applyWithModel(
+			new Item.Settings().maxCount(1),
+			AbysmArmorMaterials.DIVING_SUIT,
+			EquipmentType.CHESTPLATE,
+			AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_chestplate_oxygen", 3.0)
+		)
 	);
 
 	public static final Item DIVING_HELMET = register(
-			"diving_helmet",
-			AbysmArmorMaterials.applyWithoutModel(
-					new Item.Settings().maxCount(1),
-					AbysmArmorMaterials.DIVING_SUIT,
-					EquipmentType.HELMET,
-					AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_helmet_oxygen", 3.0)
-			)
+		"diving_helmet",
+		AbysmArmorMaterials.applyWithoutModel(
+			new Item.Settings().maxCount(1),
+			AbysmArmorMaterials.DIVING_SUIT,
+			EquipmentType.HELMET,
+			AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_helmet_oxygen", 3.0)
+		)
 	);
 
 	public static final Item HARPOON = register(
@@ -185,9 +185,24 @@ public final class AbysmItems {
 		settings -> new SpawnEggItem(AbysmEntityTypes.MAN_O_WAR, settings)
 	);
 
+	public static final Item MYSTERIOUS_BLOB_SPAWN_EGG = register(
+		"mysterious_blob_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.MYSTERIOUS_BLOB, settings)
+	);
+
 	public static final Item LECTORFIN_SPAWN_EGG = register(
 		"lectorfin_spawn_egg",
 		settings -> new SpawnEggItem(AbysmEntityTypes.LECTORFIN, settings)
+	);
+
+	public static final Item RETICULATED_FLIPRAY_SPAWN_EGG = register(
+		"reticulated_flipray_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.RETICULATED_FLIPRAY, settings)
+	);
+
+	public static final Item SKELETON_SHARK_SPAWN_EGG = register(
+		"skeleton_shark_spawn_egg",
+		settings -> new SpawnEggItem(AbysmEntityTypes.SKELETON_SHARK, settings)
 	);
 
 	public static final Item MUSIC_DISC_RENAISSANCE = register(

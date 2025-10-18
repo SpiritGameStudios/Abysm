@@ -289,10 +289,14 @@ public class AbysmModelProvider extends FabricModelProvider {
 			AbysmItems.SNAPPER_SPAWN_EGG,
 			AbysmItems.GUP_GUP_SPAWN_EGG,
 			AbysmItems.AROWANA_MAGICII_SPAWN_EGG,
+			AbysmItems.SYNTHETHIC_ORNIOTHOPE_SPAWN_EGG,
 			AbysmItems.BLOOMRAY_SPAWN_EGG,
 			AbysmItems.ELECTRIC_OOGLY_BOOGLY_SPAWN_EGG,
 			AbysmItems.MAN_O_WAR_SPAWN_EGG,
+			AbysmItems.MYSTERIOUS_BLOB_SPAWN_EGG,
 			AbysmItems.LECTORFIN_SPAWN_EGG,
+			AbysmItems.RETICULATED_FLIPRAY_SPAWN_EGG,
+			AbysmItems.SKELETON_SHARK_SPAWN_EGG,
 
 			AbysmItems.MUSIC_DISC_RENAISSANCE
 		);
