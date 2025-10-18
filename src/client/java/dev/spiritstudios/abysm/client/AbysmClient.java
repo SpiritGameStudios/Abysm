@@ -50,9 +50,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class AbysmClient implements ClientModInitializer {
-	public static float underwaterVisibilityMultiplier = 1.0F;
-	public static float nextUnderwaterVisibilityMultiplier = 1.0F;
-
 
 	@Override
 	public void onInitializeClient() {
