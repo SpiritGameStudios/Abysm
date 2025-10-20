@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityCollisionHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
@@ -43,8 +44,10 @@ public class BoomshroomBlock extends UnderwaterPlantBlock {
 
 	@Override
 	protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler) {
-		world.removeBlock(pos, false);
-		explode(world, pos);
+		Box boomshroomBounds = SHAPE.offset(pos).getBoundingBox();
+
+		if (boomshroomBounds.intersects(entity.getBoundingBox()))
+			explode(world, pos);
 	}
 
 	@Override
@@ -57,6 +60,7 @@ public class BoomshroomBlock extends UnderwaterPlantBlock {
 
 	private static void explode(World world, BlockPos pos) {
 		Vec3d vec3d = pos.toBottomCenterPos();
+		world.removeBlock(pos, false);
 
 		SalinationEffect.spawnBoomshroomAoeCloud(world, vec3d);
 		world.createExplosion(null, null, EXPLOSION_BEHAVIOR, vec3d, 1, false, World.ExplosionSourceType.BLOCK);
