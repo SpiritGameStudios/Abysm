@@ -824,9 +824,16 @@ public final class AbysmBlocks {
 			.replaceable()
 	);
 
-	public static final BoomshroomBlock BOOMSHROOM = register(
-		"boomshroom",
-		BoomshroomBlock::new,
+	public static final Block POTTED_BRINE_BRACKEN = register(
+		"potted_brine_bracken",
+		settings -> new FlowerPotBlock(BRINE_BRACKEN, settings),
+		AbstractBlock.Settings.copy(POTTED_ROSY_SPRIGS),
+		false
+	);
+
+	public static final PygmyBoomshroomColonyBlock PYGMY_BOOMSHROOM_COLONY = register(
+		"pygmy_boomshroom_colony",
+		PygmyBoomshroomColonyBlock::new,
 		AbstractBlock.Settings.create()
 			.pistonBehavior(PistonBehavior.DESTROY)
 			.sounds(BlockSoundGroup.NETHER_WART)

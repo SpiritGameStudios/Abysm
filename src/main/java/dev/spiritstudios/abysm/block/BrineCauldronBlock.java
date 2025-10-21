@@ -18,7 +18,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 /**
- * A cauldron filled with lava.
+ * @author axialeaa
  */
 public class BrineCauldronBlock extends AbstractCauldronBlock {
 

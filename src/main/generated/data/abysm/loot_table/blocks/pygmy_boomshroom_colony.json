@@ -1,0 +1,89 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:match_tool",
+              "predicate": {
+                "items": "minecraft:shears"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": true,
+              "conditions": [
+                {
+                  "block": "abysm:pygmy_boomshroom_colony",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "north_east": "true"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": true,
+              "conditions": [
+                {
+                  "block": "abysm:pygmy_boomshroom_colony",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "north_west": "true"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": true,
+              "conditions": [
+                {
+                  "block": "abysm:pygmy_boomshroom_colony",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "south_east": "true"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": true,
+              "conditions": [
+                {
+                  "block": "abysm:pygmy_boomshroom_colony",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "south_west": "true"
+                  }
+                }
+              ],
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": true,
+              "count": -1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "abysm:pygmy_boomshroom_colony"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

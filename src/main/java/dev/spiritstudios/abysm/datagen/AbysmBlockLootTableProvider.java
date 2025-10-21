@@ -2,6 +2,7 @@ package dev.spiritstudios.abysm.datagen;
 
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.block.PygmyBoomshroomColonyBlock;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
@@ -12,6 +13,7 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
+import net.minecraft.loot.condition.BlockStatePropertyLootCondition;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.condition.TableBonusLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
@@ -20,6 +22,7 @@ import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
+import net.minecraft.predicate.StatePredicate;
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
@@ -123,6 +126,7 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM,
 
 			AbysmBlocks.POTTED_ANTENNAE_PLANT,
+			AbysmBlocks.POTTED_BRINE_BRACKEN,
 
 			AbysmBlocks.POTTED_OOZETRICKLE_FILAMENTS
 		);
@@ -141,7 +145,20 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.MALLOWBLOOM_PETALS
 		);
 
-		this.addDrop(AbysmBlocks.BOOMSHROOM, this::dropsWithSilkTouchOrShears);
+		this.addDrop(AbysmBlocks.PYGMY_BOOMSHROOM_COLONY, block -> LootTable.builder()
+			.pool(LootPool.builder()
+				.with(this.applyExplosionDecay(block, ItemEntry.builder(block)
+					.conditionally(this.createWithShearsCondition())
+					.apply(PygmyBoomshroomColonyBlock.CORNER_PROPERTIES, property -> SetCountLootFunction.builder(ConstantLootNumberProvider.create(1), true)
+						.conditionally(BlockStatePropertyLootCondition.builder(block)
+							.properties(StatePredicate.Builder.create()
+								.exactMatch(property, true)
+							)
+						)
+					)
+					.apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(-1), true))
+				))
+			));
 
 		this.addDrop(AbysmBlocks.OOZING_DREGLOAM, block -> this.dropsWithSilkTouch(
 			AbysmBlocks.OOZING_DREGLOAM,

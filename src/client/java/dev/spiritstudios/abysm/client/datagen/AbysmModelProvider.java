@@ -3,6 +3,7 @@ package dev.spiritstudios.abysm.client.datagen;
 import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.block.BrineBlock;
+import dev.spiritstudios.abysm.block.PygmyBoomshroomColonyBlock;
 import dev.spiritstudios.abysm.client.render.HarpoonLoadedProperty;
 import dev.spiritstudios.abysm.item.AbysmEquipmentAssetKeys;
 import dev.spiritstudios.abysm.item.AbysmItems;
@@ -129,11 +130,9 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 		// region misc plants
 		generator.registerRoots(AbysmBlocks.ANTENNAE_PLANT, AbysmBlocks.POTTED_ANTENNAE_PLANT);
-		generator.registerTintableCrossBlockState(AbysmBlocks.BRINE_BRACKEN, CrossType.EMISSIVE_NOT_TINTED);
-		generator.registerTintableCrossBlockState(AbysmBlocks.BOOMSHROOM, CrossType.EMISSIVE_NOT_TINTED);
-		generator.registerItemModel(AbysmBlocks.BRINE_BRACKEN.asItem());
-		generator.registerItemModel(AbysmBlocks.BOOMSHROOM.asItem());
+		generator.registerFlowerPotPlantAndItem(AbysmBlocks.BRINE_BRACKEN, AbysmBlocks.POTTED_BRINE_BRACKEN, CrossType.EMISSIVE_NOT_TINTED);
 		registerMonareVase(generator);
+		registerPygmyBoomshroomColony(generator);
 		// endregion
 
 		// region brine
@@ -196,6 +195,22 @@ public class AbysmModelProvider extends FabricModelProvider {
 	private void registerBloomCrown(BlockStateModelGenerator generator, Block block) {
 		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(AbysmTexturedModels.BLOOMING_CROWN.upload(block, generator.modelCollector));
 		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_DEFAULT_ROTATION_OPERATIONS));
+	}
+
+	private void registerPygmyBoomshroomColony(BlockStateModelGenerator generator) {
+		Block block = AbysmBlocks.PYGMY_BOOMSHROOM_COLONY;
+
+		Identifier northEast = ModelIds.getBlockSubModelId(block, "_north_east");
+		Identifier northWest = ModelIds.getBlockSubModelId(block, "_north_west");
+		Identifier southEast = ModelIds.getBlockSubModelId(block, "_south_east");
+		Identifier southWest = ModelIds.getBlockSubModelId(block, "_south_west");
+
+		generator.blockStateCollector.accept(MultipartBlockModelDefinitionCreator.create(block)
+			.with(createMultipartConditionBuilder().put(PygmyBoomshroomColonyBlock.NORTH_EAST, true), createWeightedVariant(northEast))
+			.with(createMultipartConditionBuilder().put(PygmyBoomshroomColonyBlock.NORTH_WEST, true), createWeightedVariant(northWest))
+			.with(createMultipartConditionBuilder().put(PygmyBoomshroomColonyBlock.SOUTH_EAST, true), createWeightedVariant(southEast))
+			.with(createMultipartConditionBuilder().put(PygmyBoomshroomColonyBlock.SOUTH_WEST, true), createWeightedVariant(southWest))
+		);
 	}
 
 	private void registerMonareVase(BlockStateModelGenerator generator) {

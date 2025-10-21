@@ -7,6 +7,9 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 
+/**
+ * @author axialeaa
+ */
 public class MonareVaseBlock extends UnderwaterPlantBlock {
 
     private static final MapCodec<MonareVaseBlock> CODEC = createCodec(MonareVaseBlock::new);

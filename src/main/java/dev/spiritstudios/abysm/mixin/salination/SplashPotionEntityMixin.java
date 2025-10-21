@@ -19,6 +19,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/**
+ * @author axialeaa
+ */
 @Mixin(SplashPotionEntity.class)
 public abstract class SplashPotionEntityMixin extends PotionEntity {
 

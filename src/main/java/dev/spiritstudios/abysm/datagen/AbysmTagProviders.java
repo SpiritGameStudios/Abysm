@@ -131,7 +131,7 @@ public class AbysmTagProviders {
 					AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS,
 					AbysmBlocks.BRINE_BRACKEN,
 					AbysmBlocks.BRINE,
-					AbysmBlocks.BOOMSHROOM
+					AbysmBlocks.PYGMY_BOOMSHROOM_COLONY
 				);
 
 			valueLookupBuilder(BlockTags.GEODE_INVALID_BLOCKS)
@@ -222,6 +222,7 @@ public class AbysmTagProviders {
 					AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM,
 
 					AbysmBlocks.POTTED_ANTENNAE_PLANT,
+					AbysmBlocks.POTTED_BRINE_BRACKEN,
 
 					AbysmBlocks.POTTED_OOZETRICKLE_FILAMENTS
 				);

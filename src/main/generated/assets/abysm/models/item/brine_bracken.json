@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "abysm:item/brine_bracken"
+    "layer0": "abysm:block/brine_bracken",
+    "layer1": "abysm:block/brine_bracken_emissive"
   }
 }

@@ -29,6 +29,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+/**
+ * @author axialeaa
+ */
 public class BrineBlock extends WaterloggableTranslucentBlock implements FluidDrainable {
 
     public static final BooleanProperty UP = Properties.UP;

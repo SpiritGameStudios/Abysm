@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cross_emissive",
-  "textures": {
-    "cross": "abysm:block/boomshroom",
-    "cross_emissive": "abysm:block/boomshroom_emissive"
-  }
-}

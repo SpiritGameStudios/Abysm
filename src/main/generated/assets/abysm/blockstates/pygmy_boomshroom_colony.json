@@ -1,0 +1,36 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "abysm:block/pygmy_boomshroom_colony_north_east"
+      },
+      "when": {
+        "north_east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "abysm:block/pygmy_boomshroom_colony_north_west"
+      },
+      "when": {
+        "north_west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "abysm:block/pygmy_boomshroom_colony_south_east"
+      },
+      "when": {
+        "south_east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "abysm:block/pygmy_boomshroom_colony_south_west"
+      },
+      "when": {
+        "south_west": "true"
+      }
+    }
+  ]
+}

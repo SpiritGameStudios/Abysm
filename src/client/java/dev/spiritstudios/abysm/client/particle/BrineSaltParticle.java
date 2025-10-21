@@ -12,6 +12,10 @@ import net.minecraft.particle.SimpleParticleType;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 
+/**
+ * CallMeEcho is working on changing this!!
+ * @author axialeaa
+ */
 @Environment(EnvType.CLIENT)
 public class BrineSaltParticle extends AscendingParticle {
 

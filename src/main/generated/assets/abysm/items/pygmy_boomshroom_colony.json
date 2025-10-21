@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "abysm:item/boomshroom"
+    "model": "abysm:block/pygmy_boomshroom_colony"
   }
 }

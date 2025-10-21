@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/flower_pot_cross_emissive",
+  "textures": {
+    "cross_emissive": "abysm:block/brine_bracken_emissive",
+    "plant": "abysm:block/brine_bracken"
+  }
+}

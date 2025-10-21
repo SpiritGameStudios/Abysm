@@ -1,0 +1,70 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made by axialeaa using Blockbench",
+	"parent": "block/block",
+	"ambientocclusion": false,
+	"textures": {
+		"texture": "abysm:block/pygmy_boomshroom_colony",
+		"particle": "#texture"
+	},
+	"elements": [
+		{
+			"name": "outer",
+			"from": [1, 3, 1],
+			"to": [7, 9, 7],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 5.5, 4]},
+			"faces": {
+				"north": {"uv": [0, 11, 6, 16], "texture": "#texture"},
+				"east": {"uv": [0, 11, 6, 16], "texture": "#texture"},
+				"south": {"uv": [0, 11, 6, 16], "texture": "#texture"},
+				"west": {"uv": [0, 11, 6, 16], "texture": "#texture"},
+				"up": {"uv": [0, 10, 6, 16], "texture": "#texture"},
+				"down": {"uv": [0, 10, 6, 16], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "inner",
+			"from": [6.5, 8.5, 6.5],
+			"to": [1.5, 3.5, 1.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 6.5, 4]},
+			"faces": {
+				"north": {"uv": [0, 11, 6, 16], "rotation": 180, "texture": "#texture"},
+				"east": {"uv": [0, 11, 6, 16], "rotation": 180, "texture": "#texture"},
+				"south": {"uv": [0, 11, 6, 16], "rotation": 180, "texture": "#texture"},
+				"west": {"uv": [0, 11, 6, 16], "rotation": 180, "texture": "#texture"},
+				"up": {"uv": [0, 10, 6, 16], "rotation": 180, "texture": "#texture"},
+				"down": {"uv": [0, 10, 6, 16], "rotation": 180, "texture": "#texture"}
+			}
+		},
+		{
+			"name": "ne_sw",
+			"from": [2, 0, 4],
+			"to": [6, 7, 4],
+			"shade": false,
+			"rotation": {"angle": 45, "axis": "y", "origin": [4, 4, 4]},
+			"faces": {
+				"north": {"uv": [0, 0, 4, 7], "texture": "#texture"},
+				"south": {"uv": [0, 0, 4, 7], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "nw_se",
+			"from": [2, 0, 4],
+			"to": [6, 7, 4],
+			"shade": false,
+			"rotation": {"angle": -45, "axis": "y", "origin": [4, 4, 4]},
+			"faces": {
+				"north": {"uv": [0, 0, 4, 7], "texture": "#texture"},
+				"south": {"uv": [0, 0, 4, 7], "texture": "#texture"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "north_west",
+			"origin": [4, 4, 4],
+			"color": 0,
+			"children": [0, 1, 2, 3]
+		}
+	]
+}

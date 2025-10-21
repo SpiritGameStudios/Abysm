@@ -185,7 +185,7 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.OOZETRICKLE_LANTERN,
 			AbysmBlocks.MONARE_VASE,
 			AbysmBlocks.BRINE_BRACKEN,
-			AbysmBlocks.BOOMSHROOM
+			AbysmBlocks.POTTED_BRINE_BRACKEN
 		);
 
 		BlockRenderLayerMap.putBlocks(
@@ -202,7 +202,8 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.SWEET_NECTARSAP,
 			AbysmBlocks.SOUR_NECTARSAP,
 			AbysmBlocks.BITTER_NECTARSAP,
-			AbysmBlocks.BRINE
+			AbysmBlocks.BRINE,
+			AbysmBlocks.PYGMY_BOOMSHROOM_COLONY
 		);
 
 		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> OozetrickleLanternBlock.getColor(state.get(OozetrickleLanternBlock.LIGHT)), AbysmBlocks.OOZETRICKLE_LANTERN);

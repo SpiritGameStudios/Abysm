@@ -8,6 +8,10 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Currently unused but might be useful in the future idk
+ * @author axialeaa
+ */
 public class AbysmClientMixinPlugin implements IMixinConfigPlugin {
 
     @Override
