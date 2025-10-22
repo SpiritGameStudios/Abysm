@@ -1,10 +1,59 @@
 {
-  "variants": {
-    "up=false": {
-      "model": "abysm:block/brine"
+  "multipart": [
+    {
+      "apply": {
+        "model": "abysm:block/brine_up"
+      },
+      "when": {
+        "up": "true"
+      }
     },
-    "up=true": {
-      "model": "abysm:block/brine_up"
+    {
+      "apply": {
+        "model": "abysm:block/brine"
+      },
+      "when": {
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "abysm:block/brine_light_shaft"
+      },
+      "when": {
+        "north": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "abysm:block/brine_light_shaft",
+        "y": 90
+      },
+      "when": {
+        "east": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "abysm:block/brine_light_shaft",
+        "y": 180
+      },
+      "when": {
+        "south": "false",
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "abysm:block/brine_light_shaft",
+        "y": 270
+      },
+      "when": {
+        "up": "false",
+        "west": "false"
+      }
     }
-  }
+  ]
 }

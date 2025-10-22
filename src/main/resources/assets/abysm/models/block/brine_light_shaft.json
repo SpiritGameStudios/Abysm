@@ -1,0 +1,21 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made by axialeaa using Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "#texture",
+		"texture": "abysm:block/brine_light_shaft"
+	},
+	"elements": [
+		{
+			"from": [0, 14, 0.01],
+			"to": [16, 30, 0.01],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#texture", "cullface": "up"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#texture", "cullface": "up"}
+			}
+		}
+	]
+}

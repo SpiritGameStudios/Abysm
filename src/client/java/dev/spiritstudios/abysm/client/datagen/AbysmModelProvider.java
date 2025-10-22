@@ -224,24 +224,24 @@ public class AbysmModelProvider extends FabricModelProvider {
 
 	private void registerBrine(BlockStateModelGenerator generator) {
 		Block brine = AbysmBlocks.BRINE;
-		Block cauldron = AbysmBlocks.BRINE_CAULDRON;
-
-		TextureMap cauldronTextureMap = TextureMap.cauldron(TextureMap.getId(brine));
-		Identifier cauldronModel = Models.TEMPLATE_CAULDRON_FULL.upload(cauldron, cauldronTextureMap, generator.modelCollector);
-
-		// cauldron
-		generator.blockStateCollector.accept(createSingletonBlockState(cauldron, createWeightedVariant(cauldronModel)));
-
-		Identifier down = ModelIds.getBlockModelId(brine);
-		Identifier up = ModelIds.getBlockSubModelId(brine, "_up");
-
-		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(brine)
-			.with(createBooleanModelMap(BrineBlock.UP, createWeightedVariant(up), createWeightedVariant(down)))
-		);
-
 		Item bucket = AbysmItems.BRINE_BUCKET;
 
+		WeightedVariant down = createWeightedVariant(ModelIds.getBlockModelId(brine));
+		WeightedVariant up = createWeightedVariant(ModelIds.getBlockSubModelId(brine, "_up"));
+		WeightedVariant lightShaft = createWeightedVariant(ModelIds.getBlockSubModelId(brine, "_light_shaft"));
+		WeightedVariant cauldron = createWeightedVariant(ModelIds.getBlockSubModelId(brine, "_cauldron"));
+
 		generator.registerItemModel(bucket, Models.GENERATED.upload(bucket, TextureMap.layer0(bucket), generator.modelCollector));
+
+		generator.blockStateCollector.accept(createSingletonBlockState(AbysmBlocks.BRINE_CAULDRON, cauldron));
+		generator.blockStateCollector.accept(MultipartBlockModelDefinitionCreator.create(brine)
+			.with(createMultipartConditionBuilder().put(BrineBlock.UP, true), up)
+			.with(createMultipartConditionBuilder().put(BrineBlock.UP, false), down)
+			.with(createMultipartConditionBuilder().put(BrineBlock.UP, false).put(BrineBlock.NORTH, false), lightShaft)
+			.with(createMultipartConditionBuilder().put(BrineBlock.UP, false).put(BrineBlock.EAST, false), lightShaft.apply(ROTATE_Y_90))
+			.with(createMultipartConditionBuilder().put(BrineBlock.UP, false).put(BrineBlock.SOUTH, false), lightShaft.apply(ROTATE_Y_180))
+			.with(createMultipartConditionBuilder().put(BrineBlock.UP, false).put(BrineBlock.WEST, false), lightShaft.apply(ROTATE_Y_270))
+		);
 	}
 
 	private void registerGrassLike(BlockStateModelGenerator generator, Block block, Block baseBlock) {

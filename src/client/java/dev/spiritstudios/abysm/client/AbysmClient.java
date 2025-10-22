@@ -203,6 +203,7 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.SOUR_NECTARSAP,
 			AbysmBlocks.BITTER_NECTARSAP,
 			AbysmBlocks.BRINE,
+			AbysmBlocks.BRINE_CAULDRON,
 			AbysmBlocks.PYGMY_BOOMSHROOM_COLONY
 		);
 

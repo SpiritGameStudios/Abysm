@@ -23,9 +23,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.explosion.AdvancedExplosionBehavior;
 import net.minecraft.world.explosion.ExplosionBehavior;
-import net.minecraft.world.tick.ScheduledTickView;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * @author axialeaa
@@ -40,6 +40,7 @@ public class PygmyBoomshroomColonyBlock extends UnderwaterPlantBlock implements 
 
 	private static final int SHAPE_HEIGHT = 9;
 
+	private static final VoxelShape COMPLETE_SHAPE = createColumnShape(16, 0, SHAPE_HEIGHT);
 	private static final Map<BooleanProperty, VoxelShape> SHAPE_MAP = Util.make(Maps.newHashMap(), map -> {
 		map.put(NORTH_EAST, createCuboidShape(8, 0, 0, 16, SHAPE_HEIGHT, 8));
 		map.put(NORTH_WEST, createCuboidShape(0, 0, 0, 8, SHAPE_HEIGHT, 8));
@@ -48,7 +49,7 @@ public class PygmyBoomshroomColonyBlock extends UnderwaterPlantBlock implements 
 	});
 
 	private static final MapCodec<PygmyBoomshroomColonyBlock> CODEC = createCodec(PygmyBoomshroomColonyBlock::new);
-	private static final ExplosionBehavior EXPLOSION_BEHAVIOR = new AdvancedExplosionBehavior(false, false, Optional.of(0.1F), Optional.empty());
+	private static final ExplosionBehavior EXPLOSION_BEHAVIOR = new AdvancedExplosionBehavior(false, false, Optional.of(0.0F), Optional.empty());
 
 	@Override
 	public MapCodec<PygmyBoomshroomColonyBlock> getCodec() {
@@ -65,20 +66,22 @@ public class PygmyBoomshroomColonyBlock extends UnderwaterPlantBlock implements 
 		);
 	}
 
-	private static VoxelShape getCornerEnclosingShape(BlockState state) {
+	private static VoxelShape getEnclosingShape(BlockState state) {
+		// Simple bypass. Otherwise the entire list might get iterated through only for the shape to not change.
+		if (state.get(NORTH_EAST) && state.get(SOUTH_WEST) || state.get(NORTH_WEST) && state.get(SOUTH_EAST))
+			return COMPLETE_SHAPE;
+
 		VoxelShape shape = VoxelShapes.empty();
 
-		for (BooleanProperty property : CORNER_PROPERTIES) {
-			if (state.get(property))
-				shape = VoxelShapes.union(shape, SHAPE_MAP.get(property));
-		}
+		for (BooleanProperty property : getNonEmptyCornerProperties(state))
+			shape = VoxelShapes.union(shape, SHAPE_MAP.get(property));
 
-		return shape.isEmpty() ? shape : VoxelShapes.cuboid(shape.getBoundingBox());
+		return shape;
 	}
 
 	@Override
 	protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return getCornerEnclosingShape(state);
+		return getEnclosingShape(state);
 	}
 
 	@Override
@@ -88,13 +91,18 @@ public class PygmyBoomshroomColonyBlock extends UnderwaterPlantBlock implements 
 
 	@Override
 	public BlockState getPlacementState(ItemPlacementContext ctx) {
+		BlockState placementState = super.getPlacementState(ctx);
+
+		if (placementState == null)
+			return null;
+
 		World world = ctx.getWorld();
 		BlockPos blockPos = ctx.getBlockPos();
 
 		BlockState blockState = world.getBlockState(blockPos);
 
 		if (!blockState.isOf(this)) {
-			blockState = Objects.requireNonNull(super.getPlacementState(ctx))
+			blockState = placementState
 				.with(NORTH_EAST, false)
 				.with(NORTH_WEST, false)
 				.with(SOUTH_EAST, false)
@@ -129,35 +137,43 @@ public class PygmyBoomshroomColonyBlock extends UnderwaterPlantBlock implements 
 
 	@Override
 	protected void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity, EntityCollisionHandler handler) {
-        for (Map.Entry<BooleanProperty, VoxelShape> entry : SHAPE_MAP.entrySet()) {
-            BooleanProperty property = entry.getKey();
-            VoxelShape shape = entry.getValue();
+		for (BooleanProperty property : getNonEmptyCornerProperties(state)) {
+			VoxelShape shape = SHAPE_MAP.get(property).offset(pos);
+			Box shapeBounds = shape.getBoundingBox();
 
-			Box shapeBounds = shape.offset(pos).getBoundingBox();
+			if (!shapeBounds.intersects(entity.getBoundingBox()))
+				continue;
 
-			if (state.get(property) && shapeBounds.intersects(entity.getBoundingBox())) {
-				world.setBlockState(pos, state.with(property, false), NOTIFY_ALL);
-				explode(world, shapeBounds.getCenter());
-			}
-        }
-    }
+			state = state.with(property, false);
 
-	@Override
-	protected BlockState getStateForNeighborUpdate(BlockState state, WorldView world, ScheduledTickView tickView, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, Random random) {
-		for (BooleanProperty property : CORNER_PROPERTIES) {
-			if (state.get(property))
-				return super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
+			world.setBlockState(pos, isEmpty(state) ? world.getFluidState(pos).getBlockState() : state, NOTIFY_ALL);
+			explode(world, shapeBounds.getCenter());
 		}
-
-		return Blocks.AIR.getDefaultState(); // resolves an invalid (functionally air but placement-blocking) state with all 4 corners set to false
 	}
 
 	@Override
 	public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-		if (!player.getMainHandStack().isOf(Items.SHEARS))
-			explode(world, pos.toBottomCenterPos());
+        if (!player.getMainHandStack().isOf(Items.SHEARS) && !isEmpty(state))
+			forEachNonEmptyCorner(state, pos, (property, shape) -> explode(world, shape.getBoundingBox().getCenter()));
 
-		return super.onBreak(world, pos, state, player);
+        return super.onBreak(world, pos, state, player);
+	}
+
+	private static void forEachNonEmptyCorner(BlockState state, BlockPos pos, BiConsumer<BooleanProperty, VoxelShape> callback) {
+		for (BooleanProperty property : getNonEmptyCornerProperties(state))
+			callback.accept(property, SHAPE_MAP.get(property).offset(pos));
+	}
+
+	private static List<BooleanProperty> getNonEmptyCornerProperties(BlockState state) {
+		return Arrays.stream(CORNER_PROPERTIES).filter(state::get).toList();
+	}
+
+	private static boolean isEmpty(BlockState state) {
+		return getNonEmptyCornerProperties(state).isEmpty();
+	}
+
+	private static boolean isIncomplete(BlockState state) {
+		return getNonEmptyCornerProperties(state).size() < 4;
 	}
 
 	@Override
@@ -172,20 +188,17 @@ public class PygmyBoomshroomColonyBlock extends UnderwaterPlantBlock implements 
 
 	@Override
 	public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
-		return true;
+		return isIncomplete(state);
 	}
 
 	@Override
 	public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
-		return !state.get(NORTH_EAST) || !state.get(NORTH_WEST) || !state.get(SOUTH_EAST) || !state.get(SOUTH_WEST);
+		return true;
 	}
 
 	@Override
 	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-		List<BooleanProperty> properties = new ArrayList<>(List.of(CORNER_PROPERTIES));
-		Util.shuffle(properties, random);
-
-		for (BooleanProperty property : properties) {
+		for (BooleanProperty property : Util.copyShuffled(CORNER_PROPERTIES, random)) {
             if (!state.get(property)) {
                 world.setBlockState(pos, state.with(property, true), NOTIFY_ALL);
                 return;

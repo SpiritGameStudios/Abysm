@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm.block;
 
+import com.google.common.collect.Maps;
 import dev.spiritstudios.abysm.entity.effect.SalinationEffect;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import net.minecraft.block.*;
@@ -16,6 +17,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
@@ -27,33 +29,71 @@ import net.minecraft.world.*;
 import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.ToIntFunction;
 
 /**
  * @author axialeaa
  */
 public class BrineBlock extends WaterloggableTranslucentBlock implements FluidDrainable {
 
-    public static final BooleanProperty UP = Properties.UP;
+    public static final ToIntFunction<BlockState> LUMINANCE_FUNCTION = state -> 5;
     private static final float PARTICLE_EMISSION_CHANCE = 0.3F;
+
+    public static final BooleanProperty UP = Properties.UP;
+    public static final BooleanProperty NORTH = Properties.NORTH;
+    public static final BooleanProperty SOUTH = Properties.SOUTH;
+    public static final BooleanProperty EAST = Properties.EAST;
+    public static final BooleanProperty WEST = Properties.WEST;
+
+    public static final Map<Direction, BooleanProperty> CONNECTION_PROPERTIES = Util.make(Maps.newHashMap(), map -> {
+        map.put(Direction.NORTH, NORTH);
+        map.put(Direction.SOUTH, SOUTH);
+        map.put(Direction.EAST, EAST);
+        map.put(Direction.WEST, WEST);
+    });
 
     public BrineBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.stateManager.getDefaultState().with(UP, false));
+        this.setDefaultState(this.stateManager.getDefaultState()
+            .with(UP, false)
+            .with(NORTH, false)
+            .with(SOUTH, false)
+            .with(EAST, false)
+            .with(WEST, false)
+        );
     }
 
     @Override
     public @Nullable BlockState getPlacementState(ItemPlacementContext ctx) {
-        BlockState state = super.getPlacementState(ctx);
+        BlockState blockState = super.getPlacementState(ctx);
 
-        if (state == null)
+        if (blockState == null)
             return null;
 
         World world = ctx.getWorld();
         BlockPos blockPos = ctx.getBlockPos();
-        BlockState upState = world.getBlockState(blockPos.up());
 
-        return state.with(UP, upState.isOf(this));
+        for (Map.Entry<Direction, BooleanProperty> entry : CONNECTION_PROPERTIES.entrySet()) {
+            Direction direction = entry.getKey();
+            BooleanProperty property = entry.getValue();
+
+            blockState = blockState.with(property, this.isConnectedToOther(world, blockPos, direction));
+        }
+
+        return blockState.with(UP, world.getBlockState(blockPos.up()).isOf(this));
+    }
+
+    private boolean isConnectedToOther(BlockView world, BlockPos pos, Direction direction) {
+        BlockPos neighborPos = pos.offset(direction);
+        BlockState neighborState = world.getBlockState(neighborPos);
+
+        return neighborState.isOf(this);
+    }
+
+    private static BooleanProperty getConnectionProperty(Direction direction) {
+        return CONNECTION_PROPERTIES.get(direction);
     }
 
     @Override
@@ -84,6 +124,9 @@ public class BrineBlock extends WaterloggableTranslucentBlock implements FluidDr
 
         if (direction == Direction.UP)
             blockState = blockState.with(UP, neighborState.isOf(this));
+
+        if (direction.getAxis().isHorizontal())
+            blockState = blockState.with(getConnectionProperty(direction), this.isConnectedToOther(world, pos, direction));
 
         return blockState;
     }
@@ -116,8 +159,7 @@ public class BrineBlock extends WaterloggableTranslucentBlock implements FluidDr
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        super.appendProperties(builder);
-        builder.add(UP);
+        super.appendProperties(builder.add(UP, NORTH, SOUTH, EAST, WEST));
     }
 
 }

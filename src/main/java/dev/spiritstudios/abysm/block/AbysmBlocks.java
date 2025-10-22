@@ -747,19 +747,25 @@ public final class AbysmBlocks {
 		BrineBlock::new,
 		AbstractBlock.Settings.copy(Blocks.POWDER_SNOW)
 			.pistonBehavior(PistonBehavior.DESTROY)
-			.luminance(state -> 15)
+			.luminance(BrineBlock.LUMINANCE_FUNCTION)
 			.mapColor(MapColor.EMERALD_GREEN)
+			.emissiveLighting(Blocks::always)
 			.sounds(BlockSoundGroup.MUD)
+			.postProcess(Blocks::always)
 			.solidBlock(Blocks::never)
 			.strength(0.15F)
 			.noCollision(),
 		false
 	);
 
+	@SuppressWarnings("deprecation")
 	public static final BrineCauldronBlock BRINE_CAULDRON = register(
 		"brine_cauldron",
         BrineCauldronBlock::new,
-		AbstractBlock.Settings.copy(Blocks.LAVA_CAULDRON),
+		AbstractBlock.Settings.copyShallow(Blocks.CAULDRON)
+			.luminance(BrineBlock.LUMINANCE_FUNCTION)
+			.emissiveLighting(Blocks::always)
+			.postProcess(Blocks::always),
 		false
 	);
 

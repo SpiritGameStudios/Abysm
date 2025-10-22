@@ -1,0 +1,70 @@
+{
+	"_comment": "needs attention. currently doesn't render like, at all",
+	"format_version": "1.21.6",
+	"credit": "Made by axialeaa using Blockbench",
+	"parent": "minecraft:block/template_cauldron_full",
+	"textures": {
+        "bottom": "minecraft:block/cauldron_bottom",
+        "content": "abysm:block/brine",
+        "inside": "minecraft:block/cauldron_inner",
+        "particle": "minecraft:block/cauldron_side",
+        "side": "minecraft:block/cauldron_side",
+        "top": "minecraft:block/cauldron_top",
+		"light_shaft": "abysm:block/brine_light_shaft"
+	},
+	"elements": [
+		{
+			"name": "n",
+			"from": [2, 15, 2],
+			"to": [14, 31, 2],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [2, 0, 14, 16], "texture": "#light_shaft", "cullface": "up"},
+				"south": {"uv": [2, 0, 14, 16], "texture": "#light_shaft", "cullface": "up"}
+			}
+		},
+		{
+			"name": "s",
+			"from": [2, 15, 14],
+			"to": [14, 31, 14],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [2, 0, 14, 16], "texture": "#light_shaft", "cullface": "up"},
+				"south": {"uv": [2, 0, 14, 16], "texture": "#light_shaft", "cullface": "up"}
+			}
+		},
+		{
+			"name": "e",
+			"from": [14, 15, 2],
+			"to": [14, 31, 14],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [2, 0, 14, 16], "texture": "#light_shaft", "cullface": "up"},
+				"west": {"uv": [2, 0, 14, 16], "texture": "#light_shaft", "cullface": "up"}
+			}
+		},
+		{
+			"name": "w",
+			"from": [2, 15, 2],
+			"to": [2, 31, 14],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"east": {"uv": [2, 0, 14, 16], "texture": "#light_shaft", "cullface": "up"},
+				"west": {"uv": [2, 0, 14, 16], "texture": "#light_shaft", "cullface": "up"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "light_shaft",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"shade": false,
+			"children": [0, 1, 2, 3]
+		}
+	]
+}
