@@ -178,7 +178,7 @@ public class MysteriousBlobEntity extends WaterAnimal implements GeoEntity {
 	}
 
 	public boolean isHappy() {
-		return this.getPressure() >= 54f;
+		return this.getPressure() >= 0.25f;
 	}
 
 	public float getScaleXZ() {

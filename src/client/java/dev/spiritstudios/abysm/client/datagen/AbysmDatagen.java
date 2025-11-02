@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.datagen.AbysmBiomeMetatagProvider;
 import dev.spiritstudios.abysm.datagen.AbysmBlockLootTableProvider;
 import dev.spiritstudios.abysm.datagen.AbysmBlockMetatagProvider;
 import dev.spiritstudios.abysm.datagen.AbysmEntityLootTableProvider;
@@ -82,6 +83,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 
 		pack.addProvider(AbysmBlockMetatagProvider::new);
 		pack.addProvider(AbysmItemMetatagProvider::new);
+		pack.addProvider(AbysmBiomeMetatagProvider::new);
 		addProvider(pack, SpecterItemRegistryKeys.ITEM_GROUP);
 		// endregion
 	}

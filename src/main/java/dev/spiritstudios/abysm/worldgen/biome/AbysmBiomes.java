@@ -1,13 +1,10 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
+import com.mojang.serialization.Codec;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.worldgen.biome.custom.DeepSeaRuinsBiome;
 import dev.spiritstudios.abysm.worldgen.biome.custom.FloralReefBiome;
-import dev.spiritstudios.abysm.worldgen.biome.custom.GlowingCavesBiome;
-import dev.spiritstudios.abysm.worldgen.biome.custom.InkdepthRealmBiome;
-import dev.spiritstudios.abysm.worldgen.biome.custom.PearlescentSeaBiome;
-import dev.spiritstudios.abysm.worldgen.biome.custom.TheEntwinedBiome;
-import java.util.List;
+import dev.spiritstudios.specter.api.registry.metatag.Metatag;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
@@ -15,6 +12,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+
+import java.util.List;
 
 public final class AbysmBiomes {
 	public static final ResourceKey<Biome> FLORAL_REEF = ofKey("floral_reef");
@@ -46,5 +45,15 @@ public final class AbysmBiomes {
 
 	public static void addAllToGenerator() {
 		BIOMES.forEach(AbysmBiome::addToGenerator);
+	}
+
+	public static final class Metatags {
+		public static final Metatag<Biome, Float> PRESSURE = Metatag.builder(
+			Registries.BIOME,
+			Abysm.id("pressure"),
+			Codec.floatRange(0F, 1F)
+		).build();
+
+		public static void init() {}
 	}
 }

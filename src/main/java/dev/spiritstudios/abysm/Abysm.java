@@ -131,6 +131,7 @@ public final class Abysm implements ModInitializer {
 		AbysmSoundEvents.init();
 		AbysmParticleTypes.init();
 		AbysmCommands.init();
+		AbysmBiomes.Metatags.init();
 	}
 
 	private <T> void registerFields(Registry<T> registry, Class<?> toRegister, Class<?> clazz) {
