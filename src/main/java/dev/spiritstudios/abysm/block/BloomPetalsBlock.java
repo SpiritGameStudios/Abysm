@@ -2,180 +2,179 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Fertilizable;
-import net.minecraft.block.PlantBlock;
-import net.minecraft.block.Segmented;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.block.Waterloggable;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.tick.ScheduledTickView;
-
 import java.util.function.Function;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SegmentableBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.VegetationBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BloomPetalsBlock extends PlantBlock implements Waterloggable, Fertilizable, Segmented {
+public class BloomPetalsBlock extends VegetationBlock implements SimpleWaterloggedBlock, BonemealableBlock, SegmentableBlock {
 	public static final MapCodec<BloomPetalsBlock> CODEC = RecordCodecBuilder.mapCodec(
-		instance -> instance.group(ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle), createSettingsCodec()).apply(instance, BloomPetalsBlock::new)
+		instance -> instance.group(ParticleTypes.CODEC.fieldOf("particle").forGetter(block -> block.particle), propertiesCodec()).apply(instance, BloomPetalsBlock::new)
 	);
-	public static final EnumProperty<Direction> HORIZONTAL_FACING = Properties.HORIZONTAL_FACING;
-	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+	public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	private final Function<BlockState, VoxelShape> shapeFunction;
-	public final ParticleEffect particle;
+	public final ParticleOptions particle;
 
 	@Override
-	public MapCodec<BloomPetalsBlock> getCodec() {
+	public MapCodec<BloomPetalsBlock> codec() {
 		return CODEC;
 	}
 
-	public BloomPetalsBlock(ParticleEffect particle, Settings settings) {
+	public BloomPetalsBlock(ParticleOptions particle, Properties settings) {
 		super(settings);
 		this.particle = particle;
-		this.setDefaultState(this.stateManager.getDefaultState()
-			.with(HORIZONTAL_FACING, Direction.NORTH)
-			.with(this.getAmountProperty(), 1)
-			.with(WATERLOGGED, false)
+		this.registerDefaultState(this.stateDefinition.any()
+			.setValue(HORIZONTAL_FACING, Direction.NORTH)
+			.setValue(this.getSegmentAmountProperty(), 1)
+			.setValue(WATERLOGGED, false)
 		);
 		this.shapeFunction = this.createShapeFunction();
 	}
 
 	private Function<BlockState, VoxelShape> createShapeFunction() {
-		return this.createShapeFunction(this.createShapeFunction(HORIZONTAL_FACING, this.getAmountProperty()));
+		return this.getShapeForEachState(this.getShapeCalculator(HORIZONTAL_FACING, this.getSegmentAmountProperty()));
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING, this.getAmountProperty());
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+		builder.add(HORIZONTAL_FACING, this.getSegmentAmountProperty());
 		builder.add(WATERLOGGED);
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, BlockRotation rotation) {
-		return state.with(HORIZONTAL_FACING, rotation.rotate(state.get(HORIZONTAL_FACING)));
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(HORIZONTAL_FACING, rotation.rotate(state.getValue(HORIZONTAL_FACING)));
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, BlockMirror mirror) {
-		return state.rotate(mirror.getRotation(state.get(HORIZONTAL_FACING)));
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.rotate(mirror.getRotation(state.getValue(HORIZONTAL_FACING)));
 	}
 
 	@Override
 	protected FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		BlockState placementState = this.getPlacementState(ctx, this, this.getAmountProperty(), HORIZONTAL_FACING);
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		BlockState placementState = this.getStateForPlacement(ctx, this, this.getSegmentAmountProperty(), HORIZONTAL_FACING);
 		if (placementState == null) {
 			return null;
 		} else {
-			FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
-			return placementState.with(WATERLOGGED, fluidState.isEqualAndStill(Fluids.WATER));
+			FluidState fluidState = ctx.getLevel().getFluidState(ctx.getClickedPos());
+			return placementState.setValue(WATERLOGGED, fluidState.isSourceOfType(Fluids.WATER));
 		}
 	}
 
 	@Override
-	protected BlockState getStateForNeighborUpdate(
+	protected BlockState updateShape(
 		BlockState state,
-		WorldView world,
-		ScheduledTickView tickView,
+		LevelReader world,
+		ScheduledTickAccess tickView,
 		BlockPos pos,
 		Direction direction,
 		BlockPos neighborPos,
 		BlockState neighborState,
-		Random random
+		RandomSource random
 	) {
-		BlockState newState = super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
+		BlockState newState = super.updateShape(state, world, tickView, pos, direction, neighborPos, neighborState, random);
 		if (!newState.isAir()) {
-			if (state.get(WATERLOGGED)) {
-				tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			if (state.getValue(WATERLOGGED)) {
+				tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 			}
 		}
 		return newState;
 	}
 
 	@Override
-	protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		BlockPos downPos = pos.down();
-		return this.canPlantOnTop(world.getBlockState(downPos), world, downPos);
+	protected boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+		BlockPos downPos = pos.below();
+		return this.mayPlaceOn(world.getBlockState(downPos), world, downPos);
 	}
 
 	@Override
-	protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-		if (floor.isSideSolidFullSquare(world, pos, Direction.UP)) {
+	protected boolean mayPlaceOn(BlockState floor, BlockGetter world, BlockPos pos) {
+		if (floor.isFaceSturdy(world, pos, Direction.UP)) {
 			return true;
 		} else {
 			FluidState fluidState = world.getFluidState(pos);
-			FluidState fluidStateUp = world.getFluidState(pos.up());
-			return fluidState.getFluid() == Fluids.WATER && fluidStateUp.getFluid() == Fluids.EMPTY;
+			FluidState fluidStateUp = world.getFluidState(pos.above());
+			return fluidState.getType() == Fluids.WATER && fluidStateUp.getType() == Fluids.EMPTY;
 		}
 	}
 
 	@Override
-	public boolean canReplace(BlockState state, ItemPlacementContext context) {
-		return this.shouldAddSegment(state, context, this.getAmountProperty()) || super.canReplace(state, context);
+	public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+		return this.canBeReplaced(state, context, this.getSegmentAmountProperty()) || super.canBeReplaced(state, context);
 	}
 
 	@Override
-	public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
 		return this.shapeFunction.apply(state);
 	}
 
 	@Override
-	public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
+	public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-		int i = state.get(SEGMENT_AMOUNT);
+	public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+		int i = state.getValue(AMOUNT);
 		if (i < 4) {
-			world.setBlockState(pos, state.with(SEGMENT_AMOUNT, i + 1), Block.NOTIFY_LISTENERS);
+			world.setBlock(pos, state.setValue(AMOUNT, i + 1), Block.UPDATE_CLIENTS);
 		} else {
-			dropStack(world, pos, new ItemStack(this));
+			popResource(world, pos, new ItemStack(this));
 		}
 	}
 
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-		super.randomDisplayTick(state, world, pos, random);
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+		super.animateTick(state, world, pos, random);
 
-		BlockPos downPos = pos.down();
+		BlockPos downPos = pos.below();
 		BlockState downState = world.getBlockState(downPos);
 
-		if (!downState.isSideSolidFullSquare(world, pos, Direction.UP)) {
+		if (!downState.isFaceSturdy(world, pos, Direction.UP)) {
 			if (random.nextInt(10) == 0) {
 				double x = pos.getX() + 0.05 + 0.9 * random.nextFloat();
 				double y = pos.getY() - 0.1 + 0.1 * random.nextFloat();
 				double z = pos.getZ() + 0.05 + 0.9 * random.nextFloat();
 
-				world.addParticleClient(this.particle, x, y, z, 0, 0, 0);
+				world.addParticle(this.particle, x, y, z, 0, 0, 0);
 			}
 		}
 	}

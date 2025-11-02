@@ -1,23 +1,24 @@
 package dev.spiritstudios.abysm.worldgen.biome;
 
 import com.terraformersmc.biolith.api.surface.SurfaceGeneration;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
-import net.minecraft.world.gen.feature.PlacedFeature;
-import net.minecraft.world.gen.surfacebuilder.MaterialRules;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.*;
+import static net.minecraft.world.level.levelgen.SurfaceRules.*;
 
 public abstract class AbysmBiome {
-	protected final RegistryKey<Biome> key;
+	protected final ResourceKey<Biome> key;
 	protected final float temperature;
 
 	protected final boolean precipitation;
@@ -25,7 +26,7 @@ public abstract class AbysmBiome {
 
 	protected final Biome.TemperatureModifier temperatureModifier;
 
-	public AbysmBiome(RegistryKey<Biome> key, float temperature, boolean precipitation, float downfall, Biome.TemperatureModifier temperatureModifier) {
+	public AbysmBiome(ResourceKey<Biome> key, float temperature, boolean precipitation, float downfall, Biome.TemperatureModifier temperatureModifier) {
 		this.key = key;
 
 		this.temperature = temperature;
@@ -35,77 +36,77 @@ public abstract class AbysmBiome {
 		this.temperatureModifier = temperatureModifier;
 	}
 
-	public AbysmBiome(RegistryKey<Biome> key, float temperature, boolean precipitation, float downfall) {
+	public AbysmBiome(ResourceKey<Biome> key, float temperature, boolean precipitation, float downfall) {
 		this(key, temperature, precipitation, downfall, Biome.TemperatureModifier.NONE);
 	}
 
-	public void bootstrap(Registerable<Biome> registerable, RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
+	public void bootstrap(BootstrapContext<Biome> registerable, HolderGetter<PlacedFeature> featureLookup, HolderGetter<ConfiguredWorldCarver<?>> carverLookup) {
 		registerable.register(
 			this.key,
-			new Biome.Builder()
-				.precipitation(this.precipitation)
+			new Biome.BiomeBuilder()
+				.hasPrecipitation(this.precipitation)
 				.temperature(this.temperature)
 				.downfall(this.downfall)
-				.effects(createEffects().build())
-				.spawnSettings(createSpawnSettings().build())
+				.specialEffects(createEffects().build())
+				.mobSpawnSettings(createSpawnSettings().build())
 				.generationSettings(createGenerationSettings(featureLookup, carverLookup).build())
-				.temperatureModifier(this.temperatureModifier)
+				.temperatureAdjustment(this.temperatureModifier)
 				.build()
 		);
 	}
 
-	public abstract BiomeEffects.Builder createEffects();
+	public abstract BiomeSpecialEffects.Builder createEffects();
 
-	public GenerationSettings.Builder createGenerationSettings(RegistryEntryLookup<PlacedFeature> featureLookup, RegistryEntryLookup<ConfiguredCarver<?>> carverLookup) {
-		GenerationSettings.LookupBackedBuilder builder = new GenerationSettings.LookupBackedBuilder(featureLookup, carverLookup);
+	public BiomeGenerationSettings.PlainBuilder createGenerationSettings(HolderGetter<PlacedFeature> featureLookup, HolderGetter<ConfiguredWorldCarver<?>> carverLookup) {
+		BiomeGenerationSettings.Builder builder = new BiomeGenerationSettings.Builder(featureLookup, carverLookup);
 
 		addBasicFeatures(builder);
 
-		DefaultBiomeFeatures.addDefaultOres(builder);
-		DefaultBiomeFeatures.addDefaultDisks(builder);
-		DefaultBiomeFeatures.addWaterBiomeOakTrees(builder);
-		DefaultBiomeFeatures.addDefaultFlowers(builder);
-		DefaultBiomeFeatures.addDefaultGrass(builder);
-		DefaultBiomeFeatures.addDefaultMushrooms(builder);
-		DefaultBiomeFeatures.addDefaultVegetation(builder, true);
+		BiomeDefaultFeatures.addDefaultOres(builder);
+		BiomeDefaultFeatures.addDefaultSoftDisks(builder);
+		BiomeDefaultFeatures.addWaterTrees(builder);
+		BiomeDefaultFeatures.addDefaultFlowers(builder);
+		BiomeDefaultFeatures.addDefaultGrass(builder);
+		BiomeDefaultFeatures.addDefaultMushrooms(builder);
+		BiomeDefaultFeatures.addDefaultExtraVegetation(builder, true);
 
 		createGenerationSettings(builder);
 
 		return builder;
 	}
 
-	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+	public void createGenerationSettings(BiomeGenerationSettings.Builder builder) {
 	}
 
-	public abstract SpawnSettings.Builder createSpawnSettings();
+	public abstract MobSpawnSettings.Builder createSpawnSettings();
 
 	public abstract void addToGenerator();
 
-	public void addOverworldSurfaceRulesForBiome(MaterialRules.MaterialRule... rules) {
+	public void addOverworldSurfaceRulesForBiome(SurfaceRules.RuleSource... rules) {
 		addOverworldSurfaceRules(onlyInThisBiome(rules));
 	}
 
-	public void addOverworldSurfaceRules(MaterialRule... rules) {
+	public void addOverworldSurfaceRules(RuleSource... rules) {
 		SurfaceGeneration.addOverworldSurfaceRules(
-			Identifier.ofVanilla("rules/overworld"),
+			ResourceLocation.withDefaultNamespace("rules/overworld"),
 			rules
 		);
 	}
 
-	public MaterialRules.MaterialRule onlyInThisBiome(MaterialRules.MaterialRule... rules) {
-		return condition(
-			biome(this.key),
+	public SurfaceRules.RuleSource onlyInThisBiome(SurfaceRules.RuleSource... rules) {
+		return ifTrue(
+			isBiome(this.key),
 			rules.length == 1 ? rules[0] : sequence(rules)
 		);
 	}
 
 	// This is private in OverworldBiomeCreator for some reason?
-	protected static void addBasicFeatures(GenerationSettings.LookupBackedBuilder generationSettings) {
-		DefaultBiomeFeatures.addLandCarvers(generationSettings);
-		DefaultBiomeFeatures.addAmethystGeodes(generationSettings);
-		DefaultBiomeFeatures.addDungeons(generationSettings);
-		DefaultBiomeFeatures.addMineables(generationSettings);
-		DefaultBiomeFeatures.addSprings(generationSettings);
-		DefaultBiomeFeatures.addFrozenTopLayer(generationSettings);
+	protected static void addBasicFeatures(BiomeGenerationSettings.Builder generationSettings) {
+		BiomeDefaultFeatures.addDefaultCarversAndLakes(generationSettings);
+		BiomeDefaultFeatures.addDefaultCrystalFormations(generationSettings);
+		BiomeDefaultFeatures.addDefaultMonsterRoom(generationSettings);
+		BiomeDefaultFeatures.addDefaultUndergroundVariety(generationSettings);
+		BiomeDefaultFeatures.addDefaultSprings(generationSettings);
+		BiomeDefaultFeatures.addSurfaceFreezing(generationSettings);
 	}
 }

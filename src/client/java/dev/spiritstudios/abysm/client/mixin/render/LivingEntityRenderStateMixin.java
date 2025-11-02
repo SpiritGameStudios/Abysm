@@ -1,8 +1,8 @@
 package dev.spiritstudios.abysm.client.mixin.render;
 
 import dev.spiritstudios.abysm.client.duck.EntityRenderStateDuck;
-import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 

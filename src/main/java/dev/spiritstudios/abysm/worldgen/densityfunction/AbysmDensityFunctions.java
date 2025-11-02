@@ -2,30 +2,30 @@ package dev.spiritstudios.abysm.worldgen.densityfunction;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.worldgen.noise.AbysmNoiseParameters;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
-import net.minecraft.world.gen.densityfunction.DensityFunction;
-import net.minecraft.world.gen.densityfunction.DensityFunctionTypes;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 public class AbysmDensityFunctions {
-	public static final RegistryKey<DensityFunction> RUINS_SEDIMENT_NOISE = keyOf("ruins_sediment_noise");
-	public static final RegistryKey<DensityFunction> RUINS_SHELL_NOISE = keyOf("ruins_shell_noise");
-	public static final RegistryKey<DensityFunction> RUINS_PILLAR_NOISE = keyOf("ruins_pillar_noise");
-	public static final RegistryKey<DensityFunction> RUINS_SHELL_CAVE = keyOf("ruins_shell_cave");
-	public static final RegistryKey<DensityFunction> RUINS_SHELL_CAVE_WITH_PILLARS = keyOf("ruins_shell_cave_with_pillars");
-	public static final RegistryKey<DensityFunction> RUINS_SEDIMENT = keyOf("ruins_sediment");
-	public static final RegistryKey<DensityFunction> BEARDIFIER_ADDITION = keyOf("beardifier_addition");
+	public static final ResourceKey<DensityFunction> RUINS_SEDIMENT_NOISE = keyOf("ruins_sediment_noise");
+	public static final ResourceKey<DensityFunction> RUINS_SHELL_NOISE = keyOf("ruins_shell_noise");
+	public static final ResourceKey<DensityFunction> RUINS_PILLAR_NOISE = keyOf("ruins_pillar_noise");
+	public static final ResourceKey<DensityFunction> RUINS_SHELL_CAVE = keyOf("ruins_shell_cave");
+	public static final ResourceKey<DensityFunction> RUINS_SHELL_CAVE_WITH_PILLARS = keyOf("ruins_shell_cave_with_pillars");
+	public static final ResourceKey<DensityFunction> RUINS_SEDIMENT = keyOf("ruins_sediment");
+	public static final ResourceKey<DensityFunction> BEARDIFIER_ADDITION = keyOf("beardifier_addition");
 
-	public static void bootstrap(Registerable<DensityFunction> registerable) {
-		RegistryEntryLookup<DensityFunction> lookup = registerable.getRegistryLookup(RegistryKeys.DENSITY_FUNCTION);
-		RegistryEntryLookup<DoublePerlinNoiseSampler.NoiseParameters> noiseLookup = registerable.getRegistryLookup(RegistryKeys.NOISE_PARAMETERS);
+	public static void bootstrap(BootstrapContext<DensityFunction> registerable) {
+		HolderGetter<DensityFunction> lookup = registerable.lookup(Registries.DENSITY_FUNCTION);
+		HolderGetter<NormalNoise.NoiseParameters> noiseLookup = registerable.lookup(Registries.NOISE);
 
 		registerable.register(
 			RUINS_SEDIMENT_NOISE,
-			DensityFunctionTypes.noise(
+			DensityFunctions.noise(
 				noiseLookup.getOrThrow(AbysmNoiseParameters.RUINS_SEDIMENT),
 				1.0,
 				2.5
@@ -34,14 +34,14 @@ public class AbysmDensityFunctions {
 
 		registerable.register(
 			RUINS_SHELL_NOISE,
-			DensityFunctionTypes.noise(
+			DensityFunctions.noise(
 				noiseLookup.getOrThrow(AbysmNoiseParameters.RUINS_SHELL)
 			)
 		);
 
 		registerable.register(
 			RUINS_PILLAR_NOISE,
-			DensityFunctionTypes.noise(
+			DensityFunctions.noise(
 				noiseLookup.getOrThrow(AbysmNoiseParameters.RUINS_PILLARS),
 				1.0,
 				0.04
@@ -50,13 +50,13 @@ public class AbysmDensityFunctions {
 
 		registerable.register(
 			RUINS_SHELL_CAVE,
-			DensityFunctionTypes.cacheOnce(
-				DensityFunctionTypes.mul(
+			DensityFunctions.cacheOnce(
+				DensityFunctions.mul(
 					new AbysmDensityFunctionTypes.DummyDensityBlobsSampler(Abysm.id("ruins_shell")),
-					DensityFunctionTypes.add(
-						DensityFunctionTypes.constant(1.0),
-						DensityFunctionTypes.mul(
-							DensityFunctionTypes.constant(0.9),
+					DensityFunctions.add(
+						DensityFunctions.constant(1.0),
+						DensityFunctions.mul(
+							DensityFunctions.constant(0.9),
 							entryHolder(lookup, RUINS_SEDIMENT_NOISE).square()
 						)
 					)
@@ -66,20 +66,20 @@ public class AbysmDensityFunctions {
 
 		registerable.register(
 			RUINS_SHELL_CAVE_WITH_PILLARS,
-			DensityFunctionTypes.rangeChoice(
+			DensityFunctions.rangeChoice(
 				entryHolder(lookup, RUINS_SHELL_CAVE),
 				1.5,
 				100000.0,
-				DensityFunctionTypes.max(
-					DensityFunctionTypes.constant(1.5),
-					DensityFunctionTypes.add(
+				DensityFunctions.max(
+					DensityFunctions.constant(1.5),
+					DensityFunctions.add(
 						entryHolder(lookup, RUINS_SHELL_CAVE),
-						DensityFunctionTypes.min(
-							DensityFunctionTypes.constant(0.0),
-							DensityFunctionTypes.mul(
-								DensityFunctionTypes.constant(-80.0),
-								DensityFunctionTypes.add(
-									DensityFunctionTypes.constant(-0.065),
+						DensityFunctions.min(
+							DensityFunctions.constant(0.0),
+							DensityFunctions.mul(
+								DensityFunctions.constant(-80.0),
+								DensityFunctions.add(
+									DensityFunctions.constant(-0.065),
 									entryHolder(lookup, RUINS_PILLAR_NOISE).square()
 								)
 							)
@@ -92,13 +92,13 @@ public class AbysmDensityFunctions {
 
 		registerable.register(
 			BEARDIFIER_ADDITION,
-			DensityFunctionTypes.mul(
+			DensityFunctions.mul(
 				entryHolder(lookup, RUINS_SHELL_CAVE),
-				DensityFunctionTypes.add(
-					DensityFunctionTypes.constant(1.0),
-					DensityFunctionTypes.mul(
-						DensityFunctionTypes.constant(5.5),
-						DensityFunctionTypes.noise(
+				DensityFunctions.add(
+					DensityFunctions.constant(1.0),
+					DensityFunctions.mul(
+						DensityFunctions.constant(5.5),
+						DensityFunctions.noise(
 							noiseLookup.getOrThrow(AbysmNoiseParameters.RUINS_SHELL_BEARD)
 						).square()
 					)
@@ -108,21 +108,21 @@ public class AbysmDensityFunctions {
 
 		registerable.register(
 			RUINS_SEDIMENT,
-			DensityFunctionTypes.add(
-				DensityFunctionTypes.add(
+			DensityFunctions.add(
+				DensityFunctions.add(
 					entryHolder(lookup, RUINS_SEDIMENT_NOISE),
-					DensityFunctionTypes.constant(-0.18)
+					DensityFunctions.constant(-0.18)
 				),
 				new AbysmDensityFunctionTypes.DummyDensityBlobsSampler(Abysm.id("ruins_sediment"))
 			)
 		);
 	}
 
-	private static RegistryKey<DensityFunction> keyOf(String id) {
-		return RegistryKey.of(RegistryKeys.DENSITY_FUNCTION, Abysm.id(id));
+	private static ResourceKey<DensityFunction> keyOf(String id) {
+		return ResourceKey.create(Registries.DENSITY_FUNCTION, Abysm.id(id));
 	}
 
-	private static DensityFunction entryHolder(RegistryEntryLookup<DensityFunction> densityFunctionRegisterable, RegistryKey<DensityFunction> key) {
-		return new DensityFunctionTypes.RegistryEntryHolder(densityFunctionRegisterable.getOrThrow(key));
+	private static DensityFunction entryHolder(HolderGetter<DensityFunction> densityFunctionRegisterable, ResourceKey<DensityFunction> key) {
+		return new DensityFunctions.HolderHolder(densityFunctionRegisterable.getOrThrow(key));
 	}
 }

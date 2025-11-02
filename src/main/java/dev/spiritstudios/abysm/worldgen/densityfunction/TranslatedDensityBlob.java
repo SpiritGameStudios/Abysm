@@ -3,8 +3,8 @@ package dev.spiritstudios.abysm.worldgen.densityfunction;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.dynamic.CodecHolder;
-import net.minecraft.util.math.Box;
+import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.world.phys.AABB;
 
 public record TranslatedDensityBlob(DensityBlob densityBlob, int dx, int dy, int dz) implements DensityBlob {
 	public static final MapCodec<TranslatedDensityBlob> CODEC = RecordCodecBuilder.mapCodec(
@@ -16,7 +16,7 @@ public record TranslatedDensityBlob(DensityBlob densityBlob, int dx, int dy, int
 			)
 			.apply(instance, TranslatedDensityBlob::new)
 	);
-	public static final CodecHolder<TranslatedDensityBlob> CODEC_HOLDER = CodecHolder.of(CODEC);
+	public static final KeyDispatchDataCodec<TranslatedDensityBlob> CODEC_HOLDER = KeyDispatchDataCodec.of(CODEC);
 
 	@Override
 	public MapCodec<? extends DensityBlob> getCodec() {
@@ -29,7 +29,7 @@ public record TranslatedDensityBlob(DensityBlob densityBlob, int dx, int dy, int
 	}
 
 	@Override
-	public Box getBoundingBox() {
-		return this.densityBlob.getBoundingBox().offset(this.dx, this.dy, this.dz);
+	public AABB getBoundingBox() {
+		return this.densityBlob.getBoundingBox().move(this.dx, this.dy, this.dz);
 	}
 }

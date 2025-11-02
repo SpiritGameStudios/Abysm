@@ -1,16 +1,16 @@
 package dev.spiritstudios.abysm.client.render.entity.model;
 
-import net.minecraft.client.model.Dilation;
-import net.minecraft.client.model.ModelData;
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.model.ModelPartBuilder;
-import net.minecraft.client.model.ModelPartData;
-import net.minecraft.client.model.ModelTransform;
-import net.minecraft.client.model.TexturedModelData;
-import net.minecraft.client.render.entity.model.BipedEntityModel;
-import net.minecraft.client.render.entity.state.BipedEntityRenderState;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 
-public class FlippersModel extends BipedEntityModel<BipedEntityRenderState> {
+public class FlippersModel extends HumanoidModel<HumanoidRenderState> {
 	public final ModelPart rightFlipper;
 	public final ModelPart leftFlipper;
 	public final ModelPart rightFlipperSwimming;
@@ -26,60 +26,60 @@ public class FlippersModel extends BipedEntityModel<BipedEntityRenderState> {
 		this.leftFlipperSwimming = this.leftLeg.getChild("left_flipper_swimming");
 	}
 
-	public static TexturedModelData getTexturedModelData() {
-		ModelData modelData = BipedEntityModel.getModelData(Dilation.NONE, 0.0F);
-		ModelPartData root = modelData.getRoot();
+	public static LayerDefinition getTexturedModelData() {
+		MeshDefinition modelData = HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F);
+		PartDefinition root = modelData.getRoot();
 
-		ModelPartData rightLeg = root.addChild(
+		PartDefinition rightLeg = root.addOrReplaceChild(
 			"right_leg",
-			ModelPartBuilder.create()
-				.uv(0, 12)
-				.cuboid(-2.0F, 8.0F, -2.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.25F)),
-			ModelTransform.origin(-1.9F, 12.0F, 0.0F)
+			CubeListBuilder.create()
+				.texOffs(0, 12)
+				.addBox(-2.0F, 8.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.25F)),
+			PartPose.offset(-1.9F, 12.0F, 0.0F)
 		);
 
-		rightLeg.addChild(
+		rightLeg.addOrReplaceChild(
 			"right_flipper",
-			ModelPartBuilder.create()
-				.uv(-12, 0)
-				.cuboid(-7.0F, 12.0F, -14.0F, 9.0F, 0.0F, 12.0F, Dilation.NONE),
-			ModelTransform.NONE
+			CubeListBuilder.create()
+				.texOffs(-12, 0)
+				.addBox(-7.0F, 12.0F, -14.0F, 9.0F, 0.0F, 12.0F, CubeDeformation.NONE),
+			PartPose.ZERO
 		);
 
-		rightLeg.addChild(
+		rightLeg.addOrReplaceChild(
 			"right_flipper_swimming",
-			ModelPartBuilder.create()
-				.uv(-12, 0)
-				.cuboid(-6.0F, 0.0F, -11.0F, 9.0F, 0.0F, 12.0F, Dilation.NONE),
-			ModelTransform.of(-1.0F, 13.0F, 0.0F, 1.5708F, 0.0F, 0.0F)
+			CubeListBuilder.create()
+				.texOffs(-12, 0)
+				.addBox(-6.0F, 0.0F, -11.0F, 9.0F, 0.0F, 12.0F, CubeDeformation.NONE),
+			PartPose.offsetAndRotation(-1.0F, 13.0F, 0.0F, 1.5708F, 0.0F, 0.0F)
 		);
 
-		ModelPartData leftLeg = root.addChild(
+		PartDefinition leftLeg = root.addOrReplaceChild(
 			"left_leg",
-			ModelPartBuilder.create()
-				.uv(0, 12)
-				.cuboid(-2.0F, 8.0F, -2.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.25F)),
-			ModelTransform.origin(1.9F, 12.0F, 0.0F)
+			CubeListBuilder.create()
+				.texOffs(0, 12)
+				.addBox(-2.0F, 8.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.25F)),
+			PartPose.offset(1.9F, 12.0F, 0.0F)
 		);
 
-		leftLeg.addChild(
+		leftLeg.addOrReplaceChild(
 			"left_flipper",
-			ModelPartBuilder.create()
-				.uv(-12, 0)
-				.mirrored()
-				.cuboid(-1.8F, 12.0F, -14.0F, 9.0F, 0.0F, 12.0F, Dilation.NONE),
-			ModelTransform.NONE
+			CubeListBuilder.create()
+				.texOffs(-12, 0)
+				.mirror()
+				.addBox(-1.8F, 12.0F, -14.0F, 9.0F, 0.0F, 12.0F, CubeDeformation.NONE),
+			PartPose.ZERO
 		);
 
-		leftLeg.addChild(
+		leftLeg.addOrReplaceChild(
 			"left_flipper_swimming",
-			ModelPartBuilder.create()
-				.mirrored()
-				.uv(-12, 0)
-				.cuboid(-6.0F, 0.0F, -11.0F, 9.0F, 0.0F, 12.0F, Dilation.NONE),
-			ModelTransform.of(4.2F, 13.0F, 0.0F, 1.5708F, 0.0F, 0.0F)
+			CubeListBuilder.create()
+				.mirror()
+				.texOffs(-12, 0)
+				.addBox(-6.0F, 0.0F, -11.0F, 9.0F, 0.0F, 12.0F, CubeDeformation.NONE),
+			PartPose.offsetAndRotation(4.2F, 13.0F, 0.0F, 1.5708F, 0.0F, 0.0F)
 		);
 
-		return TexturedModelData.of(modelData, 32, 32);
+		return LayerDefinition.create(modelData, 32, 32);
 	}
 }

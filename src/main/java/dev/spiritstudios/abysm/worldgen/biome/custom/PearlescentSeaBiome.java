@@ -4,14 +4,14 @@ import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiome;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.sound.BiomeMoodSound;
-import net.minecraft.sound.MusicType;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.OverworldBiomeCreator;
-import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.biome.OverworldBiomes;
+import net.minecraft.sounds.Musics;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.AmbientMoodSettings;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 
 public final class PearlescentSeaBiome extends AbysmBiome {
 
@@ -20,31 +20,31 @@ public final class PearlescentSeaBiome extends AbysmBiome {
 	}
 
 	@Override
-	public BiomeEffects.Builder createEffects() {
-		return new BiomeEffects.Builder()
+	public BiomeSpecialEffects.Builder createEffects() {
+		return new BiomeSpecialEffects.Builder()
 			.waterColor(0xDAB9ED)
 			.waterFogColor(0xB796E3)
 			.fogColor(0xF2E8FF)
-			.skyColor(OverworldBiomeCreator.getSkyColor(this.temperature))
-			.moodSound(BiomeMoodSound.CAVE)
-			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_PEARLESCENT_SEA));
+			.skyColor(OverworldBiomes.calculateSkyColor(this.temperature))
+			.ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+			.backgroundMusic(Musics.createGameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_PEARLESCENT_SEA));
 	}
 
 	@Override
-	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+	public void createGenerationSettings(BiomeGenerationSettings.Builder builder) {
 		// weird unlocking mechanism I have no idea
 	}
 
 	@Override
-	public SpawnSettings.Builder createSpawnSettings() {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder()
-			.spawn(
-				SpawnGroup.WATER_CREATURE,
+	public MobSpawnSettings.Builder createSpawnSettings() {
+		MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder()
+			.addSpawn(
+				MobCategory.WATER_CREATURE,
 				1,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.RETICULATED_FLIPRAY, 1, 2)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.RETICULATED_FLIPRAY, 1, 2)
 			);
 
-		DefaultBiomeFeatures.addBatsAndMonsters(builder);
+		BiomeDefaultFeatures.commonSpawns(builder);
 		return builder;
 	}
 

@@ -17,27 +17,27 @@ import dev.spiritstudios.abysm.networking.NowHuntingS2CPayload;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.boss.BossBar;
-import net.minecraft.entity.boss.ServerBossBar;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -53,7 +53,7 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 
 	public static final AttachmentType<Boolean> HUNTING = AttachmentRegistry.<Boolean>builder()
 		.initializer(() -> false)
-		.syncWith(PacketCodecs.BOOLEAN, AttachmentSyncPredicate.all())
+		.syncWith(ByteBufCodecs.BOOL, AttachmentSyncPredicate.all())
 		.buildAndRegister(Abysm.id("hunting_sync"));
 
 	public final List<SkeletonSharkPart> parts;
@@ -65,7 +65,7 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 
 	protected float prevScale = 1;
 
-	public SkeletonSharkEntity(EntityType<? extends WaterCreatureEntity> entityType, World world) {
+	public SkeletonSharkEntity(EntityType<? extends WaterAnimal> entityType, Level world) {
 		super(entityType, world);
 		ImmutableList.Builder<SkeletonSharkPart> builder = ImmutableList.builder();
 		builder.add(new SkeletonSharkPart(this, "body", 2F, 1F, -0.1F));
@@ -76,13 +76,13 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 		builder.add(this.lfin);
 		this.parts = builder.build();
 		this.nonFins = this.parts.stream().filter(part -> !part.name.contains("fin")).toList();
-		this.calculateDimensions();
+		this.refreshDimensions();
 	}
 
 	@Override
-	protected @NotNull ServerBossBar createBossBar(EntityType<? extends WaterCreatureEntity> entityType, World world) {
-		ServerBossBar bar = super.createBossBar(entityType, world);
-		bar.setColor(BossBar.Color.WHITE);
+	protected @NotNull ServerBossEvent createBossBar(EntityType<? extends WaterAnimal> entityType, Level world) {
+		ServerBossEvent bar = super.createBossBar(entityType, world);
+		bar.setColor(BossEvent.BossBarColor.WHITE);
 		return bar;
 	}
 
@@ -122,8 +122,8 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 	@Override
 	protected void onTargetFound(LivingEntity living) {
 		super.onTargetFound(living);
-		if (living instanceof MobEntity mob) {
-			this.theHuntIsOn(this.getWorld(), mob);
+		if (living instanceof Mob mob) {
+			this.theHuntIsOn(this.level(), mob);
 		}
 	}
 
@@ -135,9 +135,9 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
 		this.alertEcosystemOfSpawn();
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 	}
 
 	@Override
@@ -151,9 +151,9 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 	}
 
 	@Override
-	public void onRemove(RemovalReason reason) {
+	public void onRemoval(RemovalReason reason) {
 		this.alertEcosystemOfDeath();
-		super.onRemove(reason);
+		super.onRemoval(reason);
 	}
 
 	@Override
@@ -164,9 +164,9 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 		if (scale != this.prevScale) {
 			this.prevScale = scale;
 			this.parts.forEach(part -> {
-				EntityDimensions dimensions = part.originalDimensions.scaled(scale);
+				EntityDimensions dimensions = part.originalDimensions.scale(scale);
 				((EntityPartAccessor) part).abysm$setDimensions(dimensions);
-				part.calculateDimensions();
+				part.refreshDimensions();
 			});
 		}
 	}
@@ -174,34 +174,34 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 	@Override
 	public void tickEcosystemLogic() {
 		EcologicalEntity.super.tickEcosystemLogic();
-		if (this.getWorld() instanceof ServerWorld) {
+		if (this.level() instanceof ServerLevel) {
 			if (this.shouldFailHunt()) {
-				Optional<LivingEntity> living = this.getBrain().getOptionalMemory(MemoryModuleType.ATTACK_TARGET);
+				Optional<LivingEntity> living = this.getBrain().getMemoryInternal(MemoryModuleType.ATTACK_TARGET);
 				if (living.isEmpty()) {
 					return;
 				}
-				if (living.get() instanceof PlayerEntity player && this.isValidTarget(player)) {
+				if (living.get() instanceof Player player && this.isValidTarget(player)) {
 					return;
 				}
-				this.getBrain().forget(MemoryModuleType.NEAREST_ATTACKABLE);
-				this.getBrain().forget(MemoryModuleType.ATTACK_TARGET);
+				this.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE);
+				this.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
 			}
 		}
 	}
 
-	public static DefaultAttributeContainer.Builder createSansAttributes() {
+	public static AttributeSupplier.Builder createSansAttributes() {
 		return Leviathan.createLeviathanAttributes()
-			.add(EntityAttributes.MAX_HEALTH, 2000)
-			.add(EntityAttributes.ATTACK_DAMAGE, 8)
-			.add(EntityAttributes.SCALE, 2.25)
-			.add(EntityAttributes.MOVEMENT_SPEED, 1.25);
+			.add(Attributes.MAX_HEALTH, 2000)
+			.add(Attributes.ATTACK_DAMAGE, 8)
+			.add(Attributes.SCALE, 2.25)
+			.add(Attributes.MOVEMENT_SPEED, 1.25);
 	}
 
 	@Override
-	public void tickMovement() {
-		super.tickMovement();
-		if (this.getWorld() instanceof ServerWorld) {
-			boolean hunting = this.getBrain().getOptionalMemory(MemoryModuleType.ATTACK_TARGET).isPresent();
+	public void aiStep() {
+		super.aiStep();
+		if (this.level() instanceof ServerLevel) {
+			boolean hunting = this.getBrain().getMemoryInternal(MemoryModuleType.ATTACK_TARGET).isPresent();
 			if (this.getAttachedOrCreate(HUNTING) != hunting) {
 				this.setAttached(HUNTING, hunting);
 			}
@@ -209,13 +209,13 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 	}
 
 	@Override
-	protected void initGoals() {
-		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
-		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
-		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
-		this.goalSelector.add(4, new SwimAroundGoal(this, 1.0, 10));
-		this.goalSelector.add(4, new LookAroundGoal(this));
-		this.targetSelector.add(1, new HuntPreyGoal(this, false));
+	protected void registerGoals() {
+		this.goalSelector.addGoal(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.addGoal(2, new RepopulateGoal(this, 1.25));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, false));
+		this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0, 10));
+		this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+		this.targetSelector.addGoal(1, new HuntPreyGoal(this, false));
 	}
 
 	@Override
@@ -224,7 +224,7 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 	}
 
 	@Override
-	public int getMaxLookYawChange() {
+	public int getHeadRotSpeed() {
 		return 2;
 	}
 }

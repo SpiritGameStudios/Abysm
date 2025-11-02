@@ -1,59 +1,59 @@
 package dev.spiritstudios.abysm.client.render;
 
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Holder;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.biome.Biome;
 
 public class AbysmWaterFogModifier {
 	private static float targetUnderwaterVisibilityMultiplier = 1.0F;
 	private static float lerpedUnderwaterVisibilityMultiplier = 1.0F;
-	public static float lastUnderwaterVisibilityMultiplier = 1.0F;
+	public static float lastWaterVisionMultiplier = 1.0F;
 	private static long updateTime = -1L;
 
-	public static float getLightness(ClientWorld world) {
-		return 0.5F + 2.0F * MathHelper.clamp(MathHelper.cos(world.getSkyAngle(1.0F) * MathHelper.TAU), -0.25F, 0.25F);
+	public static float getLightness(ClientLevel world) {
+		return 0.5F + 2.0F * Mth.clamp(Mth.cos(world.getTimeOfDay(1.0F) * Mth.TWO_PI), -0.25F, 0.25F);
 	}
 
-	public static RegistryEntry<Biome> getBiome(ClientWorld world, Camera camera) {
-		return world.getBiome(camera.getBlockPos());
+	public static Holder<Biome> getBiome(ClientLevel world, Camera camera) {
+		return world.getBiome(camera.getBlockPosition());
 	}
 
-	public static int adjustWaterFogColor(int original, ClientWorld world, Camera camera) {
+	public static int adjustWaterFogColor(int original, ClientLevel world, Camera camera) {
 		float lightness = getLightness(world);
-		RegistryEntry<Biome> biome = getBiome(world, camera);
+		Holder<Biome> biome = getBiome(world, camera);
 
 		return getFogColor(original, lightness, biome);
 	}
 
-	public static int getFogColor(int original, float lightness, RegistryEntry<Biome> biome) {
-		if (lightness < 0.999F && biome.matchesKey(AbysmBiomes.FLORAL_REEF)) {
+	public static int getFogColor(int original, float lightness, Holder<Biome> biome) {
+		if (lightness < 0.999F && biome.is(AbysmBiomes.FLORAL_REEF)) {
 			int nightWaterFogColor = 0x11082F;
-			return ColorHelper.lerp(lightness, nightWaterFogColor, original);
+			return ARGB.lerp(lightness, nightWaterFogColor, original);
 		} else {
 			return original;
 		}
 	}
 
-	public static void updateUnderwaterVisibility(ClientWorld world, Camera camera, long time) {
+	public static void updateUnderwaterVisibility(ClientLevel world, Camera camera, long time) {
 		float lightness = getLightness(world);
-		RegistryEntry<Biome> biome = getBiome(world, camera);
+		Holder<Biome> biome = getBiome(world, camera);
 
 		float visibilityMultiplier = getUnderwaterVisibilityMultiplier(biome, lightness);
 
 		if (updateTime < 0L) {
 			targetUnderwaterVisibilityMultiplier = visibilityMultiplier;
 			lerpedUnderwaterVisibilityMultiplier = visibilityMultiplier;
-			lastUnderwaterVisibilityMultiplier = visibilityMultiplier;
+			lastWaterVisionMultiplier = visibilityMultiplier;
 			updateTime = time;
 			return;
 		}
 
-		float lerpFactor = MathHelper.clamp((float) (time - updateTime) / 5000.0F, 0.0F, 1.0F);
-		float currentVisibility = MathHelper.lerp(lerpFactor, lerpedUnderwaterVisibilityMultiplier, targetUnderwaterVisibilityMultiplier);
+		float lerpFactor = Mth.clamp((float) (time - updateTime) / 5000.0F, 0.0F, 1.0F);
+		float currentVisibility = Mth.lerp(lerpFactor, lerpedUnderwaterVisibilityMultiplier, targetUnderwaterVisibilityMultiplier);
 
 		if (targetUnderwaterVisibilityMultiplier != visibilityMultiplier) {
 			targetUnderwaterVisibilityMultiplier = visibilityMultiplier;
@@ -61,23 +61,23 @@ public class AbysmWaterFogModifier {
 			updateTime = time;
 		}
 
-		lastUnderwaterVisibilityMultiplier = currentVisibility;
+		lastWaterVisionMultiplier = currentVisibility;
 	}
 
-	public static float getUnderwaterVisibilityMultiplier(RegistryEntry<Biome> biome, float lightness) {
-		if (biome.matchesKey(AbysmBiomes.FLORAL_REEF)) {
+	public static float getUnderwaterVisibilityMultiplier(Holder<Biome> biome, float lightness) {
+		if (biome.is(AbysmBiomes.FLORAL_REEF)) {
 			return 0.3F + 0.7F * lightness;
-		} else if (biome.matchesKey(AbysmBiomes.DEEP_SEA_RUINS)) {
+		} else if (biome.is(AbysmBiomes.DEEP_SEA_RUINS)) {
 			return 0.13F;
 		} else {
 			return 1.0F;
 		}
 	}
 
-	public static void onSkipped() {
+	public static void onNotApplicable() {
 		updateTime = -1L;
 		targetUnderwaterVisibilityMultiplier = 1.0F;
 		lerpedUnderwaterVisibilityMultiplier = 1.0F;
-		lastUnderwaterVisibilityMultiplier = 1.0F;
+		lastWaterVisionMultiplier = 1.0F;
 	}
 }

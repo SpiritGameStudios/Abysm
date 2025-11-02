@@ -6,26 +6,25 @@ import dev.spiritstudios.abysm.component.AbysmFoodComponents;
 import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.entity.attribute.AbysmAttribute;
 import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
-import net.minecraft.block.Block;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.AttributeModifierSlot;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.EntityBucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.item.equipment.ArmorMaterials;
-import net.minecraft.item.equipment.EquipmentType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Rarity;
-
 import java.util.function.Function;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.equipment.ArmorMaterials;
+import net.minecraft.world.item.equipment.ArmorType;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluids;
 
 @SuppressWarnings({"unused", "SameParameterValue"})
 public final class AbysmItems {
@@ -45,94 +44,94 @@ public final class AbysmItems {
 
 	public static final Item FLIPPERS = register(
 		"flippers",
-		new Item.Settings()
-			.maxCount(1)
-			.armor(ArmorMaterials.TURTLE_SCUTE, EquipmentType.BOOTS)
-			.attributeModifiers(AbysmAttribute.ofAdd(
+		new Item.Properties()
+			.stacksTo(1)
+			.humanoidArmor(ArmorMaterials.TURTLE_SCUTE, ArmorType.BOOTS)
+			.attributes(AbysmAttribute.ofAdd(
 				AbysmEntityAttributes.SWIMMING_SPEED,
 				"flippers_swimming_speed_multiplier",
 				0.05
-			).toComponent(AttributeModifierSlot.FEET))
+			).toComponent(EquipmentSlotGroup.FEET))
 	);
 
 	public static final Item DIVING_BOOTS = register(
 		"diving_boots",
 		AbysmArmorMaterials.applyWithModel(
-			new Item.Settings().maxCount(1),
+			new Item.Properties().stacksTo(1),
 			AbysmArmorMaterials.DIVING_SUIT,
-			EquipmentType.BOOTS,
-			AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_boots_oxygen", 3.0)
+			ArmorType.BOOTS,
+			AbysmAttribute.ofAdd(Attributes.OXYGEN_BONUS, "diving_boots_oxygen", 3.0)
 		)
 	);
 
 	public static final Item DIVING_LEGGINGS = register(
 		"diving_leggings",
 		AbysmArmorMaterials.applyWithModel(
-			new Item.Settings().maxCount(1),
+			new Item.Properties().stacksTo(1),
 			AbysmArmorMaterials.DIVING_SUIT,
-			EquipmentType.LEGGINGS,
-			AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_leggings_oxygen", 3.0)
+			ArmorType.LEGGINGS,
+			AbysmAttribute.ofAdd(Attributes.OXYGEN_BONUS, "diving_leggings_oxygen", 3.0)
 		)
 	);
 
 	public static final Item DIVING_CHESTPLATE = register(
 		"diving_chestplate",
 		AbysmArmorMaterials.applyWithModel(
-			new Item.Settings().maxCount(1),
+			new Item.Properties().stacksTo(1),
 			AbysmArmorMaterials.DIVING_SUIT,
-			EquipmentType.CHESTPLATE,
-			AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_chestplate_oxygen", 3.0)
+			ArmorType.CHESTPLATE,
+			AbysmAttribute.ofAdd(Attributes.OXYGEN_BONUS, "diving_chestplate_oxygen", 3.0)
 		)
 	);
 
 	public static final Item DIVING_HELMET = register(
 		"diving_helmet",
 		AbysmArmorMaterials.applyWithoutModel(
-			new Item.Settings().maxCount(1),
+			new Item.Properties().stacksTo(1),
 			AbysmArmorMaterials.DIVING_SUIT,
-			EquipmentType.HELMET,
-			AbysmAttribute.ofAdd(EntityAttributes.OXYGEN_BONUS, "diving_helmet_oxygen", 3.0)
+			ArmorType.HELMET,
+			AbysmAttribute.ofAdd(Attributes.OXYGEN_BONUS, "diving_helmet_oxygen", 3.0)
 		)
 	);
 
 	public static final Item HARPOON = register(
 		"harpoon",
 		HarpoonItem::new,
-		new Item.Settings()
-			.maxCount(1)
-			.maxDamage(250)
+		new Item.Properties()
+			.stacksTo(1)
+			.durability(250)
 			.enchantable(1)
 			.rarity(Rarity.RARE)
 	);
 
 	public static final Item SMALL_FLORAL_FISH = register(
 		"small_floral_fish",
-		new Item.Settings().food(AbysmFoodComponents.SMALL_FLORAL_FISH)
+		new Item.Properties().food(AbysmFoodComponents.SMALL_FLORAL_FISH)
 	);
 
 	public static final Item BIG_FLORAL_FISH = register(
 		"big_floral_fish",
-		new Item.Settings().food(AbysmFoodComponents.BIG_FLORAL_FISH)
+		new Item.Properties().food(AbysmFoodComponents.BIG_FLORAL_FISH)
 	);
 
 	public static final Item SMALL_FLORAL_FISH_BUCKET = register(
 		"small_floral_fish_bucket",
-		settings -> new EntityBucketItem(AbysmEntityTypes.SMALL_FLORAL_FISH, Fluids.WATER, SoundEvents.ITEM_BUCKET_EMPTY_FISH, settings),
-		new Item.Settings()
-			.maxCount(1)
-			.component(DataComponentTypes.BUCKET_ENTITY_DATA, NbtComponent.DEFAULT)
+		settings -> new MobBucketItem(AbysmEntityTypes.SMALL_FLORAL_FISH, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, settings),
+		new Item.Properties()
+			.stacksTo(1)
+			.component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY)
 	);
 
 	public static final Item BIG_FLORAL_FISH_BUCKET = register(
 		"big_floral_fish_bucket",
-		settings -> new EntityBucketItem(AbysmEntityTypes.BIG_FLORAL_FISH, Fluids.WATER, SoundEvents.ITEM_BUCKET_EMPTY_FISH, settings),
-		new Item.Settings().maxCount(1).component(DataComponentTypes.BUCKET_ENTITY_DATA, NbtComponent.DEFAULT)
+		settings -> new MobBucketItem(AbysmEntityTypes.BIG_FLORAL_FISH, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, settings),
+		new Item.Properties().stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY)
 	);
 
 	public static final Item PADDLEFISH_BUCKET = register(
 		"paddlefish_bucket",
-		settings -> new EntityBucketItem(AbysmEntityTypes.PADDLEFISH, Fluids.WATER, SoundEvents.ITEM_BUCKET_EMPTY_FISH, settings),
-		new Item.Settings().maxCount(1).component(DataComponentTypes.BUCKET_ENTITY_DATA, NbtComponent.DEFAULT)
+		settings -> new MobBucketItem(AbysmEntityTypes.PADDLEFISH, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, settings),
+		new Item.Properties().stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY)
 	);
 
 	public static final Item SMALL_FLORAL_FISH_SPAWN_EGG = register(
@@ -207,47 +206,47 @@ public final class AbysmItems {
 
 	public static final Item MUSIC_DISC_RENAISSANCE = register(
 		"music_disc_renaissance",
-		new Item.Settings()
-			.maxCount(1)
+		new Item.Properties()
+			.stacksTo(1)
 			.rarity(Rarity.RARE)
-			.jukeboxPlayable(RegistryKey.of(RegistryKeys.JUKEBOX_SONG, Abysm.id("renaissance")))
+			.jukeboxPlayable(ResourceKey.create(Registries.JUKEBOX_SONG, Abysm.id("renaissance")))
 	);
 
-	private static RegistryKey<Item> keyOf(String id) {
-		return RegistryKey.of(RegistryKeys.ITEM, Abysm.id(id));
+	private static ResourceKey<Item> keyOf(String id) {
+		return ResourceKey.create(Registries.ITEM, Abysm.id(id));
 	}
 
-	private static Item register(String id, Function<Item.Settings, Item> factory) {
-		return register(keyOf(id), factory, new Item.Settings());
+	private static Item register(String id, Function<Item.Properties, Item> factory) {
+		return register(keyOf(id), factory, new Item.Properties());
 	}
 
-	private static Item register(String id, Function<Item.Settings, Item> factory, Item.Settings settings) {
+	private static Item register(String id, Function<Item.Properties, Item> factory, Item.Properties settings) {
 		return register(keyOf(id), factory, settings);
 	}
 
-	private static Item register(String id, Item.Settings settings) {
+	private static Item register(String id, Item.Properties settings) {
 		return register(keyOf(id), Item::new, settings);
 	}
 
 	private static Item register(String id) {
-		return register(keyOf(id), Item::new, new Item.Settings());
+		return register(keyOf(id), Item::new, new Item.Properties());
 	}
 
-	private static Item register(RegistryKey<Item> key, Function<Item.Settings, Item> factory) {
-		return register(key, factory, new Item.Settings());
+	private static Item register(ResourceKey<Item> key, Function<Item.Properties, Item> factory) {
+		return register(key, factory, new Item.Properties());
 	}
 
-	private static Item register(RegistryKey<Item> key, Function<Item.Settings, Item> factory, Item.Settings settings) {
-		Item item = factory.apply(settings.registryKey(key));
+	private static Item register(ResourceKey<Item> key, Function<Item.Properties, Item> factory, Item.Properties settings) {
+		Item item = factory.apply(settings.setId(key));
 		if (item instanceof BlockItem blockItem) {
-			blockItem.appendBlocks(Item.BLOCK_ITEMS, item);
+			blockItem.registerBlocks(Item.BY_BLOCK, item);
 		}
 
-		return Registry.register(Registries.ITEM, key, item);
+		return Registry.register(BuiltInRegistries.ITEM, key, item);
 	}
 
-	private static Function<Item.Settings, Item> createBlockItemWithUniqueName(Block block) {
-		return settings -> new BlockItem(block, settings.useItemPrefixedTranslationKey());
+	private static Function<Item.Properties, Item> createBlockItemWithUniqueName(Block block) {
+		return settings -> new BlockItem(block, settings.useItemDescriptionPrefix());
 	}
 
 	public static void init() {

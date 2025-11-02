@@ -3,41 +3,41 @@ package dev.spiritstudios.abysm.networking;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.block.entity.DensityBlobBlockEntity;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public record UpdateDensityBlobBlockC2SPayload(BlockPos pos, String finalState,
-											   String blobsSamplerIdentifier) implements CustomPayload {
-	public static final PacketCodec<PacketByteBuf, UpdateDensityBlobBlockC2SPayload> PACKET_CODEC = CustomPayload.codecOf(UpdateDensityBlobBlockC2SPayload::write, UpdateDensityBlobBlockC2SPayload::new);
-	public static final Id<UpdateDensityBlobBlockC2SPayload> ID = new Id<>(Abysm.id("update_density_blob_block_c2s"));
+											   String blobsSamplerIdentifier) implements CustomPacketPayload {
+	public static final StreamCodec<FriendlyByteBuf, UpdateDensityBlobBlockC2SPayload> PACKET_CODEC = CustomPacketPayload.codec(UpdateDensityBlobBlockC2SPayload::write, UpdateDensityBlobBlockC2SPayload::new);
+	public static final Type<UpdateDensityBlobBlockC2SPayload> ID = new Type<>(Abysm.id("update_density_blob_block_c2s"));
 
-	private UpdateDensityBlobBlockC2SPayload(PacketByteBuf buf) {
-		this(buf.readBlockPos(), buf.readString(), buf.readString());
+	private UpdateDensityBlobBlockC2SPayload(FriendlyByteBuf buf) {
+		this(buf.readBlockPos(), buf.readUtf(), buf.readUtf());
 	}
 
-	private void write(PacketByteBuf buf) {
+	private void write(FriendlyByteBuf buf) {
 		buf.writeBlockPos(this.pos);
-		buf.writeString(this.finalState);
-		buf.writeString(this.blobsSamplerIdentifier);
+		buf.writeUtf(this.finalState);
+		buf.writeUtf(this.blobsSamplerIdentifier);
 	}
 
 	@Override
-	public Id<? extends CustomPayload> getId() {
+	public Type<? extends CustomPacketPayload> type() {
 		return ID;
 	}
 
 	public static void receive(UpdateDensityBlobBlockC2SPayload payload, ServerPlayNetworking.Context context) {
-		PlayerEntity player = context.player();
-		if (!player.isCreativeLevelTwoOp()) {
+		Player player = context.player();
+		if (!player.canUseGameMasterBlocks()) {
 			return;
 		}
-		World world = player.getWorld();
+		Level world = player.level();
 		BlockPos blockPos = payload.pos;
 		if (!(world.getBlockEntity(blockPos) instanceof DensityBlobBlockEntity blockEntity)) {
 			return;
@@ -45,7 +45,7 @@ public record UpdateDensityBlobBlockC2SPayload(BlockPos pos, String finalState,
 		BlockState blockState = world.getBlockState(blockPos);
 		blockEntity.setFinalState(payload.finalState);
 		blockEntity.setBlobsSamplerIdentifier(payload.blobsSamplerIdentifier);
-		blockEntity.markDirty();
-		world.updateListeners(blockPos, blockState, blockState, Block.NOTIFY_ALL);
+		blockEntity.setChanged();
+		world.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_ALL);
 	}
 }

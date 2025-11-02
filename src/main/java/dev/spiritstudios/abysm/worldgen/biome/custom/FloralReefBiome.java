@@ -6,29 +6,30 @@ import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiome;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.sound.BiomeMoodSound;
-import net.minecraft.sound.MusicType;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.BiomeKeys;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.OverworldBiomeCreator;
-import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
-import net.minecraft.world.gen.feature.OceanPlacedFeatures;
-import net.minecraft.world.gen.surfacebuilder.MaterialRules;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.biome.OverworldBiomes;
+import net.minecraft.data.worldgen.placement.AquaticPlacements;
+import net.minecraft.sounds.Musics;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.AmbientMoodSettings;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
 
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.MaterialRule;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_CEILING;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_FLOOR;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH_RANGE_6;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.block;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.condition;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.surface;
+import static net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
+import static net.minecraft.world.level.levelgen.SurfaceRules.ON_CEILING;
+import static net.minecraft.world.level.levelgen.SurfaceRules.ON_FLOOR;
+import static net.minecraft.world.level.levelgen.SurfaceRules.UNDER_FLOOR;
+import static net.minecraft.world.level.levelgen.SurfaceRules.DEEP_UNDER_FLOOR;
+import static net.minecraft.world.level.levelgen.SurfaceRules.state;
+import static net.minecraft.world.level.levelgen.SurfaceRules.ifTrue;
+import static net.minecraft.world.level.levelgen.SurfaceRules.sequence;
+import static net.minecraft.world.level.levelgen.SurfaceRules.abovePreliminarySurface;
 
 public final class FloralReefBiome extends AbysmBiome {
 
@@ -37,68 +38,68 @@ public final class FloralReefBiome extends AbysmBiome {
 	}
 
 	@Override
-	public BiomeEffects.Builder createEffects() {
-		return new BiomeEffects.Builder()
+	public BiomeSpecialEffects.Builder createEffects() {
+		return new BiomeSpecialEffects.Builder()
 			.waterColor(0x0093C4)
 			.waterFogColor(0x08304C)
 			.fogColor(0xC0D8FF)
-			.skyColor(OverworldBiomeCreator.getSkyColor(this.temperature))
-			.moodSound(BiomeMoodSound.CAVE)
-			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_FLORAL_REEF));
+			.skyColor(OverworldBiomes.calculateSkyColor(this.temperature))
+			.ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+			.backgroundMusic(Musics.createGameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_FLORAL_REEF));
 	}
 
 	@Override
-	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+	public void createGenerationSettings(BiomeGenerationSettings.Builder builder) {
 		builder
-			.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.FLOROPUMICE_STALAGMITES)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.MIXED_BLOOMED_PATCH)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SPRIGS)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, OceanPlacedFeatures.SEAGRASS_WARM)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_PETALS_UNDERWATER)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_BLOOMSHROOM)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_PETALS_SURFACE);
+			.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.FLOROPUMICE_STALAGMITES)
+			.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbysmPlacedFeatures.MIXED_BLOOMED_PATCH)
+			.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SPRIGS)
+			.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AquaticPlacements.SEAGRASS_WARM)
+			.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_PETALS_UNDERWATER)
+			.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbysmPlacedFeatures.TREES_BLOOMSHROOM)
+			.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_PETALS_SURFACE);
 	}
 
 	@Override
-	public SpawnSettings.Builder createSpawnSettings() {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder()
-			.spawn(
-				SpawnGroup.WATER_AMBIENT,
+	public MobSpawnSettings.Builder createSpawnSettings() {
+		MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder()
+			.addSpawn(
+				MobCategory.WATER_AMBIENT,
 				50,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.BIG_FLORAL_FISH, 8, 16)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.BIG_FLORAL_FISH, 8, 16)
 			)
-			.spawn(
-				SpawnGroup.WATER_AMBIENT,
+			.addSpawn(
+				MobCategory.WATER_AMBIENT,
 				50,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.SMALL_FLORAL_FISH, 8, 16)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.SMALL_FLORAL_FISH, 8, 16)
 			)
-			.spawn(
-				SpawnGroup.WATER_AMBIENT,
+			.addSpawn(
+				MobCategory.WATER_AMBIENT,
 				50,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.PADDLEFISH, 4, 8)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.PADDLEFISH, 4, 8)
 			)
-			.spawn(
-				SpawnGroup.WATER_CREATURE,
+			.addSpawn(
+				MobCategory.WATER_CREATURE,
 				1,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.BLOOMRAY, 1, 2)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.BLOOMRAY, 1, 2)
 			)
-			.spawn(
-				SpawnGroup.WATER_AMBIENT,
+			.addSpawn(
+				MobCategory.WATER_AMBIENT,
 				50,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.GUP_GUP, 20, 30)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.GUP_GUP, 20, 30)
 			)
-			.spawn(
-				SpawnGroup.WATER_AMBIENT,
+			.addSpawn(
+				MobCategory.WATER_AMBIENT,
 				50,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.AROWANA_MAGICII, 5, 8)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.AROWANA_MAGICII, 5, 8)
 			)
-			.spawn(
-				SpawnGroup.WATER_AMBIENT,
+			.addSpawn(
+				MobCategory.WATER_AMBIENT,
 				50,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE, 5, 8)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE, 5, 8)
 			);
 
-		DefaultBiomeFeatures.addBatsAndMonsters(builder);
+		BiomeDefaultFeatures.commonSpawns(builder);
 		return builder;
 	}
 
@@ -106,32 +107,32 @@ public final class FloralReefBiome extends AbysmBiome {
 	public void addToGenerator() {
 		// TODO: Replace this with a NoiseHypercube for more control
 		BiomePlacement.replaceOverworld(
-			BiomeKeys.WARM_OCEAN, key,
+			Biomes.WARM_OCEAN, key,
 			0.5F
 		);
 
-		MaterialRule SAND = block(Blocks.SAND.getDefaultState());
-		MaterialRule SANDSTONE = block(Blocks.SANDSTONE.getDefaultState());
+		RuleSource SAND = state(Blocks.SAND.defaultBlockState());
+		RuleSource SANDSTONE = state(Blocks.SANDSTONE.defaultBlockState());
 
-		MaterialRule SDC_SANDSTONE_SAND = sequence(
-			condition(STONE_DEPTH_CEILING, SANDSTONE),
+		RuleSource SDC_SANDSTONE_SAND = sequence(
+			ifTrue(ON_CEILING, SANDSTONE),
 			SAND
 		);
 
-		MaterialRule surfaceRule = sequence(
-			condition(
-				STONE_DEPTH_FLOOR,
-				condition(
-					MaterialRules.water(-1, 0),
+		RuleSource surfaceRule = sequence(
+			ifTrue(
+				ON_FLOOR,
+				ifTrue(
+					SurfaceRules.waterBlockCheck(-1, 0),
 					SDC_SANDSTONE_SAND // one layer of sand at surface and shallow water
 				)
 			),
 			// unlike warm ocean, apply thick sand and sandstone no matter the depth
-			condition(
-				STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH,
+			ifTrue(
+				UNDER_FLOOR,
 				SDC_SANDSTONE_SAND // place a few layers of sand (+ sandstone at bottom)
 			),
-			condition(STONE_DEPTH_FLOOR_WITH_SURFACE_DEPTH_RANGE_6, SANDSTONE) // place thick sandstone at shallow water
+			ifTrue(DEEP_UNDER_FLOOR, SANDSTONE) // place thick sandstone at shallow water
 		);
 
 		/*
@@ -174,7 +175,7 @@ public final class FloralReefBiome extends AbysmBiome {
 		*/
 
 		addOverworldSurfaceRulesForBiome(
-			condition(surface(), surfaceRule)
+			ifTrue(abovePreliminarySurface(), surfaceRule)
 		);
 	}
 }

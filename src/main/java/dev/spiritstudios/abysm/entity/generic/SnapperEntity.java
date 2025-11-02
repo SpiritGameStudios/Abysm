@@ -11,31 +11,31 @@ import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.VariantSelectorProvider;
-import net.minecraft.entity.ai.goal.ActiveTargetGoal;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.FleeEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.spawn.SpawnContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.core.Holder;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.variant.PriorityProvider;
+import net.minecraft.world.entity.variant.SpawnContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -44,38 +44,38 @@ import software.bernie.geckolib.animation.RawAnimation;
 public class SnapperEntity extends SimpleFishEntity implements Variantable<SnapperEntityVariant> {
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.snapper.idle");
 
-	public static final TrackedData<RegistryEntry<SnapperEntityVariant>> VARIANT = DataTracker.registerData(SnapperEntity.class, AbysmTrackedDataHandlers.SNAPPER_VARIANT);
+	public static final EntityDataAccessor<Holder<SnapperEntityVariant>> VARIANT = SynchedEntityData.defineId(SnapperEntity.class, AbysmTrackedDataHandlers.SNAPPER_VARIANT);
 
-	public SnapperEntity(EntityType<SnapperEntity> entityType, World world) {
+	public SnapperEntity(EntityType<SnapperEntity> entityType, Level world) {
 		super(entityType, world);
 	}
 
 	@Override
-	protected void initGoals() {
-		this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25));
-		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
-		this.goalSelector.add(1, new MeleeAttackGoal(this, 1.0, false));
-		this.goalSelector.add(2, new FleeEntityGoal<>(this, PlayerEntity.class, 8.0F, 1.6, 1.4, EntityPredicates.EXCEPT_SPECTATOR::test));
-		this.targetSelector.add(1, new HuntPreyGoal(this, false));
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new PanicGoal(this, 1.25));
+		this.goalSelector.addGoal(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.0, false));
+		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 8.0F, 1.6, 1.4, EntitySelector.NO_SPECTATORS::test));
+		this.targetSelector.addGoal(1, new HuntPreyGoal(this, false));
 
-		this.goalSelector.add(4, new SwimAroundGoal(
+		this.goalSelector.addGoal(4, new RandomSwimmingGoal(
 			this,
 			1.0F,
 			40
 		));
-		this.targetSelector.add(2, new ActiveTargetGoal<>(
+		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(
 			this,
-			PlayerEntity.class,
+			Player.class,
 			200, // can be altered
 			true,
 			false,
-			(living, world) -> EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.test(living)
-		).setMaxTimeWithoutVisibility(300));
+			(living, world) -> EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(living)
+		).setUnseenMemoryTicks(300));
 	}
 
 	@Override
-	public boolean tryAttack(ServerWorld world, Entity target) {
-		boolean tryAttack = super.tryAttack(world, target);
+	public boolean doHurtTarget(ServerLevel world, Entity target) {
+		boolean tryAttack = super.doHurtTarget(world, target);
 		if (tryAttack) {
 			if (!this.isHunting() && this.getTarget() != null) {
 				this.setTarget(null);
@@ -85,9 +85,9 @@ public class SnapperEntity extends SimpleFishEntity implements Variantable<Snapp
 	}
 
 	@Override
-	protected void initDataTracker(DataTracker.Builder builder) {
-		super.initDataTracker(builder);
-		builder.add(VARIANT, SnapperEntityVariant.getDefaultEntry(this.getRegistryManager()));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, SnapperEntityVariant.getDefaultEntry(this.registryAccess()));
 	}
 
 	@Override
@@ -101,36 +101,36 @@ public class SnapperEntity extends SimpleFishEntity implements Variantable<Snapp
 	}
 
 	@Override
-	protected void writeCustomData(WriteView view) {
-		super.writeCustomData(view);
-		view.put("variant", SnapperEntityVariant.ENTRY_CODEC, this.dataTracker.get(VARIANT));
+	protected void addAdditionalSaveData(ValueOutput view) {
+		super.addAdditionalSaveData(view);
+		view.store("variant", SnapperEntityVariant.ENTRY_CODEC, this.entityData.get(VARIANT));
 	}
 
 	@Override
-	protected void readCustomData(ReadView view) {
-		super.readCustomData(view);
+	protected void readAdditionalSaveData(ValueInput view) {
+		super.readAdditionalSaveData(view);
 		view.read("variant", SnapperEntityVariant.ENTRY_CODEC).ifPresent(this::setVariant);
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		VariantSelectorProvider.select(
-			this.getRegistryManager().getOrThrow(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT).streamEntries(),
-			RegistryEntry::value, random,
-			SpawnContext.of(world, this.getBlockPos())
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
+		PriorityProvider.pick(
+			this.registryAccess().lookupOrThrow(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT).listElements(),
+			Holder::value, random,
+			SpawnContext.create(world, this.blockPosition())
 		).ifPresent(this::setVariant);
 
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 	}
 
 	@Override
 	public SnapperEntityVariant getVariant() {
-		return this.dataTracker.get(VARIANT).value();
+		return this.entityData.get(VARIANT).value();
 	}
 
 	@Override
-	public void setVariant(RegistryEntry<SnapperEntityVariant> variant) {
-		this.dataTracker.set(VARIANT, variant);
+	public void setVariant(Holder<SnapperEntityVariant> variant) {
+		this.entityData.set(VARIANT, variant);
 	}
 
 	// TODO: SoundEvents
@@ -150,7 +150,7 @@ public class SnapperEntity extends SimpleFishEntity implements Variantable<Snapp
 	}
 
 	@Override
-	public ItemStack getBucketItem() {
+	public ItemStack getBucketItemStack() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 }

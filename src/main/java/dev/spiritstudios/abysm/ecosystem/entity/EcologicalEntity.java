@@ -3,20 +3,20 @@ package dev.spiritstudios.abysm.ecosystem.entity;
 import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 /**
  * Contains methods for handling all entity-related logic that any Ecosystem-related systems may need to call(e.g. {@link EcosystemLogic})<br><br>
@@ -24,26 +24,26 @@ import net.minecraft.world.WorldAccess;
  * <b>YOU MUST MANUALLY CALL THE FOLLOWING:</b>
  * <ul>
  *     <li>{@link EcologicalEntity#tickEcosystemLogic()} every tick (e.g. {@link LivingEntity#tick()}).</li>
- *     <li>{@link EcologicalEntity#alertEcosystemOfSpawn()} upon entity spawning (e.g. {@link MobEntity#initialize(ServerWorldAccess, LocalDifficulty, SpawnReason, EntityData)}).</li>
- *     <li>{@link EcologicalEntity#alertEcosystemOfDeath()} upon entity removal(death or despawn) (e.g. {@link LivingEntity#onRemove(Entity.RemovalReason)}).</li>
+ *     <li>{@link EcologicalEntity#alertEcosystemOfSpawn()} upon entity spawning (e.g. {@link Mob#finalizeSpawn(ServerLevelAccessor, DifficultyInstance, EntitySpawnReason, SpawnGroupData)}).</li>
+ *     <li>{@link EcologicalEntity#alertEcosystemOfDeath()} upon entity removal(death or despawn) (e.g. {@link LivingEntity#onRemoval(Entity.RemovalReason)}).</li>
  * </ul><br>
  *
- * For the EcosystemLogic, have your own variable in your entity class and use {@link EcologicalEntity#createEcosystemLogic(MobEntity)} (e.g. in your entity class constructor) to set the variable once. Then return it in {@link EcologicalEntity#getEcosystemLogic()}.<br><br>
+ * For the EcosystemLogic, have your own variable in your entity class and use {@link EcologicalEntity#createEcosystemLogic(Mob)} (e.g. in your entity class constructor) to set the variable once. Then return it in {@link EcologicalEntity#getEcosystemLogic()}.<br><br>
  *
- * {@link EcologicalEntity#createChildEntity(ServerWorld, LivingEntity, BlockPos)} can be overridden for custom breeding results(e.g. giving the child one of the parent's entity patterns or variants).<br><br>
+ * {@link EcologicalEntity#createChildEntity(ServerLevel, LivingEntity, BlockPos)} can be overridden for custom breeding results(e.g. giving the child one of the parent's entity patterns or variants).<br><br>
  *
  * Beyond that, this interface also contains various getters/setters used in Ecosystem-related systems, which can be manually overridden if desired. Most of them will be towards the bottom of the interface.
  *
  * @see EcologicalEntity#tickEcosystemLogic()
  * @see EcologicalEntity#alertEcosystemOfSpawn()
  * @see EcologicalEntity#alertEcosystemOfDeath()
- * @see EcologicalEntity#createChildEntity(ServerWorld, LivingEntity, BlockPos)
+ * @see EcologicalEntity#createChildEntity(ServerLevel, LivingEntity, BlockPos)
  */
 public interface EcologicalEntity {
 
 	/**
 	 * @return This Entity's created EcosystemLogic. Used for managing Ecosystem related code for Entity actions.
-	 * @see EcologicalEntity#createEcosystemLogic(MobEntity)
+	 * @see EcologicalEntity#createEcosystemLogic(Mob)
 	 */
 	EcosystemLogic getEcosystemLogic();
 
@@ -58,7 +58,7 @@ public interface EcologicalEntity {
 	 * @param self This Entity.
 	 * @return Create an EcosystemLogic for this Entity, using itself as the MobEntity. This can happen in the Entity's constructor.
 	 */
-	default EcosystemLogic createEcosystemLogic(MobEntity self) {
+	default EcosystemLogic createEcosystemLogic(Mob self) {
 		return new EcosystemLogic(self, this.getEcosystemType());
 	}
 
@@ -72,7 +72,7 @@ public interface EcologicalEntity {
 
 	/**
 	 * Alert this Entity's {@link EcosystemLogic} that it has just spawned, used for adding itself to {@link dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea}s.<br><br>
-	 * Intended to be called in {@link MobEntity#initialize(ServerWorldAccess, LocalDifficulty, SpawnReason, EntityData)}
+	 * Intended to be called in {@link Mob#finalizeSpawn(ServerLevelAccessor, DifficultyInstance, EntitySpawnReason, SpawnGroupData)}
 	 */
 	default void alertEcosystemOfSpawn() {
 		this.getEcosystemLogic().onSpawn();
@@ -80,7 +80,7 @@ public interface EcologicalEntity {
 
 	/**
 	 * Alert this Entity's {@link EcosystemLogic} that it has just been killed or despawned(removed), used for removing itself from {@link dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea}s.<br><br>
-	 * Intended to be called in {@link LivingEntity#onRemove(Entity.RemovalReason)} to account for death & despawning.
+	 * Intended to be called in {@link LivingEntity#onRemoval(Entity.RemovalReason)} to account for death & despawning.
 	 */
 	default void alertEcosystemOfDeath() {
 		this.getEcosystemLogic().onDeath();
@@ -92,13 +92,13 @@ public interface EcologicalEntity {
 	 * Determines hunt favor and length, applies hunt's favor buffs/debuffs, and alerts the target prey about the hunt.
 	 * @see dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal
 	 */
-	default void theHuntIsOn(World world, MobEntity target) {
+	default void theHuntIsOn(Level world, Mob target) {
 		float hunterFavorChance = this.getEcosystemType().huntFavorChance();
 		boolean hunterFavored = world.getRandom().nextFloat() <= hunterFavorChance;
 
 		int minHuntTicks = this.getEcosystemType().minHuntTicks();
 		int maxHuntTicks = this.getEcosystemType().maxHuntTicks();
-		int huntTicks = world.getRandom().nextBetween(minHuntTicks, maxHuntTicks);
+		int huntTicks = world.getRandom().nextIntBetweenInclusive(minHuntTicks, maxHuntTicks);
 
 		// Allow for non-EcologicalEntity targets if that happened for some reason
 		if ((target instanceof EcologicalEntity ecologicalTarget)) {
@@ -119,7 +119,7 @@ public interface EcologicalEntity {
 	 * Applies hunt's favor buffs/debuffs.
 	 * @see dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal
 	 */
-	default void onBeingHunted(World world, boolean hunterFavored) {
+	default void onBeingHunted(Level world, boolean hunterFavored) {
 		this.setBeingHunted(true);
 		this.setFavoredInHunt(!hunterFavored);
 		this.applyHuntSpeeds(!hunterFavored);
@@ -172,7 +172,7 @@ public interface EcologicalEntity {
 	}
 
 	default boolean canBreed() {
-		boolean alive = ((MobEntity) this).isAlive();
+		boolean alive = ((Mob) this).isAlive();
 		boolean beingHunted = this.isBeingHunted();
 		int breedTicks = this.getBreedTicks();
 		int breedCooldownTicks = this.getEcosystemType().breedCooldownTicks();
@@ -185,15 +185,15 @@ public interface EcologicalEntity {
 	 * This accounts for the {@link EcosystemType#minLitterSize()} & {@link EcosystemType#maxLitterSize()} numbers, spawning in a random amount of entities between those two numbers.
 	 * @see dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal
 	 */
-	default void breed(ServerWorld world, MobEntity other) {
+	default void breed(ServerLevel world, Mob other) {
 		this.breed(world, other, false);
 	}
 
-	default void breed(ServerWorld world, MobEntity other, boolean overrideCanBreed) {
+	default void breed(ServerLevel world, Mob other, boolean overrideCanBreed) {
 		if (!overrideCanBreed && !canBreed()) return;
 
 		EcosystemType<?> ecosystemType = this.getEcosystemType();
-		MobEntity self = (MobEntity) this;
+		Mob self = (Mob) this;
 		int minLitterSize = ecosystemType.minLitterSize();
 		int maxLitterSize = ecosystemType.maxLitterSize();
 
@@ -201,7 +201,7 @@ public interface EcologicalEntity {
 		if (minLitterSize == maxLitterSize) {
 			amount = 1;
 		} else {
-			amount = self.getRandom().nextBetween(minLitterSize, maxLitterSize);
+			amount = self.getRandom().nextIntBetweenInclusive(minLitterSize, maxLitterSize);
 		}
 
 		for (int i = 0; i < amount; i++) {
@@ -216,18 +216,18 @@ public interface EcologicalEntity {
 	 * Creates and spawns a child entity into the world.
 	 *
 	 * @param world The world to spawn the entity into (assumed to be the same world as this entity)
-	 * @param other The other entity this entity is breeding with - given to {@link EcologicalEntity#createChildEntity(ServerWorld, LivingEntity, BlockPos)}.
+	 * @param other The other entity this entity is breeding with - given to {@link EcologicalEntity#createChildEntity(ServerLevel, LivingEntity, BlockPos)}.
 	 */
-	default void spawnChildEntity(ServerWorld world, LivingEntity other) {
+	default void spawnChildEntity(ServerLevel world, LivingEntity other) {
 		LivingEntity self = (LivingEntity) this;
-		LivingEntity child = this.createChildEntity(world, other, self.getBlockPos());
+		LivingEntity child = this.createChildEntity(world, other, self.blockPosition());
 		if(child == null) return;
 
 		// TODO - Should we have any entities that can be bred by the player,
 		//  advancement/statistic credit needs to be given here
-		if (child instanceof MobEntity mob) mob.setBaby(true);
-		child.refreshPositionAndAngles(self.getX(), self.getY(), self.getZ(), 0f, 0f);
-		world.spawnEntity(child);
+		if (child instanceof Mob mob) mob.setBaby(true);
+		child.snapTo(self.getX(), self.getY(), self.getZ(), 0f, 0f);
+		world.addFreshEntity(child);
 	}
 
 	/**
@@ -239,17 +239,17 @@ public interface EcologicalEntity {
 	 * @param other The other parent entity - use to mix and match whatever data wanted
 	 * @return The created child entity
 	 */
-	default LivingEntity createChildEntity(ServerWorld world, LivingEntity other, BlockPos spawnPos) {
-		LivingEntity child = this.getEcosystemType().entityType().create(world, SpawnReason.BREEDING);
+	default LivingEntity createChildEntity(ServerLevel world, LivingEntity other, BlockPos spawnPos) {
+		LivingEntity child = this.getEcosystemType().entityType().create(world, EntitySpawnReason.BREEDING);
 		if(child == null) return null;
-		child.refreshPositionAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0f, 0f);
-		if (child instanceof MobEntity mob) mob.initialize(world, world.getLocalDifficulty(spawnPos), SpawnReason.BREEDING, null);
+		child.snapTo(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0f, 0f);
+		if (child instanceof Mob mob) mob.finalizeSpawn(world, world.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.BREEDING, null);
 
 		return child;
 	}
 
 	@SuppressWarnings("unused")
-	static <T extends MobEntity> boolean canSpawnInEcosystem(EntityType<T> type, WorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
+	static <T extends Mob> boolean canSpawnInEcosystem(EntityType<T> type, LevelAccessor world, EntitySpawnReason reason, BlockPos pos, RandomSource random) {
 		return true;
 	}
 

@@ -1,126 +1,126 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.Fertilizable;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.EnumProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.tick.ScheduledTickView;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class RotatableWaterloggableFlowerBlock extends Block implements Fertilizable {
-	public static final MapCodec<RotatableWaterloggableFlowerBlock> CODEC = createCodec(RotatableWaterloggableFlowerBlock::new);
-	public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
-	public static final EnumProperty<Direction> FACING = Properties.FACING;
-	private final Map<Direction, VoxelShape> shapesByDirection = VoxelShapes.createFacingShapeMap(Block.createCuboidZShape(12f, 13f, 16f));
+public class RotatableWaterloggableFlowerBlock extends Block implements BonemealableBlock {
+	public static final MapCodec<RotatableWaterloggableFlowerBlock> CODEC = simpleCodec(RotatableWaterloggableFlowerBlock::new);
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
+	private final Map<Direction, VoxelShape> shapesByDirection = Shapes.rotateAll(Block.boxZ(12f, 13f, 16f));
 
-	public RotatableWaterloggableFlowerBlock(Settings settings) {
+	public RotatableWaterloggableFlowerBlock(Properties settings) {
 		super(settings);
-		this.setDefaultState(this.getDefaultState().with(WATERLOGGED, false).with(FACING, Direction.UP));
+		this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false).setValue(FACING, Direction.UP));
 	}
 
 	// Pretty much all copy-pasted from AmethystClusterBlock
 	@Override
-	protected boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-		Direction direction = state.get(FACING);
-		BlockPos blockPos = pos.offset(direction.getOpposite());
-		return world.getBlockState(blockPos).isSideSolidFullSquare(world, blockPos, direction);
+	protected boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
+		Direction direction = state.getValue(FACING);
+		BlockPos blockPos = pos.relative(direction.getOpposite());
+		return world.getBlockState(blockPos).isFaceSturdy(world, blockPos, direction);
 	}
 
 	@Override
-	protected BlockState getStateForNeighborUpdate(
+	protected BlockState updateShape(
 		BlockState state,
-		WorldView world,
-		ScheduledTickView tickView,
+		LevelReader world,
+		ScheduledTickAccess tickView,
 		BlockPos pos,
 		Direction direction,
 		BlockPos neighborPos,
 		BlockState neighborState,
-		Random random
+		RandomSource random
 	) {
-		if (state.get(WATERLOGGED)) {
-			tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+		if (state.getValue(WATERLOGGED)) {
+			tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
 
-		return direction == state.get(FACING).getOpposite() && !state.canPlaceAt(world, pos)
-			? Blocks.AIR.getDefaultState()
-			: super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
+		return direction == state.getValue(FACING).getOpposite() && !state.canSurvive(world, pos)
+			? Blocks.AIR.defaultBlockState()
+			: super.updateShape(state, world, tickView, pos, direction, neighborPos, neighborState, random);
 	}
 
 	@Nullable
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		WorldAccess worldAccess = ctx.getWorld();
-		BlockPos blockPos = ctx.getBlockPos();
-		return this.getDefaultState().with(WATERLOGGED, worldAccess.getFluidState(blockPos).getFluid() == Fluids.WATER).with(FACING, ctx.getSide());
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		LevelAccessor worldAccess = ctx.getLevel();
+		BlockPos blockPos = ctx.getClickedPos();
+		return this.defaultBlockState().setValue(WATERLOGGED, worldAccess.getFluidState(blockPos).getType() == Fluids.WATER).setValue(FACING, ctx.getClickedFace());
 	}
 
 	// Change hitbox on when facing different directions(e.g. placed upside down or on a side of a block)
 	@Override
-	protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return this.shapesByDirection.get(state.get(FACING));
+	protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		return this.shapesByDirection.get(state.getValue(FACING));
 	}
 
 	@Override
-	protected BlockState rotate(BlockState state, BlockRotation rotation) {
-		return state.with(FACING, rotation.rotate(state.get(FACING)));
+	protected BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
 	}
 
 	@Override
-	protected BlockState mirror(BlockState state, BlockMirror mirror) {
-		return state.rotate(mirror.getRotation(state.get(FACING)));
+	protected BlockState mirror(BlockState state, Mirror mirror) {
+		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
 	protected FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(WATERLOGGED, FACING);
 	}
 
 	@Override
-	public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
+	public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-		dropStack(world, pos, new ItemStack(this));
+	public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+		popResource(world, pos, new ItemStack(this));
 	}
 
 	@Override
-	protected MapCodec<? extends Block> getCodec() {
+	protected MapCodec<? extends Block> codec() {
 		return CODEC;
 	}
 }

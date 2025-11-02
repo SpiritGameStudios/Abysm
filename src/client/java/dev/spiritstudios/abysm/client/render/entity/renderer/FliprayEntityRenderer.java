@@ -2,9 +2,9 @@ package dev.spiritstudios.abysm.client.render.entity.renderer;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.ReticulatedFliprayEntity;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.util.Mth;
 import software.bernie.geckolib.animatable.processing.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
@@ -15,7 +15,7 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class FliprayEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<ReticulatedFliprayEntity, R> {
 
-	public FliprayEntityRenderer(EntityRendererFactory.Context context) {
+	public FliprayEntityRenderer(EntityRendererProvider.Context context) {
 		super(context, new EntityModel());
 		this.addRenderLayer(new AutoGlowingGeoLayer<>(this) {
 			@Override
@@ -39,8 +39,8 @@ public class FliprayEntityRenderer<R extends LivingEntityRenderState & GeoRender
 				float pitch = animationState.getData(DataTickets.ENTITY_PITCH);
 				float yaw = animationState.getData(DataTickets.ENTITY_YAW);
 
-				body.setRotX(-pitch * MathHelper.RADIANS_PER_DEGREE);
-				body.setRotY(-yaw * MathHelper.RADIANS_PER_DEGREE);
+				body.setRotX(-pitch * Mth.DEG_TO_RAD);
+				body.setRotY(-yaw * Mth.DEG_TO_RAD);
 			}
 		}
 	}

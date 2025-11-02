@@ -5,13 +5,13 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.item.AbysmItems;
-import dev.spiritstudios.abysm.mixin.ecosystem.goal.SchoolingFishEntityAccessor;
+import dev.spiritstudios.abysm.mixin.ecosystem.goal.AbstractSchoolingFishMixin;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -20,20 +20,20 @@ import software.bernie.geckolib.animation.RawAnimation;
 public class ArowanaMagiciiEntity extends SimpleEcoSchoolingFishEntity {
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.arowana_magicii.idle");
 
-	public ArowanaMagiciiEntity(EntityType<ArowanaMagiciiEntity> entityType, World world) {
+	public ArowanaMagiciiEntity(EntityType<ArowanaMagiciiEntity> entityType, Level world) {
 		super(entityType, world);
 	}
 
 	@Override
-	protected void initGoals() {
-		super.initGoals();
-		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this, 3.0F));
-		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
+	protected void registerGoals() {
+		super.registerGoals();
+		this.goalSelector.addGoal(4, new SwimToRandomPlaceGoal(this, 3.0F));
+		this.goalSelector.addGoal(2, new RepopulateGoal(this, 1.25));
 	}
 
-	public void moveTowardLeader() {
-		if (this.hasLeader()) {
-			this.getNavigation().startMovingTo(((SchoolingFishEntityAccessor)this).abysm$getLeader(), 3.0F);
+	public void pathToLeader() {
+		if (this.isFollower()) {
+			this.getNavigation().moveTo(((AbstractSchoolingFishMixin)this).getLeader(), 3.0F);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class ArowanaMagiciiEntity extends SimpleEcoSchoolingFishEntity {
 
 	// TODO: Bucket item
 	@Override
-	public ItemStack getBucketItem() {
+	public ItemStack getBucketItemStack() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 }

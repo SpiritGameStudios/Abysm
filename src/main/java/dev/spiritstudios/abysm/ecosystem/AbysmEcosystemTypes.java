@@ -19,10 +19,10 @@ import dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkEntity;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 
 public class AbysmEcosystemTypes {
 
@@ -147,16 +147,16 @@ public class AbysmEcosystemTypes {
 //		return register(, builder);
 //	}
 
-	public static <T extends MobEntity & EcologicalEntity> EcosystemType<T> register(String id, EcosystemType.Builder<T> builder) {
+	public static <T extends Mob & EcologicalEntity> EcosystemType<T> register(String id, EcosystemType.Builder<T> builder) {
 		return register(keyOf(id), builder);
 	}
 
-	public static <T extends MobEntity & EcologicalEntity> EcosystemType<T> register(RegistryKey<EcosystemType<?>> key, EcosystemType.Builder<T> builder) {
+	public static <T extends Mob & EcologicalEntity> EcosystemType<T> register(ResourceKey<EcosystemType<?>> key, EcosystemType.Builder<T> builder) {
 		return Registry.register(AbysmRegistries.ECOSYSTEM_TYPE, key, builder.build());
 	}
 
-	private static RegistryKey<EcosystemType<?>> keyOf(String id) {
-		return RegistryKey.of(AbysmRegistryKeys.ECOSYSTEM_TYPE, Abysm.id(id));
+	private static ResourceKey<EcosystemType<?>> keyOf(String id) {
+		return ResourceKey.create(AbysmRegistryKeys.ECOSYSTEM_TYPE, Abysm.id(id));
 	}
 
 	public static void init() {

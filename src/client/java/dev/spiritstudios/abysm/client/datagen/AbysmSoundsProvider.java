@@ -4,16 +4,15 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.fabricmc.fabric.api.client.datagen.v1.builder.SoundTypeBuilder;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricSoundsProvider;
-import net.minecraft.data.DataOutput;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import java.util.concurrent.CompletableFuture;
 
 public class AbysmSoundsProvider extends FabricSoundsProvider {
-	public AbysmSoundsProvider(DataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+	public AbysmSoundsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}
 
@@ -27,7 +26,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 	private final SoundTypeBuilder.EntryBuilder tilapia = ofFile("music/game/tilapia").stream(true).volume(0.4F);
 
 	@Override
-	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup, SoundExporter exporter) {
+	protected void configure(HolderLookup.Provider wrapperLookup, SoundExporter exporter) {
 		exporter.add(
 			AbysmSoundEvents.MUSIC_OVERWORLD_FLORAL_REEF,
 			SoundTypeBuilder.of()
@@ -35,7 +34,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(axolotl)
 				.sound(dragonFish)
 				.sound(tilapia)
-				.category(SoundCategory.MUSIC)
+				.category(SoundSource.MUSIC)
 		);
 
 		exporter.add(
@@ -45,7 +44,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(dragonFish)
 				.sound(shuniji)
 				.sound(tilapia)
-				.category(SoundCategory.MUSIC)
+				.category(SoundSource.MUSIC)
 		);
 
 		exporter.add(
@@ -55,14 +54,14 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(axolotl)
 				.sound(shuniji)
 				.sound(tilapia)
-				.category(SoundCategory.MUSIC)
+				.category(SoundSource.MUSIC)
 		);
 
 		exporter.add(
 			AbysmSoundEvents.MUSIC_OVERWORLD_THE_ENTWINED,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/abysm").stream(true).volume(0.4F)) // The Entwined only plays this one song.
-				.category(SoundCategory.MUSIC)
+				.category(SoundSource.MUSIC)
 		);
 
 		exporter.add(
@@ -72,7 +71,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(axolotl)
 				.sound(shuniji)
 				.sound(tilapia)
-				.category(SoundCategory.MUSIC)
+				.category(SoundSource.MUSIC)
 		);
 
 		exporter.add(
@@ -81,28 +80,28 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(axolotl)
 				.sound(shuniji)
 				.sound(tilapia)
-				.category(SoundCategory.MUSIC)
+				.category(SoundSource.MUSIC)
 		);
 
 		exporter.add(
 			AbysmSoundEvents.MUSIC_OVERWORLD_SEASIDE,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/paddleboard").stream(true).volume(0.4F))
-				.category(SoundCategory.MUSIC)
+				.category(SoundSource.MUSIC)
 		);
 
 		exporter.add(
 			SoundEvents.MUSIC_UNDER_WATER,
 			SoundTypeBuilder.of()
 				.sound(ofFile("music/game/tilapia").stream(true).volume(0.4F)) // This augments the sound event instead of overriding.
-				.category(SoundCategory.MUSIC)
+				.category(SoundSource.MUSIC)
 		);
 
 		exporter.add(
 			AbysmSoundEvents.MUSIC_DISC_RENAISSANCE,
 			SoundTypeBuilder.of()
 				.sound(ofFile("records/renaissance").stream(true))
-				.category(SoundCategory.RECORDS)
+				.category(SoundSource.RECORDS)
 		);
 
 		exporter.add(
@@ -112,7 +111,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofFile("entity/bloomray/ambient1").volume(0.4F))
 				.sound(ofFile("entity/bloomray/ambient2").volume(0.4F))
 				.sound(ofFile("entity/bloomray/ambient3").volume(0.4F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -124,7 +123,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2"))
 				.sound(ofVanillaFile("entity/fish/hurt3"))
 				.sound(ofVanillaFile("entity/fish/hurt4"))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -136,7 +135,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		exporter.add(
@@ -146,7 +145,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofFile("item/oozeball/sticky1"))
 				.sound(ofFile("item/oozeball/sticky2"))
 				.sound(ofFile("item/oozeball/sticky3"))
-				.category(SoundCategory.BLOCKS)
+				.category(SoundSource.BLOCKS)
 		);
 
 		exporter.add(
@@ -242,7 +241,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2"))
 				.sound(ofVanillaFile("entity/fish/hurt3"))
 				.sound(ofVanillaFile("entity/fish/hurt4"))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -254,7 +253,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -266,7 +265,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -278,7 +277,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2"))
 				.sound(ofVanillaFile("entity/fish/hurt3"))
 				.sound(ofVanillaFile("entity/fish/hurt4"))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -290,7 +289,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -302,7 +301,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -314,7 +313,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2"))
 				.sound(ofVanillaFile("entity/fish/hurt3"))
 				.sound(ofVanillaFile("entity/fish/hurt4"))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -326,7 +325,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -338,7 +337,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -350,7 +349,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2"))
 				.sound(ofVanillaFile("entity/fish/hurt3"))
 				.sound(ofVanillaFile("entity/fish/hurt4"))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -362,7 +361,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -374,7 +373,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -386,7 +385,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2"))
 				.sound(ofVanillaFile("entity/fish/hurt3"))
 				.sound(ofVanillaFile("entity/fish/hurt4"))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -398,7 +397,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -410,7 +409,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -422,7 +421,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2"))
 				.sound(ofVanillaFile("entity/fish/hurt3"))
 				.sound(ofVanillaFile("entity/fish/hurt4"))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -434,7 +433,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -446,7 +445,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -458,7 +457,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2"))
 				.sound(ofVanillaFile("entity/fish/hurt3"))
 				.sound(ofVanillaFile("entity/fish/hurt4"))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -470,7 +469,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -482,7 +481,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -494,7 +493,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2"))
 				.sound(ofVanillaFile("entity/fish/hurt3"))
 				.sound(ofVanillaFile("entity/fish/hurt4"))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -506,7 +505,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/hurt2").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt3").pitch(0.8F))
 				.sound(ofVanillaFile("entity/fish/hurt4").pitch(0.8F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 
 		// TODO: Custom sounds (optional)
@@ -518,7 +517,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(ofVanillaFile("entity/fish/flop2").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop3").volume(0.3F))
 				.sound(ofVanillaFile("entity/fish/flop4").volume(0.3F))
-				.category(SoundCategory.NEUTRAL)
+				.category(SoundSource.NEUTRAL)
 		);
 	}
 
@@ -527,7 +526,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 	}
 
 	private SoundTypeBuilder.EntryBuilder ofVanillaFile(String path) {
-		return SoundTypeBuilder.EntryBuilder.ofFile(Identifier.ofVanilla(path));
+		return SoundTypeBuilder.EntryBuilder.ofFile(ResourceLocation.withDefaultNamespace(path));
 	}
 
 	@Override

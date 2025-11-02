@@ -3,50 +3,50 @@ package dev.spiritstudios.abysm.worldgen.structure;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.worldgen.structure.pool.AbysmStructurePools;
 import dev.spiritstudios.abysm.worldgen.structure.ruins.DeepSeaRuinsStructure;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.registry.tag.BiomeTags;
-import net.minecraft.structure.pool.StructurePool;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.heightprovider.UniformHeightProvider;
-import net.minecraft.world.gen.structure.JigsawStructure;
-import net.minecraft.world.gen.structure.Structure;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
 public class AbysmStructures {
-	public static final RegistryKey<Structure> DEEP_SEA_RUINS = of("deep_sea_ruins");
-	public static final RegistryKey<Structure> DEEP_SEA_RUINS_BASIC_RUIN = of("deep_sea_ruins/basic_ruin");
+	public static final ResourceKey<Structure> DEEP_SEA_RUINS = of("deep_sea_ruins");
+	public static final ResourceKey<Structure> DEEP_SEA_RUINS_BASIC_RUIN = of("deep_sea_ruins/basic_ruin");
 
-	public static void bootstrap(Registerable<Structure> registerable) {
-		RegistryEntryLookup<Biome> biomeLookup = registerable.getRegistryLookup(RegistryKeys.BIOME);
-		RegistryEntryLookup<StructurePool> poolLookup = registerable.getRegistryLookup(RegistryKeys.TEMPLATE_POOL);
+	public static void bootstrap(BootstrapContext<Structure> registerable) {
+		HolderGetter<Biome> biomeLookup = registerable.lookup(Registries.BIOME);
+		HolderGetter<StructureTemplatePool> poolLookup = registerable.lookup(Registries.TEMPLATE_POOL);
 
-		RegistryEntryList<Biome> isDeepOcean = biomeLookup.getOrThrow(BiomeTags.IS_DEEP_OCEAN);
+		HolderSet<Biome> isDeepOcean = biomeLookup.getOrThrow(BiomeTags.IS_DEEP_OCEAN);
 
 		registerable.register(
 			DEEP_SEA_RUINS,
 			new DeepSeaRuinsStructure(
-				new Structure.Config.Builder(isDeepOcean).step(GenerationStep.Feature.UNDERGROUND_STRUCTURES).build()
+				new Structure.StructureSettings.Builder(isDeepOcean).generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES).build()
 			)
 		);
 
 		registerable.register(
 			DEEP_SEA_RUINS_BASIC_RUIN,
 			new JigsawStructure(
-				new Structure.Config.Builder(isDeepOcean).step(GenerationStep.Feature.UNDERGROUND_STRUCTURES).build(),
+				new Structure.StructureSettings.Builder(isDeepOcean).generationStep(GenerationStep.Decoration.UNDERGROUND_STRUCTURES).build(),
 				poolLookup.getOrThrow(AbysmStructurePools.BASIC_RUIN),
 				3,
-				UniformHeightProvider.create(YOffset.fixed(-25), YOffset.fixed(-15)),
+				UniformHeight.of(VerticalAnchor.absolute(-25), VerticalAnchor.absolute(-15)),
 				false
 			)
 		);
 	}
 
-	private static RegistryKey<Structure> of(String id) {
-		return RegistryKey.of(RegistryKeys.STRUCTURE, Abysm.id(id));
+	private static ResourceKey<Structure> of(String id) {
+		return ResourceKey.create(Registries.STRUCTURE, Abysm.id(id));
 	}
 }

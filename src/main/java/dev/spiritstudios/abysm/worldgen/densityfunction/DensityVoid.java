@@ -1,14 +1,14 @@
 package dev.spiritstudios.abysm.worldgen.densityfunction;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.util.dynamic.CodecHolder;
-import net.minecraft.util.math.Box;
+import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.world.phys.AABB;
 
 public class DensityVoid implements DensityBlob {
 	public static final DensityVoid INSTANCE = new DensityVoid();
 	public static final MapCodec<DensityVoid> CODEC = MapCodec.unit(INSTANCE);
-	public static final CodecHolder<DensityVoid> CODEC_HOLDER = CodecHolder.of(CODEC);
-	private static final Box BOX = new Box(0, 0, 0, 0, 0, 0);
+	public static final KeyDispatchDataCodec<DensityVoid> CODEC_HOLDER = KeyDispatchDataCodec.of(CODEC);
+	private static final AABB BOX = new AABB(0, 0, 0, 0, 0, 0);
 
 	private DensityVoid() {
 	}
@@ -24,7 +24,7 @@ public class DensityVoid implements DensityBlob {
 	}
 
 	@Override
-	public Box getBoundingBox() {
+	public AABB getBoundingBox() {
 		return BOX;
 	}
 }

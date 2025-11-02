@@ -9,96 +9,95 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.argument.RegistryEntryReferenceArgumentType;
-import net.minecraft.command.suggestion.SuggestionProviders;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.TypeFilter;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3d;
-
+import net.minecraft.Util;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.ResourceArgument;
+import net.minecraft.commands.synchronization.SuggestionProviders;
+import net.minecraft.core.Holder;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import java.util.Set;
 
 public class EcosystemGlowCommand {
 	private static final Set<EcosystemType<?>> currentlyGlowing = new ObjectOpenHashSet<>();
 
-	public static final SuggestionProvider<ServerCommandSource> ECOSYSTEM_ENTITIES = SuggestionProviders.register(
+	public static final SuggestionProvider<CommandSourceStack> ECOSYSTEM_ENTITIES = SuggestionProviders.register(
 		Abysm.id("abysm_entities_command_provider"),
-		(commandContext, suggestionsBuilder) -> CommandSource.suggestFromIdentifier(
-			AbysmRegistries.ECOSYSTEM_TYPE.streamKeys(),
+		(commandContext, suggestionsBuilder) -> SharedSuggestionProvider.suggestResource(
+			AbysmRegistries.ECOSYSTEM_TYPE.listElementIds(),
 			suggestionsBuilder,
-			RegistryKey::getValue,
-			ecosystemType -> Text.translatable(Util.createTranslationKey("ecosystem_type", ecosystemType.getValue()))
+			ResourceKey::location,
+			ecosystemType -> Component.translatable(Util.makeDescriptionId("ecosystem_type", ecosystemType.location()))
 		)
 	);
 
-	public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-		dispatcher.register(CommandManager.literal("ecoglow")
-			.requires(source -> source.hasPermissionLevel(3))
+	public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess) {
+		dispatcher.register(Commands.literal("ecoglow")
+			.requires(source -> source.hasPermission(3))
 			.then(
-				CommandManager.argument("ecosystem_type_param", RegistryEntryReferenceArgumentType.registryEntry(registryAccess, AbysmRegistryKeys.ECOSYSTEM_TYPE))
+				Commands.argument("ecosystem_type_param", ResourceArgument.resource(registryAccess, AbysmRegistryKeys.ECOSYSTEM_TYPE))
 					.suggests(ECOSYSTEM_ENTITIES)
 					.executes(
-						context -> toggleGlow(context.getSource(), RegistryEntryReferenceArgumentType.getRegistryEntry(context, "ecosystem_type_param", AbysmRegistryKeys.ECOSYSTEM_TYPE))
+						context -> toggleGlow(context.getSource(), ResourceArgument.getResource(context, "ecosystem_type_param", AbysmRegistryKeys.ECOSYSTEM_TYPE))
 					)
 			)
 		);
 	}
 
-	private static int toggleGlow(ServerCommandSource source, RegistryEntry.Reference<EcosystemType<?>> entry) throws CommandSyntaxException {
-		ServerWorld world = source.getWorld();
-		ServerPlayerEntity player = source.getPlayerOrThrow();
-		ChunkPos playerChunk = player.getChunkPos();
-		Vec3d searchCenter = Vec3d.of(playerChunk.getCenterAtY((int) player.getY()));
+	private static int toggleGlow(CommandSourceStack source, Holder.Reference<EcosystemType<?>> entry) throws CommandSyntaxException {
+		ServerLevel world = source.getLevel();
+		ServerPlayer player = source.getPlayerOrException();
+		ChunkPos playerChunk = player.chunkPosition();
+		Vec3 searchCenter = Vec3.atLowerCornerOf(playerChunk.getMiddleBlockPosition((int) player.getY()));
 
 		EcosystemType<?> ecosystemType = entry.value();
 		EntityType<?> entityType = ecosystemType.entityType();
 		int chunkSearchRange = 2;
-		int searchRange = chunkSearchRange * (SharedConstants.CHUNK_WIDTH * 2); // convert chunks to blocks doubled for diameter
+		int searchRange = chunkSearchRange * (SharedConstants.WORLD_RESOLUTION * 2); // convert chunks to blocks doubled for diameter
 
 		if (currentlyGlowing.contains(ecosystemType)) {
 			int removalRange = searchRange * 2;
-			Box box = Box.of(searchCenter, removalRange, removalRange, removalRange);
+			AABB box = AABB.ofSize(searchCenter, removalRange, removalRange, removalRange);
 
 			// This is super cursed because I think it technically checks every entity around you
 			// but its debug so it's fine for now
-			world.getEntitiesByType(TypeFilter.instanceOf(entityType.getBaseClass()), box, entity -> ecosystemTypesMatch(entity, ecosystemType)).forEach(entity -> {
+			world.getEntities(EntityTypeTest.forClass(entityType.getBaseClass()), box, entity -> ecosystemTypesMatch(entity, ecosystemType)).forEach(entity -> {
 				if (entity instanceof LivingEntity livingEntity) {
-					livingEntity.removeStatusEffect(StatusEffects.GLOWING);
+					livingEntity.removeEffect(MobEffects.GLOWING);
 				}
 			});
 
 			currentlyGlowing.remove(ecosystemType);
-			source.sendFeedback(() -> Text.literal("Removed glow!").formatted(Formatting.DARK_GREEN), false);
+			source.sendSuccess(() -> Component.literal("Removed glow!").withStyle(ChatFormatting.DARK_GREEN), false);
 		} else {
-			Box box = Box.of(searchCenter, searchRange, searchRange * 2, searchRange);
+			AABB box = AABB.ofSize(searchCenter, searchRange, searchRange * 2, searchRange);
 
-			world.getEntitiesByType(TypeFilter.instanceOf(entityType.getBaseClass()), box, entity -> ecosystemTypesMatch(entity, ecosystemType)).forEach(entity -> {
+			world.getEntities(EntityTypeTest.forClass(entityType.getBaseClass()), box, entity -> ecosystemTypesMatch(entity, ecosystemType)).forEach(entity -> {
 				if (entity instanceof LivingEntity livingEntity) {
 					// 5 minutes in case removal doesn't work
-					StatusEffectInstance glowingEffectInstance = new StatusEffectInstance(StatusEffects.GLOWING, 6000, 1);
-					livingEntity.addStatusEffect(glowingEffectInstance);
+					MobEffectInstance glowingEffectInstance = new MobEffectInstance(MobEffects.GLOWING, 6000, 1);
+					livingEntity.addEffect(glowingEffectInstance);
 				}
 			});
 
 			currentlyGlowing.add(ecosystemType);
-			source.sendFeedback(() -> Text.literal("Added glow!").formatted(Formatting.GREEN), false);
+			source.sendSuccess(() -> Component.literal("Added glow!").withStyle(ChatFormatting.GREEN), false);
 		}
 		return 1;
 	}

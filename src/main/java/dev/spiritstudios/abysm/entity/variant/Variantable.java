@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.entity.variant;
 
 import dev.spiritstudios.abysm.data.variant.AbstractEntityVariant;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.core.Holder;
 
 /**
  * @param <T> Child of {@link AbstractEntityVariant} type for your entity
@@ -19,5 +19,5 @@ public interface Variantable<T extends AbstractEntityVariant> {
 	/**
 	 * Set this Entity's EntityVariant using the actual variant.
 	 */
-	void setVariant(RegistryEntry<T> variant);
+	void setVariant(Holder<T> variant);
 }

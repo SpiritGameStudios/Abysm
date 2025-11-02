@@ -5,15 +5,15 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
 import dev.spiritstudios.specter.api.registry.SpecterRegistryEvents;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.MobEntity;
 import org.jetbrains.annotations.Range;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.block.Block;
 
 /**
  * @param entityType         This mob's EntityType - used for sorting/finding/tracking.
@@ -65,7 +65,7 @@ public record EcosystemType<T extends LivingEntity & EcologicalEntity>(
 			this.entityType = entityType;
 		}
 
-		public static <T extends MobEntity & EcologicalEntity> Builder<T> create(EntityType<T> entityType) {
+		public static <T extends Mob & EcologicalEntity> Builder<T> create(EntityType<T> entityType) {
 			return new Builder<>(entityType);
 		}
 

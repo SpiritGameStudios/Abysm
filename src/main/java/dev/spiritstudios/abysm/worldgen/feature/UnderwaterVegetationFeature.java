@@ -2,22 +2,22 @@ package dev.spiritstudios.abysm.worldgen.feature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TallPlantBlock;
-import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.dynamic.Codecs;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.FeatureConfig;
-import net.minecraft.world.gen.feature.util.FeatureContext;
-import net.minecraft.world.gen.stateprovider.BlockStateProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 public class UnderwaterVegetationFeature extends Feature<UnderwaterVegetationFeature.Config> {
 	public UnderwaterVegetationFeature(Codec<UnderwaterVegetationFeature.Config> codec) {
@@ -25,27 +25,27 @@ public class UnderwaterVegetationFeature extends Feature<UnderwaterVegetationFea
 	}
 
 	@Override
-	public boolean generate(FeatureContext<UnderwaterVegetationFeature.Config> context) {
-		StructureWorldAccess world = context.getWorld();
-		BlockPos pos = context.getOrigin();
-		BlockState state = world.getBlockState(pos.down());
-		UnderwaterVegetationFeature.Config config = context.getConfig();
-		Random random = context.getRandom();
+	public boolean place(FeaturePlaceContext<UnderwaterVegetationFeature.Config> context) {
+		WorldGenLevel world = context.level();
+		BlockPos pos = context.origin();
+		BlockState state = world.getBlockState(pos.below());
+		UnderwaterVegetationFeature.Config config = context.config();
+		RandomSource random = context.random();
 
-		if (!state.isIn(config.validSurface)) {
+		if (!state.is(config.validSurface)) {
 			return false;
 		} else {
 			int i = pos.getY();
-			if (i >= world.getBottomY() + 1 && i + 1 <= world.getTopYInclusive()) {
+			if (i >= world.getMinY() + 1 && i + 1 <= world.getMaxY()) {
 				int placedBlocks = 0;
 
 				for (int k = 0; k < config.spreadWidth * config.spreadWidth; k++) {
-					BlockPos targetPos = pos.add(
+					BlockPos targetPos = pos.offset(
 						random.nextInt(config.spreadWidth) - random.nextInt(config.spreadWidth),
 						random.nextInt(config.spreadHeight) - random.nextInt(config.spreadHeight),
 						random.nextInt(config.spreadWidth) - random.nextInt(config.spreadWidth)
 					);
-					BlockState newState = config.stateProvider.get(random, targetPos);
+					BlockState newState = config.stateProvider.getState(random, targetPos);
 					if (tryPlaceBlock(targetPos, world, newState)) {
 						placedBlocks++;
 					}
@@ -58,26 +58,26 @@ public class UnderwaterVegetationFeature extends Feature<UnderwaterVegetationFea
 		}
 	}
 
-	protected boolean tryPlaceBlock(BlockPos targetPos, StructureWorldAccess world, BlockState newState) {
+	protected boolean tryPlaceBlock(BlockPos targetPos, WorldGenLevel world, BlockState newState) {
 		BlockState targetState = world.getBlockState(targetPos);
-		boolean targetWater = targetState.isOf(Blocks.WATER);
-		if ((targetState.isAir() || targetWater) && targetPos.getY() > world.getBottomY()) {
-			if (newState.canPlaceAt(world, targetPos)) {
-				BlockState actualNewState = newState.withIfExists(Properties.WATERLOGGED, targetWater);
+		boolean targetWater = targetState.is(Blocks.WATER);
+		if ((targetState.isAir() || targetWater) && targetPos.getY() > world.getMinY()) {
+			if (newState.canSurvive(world, targetPos)) {
+				BlockState actualNewState = newState.trySetValue(BlockStateProperties.WATERLOGGED, targetWater);
 
-				if (newState.getBlock() instanceof TallPlantBlock) {
-					BlockPos upPos = targetPos.up();
+				if (newState.getBlock() instanceof DoublePlantBlock) {
+					BlockPos upPos = targetPos.above();
 					BlockState upState = world.getBlockState(upPos);
-					boolean upWater = upState.isOf(Blocks.WATER);
+					boolean upWater = upState.is(Blocks.WATER);
 					if (upState.isAir() || upWater) {
-						BlockState actualNewStateTop = newState.withIfExists(Properties.WATERLOGGED, upWater).withIfExists(Properties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER);
+						BlockState actualNewStateTop = newState.trySetValue(BlockStateProperties.WATERLOGGED, upWater).trySetValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER);
 
-						world.setBlockState(targetPos, actualNewState, Block.NOTIFY_LISTENERS);
-						world.setBlockState(upPos, actualNewStateTop, Block.NOTIFY_LISTENERS);
+						world.setBlock(targetPos, actualNewState, Block.UPDATE_CLIENTS);
+						world.setBlock(upPos, actualNewStateTop, Block.UPDATE_CLIENTS);
 						return true;
 					}
 				} else {
-					world.setBlockState(targetPos, actualNewState, Block.NOTIFY_LISTENERS);
+					world.setBlock(targetPos, actualNewState, Block.UPDATE_CLIENTS);
 					return true;
 				}
 			}
@@ -87,13 +87,13 @@ public class UnderwaterVegetationFeature extends Feature<UnderwaterVegetationFea
 	}
 
 	public record Config(TagKey<Block> validSurface, BlockStateProvider stateProvider, int spreadWidth,
-						 int spreadHeight) implements FeatureConfig {
+						 int spreadHeight) implements FeatureConfiguration {
 		public static final Codec<UnderwaterVegetationFeature.Config> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
-					TagKey.codec(RegistryKeys.BLOCK).fieldOf("valid_surface").forGetter(config -> config.validSurface),
-					BlockStateProvider.TYPE_CODEC.fieldOf("state_provider").forGetter(config -> config.stateProvider),
-					Codecs.POSITIVE_INT.fieldOf("spread_width").forGetter(config -> config.spreadWidth),
-					Codecs.POSITIVE_INT.fieldOf("spread_height").forGetter(config -> config.spreadHeight)
+					TagKey.hashedCodec(Registries.BLOCK).fieldOf("valid_surface").forGetter(config -> config.validSurface),
+					BlockStateProvider.CODEC.fieldOf("state_provider").forGetter(config -> config.stateProvider),
+					ExtraCodecs.POSITIVE_INT.fieldOf("spread_width").forGetter(config -> config.spreadWidth),
+					ExtraCodecs.POSITIVE_INT.fieldOf("spread_height").forGetter(config -> config.spreadHeight)
 				)
 				.apply(instance, UnderwaterVegetationFeature.Config::new)
 		);

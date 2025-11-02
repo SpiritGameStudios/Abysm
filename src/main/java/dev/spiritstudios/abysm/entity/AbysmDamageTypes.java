@@ -2,44 +2,43 @@ package dev.spiritstudios.abysm.entity;
 
 import com.google.common.collect.ImmutableMap;
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.world.World;
-
 import java.util.Map;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.level.Level;
 
 public class AbysmDamageTypes {
 
-	public static final RegistryKey<DamageType> HARPOON = of("harpoon");
-	public static final RegistryKey<DamageType> CNIDOCYTE_STING = of("cnidocyte_sting");
-	public static final RegistryKey<DamageType> PRESSURE = of("pressure");
+	public static final ResourceKey<DamageType> HARPOON = of("harpoon");
+	public static final ResourceKey<DamageType> CNIDOCYTE_STING = of("cnidocyte_sting");
+	public static final ResourceKey<DamageType> PRESSURE = of("pressure");
 
-	private static RegistryKey<DamageType> of(String path) {
-		return RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Abysm.id(path));
+	private static ResourceKey<DamageType> of(String path) {
+		return ResourceKey.create(Registries.DAMAGE_TYPE, Abysm.id(path));
 	}
 
-	public static RegistryEntry.Reference<DamageType> getOrThrow(World world, RegistryKey<DamageType> registryKey) {
-		return getOrThrow(world.getRegistryManager(), registryKey);
+	public static Holder.Reference<DamageType> getOrThrow(Level world, ResourceKey<DamageType> registryKey) {
+		return getOrThrow(world.registryAccess(), registryKey);
 	}
 
-	public static RegistryEntry.Reference<DamageType> getOrThrow(DynamicRegistryManager drm, RegistryKey<DamageType> registryKey) {
-		return drm.getOrThrow(RegistryKeys.DAMAGE_TYPE).getOrThrow(registryKey);
+	public static Holder.Reference<DamageType> getOrThrow(RegistryAccess drm, ResourceKey<DamageType> registryKey) {
+		return drm.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(registryKey);
 	}
 
-	public static ImmutableMap<RegistryKey<DamageType>, DamageType> asDamageTypes() {
-		ImmutableMap.Builder<RegistryKey<DamageType>, DamageType> damageTypes = ImmutableMap.builder();
+	public static ImmutableMap<ResourceKey<DamageType>, DamageType> asDamageTypes() {
+		ImmutableMap.Builder<ResourceKey<DamageType>, DamageType> damageTypes = ImmutableMap.builder();
 		damageTypes.put(HARPOON, new DamageType("abysm.harpoon", 0.1F));
 		damageTypes.put(CNIDOCYTE_STING, new DamageType("abysm.cnidocyte_sting", 0.2F));
 		damageTypes.put(PRESSURE, new DamageType("abysm.pressure", 0.1F));
 		return damageTypes.build();
 	}
 
-	public static void bootstrap(Registerable<DamageType> damageTypeRegisterable) {
-		for (Map.Entry<RegistryKey<DamageType>, DamageType> entry : asDamageTypes().entrySet()) {
+	public static void bootstrap(BootstrapContext<DamageType> damageTypeRegisterable) {
+		for (Map.Entry<ResourceKey<DamageType>, DamageType> entry : asDamageTypes().entrySet()) {
 			damageTypeRegisterable.register(entry.getKey(), entry.getValue());
 		}
 	}

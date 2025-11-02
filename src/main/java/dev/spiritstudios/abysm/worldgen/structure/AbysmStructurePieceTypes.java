@@ -1,12 +1,11 @@
 package dev.spiritstudios.abysm.worldgen.structure;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.structure.StructurePieceType;
-import net.minecraft.util.Identifier;
-
 import java.util.Locale;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 
 public class AbysmStructurePieceTypes {
 	// note: vanilla tends to keep the ids on these short, so that is followed here
@@ -14,15 +13,15 @@ public class AbysmStructurePieceTypes {
 
 	private static StructurePieceType register(StructurePieceType type, String id) {
 		// convert to lowercase because vanilla does it, presumably to save characters by removing underscores
-		Identifier identifier = Abysm.id(id.toLowerCase(Locale.ROOT));
-		return Registry.register(Registries.STRUCTURE_PIECE, identifier, type);
+		ResourceLocation identifier = Abysm.id(id.toLowerCase(Locale.ROOT));
+		return Registry.register(BuiltInRegistries.STRUCTURE_PIECE, identifier, type);
 	}
 
-	private static StructurePieceType register(StructurePieceType.Simple type, String id) {
+	private static StructurePieceType register(StructurePieceType.ContextlessType type, String id) {
 		return register((StructurePieceType) type, id);
 	}
 
-	private static StructurePieceType register(StructurePieceType.ManagerAware type, String id) {
+	private static StructurePieceType register(StructurePieceType.StructureTemplateType type, String id) {
 		return register((StructurePieceType) type, id);
 	}
 

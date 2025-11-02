@@ -1,16 +1,16 @@
 package dev.spiritstudios.abysm.entity.ai;
 
-import net.minecraft.entity.ai.control.AquaticMoveControl;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 
-public class GracefulMoveControl extends AquaticMoveControl {
-	public GracefulMoveControl(MobEntity entity, int pitchChange, int yawChange, float speedInWater, float speedInAir, boolean buoyant) {
+public class GracefulMoveControl extends SmoothSwimmingMoveControl {
+	public GracefulMoveControl(Mob entity, int pitchChange, int yawChange, float speedInWater, float speedInAir, boolean buoyant) {
 		super(entity, pitchChange, yawChange, speedInWater, speedInAir, buoyant);
 	}
 
 	@Override
-	public float changeAngle(float start, float end, float maxChange) {
-		return MathHelper.lerpAngleDegrees(1 / 20F, start, end);
+	public float rotateTowards(float start, float end, float maxChange) {
+		return Mth.rotLerp(1 / 20F, start, end);
 	}
 }

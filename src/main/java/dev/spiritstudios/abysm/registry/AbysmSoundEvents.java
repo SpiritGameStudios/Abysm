@@ -1,24 +1,24 @@
 package dev.spiritstudios.abysm.registry;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 
 public class AbysmSoundEvents {
 	// BIOME-SPECIFIC UNDERWATER MUSIC
-	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_FLORAL_REEF = registerReference("music.overworld.floral_reef");
-	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_DEEP_SEA_RUINS = registerReference("music.overworld.deep_sea_ruins");
-	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_PEARLESCENT_SEA = registerReference("music.overworld.pearlescent_sea");
-	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_THE_ENTWINED = registerReference("music.overworld.the_entwined");
-	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_INKDEPTH_REALM = registerReference("music.overworld.inkdepth_realm");
-	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_GLOWING_CAVES = registerReference("music.overworld.glowing_caves");
+	public static final Holder.Reference<SoundEvent> MUSIC_OVERWORLD_FLORAL_REEF = registerReference("music.overworld.floral_reef");
+	public static final Holder.Reference<SoundEvent> MUSIC_OVERWORLD_DEEP_SEA_RUINS = registerReference("music.overworld.deep_sea_ruins");
+	public static final Holder.Reference<SoundEvent> MUSIC_OVERWORLD_PEARLESCENT_SEA = registerReference("music.overworld.pearlescent_sea");
+	public static final Holder.Reference<SoundEvent> MUSIC_OVERWORLD_THE_ENTWINED = registerReference("music.overworld.the_entwined");
+	public static final Holder.Reference<SoundEvent> MUSIC_OVERWORLD_INKDEPTH_REALM = registerReference("music.overworld.inkdepth_realm");
+	public static final Holder.Reference<SoundEvent> MUSIC_OVERWORLD_GLOWING_CAVES = registerReference("music.overworld.glowing_caves");
 	// VANILLA BIOMES
-	public static final RegistryEntry.Reference<SoundEvent> MUSIC_OVERWORLD_SEASIDE = registerReference("music.overworld.seaside");
+	public static final Holder.Reference<SoundEvent> MUSIC_OVERWORLD_SEASIDE = registerReference("music.overworld.seaside");
 	// MUSIC DISCS
-	public static final RegistryEntry.Reference<SoundEvent> MUSIC_DISC_RENAISSANCE = registerReference("records.renaissance");
+	public static final Holder.Reference<SoundEvent> MUSIC_DISC_RENAISSANCE = registerReference("records.renaissance");
 	// SOUNDS
 	public static final SoundEvent ENTITY_BLOOMRAY_AMBIENT = register("entity.bloomray.ambient");
 	public static final SoundEvent ENTITY_BLOOMRAY_HURT = register("entity.bloomray.hurt");
@@ -65,13 +65,13 @@ public class AbysmSoundEvents {
 	public static final SoundEvent ITEM_HARPOON_RETURN = register("item.harpoon.return");
 
 	private static SoundEvent register(String path) {
-		Identifier id = Abysm.id(path);
-		return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
+		ResourceLocation id = Abysm.id(path);
+		return Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
 	}
 
-	private static RegistryEntry.Reference<SoundEvent> registerReference(String path) {
-		Identifier id = Abysm.id(path);
-		return Registry.registerReference(Registries.SOUND_EVENT, id, SoundEvent.of(id));
+	private static Holder.Reference<SoundEvent> registerReference(String path) {
+		ResourceLocation id = Abysm.id(path);
+		return Registry.registerForHolder(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));
 	}
 
 

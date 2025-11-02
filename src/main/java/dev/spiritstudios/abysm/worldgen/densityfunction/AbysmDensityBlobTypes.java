@@ -3,8 +3,8 @@ package dev.spiritstudios.abysm.worldgen.densityfunction;
 import com.mojang.serialization.MapCodec;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.registry.AbysmRegistries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.dynamic.CodecHolder;
+import net.minecraft.core.Registry;
+import net.minecraft.util.KeyDispatchDataCodec;
 
 public class AbysmDensityBlobTypes {
 
@@ -15,7 +15,7 @@ public class AbysmDensityBlobTypes {
 		register("translated_blob", TranslatedDensityBlob.CODEC_HOLDER);
 	}
 
-	private static MapCodec<? extends DensityBlob> register(String id, CodecHolder<? extends DensityBlob> codecHolder) {
+	private static MapCodec<? extends DensityBlob> register(String id, KeyDispatchDataCodec<? extends DensityBlob> codecHolder) {
 		return Registry.register(AbysmRegistries.DENSITY_BLOB_TYPE, Abysm.id(id), codecHolder.codec());
 	}
 }

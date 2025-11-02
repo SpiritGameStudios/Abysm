@@ -1,69 +1,69 @@
 package dev.spiritstudios.abysm.block;
 
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.PlantBlock;
-import net.minecraft.block.Waterloggable;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.tick.ScheduledTickView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.VegetationBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 
-public abstract class UnderwaterPlantBlock extends PlantBlock implements Waterloggable {
-	private static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+public abstract class UnderwaterPlantBlock extends VegetationBlock implements SimpleWaterloggedBlock {
+	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public UnderwaterPlantBlock(AbstractBlock.Settings settings) {
+	public UnderwaterPlantBlock(BlockBehaviour.Properties settings) {
 		super(settings);
-		this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, false));
+		this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
 	}
 
 	@Override
-	protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(WATERLOGGED);
 	}
 
 	@Override
 	protected FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	protected boolean canPlantOnTop(BlockState floor, BlockView world, BlockPos pos) {
-		return floor.isIn(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON) || super.canPlantOnTop(floor, world, pos);
+	protected boolean mayPlaceOn(BlockState floor, BlockGetter world, BlockPos pos) {
+		return floor.is(AbysmBlockTags.BLOOMSHROOM_PLANTABLE_ON) || super.mayPlaceOn(floor, world, pos);
 	}
 
 	@Override
-	public BlockState getPlacementState(ItemPlacementContext ctx) {
-		FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
-		return this.getDefaultState()
-			.with(WATERLOGGED, fluidState.isEqualAndStill(Fluids.WATER));
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		FluidState fluidState = ctx.getLevel().getFluidState(ctx.getClickedPos());
+		return this.defaultBlockState()
+			.setValue(WATERLOGGED, fluidState.isSourceOfType(Fluids.WATER));
 	}
 
 	@Override
-	protected BlockState getStateForNeighborUpdate(
+	protected BlockState updateShape(
 		BlockState state,
-		WorldView world,
-		ScheduledTickView tickView,
+		LevelReader world,
+		ScheduledTickAccess tickView,
 		BlockPos pos,
 		Direction direction,
 		BlockPos neighborPos,
 		BlockState neighborState,
-		Random random
+		RandomSource random
 	) {
-		BlockState newState = super.getStateForNeighborUpdate(state, world, tickView, pos, direction, neighborPos, neighborState, random);
+		BlockState newState = super.updateShape(state, world, tickView, pos, direction, neighborPos, neighborState, random);
 		if (!newState.isAir()) {
-			if (state.get(WATERLOGGED)) {
-				tickView.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+			if (state.getValue(WATERLOGGED)) {
+				tickView.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 			}
 		}
 		return newState;

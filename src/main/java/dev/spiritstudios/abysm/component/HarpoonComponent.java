@@ -2,28 +2,27 @@ package dev.spiritstudios.abysm.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipAppender;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.ColorHelper;
-
 import java.awt.*;
 import java.util.function.Consumer;
+import net.minecraft.Util;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ARGB;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipProvider;
 
-public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceShot) implements TooltipAppender {
+public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceShot) implements TooltipProvider {
 
 	public static final HarpoonComponent EMPTY = new HarpoonComponent.Builder().build();
 
-	private static final int LIGHT = ColorHelper.fullAlpha(new Color(52, 189, 235).getRGB());
-	private static final int DARK = ColorHelper.fullAlpha(new Color(48, 115, 171).getRGB());
+	private static final int LIGHT = ARGB.opaque(new Color(52, 189, 235).getRGB());
+	private static final int DARK = ARGB.opaque(new Color(48, 115, 171).getRGB());
 
 	public static final int SEVEN_HUNDRED = 700;
 	public static final float RECIPROCAL_OF_SEVEN_HUNDRED = 1f / SEVEN_HUNDRED;
@@ -37,10 +36,10 @@ public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 			.apply(instance, HarpoonComponent::new)
 	);
 
-	public static final PacketCodec<RegistryByteBuf, HarpoonComponent> PACKET_CODEC = PacketCodec.tuple(
-		ItemStack.OPTIONAL_PACKET_CODEC, component -> component.stack,
-		PacketCodecs.BOOLEAN, component -> component.loaded,
-		PacketCodecs.VAR_INT, component -> component.ticksSinceShot,
+	public static final StreamCodec<RegistryFriendlyByteBuf, HarpoonComponent> PACKET_CODEC = StreamCodec.composite(
+		ItemStack.OPTIONAL_STREAM_CODEC, component -> component.stack,
+		ByteBufCodecs.BOOL, component -> component.loaded,
+		ByteBufCodecs.VAR_INT, component -> component.ticksSinceShot,
 		HarpoonComponent::new
 	);
 
@@ -49,21 +48,21 @@ public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 	}
 
 	@Override
-	public void appendTooltip(Item.TooltipContext context, Consumer<Text> textConsumer, TooltipType type, ComponentsAccess components) {
+	public void addToTooltip(Item.TooltipContext context, Consumer<Component> textConsumer, TooltipFlag type, DataComponentGetter components) {
 		if (this.loaded()) {
-			textConsumer.accept(Text.translatable("item.abysm.harpoon.loaded"));
+			textConsumer.accept(Component.translatable("item.abysm.harpoon.loaded"));
 		}
 
 		if (isBlessed()) {
-			textConsumer.accept(scrollingGradient(Text.translatable("item.abysm.harpoon.blessed"), SEVEN_HUNDRED, RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK, false));
+			textConsumer.accept(scrollingGradient(Component.translatable("item.abysm.harpoon.blessed"), SEVEN_HUNDRED, RECIPROCAL_OF_SEVEN_HUNDRED, LIGHT, DARK, false));
 		}
 	}
 
-	public static MutableText scrollingGradient(Text original, int wrap, float reciprocalWrap, int startColor, int endColor, boolean forward) {
+	public static MutableComponent scrollingGradient(Component original, int wrap, float reciprocalWrap, int startColor, int endColor, boolean forward) {
 		String blessed = original.getString();
 		int length = blessed.length();
-		long time = Util.getMeasuringTimeMs();
-		MutableText text = Text.literal(blessed.substring(0, 1)).withColor(ColorHelper.lerp(((time) % wrap) * reciprocalWrap, startColor, endColor));
+		long time = Util.getMillis();
+		MutableComponent text = Component.literal(blessed.substring(0, 1)).withColor(ARGB.lerp(((time) % wrap) * reciprocalWrap, startColor, endColor));
 		float incr = (float) wrap / length;
 		for (int i = 1; i < length; i++) {
 			float deltaHalfCalculated;
@@ -72,7 +71,7 @@ public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 			} else {
 				deltaHalfCalculated = time + (int) (incr * i);
 			}
-			text.append(Text.literal(blessed.substring(i, i + 1)).withColor(ColorHelper.lerp((deltaHalfCalculated % wrap) * reciprocalWrap, startColor, endColor)));
+			text.append(Component.literal(blessed.substring(i, i + 1)).withColor(ARGB.lerp((deltaHalfCalculated % wrap) * reciprocalWrap, startColor, endColor)));
 		}
 		return text;
 	}
@@ -86,7 +85,7 @@ public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 	public boolean equals(Object o) {
 		if (!(o instanceof HarpoonComponent(ItemStack stack1, boolean loaded1, int sinceShot))) return false;
 
-		return ItemStack.areItemsAndComponentsEqual(this.stack(), stack1) && this.loaded() == loaded1 && this.ticksSinceShot() == sinceShot;
+		return ItemStack.isSameItemSameComponents(this.stack(), stack1) && this.loaded() == loaded1 && this.ticksSinceShot() == sinceShot;
 	}
 
 	public static class Builder {

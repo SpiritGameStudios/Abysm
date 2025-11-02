@@ -3,73 +3,73 @@ package dev.spiritstudios.abysm.client.gui.screen.ingame;
 import dev.spiritstudios.abysm.block.entity.DensityBlobBlockEntity;
 import dev.spiritstudios.abysm.networking.UpdateDensityBlobBlockC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.NarratorManager;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
+import net.minecraft.client.GameNarrator;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
 
 public class DensityBlobBlockScreen extends Screen {
-	private static final Text FINAL_STATE_TEXT = Text.translatable("jigsaw_block.final_state");
-	private static final Text BLOB_SAMPLER_IDENTIFIER_TEXT = Text.translatable("abysm.density_blob_block.blob_sampler_identifier");
+	private static final Component FINAL_STATE_TEXT = Component.translatable("jigsaw_block.final_state");
+	private static final Component BLOB_SAMPLER_IDENTIFIER_TEXT = Component.translatable("abysm.density_blob_block.blob_sampler_identifier");
 
 	private final DensityBlobBlockEntity densityBlob;
-	private TextFieldWidget finalStateField;
-	private TextFieldWidget blobSamplerIdentifierField;
-	private ButtonWidget doneButton;
+	private EditBox finalStateField;
+	private EditBox blobSamplerIdentifierField;
+	private Button doneButton;
 
 	public DensityBlobBlockScreen(DensityBlobBlockEntity densityBlob) {
-		super(NarratorManager.EMPTY);
+		super(GameNarrator.NO_TITLE);
 		this.densityBlob = densityBlob;
 	}
 
 	private void onDone() {
 		this.updateServer();
-		Objects.requireNonNull(this.client);
-		this.client.setScreen(null);
+		Objects.requireNonNull(this.minecraft);
+		this.minecraft.setScreen(null);
 	}
 
 	private void onCancel() {
-		Objects.requireNonNull(this.client);
-		this.client.setScreen(null);
+		Objects.requireNonNull(this.minecraft);
+		this.minecraft.setScreen(null);
 	}
 
 	private void updateServer() {
 		ClientPlayNetworking.send(new UpdateDensityBlobBlockC2SPayload(
-			this.densityBlob.getPos(),
-			this.finalStateField.getText(),
-			this.blobSamplerIdentifierField.getText()
+			this.densityBlob.getBlockPos(),
+			this.finalStateField.getValue(),
+			this.blobSamplerIdentifierField.getValue()
 		));
 	}
 
 	@Override
-	public void close() {
+	public void onClose() {
 		this.onCancel();
 	}
 
 	@Override
 	protected void init() {
-		this.finalStateField = new TextFieldWidget(this.textRenderer, this.width / 2 - 153, 125, 300, 20, FINAL_STATE_TEXT);
+		this.finalStateField = new EditBox(this.font, this.width / 2 - 153, 125, 300, 20, FINAL_STATE_TEXT);
 		this.finalStateField.setMaxLength(256);
-		this.finalStateField.setText(this.densityBlob.getFinalState());
-		this.addSelectableChild(this.finalStateField);
+		this.finalStateField.setValue(this.densityBlob.getFinalState());
+		this.addWidget(this.finalStateField);
 
-		this.blobSamplerIdentifierField = new TextFieldWidget(this.textRenderer, this.width / 2 - 153, 160, 300, 20, BLOB_SAMPLER_IDENTIFIER_TEXT);
+		this.blobSamplerIdentifierField = new EditBox(this.font, this.width / 2 - 153, 160, 300, 20, BLOB_SAMPLER_IDENTIFIER_TEXT);
 		this.blobSamplerIdentifierField.setMaxLength(256);
-		this.blobSamplerIdentifierField.setText(this.densityBlob.getBlobsSamplerIdentifier());
-		this.addSelectableChild(this.blobSamplerIdentifierField);
+		this.blobSamplerIdentifierField.setValue(this.densityBlob.getBlobsSamplerIdentifier());
+		this.addWidget(this.blobSamplerIdentifierField);
 
-		this.doneButton = this.addDrawableChild(
-			ButtonWidget.builder(ScreenTexts.DONE, button -> this.onDone()).dimensions(this.width / 2 - 4 - 150, 210, 150, 20).build()
+		this.doneButton = this.addRenderableWidget(
+			Button.builder(CommonComponents.GUI_DONE, button -> this.onDone()).bounds(this.width / 2 - 4 - 150, 210, 150, 20).build()
 		);
 
-		this.addDrawableChild(ButtonWidget.builder(ScreenTexts.CANCEL, button -> this.onCancel()).dimensions(this.width / 2 + 4, 210, 150, 20).build());
+		this.addRenderableWidget(Button.builder(CommonComponents.GUI_CANCEL, button -> this.onCancel()).bounds(this.width / 2 + 4, 210, 150, 20).build());
 
 		this.updateDoneButtonState();
 	}
@@ -80,8 +80,8 @@ public class DensityBlobBlockScreen extends Screen {
 	}
 
 	@Override
-	public void renderBackground(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
-		this.renderInGameBackground(context);
+	public void renderBackground(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
+		this.renderTransparentBackground(context);
 	}
 
 	private void updateDoneButtonState() {
@@ -90,12 +90,12 @@ public class DensityBlobBlockScreen extends Screen {
 	}
 
 	@Override
-	public void resize(MinecraftClient client, int width, int height) {
-		String finalState = this.finalStateField.getText();
-		String blobSamplerIdentifier = this.blobSamplerIdentifierField.getText();
+	public void resize(Minecraft client, int width, int height) {
+		String finalState = this.finalStateField.getValue();
+		String blobSamplerIdentifier = this.blobSamplerIdentifierField.getValue();
 		this.init(client, width, height);
-		this.finalStateField.setText(finalState);
-		this.blobSamplerIdentifierField.setText(blobSamplerIdentifier);
+		this.finalStateField.setValue(finalState);
+		this.blobSamplerIdentifierField.setValue(blobSamplerIdentifier);
 	}
 
 	@Override
@@ -111,13 +111,13 @@ public class DensityBlobBlockScreen extends Screen {
 	}
 
 	@Override
-	public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+	public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
 		super.render(context, mouseX, mouseY, deltaTicks);
 
-		context.drawTextWithShadow(this.textRenderer, FINAL_STATE_TEXT, this.width / 2 - 153, 115, 10526880);
+		context.drawString(this.font, FINAL_STATE_TEXT, this.width / 2 - 153, 115, 10526880);
 		this.finalStateField.render(context, mouseX, mouseY, deltaTicks);
 
-		context.drawTextWithShadow(this.textRenderer, BLOB_SAMPLER_IDENTIFIER_TEXT, this.width / 2 - 153, 150, 10526880);
+		context.drawString(this.font, BLOB_SAMPLER_IDENTIFIER_TEXT, this.width / 2 - 153, 150, 10526880);
 		this.blobSamplerIdentifierField.render(context, mouseX, mouseY, deltaTicks);
 	}
 }

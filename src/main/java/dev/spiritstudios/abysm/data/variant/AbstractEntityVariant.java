@@ -5,18 +5,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
-import net.minecraft.entity.VariantSelectorProvider;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.spawn.SpawnCondition;
-import net.minecraft.entity.spawn.SpawnConditionSelectors;
-import net.minecraft.entity.spawn.SpawnContext;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextCodecs;
-import net.minecraft.util.Identifier;
-
 import java.util.List;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.variant.PriorityProvider;
+import net.minecraft.world.entity.variant.SpawnCondition;
+import net.minecraft.world.entity.variant.SpawnContext;
+import net.minecraft.world.entity.variant.SpawnPrioritySelectors;
 
 /**
  * Abstract class containing basic necessary fields for entity texture variants, along with helper methods. (Not to be confused with Entity Pattern Variants!)<br><br>
@@ -29,7 +26,7 @@ import java.util.List;
  *     <ul type="1">
  *         <li>Implement {@link dev.spiritstudios.abysm.entity.variant.Variantable} and fill in the methods.</li>
  *         <li>
- *         Create a (public) static final TrackedData key with an Integer, and add that to the {@link net.minecraft.entity.Entity#initDataTracker(DataTracker.Builder)}. This will sync your EntityVariant's registry int id.<br><br>
+ *         Create a (public) static final TrackedData key with an Integer, and add that to the {@link net.minecraft.world.entity.Entity#defineSynchedData(SynchedEntityData.Builder)}. This will sync your EntityVariant's registry int id.<br><br>
  *         Alternatively, a custom TrackedDataHandler can be created with Fabric API, and that can be used instead. However, using the Registry integer ids is typically more performant.
  *         </li>
  *         <li>Use the variant as wanted! For rendering, you can access the Entity's EntityVariant (via GeckoLib DataTickets or a custom RenderState), and set the texture as wanted.</li>
@@ -42,22 +39,22 @@ import java.util.List;
  * @see BloomrayEntityVariant
  * @see BloomrayEntity
  */
-public abstract class AbstractEntityVariant implements VariantSelectorProvider<SpawnContext, SpawnCondition> {
+public abstract class AbstractEntityVariant implements PriorityProvider<SpawnContext, SpawnCondition> {
 	// TODO - Easier default id getting
 	// TODO - Easier random entry getting
-	public final Text name;
-	public final Identifier texture;
-	public final SpawnConditionSelectors spawnConditions;
+	public final Component name;
+	public final ResourceLocation texture;
+	public final SpawnPrioritySelectors spawnConditions;
 
-	public static <T extends AbstractEntityVariant> Products.P3<RecordCodecBuilder.Mu<T>, Text, Identifier, SpawnConditionSelectors> fillFields(RecordCodecBuilder.Instance<T> instance) {
+	public static <T extends AbstractEntityVariant> Products.P3<RecordCodecBuilder.Mu<T>, Component, ResourceLocation, SpawnPrioritySelectors> fillFields(RecordCodecBuilder.Instance<T> instance) {
 		return instance.group(
-			TextCodecs.CODEC.fieldOf("name").forGetter(variant -> variant.name),
-			Identifier.CODEC.fieldOf("texture").forGetter(variant -> variant.texture),
-			SpawnConditionSelectors.CODEC.fieldOf("spawn_conditions").forGetter(variant -> variant.spawnConditions)
+			ComponentSerialization.CODEC.fieldOf("name").forGetter(variant -> variant.name),
+			ResourceLocation.CODEC.fieldOf("texture").forGetter(variant -> variant.texture),
+			SpawnPrioritySelectors.CODEC.fieldOf("spawn_conditions").forGetter(variant -> variant.spawnConditions)
 		);
 	}
 
-	public AbstractEntityVariant(Text name, Identifier texture, SpawnConditionSelectors spawnConditions) {
+	public AbstractEntityVariant(Component name, ResourceLocation texture, SpawnPrioritySelectors spawnConditions) {
 		this.name = name;
 		this.texture = texture;
 		this.spawnConditions = spawnConditions;
@@ -69,21 +66,21 @@ public abstract class AbstractEntityVariant implements VariantSelectorProvider<S
 	// Static helper methods to convert variants from/to int ids for packets.
 	// Doing it this way helps with performance, which is a concern of mine if we're going to data-drive multiple entities.
 	// Child classes of AbstractEntityVariant can add their own static method filling in the key and fallback params.
-	public static Identifier buildEntityTexturePath(String path) {
+	public static ResourceLocation buildEntityTexturePath(String path) {
 		return Abysm.id("textures/entity/" + path + ".png");
 	}
 
 	// Generic getters
-	public Text getName() {
+	public Component getName() {
 		return name;
 	}
 
-	public Identifier getTexture() {
+	public ResourceLocation getTexture() {
 		return texture;
 	}
 
 	@Override
-	public List<Selector<SpawnContext, SpawnCondition>> getSelectors() {
+	public List<Selector<SpawnContext, SpawnCondition>> selectors() {
 		return this.spawnConditions.selectors();
 	}
 }

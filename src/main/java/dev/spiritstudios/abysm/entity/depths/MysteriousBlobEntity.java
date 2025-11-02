@@ -3,30 +3,30 @@ package dev.spiritstudios.abysm.entity.depths;
 import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
 import dev.spiritstudios.abysm.entity.leviathan.Leviathan;
 import dev.spiritstudios.abysm.util.PressureFinder;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MovementType;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.MoveIntoWaterGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.SwimNavigation;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.boss.BossBar;
-import net.minecraft.entity.boss.ServerBossBar;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -38,10 +38,10 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import static dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity.ANIM_CONTROLLER_STRING;
 
 @SuppressWarnings("unused")
-public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEntity {
+public class MysteriousBlobEntity extends WaterAnimal implements GeoEntity {
 
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-	protected final ServerBossBar bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.BLUE, BossBar.Style.NOTCHED_20);
+	protected final ServerBossEvent bossBar = new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.BLUE, BossEvent.BossBarOverlay.NOTCHED_20);
 
 	protected int inverseHurtTime = 0;
 	protected float scaleXZ = 1f;
@@ -51,27 +51,27 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 	protected float scaleY = 1f;
 	protected float prevScaleY = 1f;
 
-	public MysteriousBlobEntity(EntityType<? extends WaterCreatureEntity> entityType, World world) {
+	public MysteriousBlobEntity(EntityType<? extends WaterAnimal> entityType, Level world) {
 		super(entityType, world);
 		this.moveControl = new ManOWarEntity.GarbageMoveControl(this);
 	}
 
-	public static DefaultAttributeContainer.Builder createVaseAttributes() {
-		return MobEntity.createMobAttributes()
-			.add(EntityAttributes.ATTACK_DAMAGE, Long.MAX_VALUE)
-			.add(EntityAttributes.MAX_HEALTH, 1000000)
-			.add(EntityAttributes.ARMOR, 10)
-			.add(EntityAttributes.ARMOR_TOUGHNESS, 100)
-			.add(EntityAttributes.KNOCKBACK_RESISTANCE, 0.5)
-			.add(EntityAttributes.LUCK, 1024)
-			.add(EntityAttributes.FOLLOW_RANGE, 48)
-			.add(EntityAttributes.WATER_MOVEMENT_EFFICIENCY, 1)
-			.add(EntityAttributes.MOVEMENT_SPEED, 0.9);
+	public static AttributeSupplier.Builder createVaseAttributes() {
+		return Mob.createMobAttributes()
+			.add(Attributes.ATTACK_DAMAGE, Long.MAX_VALUE)
+			.add(Attributes.MAX_HEALTH, 1000000)
+			.add(Attributes.ARMOR, 10)
+			.add(Attributes.ARMOR_TOUGHNESS, 100)
+			.add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+			.add(Attributes.LUCK, 1024)
+			.add(Attributes.FOLLOW_RANGE, 48)
+			.add(Attributes.WATER_MOVEMENT_EFFICIENCY, 1)
+			.add(Attributes.MOVEMENT_SPEED, 0.9);
 	}
 
 	@Override
-	protected void readCustomData(ReadView view) {
-		super.readCustomData(view);
+	protected void readAdditionalSaveData(ValueInput view) {
+		super.readAdditionalSaveData(view);
 
 		if (this.hasCustomName()) {
 			this.bossBar.setName(this.getDisplayName());
@@ -79,35 +79,35 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 	}
 
 	@Override
-	public void setCustomName(@Nullable Text name) {
+	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
 		this.bossBar.setName(this.getDisplayName());
 	}
 
 	@Override
-	protected EntityNavigation createNavigation(World world) {
-		return new SwimNavigation(this, world);
+	protected PathNavigation createNavigation(Level world) {
+		return new WaterBoundPathNavigation(this, world);
 	}
 
 	@Override
-	protected void initGoals() {
-		super.initGoals();
-		this.goalSelector.add(0, new MoveIntoWaterGoal(this));
-		this.goalSelector.add(1, new MeleeAttackGoal(this, 1.5F, true));
-		this.goalSelector.add(2, new SwimAroundGoal(this, 1.0, 10));
-		this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-		this.goalSelector.add(4, new LookAroundGoal(this));
-		this.targetSelector.add(1, new RevengeGoal(this, MysteriousBlobEntity.class, Leviathan.class));
+	protected void registerGoals() {
+		super.registerGoals();
+		this.goalSelector.addGoal(0, new TryFindWaterGoal(this));
+		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.5F, true));
+		this.goalSelector.addGoal(2, new RandomSwimmingGoal(this, 1.0, 10));
+		this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
+		this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, MysteriousBlobEntity.class, Leviathan.class));
 	}
 
 	@Override
-	public void travel(Vec3d movementInput) {
-		if (this.isTouchingWater()) {
-			this.updateVelocity(this.getMovementSpeed() * 0.02F, movementInput);
-			this.move(MovementType.SELF, this.getVelocity());
-			this.setVelocity(this.getVelocity().multiply(0.9));
+	public void travel(Vec3 movementInput) {
+		if (this.isInWater()) {
+			this.moveRelative(this.getSpeed() * 0.02F, movementInput);
+			this.move(MoverType.SELF, this.getDeltaMovement());
+			this.setDeltaMovement(this.getDeltaMovement().scale(0.9));
 			if (this.getTarget() == null) {
-				this.setVelocity(this.getVelocity().add(0.0, -0.005, 0.0));
+				this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.005, 0.0));
 			}
 		} else {
 			super.travel(movementInput);
@@ -118,27 +118,27 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 	public void tick() {
 		super.tick();
 
-		World world = this.getWorld();
+		Level world = this.level();
 
-		this.inverseHurtTime = this.maxHurtTime - this.hurtTime;
+		this.inverseHurtTime = this.hurtDuration - this.hurtTime;
 
 		float sin;
-		if (this.inverseHurtTime < this.maxHurtTime) {
-			sin = MathHelper.sin(this.inverseHurtTime * MathHelper.TAU * 0.05F) * 0.8F;
+		if (this.inverseHurtTime < this.hurtDuration) {
+			sin = Mth.sin(this.inverseHurtTime * Mth.TWO_PI * 0.05F) * 0.8F;
 		} else if (this.isHappy()) {
-			sin = MathHelper.sin(world.getTime() * MathHelper.TAU * 0.005F) * 0.05F;
+			sin = Mth.sin(world.getGameTime() * Mth.TWO_PI * 0.005F) * 0.05F;
 		} else {
-			sin = MathHelper.sin(world.getTime() * MathHelper.TAU * 0.005F) * 0.15F;
+			sin = Mth.sin(world.getGameTime() * Mth.TWO_PI * 0.005F) * 0.15F;
 		}
 
 		this.targetScaleY = -sin + 1;
 		this.targetScaleXZ = sin + 1;
 
 		if (this.scaleXZ != this.targetScaleXZ) {
-			this.scaleXZ = MathHelper.lerp(0.15f, this.scaleXZ, this.targetScaleXZ);
+			this.scaleXZ = Mth.lerp(0.15f, this.scaleXZ, this.targetScaleXZ);
 		}
 		if (this.scaleY != this.targetScaleY) {
-			this.scaleY = MathHelper.lerp(0.15f, this.scaleY, this.targetScaleY);
+			this.scaleY = Mth.lerp(0.15f, this.scaleY, this.targetScaleY);
 		}
 
 		boolean scaleDirty = false;
@@ -151,30 +151,30 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 			this.prevScaleY = this.scaleY;
 		}
 		if (scaleDirty) {
-			this.calculateDimensions();
+			this.refreshDimensions();
 		}
 	}
 
 	@Override
-	protected void mobTick(ServerWorld world) {
-		super.mobTick(world);
-		this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
+	protected void customServerAiStep(ServerLevel world) {
+		super.customServerAiStep(world);
+		this.bossBar.setProgress(this.getHealth() / this.getMaxHealth());
 	}
 
 	@Override
-	public void onStartedTrackingBy(ServerPlayerEntity player) {
-		super.onStartedTrackingBy(player);
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
 		this.bossBar.addPlayer(player);
 	}
 
 	@Override
-	public void onStoppedTrackingBy(ServerPlayerEntity player) {
-		super.onStoppedTrackingBy(player);
+	public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
 		this.bossBar.removePlayer(player);
 	}
 
 	public float getPressure() {
-		return PressureFinder.getPressure(this.getWorld(), this.getBlockPos());
+		return PressureFinder.getPressure(this.level(), this.blockPosition());
 	}
 
 	public boolean isHappy() {
@@ -190,11 +190,11 @@ public class MysteriousBlobEntity extends WaterCreatureEntity implements GeoEnti
 	}
 
 	public float lerpScaleXZ(float delta) {
-		return MathHelper.lerp(delta, this.prevScaleXZ, this.scaleXZ);
+		return Mth.lerp(delta, this.prevScaleXZ, this.scaleXZ);
 	}
 
 	public float lerpScaleY(float delta) {
-		return MathHelper.lerp(delta, this.prevScaleY, this.scaleY);
+		return Mth.lerp(delta, this.prevScaleY, this.scaleY);
 	}
 
 	public void setTargetScaleXZ(float scale) {

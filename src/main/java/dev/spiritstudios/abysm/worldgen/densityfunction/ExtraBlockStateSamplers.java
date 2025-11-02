@@ -2,32 +2,31 @@ package dev.spiritstudios.abysm.worldgen.densityfunction;
 
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.worldgen.noise.NoiseConfigAttachment;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.chunk.AquiferSampler;
-import net.minecraft.world.gen.chunk.Blender;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-import net.minecraft.world.gen.chunk.ChunkNoiseSampler;
-import net.minecraft.world.gen.chunk.GenerationShapeConfig;
-import net.minecraft.world.gen.densityfunction.DensityFunction;
-import net.minecraft.world.gen.densityfunction.DensityFunctionTypes;
-import net.minecraft.world.gen.noise.NoiseConfig;
-
 import java.util.List;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Aquifer;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
+import net.minecraft.world.level.levelgen.NoiseChunk;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.blending.Blender;
 
 public class ExtraBlockStateSamplers {
 
 	public static void addSamplersToStart(
-		List<ChunkNoiseSampler.BlockStateSampler> stateSamplerList,
-		DensityFunction.DensityFunctionVisitor getActualDensityFunction,
+		List<NoiseChunk.BlockStateFiller> stateSamplerList,
+		DensityFunction.Visitor getActualDensityFunction,
 		int horizontalCellCount,
-		NoiseConfig noiseConfig,
+		RandomState noiseConfig,
 		int startBlockX,
 		int startBlockZ,
-		GenerationShapeConfig generationShapeConfig,
-		DensityFunctionTypes.Beardifying beardifying,
-		ChunkGeneratorSettings chunkGeneratorSettings,
-		AquiferSampler.FluidLevelSampler fluidLevelSampler,
+		NoiseSettings generationShapeConfig,
+		DensityFunctions.BeardifierOrMarker beardifying,
+		NoiseGeneratorSettings chunkGeneratorSettings,
+		Aquifer.FluidPicker fluidLevelSampler,
 		Blender blender
 	) {
 		DensityBlobsSamplerCollection samplerCollection = DensityBlobsSamplerCollection.get(beardifying);
@@ -40,7 +39,7 @@ public class ExtraBlockStateSamplers {
 	}
 
 
-	public static ChunkNoiseSampler.BlockStateSampler createBlockStateSampler(NoiseConfigAttachment noiseConfigAttachment, DensityFunction.DensityFunctionVisitor getActualDensityFunction, DensityFunctionTypes.Beardifying beardifying, ChunkGeneratorSettings chunkGeneratorSettings) {
+	public static NoiseChunk.BlockStateFiller createBlockStateSampler(NoiseConfigAttachment noiseConfigAttachment, DensityFunction.Visitor getActualDensityFunction, DensityFunctions.BeardifierOrMarker beardifying, NoiseGeneratorSettings chunkGeneratorSettings) {
 		// apply transformations
 		NoiseConfigAttachment appliedNCA = noiseConfigAttachment.apply(getActualDensityFunction);
 
@@ -50,12 +49,12 @@ public class ExtraBlockStateSamplers {
 		if (ruinsSediment == null || ruinsCavePillars == null) {
 			return pos -> null;
 		} else {
-			BlockState water = Blocks.WATER.getDefaultState();
-			BlockState shell = AbysmBlocks.SMOOTH_FLOROPUMICE.getDefaultState();
+			BlockState water = Blocks.WATER.defaultBlockState();
+			BlockState shell = AbysmBlocks.SMOOTH_FLOROPUMICE.defaultBlockState();
 			BlockState sediment = chunkGeneratorSettings.defaultBlock(); // this gets replaced later by a material rule, so should be the default material
 
 			return pos -> {
-				double amountInsideShell = ruinsCavePillars.sample(pos) - 1.0;
+				double amountInsideShell = ruinsCavePillars.compute(pos) - 1.0;
 
 				if (amountInsideShell <= 0.0) {
 					return null;
@@ -64,11 +63,11 @@ public class ExtraBlockStateSamplers {
 					if (amountPastShell <= 0.0) {
 						return shell;
 					} else {
-						double beard = beardifying.sample(pos);
+						double beard = beardifying.compute(pos);
 						if (beard > 0.5) {
 							return shell;
 						} else {
-							double sedimentDensity = ruinsSediment.sample(pos) + beard;
+							double sedimentDensity = ruinsSediment.compute(pos) + beard;
 							if (sedimentDensity - amountPastShell * 0.005 > 0) {
 								return sediment;
 							} else {

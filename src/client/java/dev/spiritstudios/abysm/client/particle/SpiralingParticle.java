@@ -1,22 +1,22 @@
 package dev.spiritstudios.abysm.client.particle;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.particle.SpriteBillboardParticle;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import org.joml.Quaternionf;
 
-public class SpiralingParticle extends SpriteBillboardParticle {
-	private final SpriteProvider provider;
+public class SpiralingParticle extends TextureSheetParticle {
+	private final SpriteSet provider;
 
 	public float maxRadius;
 	public float radius;
@@ -26,12 +26,12 @@ public class SpiralingParticle extends SpriteBillboardParticle {
 
 	private final Quaternionf rotationStorage = new Quaternionf();
 
-	public SpiralingParticle(ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ, float maxRadius, float speed, int maxAge, int spiralLeaveAge, boolean billboard, SpriteProvider provider) {
+	public SpiralingParticle(ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ, float maxRadius, float speed, int maxAge, int spiralLeaveAge, boolean billboard, SpriteSet provider) {
 		super(clientWorld, x, y, z, velX, velY, velZ);
 		this.provider = provider;
-		this.velocityX = 0;
-		this.velocityY = 0;
-		this.velocityZ = 0;
+		this.xd = 0;
+		this.yd = 0;
+		this.zd = 0;
 		this.maxRadius = maxRadius;
 		this.radius = this.maxRadius;
 		this.speed = speed;
@@ -39,42 +39,42 @@ public class SpiralingParticle extends SpriteBillboardParticle {
 		this.billboard = billboard;
 
 		// FIXME - if someone who's better at math wants to make this perfect, go on ahead
-		this.setBoundingBox(this.getBoundingBox().offset((this.maxRadius * this.speed) / 2f, 0, -(this.maxRadius / this.speed)));
-		this.repositionFromBoundingBox();
-		this.lastX = this.x;
-		this.lastY = this.y;
-		this.lastZ = this.z;
+		this.setBoundingBox(this.getBoundingBox().move((this.maxRadius * this.speed) / 2f, 0, -(this.maxRadius / this.speed)));
+		this.setLocationFromBoundingbox();
+		this.xo = this.x;
+		this.yo = this.y;
+		this.zo = this.z;
 
-		this.maxAge = maxAge;
+		this.lifetime = maxAge;
 
-		this.setSpriteForAge(this.provider);
+		this.setSpriteFromAge(this.provider);
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		this.lastAngle = this.angle;
-		if (this.scale <= 0f) {
-			this.markDead();
+		this.oRoll = this.roll;
+		if (this.quadSize <= 0f) {
+			this.remove();
 		}
 
 		if (this.age == this.spiralLeaveAge) {
 			this.speed /= 2f;
-			this.velocityY = this.random.nextGaussian() / 64f;
+			this.yd = this.random.nextGaussian() / 64f;
 		}
 
 		if (this.age >= this.spiralLeaveAge) {
 			this.radius += 0.001f;
-			this.scale -= 0.005f;
+			this.quadSize -= 0.005f;
 		}
 
-		this.velocityX = MathHelper.cos(this.age * this.speed) * this.radius;
-		this.velocityZ = MathHelper.sin(this.age * this.speed) * this.radius;
+		this.xd = Mth.cos(this.age * this.speed) * this.radius;
+		this.zd = Mth.sin(this.age * this.speed) * this.radius;
 
 		//noinspection SuspiciousNameCombination
-		this.angle = (float) MathHelper.atan2(this.velocityX, this.velocityZ) + MathHelper.HALF_PI;
+		this.roll = (float) Mth.atan2(this.xd, this.zd) + Mth.HALF_PI;
 
-		this.setSpriteForAge(this.provider);
+		this.setSpriteFromAge(this.provider);
 	}
 
 	@Override
@@ -84,46 +84,46 @@ public class SpiralingParticle extends SpriteBillboardParticle {
 			return;
 		}
 
-		rotationStorage.rotationY(MathHelper.lerp(tickProgress, this.lastAngle, this.angle));
-		this.render(vertexConsumer, camera, rotationStorage, tickProgress);
+		rotationStorage.rotationY(Mth.lerp(tickProgress, this.oRoll, this.roll));
+		this.renderRotatedQuad(vertexConsumer, camera, rotationStorage, tickProgress);
 
-		rotationStorage.rotateY(MathHelper.PI);
-		this.render(vertexConsumer, camera, rotationStorage, tickProgress);
+		rotationStorage.rotateY(Mth.PI);
+		this.renderRotatedQuad(vertexConsumer, camera, rotationStorage, tickProgress);
 	}
 
 	@Override
-	public int getBrightness(float tint) {
+	public int getLightColor(float tint) {
 		return 13631632; // LightmapTextureManager.pack(9, 13)
 	}
 
 	@Override
-	public ParticleTextureSheet getType() {
-		return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+	public ParticleRenderType getRenderType() {
+		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 
 	@Environment(EnvType.CLIENT)
-	public abstract static class Factory implements ParticleFactory<SimpleParticleType> {
-		private final SpriteProvider spriteProvider;
+	public abstract static class Factory implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet spriteProvider;
 
-		public Factory(SpriteProvider spriteProvider) {
+		public Factory(SpriteSet spriteProvider) {
 			this.spriteProvider = spriteProvider;
 		}
 
 		// The radius has no unit of measurement, and is affected by the speed because I couldn't figure out the math before wanting to move on
-		public abstract float maxRadius(Random random);
+		public abstract float maxRadius(RandomSource random);
 
-		public abstract float maxSpeed(Random random);
+		public abstract float maxSpeed(RandomSource random);
 
-		public abstract int maxAge(Random random);
+		public abstract int maxAge(RandomSource random);
 
-		public abstract int spiralLeaveAge(Random random);
+		public abstract int spiralLeaveAge(RandomSource random);
 
 		public boolean billboard() {
 			return true;
 		}
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ) {
-			Random random = clientWorld.getRandom();
+		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ) {
+			RandomSource random = clientWorld.getRandom();
 			float maxRadius = this.maxRadius(random);
 			float maxSpeed = this.maxSpeed(random);
 			int maxAge = this.maxAge(random);
@@ -136,28 +136,28 @@ public class SpiralingParticle extends SpriteBillboardParticle {
 
 	@Environment(EnvType.CLIENT)
 	public static class ElectricitySpiral extends Factory {
-		public ElectricitySpiral(SpriteProvider spriteProvider) {
+		public ElectricitySpiral(SpriteSet spriteProvider) {
 			super(spriteProvider);
 		}
 
 		@Override
-		public float maxRadius(Random random) {
+		public float maxRadius(RandomSource random) {
 			return random.nextFloat();
 		}
 
 		@Override
-		public float maxSpeed(Random random) {
+		public float maxSpeed(RandomSource random) {
 			return 0.5f + (random.nextInt(7) == 0 ? 1f : 0f);
 		}
 
 		@Override
-		public int maxAge(Random random) {
+		public int maxAge(RandomSource random) {
 			return 100;
 		}
 
 		@Override
-		public int spiralLeaveAge(Random random) {
-			return random.nextBetween(60, 75);
+		public int spiralLeaveAge(RandomSource random) {
+			return random.nextIntBetweenInclusive(60, 75);
 		}
 
 		@Override
@@ -167,7 +167,7 @@ public class SpiralingParticle extends SpriteBillboardParticle {
 	}
 
 	public static class ElectricitySpeck extends ElectricitySpiral {
-		public ElectricitySpeck(SpriteProvider spriteProvider) {
+		public ElectricitySpeck(SpriteSet spriteProvider) {
 			super(spriteProvider);
 		}
 

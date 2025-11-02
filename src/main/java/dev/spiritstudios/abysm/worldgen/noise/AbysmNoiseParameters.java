@@ -1,19 +1,19 @@
 package dev.spiritstudios.abysm.worldgen.noise;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 public class AbysmNoiseParameters {
-	public static final RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> RUINS_SEDIMENT = keyOf("ruins_sediment");
-	public static final RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> RUINS_SHELL = keyOf("ruins_shell");
-	public static final RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> RUINS_SHELL_BEARD = keyOf("ruins_shell_beard");
-	public static final RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> RUINS_PILLARS = keyOf("ruins_pillars");
-	public static final RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> RUINS_SEDIMENT_TYPE = keyOf("ruins_sediment_type");
+	public static final ResourceKey<NormalNoise.NoiseParameters> RUINS_SEDIMENT = keyOf("ruins_sediment");
+	public static final ResourceKey<NormalNoise.NoiseParameters> RUINS_SHELL = keyOf("ruins_shell");
+	public static final ResourceKey<NormalNoise.NoiseParameters> RUINS_SHELL_BEARD = keyOf("ruins_shell_beard");
+	public static final ResourceKey<NormalNoise.NoiseParameters> RUINS_PILLARS = keyOf("ruins_pillars");
+	public static final ResourceKey<NormalNoise.NoiseParameters> RUINS_SEDIMENT_TYPE = keyOf("ruins_sediment_type");
 
-	public static void bootstrap(Registerable<DoublePerlinNoiseSampler.NoiseParameters> noiseParametersRegisterable) {
+	public static void bootstrap(BootstrapContext<NormalNoise.NoiseParameters> noiseParametersRegisterable) {
 		register(noiseParametersRegisterable, RUINS_SEDIMENT, -5, 0.9, 0.5, 0.4);
 		register(noiseParametersRegisterable, RUINS_SHELL, -6, 0.5, 6.0, 7.0, 2.0);
 		register(noiseParametersRegisterable, RUINS_SHELL_BEARD, -6, 0.5, 6.0, 7.0, 2.0);
@@ -21,17 +21,17 @@ public class AbysmNoiseParameters {
 		register(noiseParametersRegisterable, RUINS_SEDIMENT_TYPE, -2, 1.0, 1.0);
 	}
 
-	private static RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> keyOf(String id) {
-		return RegistryKey.of(RegistryKeys.NOISE_PARAMETERS, Abysm.id(id));
+	private static ResourceKey<NormalNoise.NoiseParameters> keyOf(String id) {
+		return ResourceKey.create(Registries.NOISE, Abysm.id(id));
 	}
 
 	private static void register(
-		Registerable<DoublePerlinNoiseSampler.NoiseParameters> noiseParametersRegisterable,
-		RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> key,
+		BootstrapContext<NormalNoise.NoiseParameters> noiseParametersRegisterable,
+		ResourceKey<NormalNoise.NoiseParameters> key,
 		int firstOctave,
 		double firstAmplitude,
 		double... amplitudes
 	) {
-		noiseParametersRegisterable.register(key, new DoublePerlinNoiseSampler.NoiseParameters(firstOctave, firstAmplitude, amplitudes));
+		noiseParametersRegisterable.register(key, new NormalNoise.NoiseParameters(firstOctave, firstAmplitude, amplitudes));
 	}
 }

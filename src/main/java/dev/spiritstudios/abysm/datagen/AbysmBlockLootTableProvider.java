@@ -5,25 +5,24 @@ import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
-import net.minecraft.block.Block;
-import net.minecraft.data.family.BlockFamily;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.condition.RandomChanceLootCondition;
-import net.minecraft.loot.condition.TableBonusLootCondition;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.entry.LootTableEntry;
-import net.minecraft.loot.function.ApplyBonusLootFunction;
-import net.minecraft.loot.function.SetCountLootFunction;
-import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.loot.provider.number.UniformLootNumberProvider;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.BlockFamily;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -31,13 +30,13 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 
 	protected static final float[] SAPLING_DROP_CHANCE = new float[] {0.05F, 0.0625F, 0.083333336F, 0.1F};
 
-	public AbysmBlockLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+	public AbysmBlockLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
 		super(dataOutput, registryLookup);
 	}
 
 	@Override
 	public void generate() {
-		RegistryEntryLookup<Enchantment> enchantmentLookup = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
+		HolderGetter<Enchantment> enchantmentLookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
 		addLootForFamilies(
 			AbysmBlockFamilies.FLOROPUMICE,
@@ -108,7 +107,7 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.CUT_SILT
 		);
 
-		forEach(this::addPottedPlantDrops,
+		forEach(this::dropPottedContents,
 			AbysmBlocks.POTTED_ROSY_SPRIGS,
 			AbysmBlocks.POTTED_SUNNY_SPRIGS,
 			AbysmBlocks.POTTED_MAUVE_SPRIGS,
@@ -136,48 +135,48 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			AbysmBlocks.MALLOWBLOOM_PETALS
 		);
 
-		this.addDrop(AbysmBlocks.OOZING_DREGLOAM, block -> this.dropsWithSilkTouch(
+		this.add(AbysmBlocks.OOZING_DREGLOAM, block -> this.createSilkTouchDispatchTable(
 			AbysmBlocks.OOZING_DREGLOAM,
-			this.addSurvivesExplosionCondition(
+			this.applyExplosionCondition(
 				AbysmBlocks.OOZING_DREGLOAM,
-				LootTableEntry.builder(
-					LootTable.builder()
-						.pool(
-							LootPool.builder().with(
-								ItemEntry.builder(AbysmBlocks.DREGLOAM)
+				NestedLootTable.inlineLootTable(
+					LootTable.lootTable()
+						.withPool(
+							LootPool.lootPool().add(
+								LootItem.lootTableItem(AbysmBlocks.DREGLOAM)
 							)
-						).pool(
-							LootPool.builder().with(
-								ItemEntry.builder(AbysmItems.DREGLOAM_OOZEBALL)
-									.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 1.0F)))
+						).withPool(
+							LootPool.lootPool().add(
+								LootItem.lootTableItem(AbysmItems.DREGLOAM_OOZEBALL)
+									.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
 							)
 						)
 						.build()
 				)
 			)
 		));
-		this.addDrop(AbysmBlocks.DREGLOAM_OOZE, block -> this.drops(
-				block, AbysmItems.DREGLOAM_OOZEBALL, UniformLootNumberProvider.create(2.0F, 4.0F)
+		this.add(AbysmBlocks.DREGLOAM_OOZE, block -> this.createSingleItemTableWithSilkTouch(
+				block, AbysmItems.DREGLOAM_OOZEBALL, UniformGenerator.between(2.0F, 4.0F)
 			)
 		);
-		this.addDrop(AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE, block -> this.dropsWithSilkTouch(
+		this.add(AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE, block -> this.createSilkTouchDispatchTable(
 				block,
 				this.applyExplosionDecay(
 					block,
-					LootTableEntry.builder(
-						LootTable.builder()
-							.pool(
-								LootPool.builder().with(
-									ItemEntry.builder(Items.GOLD_NUGGET)
-										.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 2.0F)))
-										.apply(ApplyBonusLootFunction.oreDrops(enchantmentLookup.getOrThrow(Enchantments.FORTUNE)))
+					NestedLootTable.inlineLootTable(
+						LootTable.lootTable()
+							.withPool(
+								LootPool.lootPool().add(
+									LootItem.lootTableItem(Items.GOLD_NUGGET)
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
+										.apply(ApplyBonusCount.addOreBonusCount(enchantmentLookup.getOrThrow(Enchantments.FORTUNE)))
 								)
 							)
-							.pool(
-								LootPool.builder().with(
-									ItemEntry.builder(Items.LAPIS_LAZULI)
-										.apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))
-										.apply(ApplyBonusLootFunction.oreDrops(enchantmentLookup.getOrThrow(Enchantments.FORTUNE)))
+							.withPool(
+								LootPool.lootPool().add(
+									LootItem.lootTableItem(Items.LAPIS_LAZULI)
+										.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+										.apply(ApplyBonusCount.addOreBonusCount(enchantmentLookup.getOrThrow(Enchantments.FORTUNE)))
 								)
 							)
 							.build()
@@ -186,14 +185,14 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 			)
 		);
 
-		this.addDrop(AbysmBlocks.OOZETRICKLE_FILAMENTS, this::dropsWithShears);
-		this.addDrop(AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS, block -> this.tallPlantDrops(block, AbysmBlocks.OOZETRICKLE_FILAMENTS));
+		this.add(AbysmBlocks.OOZETRICKLE_FILAMENTS, this::createShearsOnlyDrop);
+		this.add(AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS, block -> this.createDoublePlantWithSeedDrops(block, AbysmBlocks.OOZETRICKLE_FILAMENTS));
 
 		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL, true);
 		this.addOrefurlDrop(AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, false);
 
-		this.addDrop(AbysmBlocks.OOZETRICKLE_CORD);
-		this.addDrop(AbysmBlocks.OOZETRICKLE_LANTERN);
+		this.dropSelf(AbysmBlocks.OOZETRICKLE_CORD);
+		this.dropSelf(AbysmBlocks.OOZETRICKLE_LANTERN);
 	}
 
 	private void forEach(Consumer<Block> consumer, Block... blocks) {
@@ -203,84 +202,84 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 	}
 
 	private void dropSelf(Block... blocks) {
-		forEach(this::addDrop, blocks);
+		forEach(this::dropSelf, blocks);
 	}
 
 	private void addSilkTouchOrElseDrop(Block block, Block noSilkTouch) {
-		this.addDrop(block, blck -> this.drops(blck, noSilkTouch));
+		this.add(block, blck -> this.createSingleItemTableWithSilkTouch(blck, noSilkTouch));
 	}
 
 	private void addSegmentedDrop(Block block) {
-		this.addDrop(block, this.segmentedDrops(block));
+		this.add(block, this.createSegmentedBlockDrops(block));
 	}
 
 	private void addPetaleavesDrop(Block petaleaves, Block petal, Block bloomshroom) {
-		this.addDrop(petaleaves, this.petaleavesDrops(petaleaves, petal, bloomshroom, SAPLING_DROP_CHANCE));
+		this.add(petaleaves, this.petaleavesDrops(petaleaves, petal, bloomshroom, NORMAL_LEAVES_SAPLING_CHANCES));
 	}
 
 	private LootTable.Builder petaleavesDrops(Block petaleaves, Block petal, Block bloomshroom, float... saplingChance) {
-		RegistryWrapper.Impl<Enchantment> impl = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
+		HolderLookup.RegistryLookup<Enchantment> impl = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
-		return this.dropsWithSilkTouchOrShears(
+		return this.createSilkTouchOrShearsDispatchTable(
 				petaleaves,
-				(this.addSurvivesExplosionCondition(petaleaves, ItemEntry.builder(bloomshroom)))
-					.conditionally(TableBonusLootCondition.builder(impl.getOrThrow(Enchantments.FORTUNE), saplingChance))
+				(this.applyExplosionCondition(petaleaves, LootItem.lootTableItem(bloomshroom)))
+					.when(BonusLevelTableCondition.bonusLevelFlatChance(impl.getOrThrow(Enchantments.FORTUNE), saplingChance))
 			)
-			.pool(
-				LootPool.builder()
-					.rolls(ConstantLootNumberProvider.create(1.0F))
-					.conditionally(this.createWithoutShearsOrSilkTouchCondition())
-					.with(
+			.withPool(
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.when(this.doesNotHaveShearsOrSilkTouch())
+					.add(
 						(this.applyExplosionDecay(
-							petaleaves, ItemEntry.builder(petal).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 4.0F)))
+							petaleaves, LootItem.lootTableItem(petal).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 4.0F)))
 						))
 					)
 			);
 	}
 
 	private void addOrefurlDrop(Block orefurl, boolean isHead) {
-		RegistryWrapper.Impl<Enchantment> impl = this.registries.getOrThrow(RegistryKeys.ENCHANTMENT);
-		LootTable.Builder builder = LootTable.builder();
+		HolderLookup.RegistryLookup<Enchantment> impl = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+		LootTable.Builder builder = LootTable.lootTable();
 
 		if (isHead) {
 			// add guaranteed bulb drop
-			builder = builder.pool(LootPool.builder()
-				.with(
-					ItemEntry.builder(AbysmItems.LAPIS_BULB)
+			builder = builder.withPool(LootPool.lootPool()
+				.add(
+					LootItem.lootTableItem(AbysmItems.LAPIS_BULB)
 				)
 			);
 		} else {
 			// add choice between bulbs and leaves
-			builder = builder.pool(LootPool.builder()
-				.with(
-					ItemEntry.builder(AbysmItems.LAPIS_BULB)
+			builder = builder.withPool(LootPool.lootPool()
+				.add(
+					LootItem.lootTableItem(AbysmItems.LAPIS_BULB)
 				)
-				.with(
-					ItemEntry.builder(AbysmItems.GOLD_LEAF)
+				.add(
+					LootItem.lootTableItem(AbysmItems.GOLD_LEAF)
 				)
 			);
 
 			// add chance for bonus bulbs
-			builder = builder.pool(LootPool.builder()
-				.with(
-					ItemEntry.builder(AbysmItems.LAPIS_BULB)
-						.conditionally(RandomChanceLootCondition.builder(0.5F))
-						.apply(ApplyBonusLootFunction.binomialWithBonusCount(impl.getOrThrow(Enchantments.FORTUNE), 0.25F, 2))
+			builder = builder.withPool(LootPool.lootPool()
+				.add(
+					LootItem.lootTableItem(AbysmItems.LAPIS_BULB)
+						.when(LootItemRandomChanceCondition.randomChance(0.5F))
+						.apply(ApplyBonusCount.addBonusBinomialDistributionCount(impl.getOrThrow(Enchantments.FORTUNE), 0.25F, 2))
 				)
 			);
 
 			// add chance for bonus leaves
-			builder = builder.pool(
-				LootPool.builder()
-					.with(
-						ItemEntry.builder(AbysmItems.GOLD_LEAF)
-							.conditionally(RandomChanceLootCondition.builder(0.5F))
-							.apply(ApplyBonusLootFunction.binomialWithBonusCount(impl.getOrThrow(Enchantments.FORTUNE), 0.25F, 2))
+			builder = builder.withPool(
+				LootPool.lootPool()
+					.add(
+						LootItem.lootTableItem(AbysmItems.GOLD_LEAF)
+							.when(LootItemRandomChanceCondition.randomChance(0.5F))
+							.apply(ApplyBonusCount.addBonusBinomialDistributionCount(impl.getOrThrow(Enchantments.FORTUNE), 0.25F, 2))
 					)
 			);
 		}
 
-		this.addDrop(
+		this.add(
 			orefurl,
 			this.applyExplosionDecay(orefurl, builder)
 		);
@@ -296,19 +295,19 @@ public class AbysmBlockLootTableProvider extends FabricBlockLootTableProvider {
 		this.dropSelf(family.getBaseBlock());
 		for (BlockFamily.Variant variant : BlockFamily.Variant.values()) {
 			if (variant != BlockFamily.Variant.DOOR && variant != BlockFamily.Variant.SLAB) {
-				Block block = family.getVariant(variant);
+				Block block = family.get(variant);
 				if (block != null) {
 					this.dropSelf(block);
 				}
 			}
 		}
-		Block door = family.getVariant(BlockFamily.Variant.DOOR);
+		Block door = family.get(BlockFamily.Variant.DOOR);
 		if (door != null) {
-			this.addDrop(door, this.doorDrops(door));
+			this.add(door, this.createDoorTable(door));
 		}
-		Block slab = family.getVariant(BlockFamily.Variant.SLAB);
+		Block slab = family.get(BlockFamily.Variant.SLAB);
 		if (slab != null) {
-			this.addDrop(slab, this.slabDrops(slab));
+			this.add(slab, this.createSlabItemTable(slab));
 		}
 	}
 }

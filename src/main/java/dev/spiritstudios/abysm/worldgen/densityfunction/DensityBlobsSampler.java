@@ -1,16 +1,15 @@
 package dev.spiritstudios.abysm.worldgen.densityfunction;
 
-import net.minecraft.util.Identifier;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.resources.ResourceLocation;
 
 public class DensityBlobsSampler implements AbysmDensityFunctionTypes.DensityBlobsSamplerFunction {
 
 	private final List<DensityBlob> densityBlobs;
-	private final Identifier identifier;
+	private final ResourceLocation identifier;
 
-	public DensityBlobsSampler(Identifier identifier) {
+	public DensityBlobsSampler(ResourceLocation identifier) {
 		this.densityBlobs = new ArrayList<>();
 		this.identifier = identifier;
 	}
@@ -38,7 +37,7 @@ public class DensityBlobsSampler implements AbysmDensityFunctionTypes.DensityBlo
 
 	// TODO consider optimising sample and/or fill if needed
 	@Override
-	public double sample(NoisePos pos) {
+	public double compute(FunctionContext pos) {
 		return sampleDensity(pos.blockX(), pos.blockY(), pos.blockZ());
 	}
 
@@ -53,7 +52,7 @@ public class DensityBlobsSampler implements AbysmDensityFunctionTypes.DensityBlo
 	}
 
 	@Override
-	public Identifier identifier() {
+	public ResourceLocation identifier() {
 		return this.identifier;
 	}
 }

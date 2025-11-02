@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.worldgen.tree;
 
-import net.minecraft.world.gen.trunk.TrunkPlacerType;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 
 public final class AbysmTrunkPlacerTypes {
 	/**

@@ -1,13 +1,13 @@
 package dev.spiritstudios.abysm.block.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class DensityBlobBlockEntity extends BlockEntity {
 	public static final String FINAL_STATE_KEY = "final_state";
@@ -36,26 +36,26 @@ public class DensityBlobBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void writeData(WriteView view) {
-		super.writeData(view);
+	protected void saveAdditional(ValueOutput view) {
+		super.saveAdditional(view);
 		view.putString(FINAL_STATE_KEY, this.finalState);
 		view.putString(BLOBS_SAMPLER_IDENTIFIER, this.blobsSamplerIdentifier);
 	}
 
 	@Override
-	protected void readData(ReadView view) {
-		super.readData(view);
-		this.finalState = view.getString(FINAL_STATE_KEY, "minecraft:air");
-		this.blobsSamplerIdentifier = view.getString(BLOBS_SAMPLER_IDENTIFIER, "abysm:empty");
+	protected void loadAdditional(ValueInput view) {
+		super.loadAdditional(view);
+		this.finalState = view.getStringOr(FINAL_STATE_KEY, "minecraft:air");
+		this.blobsSamplerIdentifier = view.getStringOr(BLOBS_SAMPLER_IDENTIFIER, "abysm:empty");
 	}
 
 
-	public BlockEntityUpdateS2CPacket toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.create(this);
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
-	public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registries) {
-		return this.createComponentlessNbt(registries);
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveCustomOnly(registries);
 	}
 }

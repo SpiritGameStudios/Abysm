@@ -4,16 +4,16 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.model.FlippersModel;
 import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 
 public final class AbysmEntityLayers {
-	public static final EntityModelLayer FLIPPERS = register("player", "flippers", FlippersModel::getTexturedModelData);
+	public static final ModelLayerLocation FLIPPERS = register("player", "flippers", FlippersModel::getTexturedModelData);
 
-	public static final EntityModelLayer MAN_O_WAR = register("man_o_war", "main", GarbageBagModel::getTexturedModelData);
+	public static final ModelLayerLocation MAN_O_WAR = register("man_o_war", "main", GarbageBagModel::getTexturedModelData);
 
 
-	private static EntityModelLayer register(String id, String layer, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
-		EntityModelLayer modelLayer = new EntityModelLayer(Abysm.id(id), layer);
+	private static ModelLayerLocation register(String id, String layer, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
+		ModelLayerLocation modelLayer = new ModelLayerLocation(Abysm.id(id), layer);
 		EntityModelLayerRegistry.registerModelLayer(modelLayer, provider);
 		return modelLayer;
 	}

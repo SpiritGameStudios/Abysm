@@ -12,27 +12,27 @@ import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.VariantSelectorProvider;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.FleeEntityGoal;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.spawn.SpawnContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.core.Holder;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.variant.PriorityProvider;
+import net.minecraft.world.entity.variant.SpawnContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -41,38 +41,38 @@ import software.bernie.geckolib.animation.RawAnimation;
 public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGupEntityVariant> {
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.gup_gup.idle");
 
-	public static final TrackedData<RegistryEntry<GupGupEntityVariant>> VARIANT = DataTracker.registerData(GupGupEntity.class, AbysmTrackedDataHandlers.GUP_GUP_VARIANT);
+	public static final EntityDataAccessor<Holder<GupGupEntityVariant>> VARIANT = SynchedEntityData.defineId(GupGupEntity.class, AbysmTrackedDataHandlers.GUP_GUP_VARIANT);
 
-	public GupGupEntity(EntityType<GupGupEntity> entityType, World world) {
+	public GupGupEntity(EntityType<GupGupEntity> entityType, Level world) {
 		super(entityType, world);
 	}
 
 	@Override
-	protected void initGoals() {
+	protected void registerGoals() {
 		// No super, there will be lots of these so we don't want to add goals we don't need.
-		this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25));
-		this.goalSelector.add(2, new FleeEntityGoal<>(this, PlayerEntity.class, 8.0F, 1.6, 1.4, EntityPredicates.EXCEPT_SPECTATOR::test));
-		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
-		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
-		this.goalSelector.add(4, new SwimAroundBoidGoal(
+		this.goalSelector.addGoal(0, new PanicGoal(this, 1.25));
+		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 8.0F, 1.6, 1.4, EntitySelector.NO_SPECTATORS::test));
+		this.goalSelector.addGoal(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.addGoal(2, new RepopulateGoal(this, 1.25));
+		this.goalSelector.addGoal(4, new SwimAroundBoidGoal(
 			this,
 			2.0F,
-			100 * MathHelper.RADIANS_PER_DEGREE,
-			160 * MathHelper.RADIANS_PER_DEGREE,
+			100 * Mth.DEG_TO_RAD,
+			160 * Mth.DEG_TO_RAD,
 			0.25F, 0.6F, 0.2F, 0.05F, 2F,
 			0.025F, 0.05F
 		));
 	}
 
 	@Override
-	public int getLimitPerChunk() {
+	public int getMaxSpawnClusterSize() {
 		return 50;
 	}
 
 	@Override
-	protected void initDataTracker(DataTracker.Builder builder) {
-		super.initDataTracker(builder);
-		builder.add(VARIANT, GupGupEntityVariant.getDefaultEntry(this.getRegistryManager()));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, GupGupEntityVariant.getDefaultEntry(this.registryAccess()));
 	}
 
 	@Override
@@ -81,32 +81,32 @@ public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGup
 	}
 
 	@Override
-	protected void writeCustomData(WriteView view) {
-		super.writeCustomData(view);
-		view.put("variant", GupGupEntityVariant.ENTRY_CODEC, this.dataTracker.get(VARIANT));
+	protected void addAdditionalSaveData(ValueOutput view) {
+		super.addAdditionalSaveData(view);
+		view.store("variant", GupGupEntityVariant.ENTRY_CODEC, this.entityData.get(VARIANT));
 	}
 
 	@Override
-	protected void readCustomData(ReadView view) {
-		super.readCustomData(view);
+	protected void readAdditionalSaveData(ValueInput view) {
+		super.readAdditionalSaveData(view);
 		view.read("variant", GupGupEntityVariant.ENTRY_CODEC).ifPresent(this::setVariant);
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		VariantSelectorProvider.select(
-			this.getRegistryManager().getOrThrow(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT).streamEntries(),
-			RegistryEntry::value, random,
-			SpawnContext.of(world, this.getBlockPos())
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
+		PriorityProvider.pick(
+			this.registryAccess().lookupOrThrow(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT).listElements(),
+			Holder::value, random,
+			SpawnContext.create(world, this.blockPosition())
 		).ifPresent(this::setVariant);
 
 		this.alertEcosystemOfSpawn();
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 	}
 
 	@Override
-	public boolean shouldRender(double distance) {
-		double d = this.getBoundingBox().getAverageSideLength();
+	public boolean shouldRenderAtSqrDistance(double distance) {
+		double d = this.getBoundingBox().getSize();
 		if (Double.isNaN(d)) {
 			d = 1.0;
 		}
@@ -137,17 +137,17 @@ public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGup
 
 	// TODO: Bucket
 	@Override
-	public ItemStack getBucketItem() {
+	public ItemStack getBucketItemStack() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 
 	@Override
 	public GupGupEntityVariant getVariant() {
-		return this.dataTracker.get(VARIANT).value();
+		return this.entityData.get(VARIANT).value();
 	}
 
 	@Override
-	public void setVariant(RegistryEntry<GupGupEntityVariant> variant) {
-		this.dataTracker.set(VARIANT, variant);
+	public void setVariant(Holder<GupGupEntityVariant> variant) {
+		this.entityData.set(VARIANT, variant);
 	}
 }

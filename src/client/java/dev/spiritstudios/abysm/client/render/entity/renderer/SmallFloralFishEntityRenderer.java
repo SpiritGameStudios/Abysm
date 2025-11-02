@@ -4,21 +4,21 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.renderer.feature.EntityPatternFeatureRenderer;
 import dev.spiritstudios.abysm.entity.floralreef.SmallFloralFishEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
 
 public class SmallFloralFishEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends AbstractFishEntityRenderer<SmallFloralFishEntity, R> {
-	public SmallFloralFishEntityRenderer(EntityRendererFactory.Context context) {
+	public SmallFloralFishEntityRenderer(EntityRendererProvider.Context context) {
 		super(context, new SmallFloralFishEntityModel());
 
 		this.addRenderLayer(new EntityPatternFeatureRenderer<>(this));
 	}
 
 	@Override
-	public Identifier getTextureLocation(R renderState) {
+	public ResourceLocation getTextureLocation(R renderState) {
 		EntityPattern pattern = renderState.getGeckolibData(EntityPatternFeatureRenderer.DATA_TICKET);
 		if (pattern != null) {
 			if (pattern.variant() != null) {

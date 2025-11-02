@@ -3,20 +3,19 @@ package dev.spiritstudios.abysm.data.pattern;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
-import net.minecraft.entity.EntityType;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextCodecs;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.ServerWorldAccess;
-
 import java.util.Optional;
 import java.util.stream.Stream;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 /**
  * The data-drivable record which contains texture path information for Entity Patterns/entity renderers to use.
@@ -26,37 +25,37 @@ import java.util.stream.Stream;
  * @param colorable   If the pattern is meant to be colored with code(default), or has pre-defined colors - if empty, defaults to true
  * @see dev.spiritstudios.abysm.entity.pattern.EntityPattern
  */
-public record EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath,
-								   Optional<Identifier> baseTexture, boolean colorable) {
+public record EntityPatternVariant(EntityType<?> entityType, Component name, ResourceLocation patternPath,
+								   Optional<ResourceLocation> baseTexture, boolean colorable) {
 	// TODO (unimportant) - Actually impl. base texture & colorable codec entries in required places
 	public static final Codec<EntityPatternVariant> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
 			EntityType.CODEC.fieldOf("entity").forGetter(pattern -> pattern.entityType),
-			TextCodecs.CODEC.fieldOf("name").forGetter(pattern -> pattern.name),
-			Identifier.CODEC.fieldOf("pattern").forGetter(pattern -> pattern.patternPath),
-			Identifier.CODEC.optionalFieldOf("base").forGetter(pattern -> pattern.baseTexture),
+			ComponentSerialization.CODEC.fieldOf("name").forGetter(pattern -> pattern.name),
+			ResourceLocation.CODEC.fieldOf("pattern").forGetter(pattern -> pattern.patternPath),
+			ResourceLocation.CODEC.optionalFieldOf("base").forGetter(pattern -> pattern.baseTexture),
 			Codec.BOOL.optionalFieldOf("colorable", true).forGetter(pattern -> pattern.colorable)
 		).apply(instance, EntityPatternVariant::new)
 	);
 
-	public static final PacketCodec<RegistryByteBuf, RegistryEntry<EntityPatternVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistryKeys.ENTITY_PATTERN);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<EntityPatternVariant>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.ENTITY_PATTERN);
 
-	public EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath) {
+	public EntityPatternVariant(EntityType<?> entityType, Component name, ResourceLocation patternPath) {
 		this(entityType, name, patternPath, Optional.empty(), true);
 	}
 
-	public EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, Identifier baseTexture) {
+	public EntityPatternVariant(EntityType<?> entityType, Component name, ResourceLocation patternPath, ResourceLocation baseTexture) {
 		this(entityType, name, patternPath, Optional.of(baseTexture), true);
 	}
 
-	public EntityPatternVariant(EntityType<?> entityType, Text name, Identifier patternPath, boolean colorable) {
+	public EntityPatternVariant(EntityType<?> entityType, Component name, ResourceLocation patternPath, boolean colorable) {
 		this(entityType, name, patternPath, Optional.empty(), colorable);
 	}
 
-	public static Stream<? extends RegistryEntry<EntityPatternVariant>> getVariantsForEntityType(ServerWorldAccess world, EntityType<?> entityType) {
-		DynamicRegistryManager registryManager = world.getRegistryManager();
-		Registry<EntityPatternVariant> registry = registryManager.getOrThrow(AbysmRegistryKeys.ENTITY_PATTERN);
-		return registry.streamEntries()
+	public static Stream<? extends Holder<EntityPatternVariant>> getVariantsForEntityType(ServerLevelAccessor world, EntityType<?> entityType) {
+		RegistryAccess registryManager = world.registryAccess();
+		Registry<EntityPatternVariant> registry = registryManager.lookupOrThrow(AbysmRegistryKeys.ENTITY_PATTERN);
+		return registry.listElements()
 			.filter(patternVariant -> patternVariant.value().entityType.equals(entityType));
 	}
 

@@ -1,9 +1,9 @@
 package dev.spiritstudios.abysm.registry.tags;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.block.Block;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 
 public final class AbysmBlockTags {
 	public static final TagKey<Block> BLOOMSHROOM_PLANTABLE_ON = of("bloomshroom_plantable_on");
@@ -30,6 +30,6 @@ public final class AbysmBlockTags {
 	public static final TagKey<Block> DEEP_SEA_RUINS_REPLACEABLE = of("deep_sea_ruins_replacable");
 
 	private static TagKey<Block> of(String id) {
-		return TagKey.of(RegistryKeys.BLOCK, Abysm.id(id));
+		return TagKey.create(Registries.BLOCK, Abysm.id(id));
 	}
 }

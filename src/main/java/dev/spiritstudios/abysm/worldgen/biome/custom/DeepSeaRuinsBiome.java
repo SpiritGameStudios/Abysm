@@ -7,25 +7,26 @@ import dev.spiritstudios.abysm.worldgen.biome.AbysmBiome;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmPlacedFeatures;
 import dev.spiritstudios.abysm.worldgen.noise.AbysmNoiseParameters;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.sound.BiomeMoodSound;
-import net.minecraft.sound.MusicType;
-import net.minecraft.util.math.VerticalSurfaceType;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.biome.OverworldBiomeCreator;
-import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
+import net.minecraft.data.worldgen.BiomeDefaultFeatures;
+import net.minecraft.data.worldgen.biome.OverworldBiomes;
+import net.minecraft.sounds.Musics;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.AmbientMoodSettings;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
+import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.MaterialRule;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.block;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.condition;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.noiseThreshold;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.not;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.sequence;
-import static net.minecraft.world.gen.surfacebuilder.MaterialRules.stoneDepth;
+import static net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
+import static net.minecraft.world.level.levelgen.SurfaceRules.state;
+import static net.minecraft.world.level.levelgen.SurfaceRules.ifTrue;
+import static net.minecraft.world.level.levelgen.SurfaceRules.noiseCondition;
+import static net.minecraft.world.level.levelgen.SurfaceRules.not;
+import static net.minecraft.world.level.levelgen.SurfaceRules.sequence;
+import static net.minecraft.world.level.levelgen.SurfaceRules.stoneDepthCheck;
 
 public final class DeepSeaRuinsBiome extends AbysmBiome {
 
@@ -34,52 +35,52 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 	}
 
 	@Override
-	public BiomeEffects.Builder createEffects() {
-		return new BiomeEffects.Builder()
+	public BiomeSpecialEffects.Builder createEffects() {
+		return new BiomeSpecialEffects.Builder()
 			.waterColor(0x1C7A56)
 			.waterFogColor(0x06140F)
 			.fogColor(0xC0D8FF)
-			.skyColor(OverworldBiomeCreator.getSkyColor(this.temperature))
-			.moodSound(BiomeMoodSound.CAVE)
-			.music(MusicType.createIngameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_DEEP_SEA_RUINS));
+			.skyColor(OverworldBiomes.calculateSkyColor(this.temperature))
+			.ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
+			.backgroundMusic(Musics.createGameMusic(AbysmSoundEvents.MUSIC_OVERWORLD_DEEP_SEA_RUINS));
 	}
 
 	@Override
-	public void createGenerationSettings(GenerationSettings.LookupBackedBuilder builder) {
+	public void createGenerationSettings(BiomeGenerationSettings.Builder builder) {
 		builder
-			.feature(GenerationStep.Feature.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES)
-			.feature(GenerationStep.Feature.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_CLAY_DREGLOAM)
-			.feature(GenerationStep.Feature.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_GOLDEN_LAZULI_DREGLOAM)
-			.feature(GenerationStep.Feature.UNDERGROUND_DECORATION, AbysmPlacedFeatures.PATCH_HANGING_LANTERN)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.OOZE_PATCH)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SEAGRASS_CAVE)
-			.feature(GenerationStep.Feature.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_GOLDEN_LAZULI_OREFURL);
+			.addFeature(GenerationStep.Decoration.LOCAL_MODIFICATIONS, AbysmPlacedFeatures.SURFACE_SMOOTH_FLOROPUMICE_STALAGMITES)
+			.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_CLAY_DREGLOAM)
+			.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, AbysmPlacedFeatures.ORE_GOLDEN_LAZULI_DREGLOAM)
+			.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, AbysmPlacedFeatures.PATCH_HANGING_LANTERN)
+			.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbysmPlacedFeatures.OOZE_PATCH)
+			.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_SEAGRASS_CAVE)
+			.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, AbysmPlacedFeatures.PATCH_GOLDEN_LAZULI_OREFURL);
 	}
 
 	@Override
-	public SpawnSettings.Builder createSpawnSettings() {
-		SpawnSettings.Builder builder = new SpawnSettings.Builder()
-			.spawn(
-				SpawnGroup.UNDERGROUND_WATER_CREATURE,
+	public MobSpawnSettings.Builder createSpawnSettings() {
+		MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder()
+			.addSpawn(
+				MobCategory.UNDERGROUND_WATER_CREATURE,
 				70,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.LECTORFIN, 5, 8)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.LECTORFIN, 5, 8)
 			)
-			.spawn(
-				SpawnGroup.WATER_AMBIENT,
+			.addSpawn(
+				MobCategory.WATER_AMBIENT,
 				40,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.GUP_GUP, 20, 30)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.GUP_GUP, 20, 30)
 			)
-			.spawn(
-				SpawnGroup.WATER_AMBIENT,
+			.addSpawn(
+				MobCategory.WATER_AMBIENT,
 				40,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.AROWANA_MAGICII, 5, 8)
-			).spawn(
-				SpawnGroup.WATER_CREATURE,
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.AROWANA_MAGICII, 5, 8)
+			).addSpawn(
+				MobCategory.WATER_CREATURE,
 				1,
-				new SpawnSettings.SpawnEntry(AbysmEntityTypes.RETICULATED_FLIPRAY, 1, 2)
+				new MobSpawnSettings.SpawnerData(AbysmEntityTypes.RETICULATED_FLIPRAY, 1, 2)
 			);
 
-		DefaultBiomeFeatures.addBatsAndMonsters(builder);
+		BiomeDefaultFeatures.commonSpawns(builder);
 		return builder;
 	}
 
@@ -87,30 +88,30 @@ public final class DeepSeaRuinsBiome extends AbysmBiome {
 	public void addToGenerator() {
 		// Deep Sea Ruins is not generated through typical biome gen, and is instead generated within the bounds of its structure
 
-		MaterialRule DREGLOAM = block(AbysmBlocks.DREGLOAM.getDefaultState());
-		MaterialRule MUD = block(Blocks.MUD.getDefaultState());
+		RuleSource DREGLOAM = state(AbysmBlocks.DREGLOAM.defaultBlockState());
+		RuleSource MUD = state(Blocks.MUD.defaultBlockState());
 
-		MaterialRule rule = condition(
-			not(stoneDepth(3, false, VerticalSurfaceType.FLOOR)), // do not apply near surface, in case the biome somehow leaks out of the cave too far
+		RuleSource rule = ifTrue(
+			not(stoneDepthCheck(3, false, CaveSurface.FLOOR)), // do not apply near surface, in case the biome somehow leaks out of the cave too far
 			sequence(
-				condition(
-					noiseThreshold(AbysmNoiseParameters.RUINS_SEDIMENT_TYPE, -0.85F, 0.45F),
+				ifTrue(
+					noiseCondition(AbysmNoiseParameters.RUINS_SEDIMENT_TYPE, -0.85F, 0.45F),
 					sequence(
-						condition( // one layer of mud on bottom
-							stoneDepth(0, false, VerticalSurfaceType.CEILING),
+						ifTrue( // one layer of mud on bottom
+							stoneDepthCheck(0, false, CaveSurface.CEILING),
 							MUD
 						),
-						condition(
-							noiseThreshold(AbysmNoiseParameters.RUINS_SEDIMENT_TYPE, -0.65F, 0.3F),
+						ifTrue(
+							noiseCondition(AbysmNoiseParameters.RUINS_SEDIMENT_TYPE, -0.65F, 0.3F),
 							sequence(
-								condition( // two layers of mud on bottom
-									stoneDepth(1, false, VerticalSurfaceType.CEILING),
+								ifTrue( // two layers of mud on bottom
+									stoneDepthCheck(1, false, CaveSurface.CEILING),
 									MUD
 								),
-								condition(
-									noiseThreshold(AbysmNoiseParameters.RUINS_SEDIMENT_TYPE, -0.3F, 0.05F),
-									condition( // three layers of mud on bottom
-										stoneDepth(2, false, VerticalSurfaceType.CEILING),
+								ifTrue(
+									noiseCondition(AbysmNoiseParameters.RUINS_SEDIMENT_TYPE, -0.3F, 0.05F),
+									ifTrue( // three layers of mud on bottom
+										stoneDepthCheck(2, false, CaveSurface.CEILING),
 										MUD
 									)
 								)

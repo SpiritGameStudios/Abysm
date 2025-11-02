@@ -6,51 +6,51 @@ import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.registry.AbysmEnchantments;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
-import net.minecraft.block.BlockState;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ClickType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
 public class HarpoonItem extends Item {
-	public static final Identifier PIERCING = Identifier.ofVanilla("piercing");
+	public static final ResourceLocation PIERCING = ResourceLocation.withDefaultNamespace("piercing");
 
-	public HarpoonItem(Settings settings) {
+	public HarpoonItem(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	public ActionResult use(World world, PlayerEntity user, Hand hand) {
-		if (!world.isClient()) {
-			ItemStack stack = user.getStackInHand(hand);
+	public InteractionResult use(Level world, Player user, InteractionHand hand) {
+		if (!world.isClientSide()) {
+			ItemStack stack = user.getItemInHand(hand);
 			HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
 			if (component.loaded()) {
 				int slot;
-				if (hand == Hand.OFF_HAND) {
-					slot = PlayerInventory.OFF_HAND_SLOT;
+				if (hand == InteractionHand.OFF_HAND) {
+					slot = Inventory.SLOT_OFFHAND;
 				} else {
-					slot = user.getInventory().getSlotWithStack(stack);
+					slot = user.getInventory().findSlotMatchingItem(stack);
 				}
 				HarpoonEntity harpoon = new HarpoonEntity(world, user, slot, stack);
-				world.spawnEntity(harpoon);
+				world.addFreshEntity(harpoon);
 				stack.set(
 					AbysmDataComponentTypes.HARPOON,
 					component.builder()
@@ -58,30 +58,30 @@ public class HarpoonItem extends Item {
 						.ticksSinceShot(0)
 						.build()
 				);
-				world.playSoundFromEntity(null, harpoon, AbysmSoundEvents.ITEM_HARPOON_LAUNCH, SoundCategory.PLAYERS, 1.0F, 1.0F);
+				world.playSound(null, harpoon, AbysmSoundEvents.ITEM_HARPOON_LAUNCH, SoundSource.PLAYERS, 1.0F, 1.0F);
 				if (AbysmEnchantments.hasEnchantment(stack, world, AbysmEnchantments.HAUL)) {
-					user.getItemCooldownManager().set(stack, 120);
+					user.getCooldowns().addCooldown(stack, 120);
 				}
 
-				stack.damage(1, user);
+				stack.hurtWithoutBreaking(1, user);
 			} else {
-				user.getItemCooldownManager().set(stack, 10);
+				user.getCooldowns().addCooldown(stack, 10);
 			}
 		}
-		return ActionResult.CONSUME;
+		return InteractionResult.CONSUME;
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, ServerWorld world, Entity entity, @Nullable EquipmentSlot slot) {
-		if (entity instanceof PlayerEntity player) {
-			PlayerInventory inventory = player.getInventory();
-			int invSlot = inventory.getSlotWithStack(stack);
+	public void inventoryTick(ItemStack stack, ServerLevel world, Entity entity, @Nullable EquipmentSlot slot) {
+		if (entity instanceof Player player) {
+			Inventory inventory = player.getInventory();
+			int invSlot = inventory.findSlotMatchingItem(stack);
 			if (invSlot == -1) {
 				super.inventoryTick(stack, world, entity, slot);
 				return;
 			}
-			ItemStack invStack = inventory.getStack(invSlot);
-			if (!ItemStack.areItemsAndComponentsEqual(stack, invStack)) {
+			ItemStack invStack = inventory.getItem(invSlot);
+			if (!ItemStack.isSameItemSameComponents(stack, invStack)) {
 				super.inventoryTick(stack, world, entity, slot);
 				return;
 			}
@@ -97,16 +97,16 @@ public class HarpoonItem extends Item {
 	}
 
 	@Override
-	public boolean allowComponentsUpdateAnimation(PlayerEntity player, Hand hand, ItemStack oldStack, ItemStack newStack) {
+	public boolean allowComponentsUpdateAnimation(Player player, InteractionHand hand, ItemStack oldStack, ItemStack newStack) {
 		return !allowContinuingBlockBreaking(player, oldStack, newStack);
 	}
 
 	@Override
-	public boolean allowContinuingBlockBreaking(PlayerEntity player, ItemStack oldStack, ItemStack newStack) {
-		if (!ItemStack.areItemsEqual(oldStack, newStack)) {
+	public boolean allowContinuingBlockBreaking(Player player, ItemStack oldStack, ItemStack newStack) {
+		if (!ItemStack.isSameItem(oldStack, newStack)) {
 			return super.allowContinuingBlockBreaking(player, oldStack, newStack);
 		}
-		if (!oldStack.contains(AbysmDataComponentTypes.HARPOON) || !newStack.contains(AbysmDataComponentTypes.HARPOON)) {
+		if (!oldStack.has(AbysmDataComponentTypes.HARPOON) || !newStack.has(AbysmDataComponentTypes.HARPOON)) {
 			return super.allowContinuingBlockBreaking(player, oldStack, newStack);
 		}
 		if (!Objects.equals(oldStack.get(AbysmDataComponentTypes.HARPOON), newStack.get(AbysmDataComponentTypes.HARPOON))) {
@@ -116,27 +116,27 @@ public class HarpoonItem extends Item {
 	}
 
 	@Override
-	public boolean canMine(ItemStack stack, BlockState state, World world, BlockPos pos, LivingEntity user) {
-		return !user.isInCreativeMode();
+	public boolean canDestroyBlock(ItemStack stack, BlockState state, Level world, BlockPos pos, LivingEntity user) {
+		return !user.hasInfiniteMaterials();
 	}
 
 	@Override
-	public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
-		if (clickType == ClickType.RIGHT) {
-			ItemStack slotStack = slot.getStack();
+	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction clickType, Player player) {
+		if (clickType == ClickAction.SECONDARY) {
+			ItemStack slotStack = slot.getItem();
 			HarpoonComponent component = stack.getOrDefault(AbysmDataComponentTypes.HARPOON, HarpoonComponent.EMPTY);
 			ItemStack componentStack = component.stack();
-			if (componentStack.isEmpty() && slotStack.isOf(Items.HEART_OF_THE_SEA)) {
+			if (componentStack.isEmpty() && slotStack.is(Items.HEART_OF_THE_SEA)) {
 				stack.set(AbysmDataComponentTypes.HARPOON, component.builder().stack(slotStack.copyWithCount(1)).build());
-				slotStack.decrement(1);
+				slotStack.shrink(1);
 				return true;
 			}
 			if (slotStack.isEmpty() && !componentStack.isEmpty()) {
-				slot.setStack(componentStack.copy());
+				slot.setByPlayer(componentStack.copy());
 				stack.set(AbysmDataComponentTypes.HARPOON, component.builder().stack(ItemStack.EMPTY).build());
 				return true;
 			}
-			final int maxCount = slotStack.getMaxCount();
+			final int maxCount = slotStack.getMaxStackSize();
 			if (slotStack.getItem().equals(componentStack.getItem()) && slotStack.getCount() < maxCount) {
 				int count = slotStack.getCount() + componentStack.getCount();
 				if (count <= maxCount) {
@@ -148,11 +148,11 @@ public class HarpoonItem extends Item {
 				return true;
 			}
 		}
-		return super.onStackClicked(stack, slot, clickType, player);
+		return super.overrideStackedOnOther(stack, slot, clickType, player);
 	}
 
 	@Override
-	public boolean canBeEnchantedWith(ItemStack stack, RegistryEntry<Enchantment> enchantment, EnchantingContext context) {
-		return super.canBeEnchantedWith(stack, enchantment, context) || enchantment.matchesId(PIERCING);
+	public boolean canBeEnchantedWith(ItemStack stack, Holder<Enchantment> enchantment, EnchantingContext context) {
+		return super.canBeEnchantedWith(stack, enchantment, context) || enchantment.is(PIERCING);
 	}
 }

@@ -7,10 +7,6 @@ import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -19,6 +15,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 
 public class EcosystemArea {
 	// TODO - Sometimes task entities with eating plants, if they can
@@ -30,19 +30,19 @@ public class EcosystemArea {
 	// When giving an EcosystemType a task, chance of tasking another entity with eating plants
 	public static final float SCAVENGE_CHANCE = 0.05f;
 
-	public final ServerWorld world;
+	public final ServerLevel world;
 	public final EcosystemAreaPos pos;
 	public final Map<EcosystemType<?>, PopInfo> populations = new Object2ObjectOpenHashMap<>();
 
 	public int taskTicks = 0; // ticks until task
 	public int ticksUntilForceTask = 0; // ticks until a task is forced - reset every time a task is successfully created
 
-	public EcosystemArea(ServerWorld world, EcosystemAreaPos pos) {
+	public EcosystemArea(ServerLevel world, EcosystemAreaPos pos) {
 		this.world = world;
 		this.pos = pos;
 	}
 
-	public void addEntity(MobEntity entity) {
+	public void addEntity(Mob entity) {
 		if (!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 
 		EcosystemType<?> type = ecologicalEntity.getEcosystemType();
@@ -50,7 +50,7 @@ public class EcosystemArea {
 		popInfo.addEntity(entity);
 	}
 
-	public void removeEntity(MobEntity entity) {
+	public void removeEntity(Mob entity) {
 		if (!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 
 		EcosystemType<?> type = ecologicalEntity.getEcosystemType();
@@ -59,7 +59,7 @@ public class EcosystemArea {
 	}
 
 	@SuppressWarnings("unused")
-	public void tick(ServerWorld serverWorld, EcosystemAreaPos pos) {
+	public void tick(ServerLevel serverWorld, EcosystemAreaPos pos) {
 		this.taskTicks--;
 		this.ticksUntilForceTask--;
 		if(taskTicks <= 0 || ticksUntilForceTask <= 0) {
@@ -71,10 +71,10 @@ public class EcosystemArea {
 	 * Creates tasks to hand out to EcosystemType(s) within this EcosystemArea. The type of task is determined using nearby population data via {@link EcosystemArea#getNearbyPopulationSize(EcosystemType)}, or forced if none have been given out in a while.
 	 */
 	public void createTasks() {
-		this.taskTicks = this.world.random.nextBetween(MIN_TASK_WAIT_TICKS, MAX_TASK_WAIT_TICKS);
+		this.taskTicks = this.world.random.nextIntBetweenInclusive(MIN_TASK_WAIT_TICKS, MAX_TASK_WAIT_TICKS);
 
 		// Could be influenced by the amount of residing EcosystemTypes?
-		int tasks = this.world.getRandom().nextBetween(1, 3);
+		int tasks = this.world.getRandom().nextIntBetweenInclusive(1, 3);
 		// Forcing the task forces a random EcosystemType to get hunted and reproduce despite population numbers
 		// This was done to create action if nothing happens for too long
 		boolean force = this.ticksUntilForceTask <= 0;
@@ -130,7 +130,7 @@ public class EcosystemArea {
 
 		int index = this.world.getRandom().nextInt(predatorTypes.size());
 		predatorTypes.get(index).ifPresent(hunterType -> {
-			MobEntity hunter = this.getRandomEntity(hunterType);
+			Mob hunter = this.getRandomEntity(hunterType);
 			if(!(hunter instanceof EcologicalEntity ecologicalHunter)) return;
 
 			// Allow the hunter to begin searching for nearby prey
@@ -143,7 +143,7 @@ public class EcosystemArea {
 
 	public void reproduceEcosystemType(EcosystemType<?> ecosystemType) {
 		// Choose random entity in this EcosystemArea to accept the task
-		MobEntity entity = this.getRandomEntity(ecosystemType);
+		Mob entity = this.getRandomEntity(ecosystemType);
 		if(!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 
 		// Allow the entity to begin searching for a nearby mate
@@ -154,7 +154,7 @@ public class EcosystemArea {
 
 	public void scavengeEcosystemType(EcosystemType<?> ecosystemType) {
 		// Choose random entity in this EcosystemArea to accept the task
-		MobEntity entity = this.getRandomEntity(ecosystemType);
+		Mob entity = this.getRandomEntity(ecosystemType);
 		if(!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 
 		// Allow the entity to begin searching for a nearby mate
@@ -220,14 +220,14 @@ public class EcosystemArea {
 	 * @return A random MobEntity of the given EcosystemType that is within this EcosystemArea.
 	 */
 	@Nullable
-	public MobEntity getRandomEntity(EcosystemType<?> ecosystemType) {
+	public Mob getRandomEntity(EcosystemType<?> ecosystemType) {
 		PopInfo popInfo = this.populations.get(ecosystemType);
 		if (popInfo == null || popInfo.isEmpty()) return null;
 
 		int[] entityIds = popInfo.getEntityIds().intStream().toArray();
 		int index = this.world.getRandom().nextInt(entityIds.length);
 		int entityId = entityIds[index];
-		return (MobEntity) this.world.getEntityById(entityId);
+		return (Mob) this.world.getEntity(entityId);
 	}
 
 	/**
@@ -268,11 +268,11 @@ public class EcosystemArea {
 			this.type = type;
 		}
 
-		public void addEntity(MobEntity entity) {
+		public void addEntity(Mob entity) {
 			this.entityIds.add(entity.getId());
 		}
 
-		public void removeEntity(MobEntity entity) {
+		public void removeEntity(Mob entity) {
 			this.entityIds.remove(entity.getId());
 		}
 

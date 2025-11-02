@@ -1,9 +1,9 @@
 package dev.spiritstudios.abysm.worldgen.densityfunction;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.gen.densityfunction.DensityFunction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.levelgen.DensityFunction;
 
-public class DensityFunctionWrapper implements DensityFunction.NoisePos {
+public class DensityFunctionWrapper implements DensityFunction.FunctionContext {
 
 	private final DensityFunction wrapped;
 	private int x = 0;
@@ -29,8 +29,8 @@ public class DensityFunctionWrapper implements DensityFunction.NoisePos {
 		return this.z;
 	}
 
-	public double sample(DensityFunction.NoisePos pos) {
-		return this.wrapped.sample(pos);
+	public double sample(DensityFunction.FunctionContext pos) {
+		return this.wrapped.compute(pos);
 	}
 
 	public double sample() {

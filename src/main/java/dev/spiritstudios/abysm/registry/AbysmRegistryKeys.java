@@ -10,22 +10,22 @@ import dev.spiritstudios.abysm.data.variant.GupGupEntityVariant;
 import dev.spiritstudios.abysm.data.variant.SnapperEntityVariant;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.worldgen.densityfunction.DensityBlob;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 
 public final class AbysmRegistryKeys {
-	public static final RegistryKey<Registry<EcosystemType<?>>> ECOSYSTEM_TYPE = ofKey("ecosystem_type");
-	public static final RegistryKey<Registry<MapCodec<? extends DensityBlob>>> DENSITY_BLOB_TYPE = ofKey("density_blob_type");
+	public static final ResourceKey<Registry<EcosystemType<?>>> ECOSYSTEM_TYPE = ofKey("ecosystem_type");
+	public static final ResourceKey<Registry<MapCodec<? extends DensityBlob>>> DENSITY_BLOB_TYPE = ofKey("density_blob_type");
 
-	public static final RegistryKey<Registry<EntityPatternVariant>> ENTITY_PATTERN = ofKey("entity_pattern");
-	public static final RegistryKey<Registry<BloomrayEntityVariant>> BLOOMRAY_ENTITY_VARIANT = ofKey("bloomray_variant");
-	public static final RegistryKey<Registry<ElectricOoglyBooglyVariant>> ELECTRIC_OOGLY_BOOGLY_VARIANT = ofKey("electric_oogly_boogly_variant");
-	public static final RegistryKey<Registry<GupGupEntityVariant>> GUP_GUP_ENTITY_VARIANT = ofKey("gup_gup_variant");
-	public static final RegistryKey<Registry<SnapperEntityVariant>> SNAPPER_ENTITY_VARIANT = ofKey("snapper_variant");
+	public static final ResourceKey<Registry<EntityPatternVariant>> ENTITY_PATTERN = ofKey("entity_pattern");
+	public static final ResourceKey<Registry<BloomrayEntityVariant>> BLOOMRAY_ENTITY_VARIANT = ofKey("bloomray_variant");
+	public static final ResourceKey<Registry<ElectricOoglyBooglyVariant>> ELECTRIC_OOGLY_BOOGLY_VARIANT = ofKey("electric_oogly_boogly_variant");
+	public static final ResourceKey<Registry<GupGupEntityVariant>> GUP_GUP_ENTITY_VARIANT = ofKey("gup_gup_variant");
+	public static final ResourceKey<Registry<SnapperEntityVariant>> SNAPPER_ENTITY_VARIANT = ofKey("snapper_variant");
 
-	public static final RegistryKey<Registry<FishEnchantment>> FISH_ENCHANTMENT = ofKey("fish_enchantment");
+	public static final ResourceKey<Registry<FishEnchantment>> FISH_ENCHANTMENT = ofKey("fish_enchantment");
 
-	private static <T> RegistryKey<Registry<T>> ofKey(String path) {
-		return RegistryKey.ofRegistry(Abysm.id(path));
+	private static <T> ResourceKey<Registry<T>> ofKey(String path) {
+		return ResourceKey.createRegistryKey(Abysm.id(path));
 	}
 }

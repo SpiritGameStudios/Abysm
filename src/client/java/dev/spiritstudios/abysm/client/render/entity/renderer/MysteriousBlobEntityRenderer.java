@@ -1,13 +1,12 @@
 package dev.spiritstudios.abysm.client.render.entity.renderer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.GeoUtil;
 import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
@@ -16,13 +15,13 @@ public class MysteriousBlobEntityRenderer<R extends LivingEntityRenderState & Ge
 
 	public static final DataTicket<Boolean> HAPPY_BLOB = DataTicket.create("happy_blob", Boolean.class);
 
-	public MysteriousBlobEntityRenderer(EntityRendererFactory.Context context) {
+	public MysteriousBlobEntityRenderer(EntityRendererProvider.Context context) {
 		super(context, new EntityModel());
 	}
 
 	@Override
-	public Identifier getTextureLocation(R renderState) {
-		Identifier original = super.getTextureLocation(renderState);
+	public ResourceLocation getTextureLocation(R renderState) {
+		ResourceLocation original = super.getTextureLocation(renderState);
 		if (!GeoUtil.getOrDefaultGeoData(renderState, HAPPY_BLOB, true)) {
 			return original.withPath(string -> {
 				int extension = string.indexOf('.');
@@ -33,14 +32,14 @@ public class MysteriousBlobEntityRenderer<R extends LivingEntityRenderState & Ge
 	}
 
 	@Override
-	protected void applyRotations(R renderState, MatrixStack matrixStack, float nativeScale) {
+	protected void applyRotations(R renderState, PoseStack matrixStack, float nativeScale) {
 		super.applyRotations(renderState, matrixStack, nativeScale);
 	}
 
 	@SuppressWarnings("OverrideOnly")
 	@Override
-	public void updateRenderState(MysteriousBlobEntity blob, R entityRenderState, float partialTick) {
-		super.updateRenderState(blob, entityRenderState, partialTick);
+	public void extractRenderState(MysteriousBlobEntity blob, R entityRenderState, float partialTick) {
+		super.extractRenderState(blob, entityRenderState, partialTick);
 		this.scaleWidth = blob.lerpScaleXZ(partialTick);
 		this.scaleHeight = blob.lerpScaleY(partialTick);
 	}

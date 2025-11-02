@@ -18,22 +18,22 @@ import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalEntityTypeTags;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.family.BlockFamily;
-import net.minecraft.data.tag.ProvidedTagBuilder;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.BiomeTags;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.registry.tag.EntityTypeTags;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.BlockFamily;
+import net.minecraft.data.tags.TagAppender;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -52,12 +52,12 @@ public class AbysmTagProviders {
 	}
 
 	private static class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
-		public BlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+		public BlockTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 			super(output, registriesFuture);
 		}
 
 		@Override
-		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+		protected void addTags(HolderLookup.Provider wrapperLookup) {
 			// region Family tags
 			addTagsForFamilies(false, true,
 				AbysmBlockFamilies.FLOROPUMICE,
@@ -68,7 +68,7 @@ public class AbysmTagProviders {
 				AbysmBlockFamilies.CUT_SMOOTH_FLOROPUMICE
 			);
 
-			addFamiliesToTag(BlockTags.PICKAXE_MINEABLE,
+			addFamiliesToTag(BlockTags.MINEABLE_WITH_PICKAXE,
 				AbysmBlockFamilies.FLOROPUMICE,
 				AbysmBlockFamilies.FLOROPUMICE_BRICKS,
 				AbysmBlockFamilies.FLOROPUMICE_TILES,
@@ -79,7 +79,7 @@ public class AbysmTagProviders {
 			// endregion
 
 			// region Block tags
-			valueLookupBuilder(BlockTags.PICKAXE_MINEABLE)
+			valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE)
 				.add(
 					AbysmBlocks.POLISHED_FLOROPUMICE,
 					AbysmBlocks.CHISLED_FLOROPUMICE,
@@ -93,13 +93,13 @@ public class AbysmTagProviders {
 				.add(AbysmBlocks.OOZETRICKLE_CORD)
 				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
 
-			valueLookupBuilder(BlockTags.AXE_MINEABLE)
+			valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
 				.add(AbysmBlocks.OOZETRICKLE_CORD)
 				.add(AbysmBlocks.OOZETRICKLE_LANTERN);
 
-			valueLookupBuilder(BlockTags.SHOVEL_MINEABLE)
+			valueLookupBuilder(BlockTags.MINEABLE_WITH_SHOVEL)
 				.addOptionalTag(AbysmBlockTags.NECTARSAP)
 				.add(
 					AbysmBlocks.DREGLOAM,
@@ -109,7 +109,7 @@ public class AbysmTagProviders {
 					AbysmBlocks.SILT
 				);
 
-			valueLookupBuilder(BlockTags.HOE_MINEABLE)
+			valueLookupBuilder(BlockTags.MINEABLE_WITH_HOE)
 				.addOptionalTag(AbysmBlockTags.NECTARSAP)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_STEMS)
 				.addOptionalTag(AbysmBlockTags.BLOOMSHROOM_CAPS)
@@ -388,13 +388,13 @@ public class AbysmTagProviders {
 		}
 
 		public void addFamilyToTag(BlockFamily family, TagKey<Block> tag) {
-			ProvidedTagBuilder<Block, Block> builder = valueLookupBuilder(tag);
+			TagAppender<Block, Block> builder = valueLookupBuilder(tag);
 
 			// family.getVariants() gives a HashMap, so sort it for consistent ordering
 			Collection<Block> blocks = family.getVariants().values();
 			List<Block> blocksSorted = blocks.stream().sorted((b1, b2) -> {
-				char[] c1 = b1.getTranslationKey().toCharArray();
-				char[] c2 = b2.getTranslationKey().toCharArray();
+				char[] c1 = b1.getDescriptionId().toCharArray();
+				char[] c2 = b2.getDescriptionId().toCharArray();
 				return Arrays.compare(c1, c2);
 			}).toList();
 
@@ -427,14 +427,14 @@ public class AbysmTagProviders {
 		}
 
 		public void addBlockToTags(BlockFamily family, BlockFamily.Variant variant, TagKey<Block> tag) {
-			Block block = family.getVariant(variant);
+			Block block = family.get(variant);
 			if (block != null) {
 				valueLookupBuilder(tag).add(block);
 			}
 		}
 
 		public void addBlockToTags(BlockFamily family, BlockFamily.Variant variant, boolean isWooden, TagKey<Block> baseTag, TagKey<Block> woodTag) {
-			addBlockToTags(family.getVariant(variant), isWooden, baseTag, woodTag);
+			addBlockToTags(family.get(variant), isWooden, baseTag, woodTag);
 		}
 
 		public void addBlockToTags(@Nullable Block block, boolean isWooden, TagKey<Block> baseTag, TagKey<Block> woodTag) {
@@ -447,7 +447,7 @@ public class AbysmTagProviders {
 		}
 
 		public void addBlockToTags(BlockFamily family, BlockFamily.Variant variant, boolean isWooden, boolean isStone, TagKey<Block> baseTag, TagKey<Block> woodTag, TagKey<Block> stoneTag) {
-			addBlockToTags(family.getVariant(variant), isWooden, isStone, baseTag, woodTag, stoneTag);
+			addBlockToTags(family.get(variant), isWooden, isStone, baseTag, woodTag, stoneTag);
 		}
 
 		public void addBlockToTags(@Nullable Block block, boolean isWooden, boolean isStone, TagKey<Block> baseTag, TagKey<Block> woodTag, TagKey<Block> stoneTag) {
@@ -464,12 +464,12 @@ public class AbysmTagProviders {
 	}
 
 	private static class ItemTagProvider extends FabricTagProvider.ItemTagProvider {
-		public ItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture, @Nullable FabricTagProvider.BlockTagProvider blockTagProvider) {
+		public ItemTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture, @Nullable FabricTagProvider.BlockTagProvider blockTagProvider) {
 			super(output, completableFuture, blockTagProvider);
 		}
 
 		@Override
-		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+		protected void addTags(HolderLookup.Provider wrapperLookup) {
 			// region vanilla item tags
 			valueLookupBuilder(ItemTags.FOOT_ARMOR_ENCHANTABLE)
 				.add(
@@ -596,12 +596,12 @@ public class AbysmTagProviders {
 	}
 
 	private static class BiomeTagProvider extends FabricTagProvider<Biome> {
-		public BiomeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-			super(output, RegistryKeys.BIOME, registriesFuture);
+		public BiomeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+			super(output, Registries.BIOME, registriesFuture);
 		}
 
 		@Override
-		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+		protected void addTags(HolderLookup.Provider wrapperLookup) {
 			// region vanilla tags
 			builder(BiomeTags.IS_OVERWORLD)
 				.add(AbysmBiomes.FLORAL_REEF)
@@ -680,12 +680,12 @@ public class AbysmTagProviders {
 	}
 
 	private static class EntityTypeTagProvider extends FabricTagProvider.EntityTypeTagProvider {
-		public EntityTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+		public EntityTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> completableFuture) {
 			super(output, completableFuture);
 		}
 
 		@Override
-		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+		protected void addTags(HolderLookup.Provider wrapperLookup) {
 			// region vanilla entity tags
 			valueLookupBuilder(EntityTypeTags.AXOLOTL_HUNT_TARGETS)
 				.add(
@@ -789,12 +789,12 @@ public class AbysmTagProviders {
 
 	private static class DamageTypeTagProvider extends FabricTagProvider<DamageType> {
 
-		public DamageTypeTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-			super(output, RegistryKeys.DAMAGE_TYPE, registriesFuture);
+		public DamageTypeTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+			super(output, Registries.DAMAGE_TYPE, registriesFuture);
 		}
 
 		@Override
-		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+		protected void addTags(HolderLookup.Provider wrapperLookup) {
 			builder(DamageTypeTags.IS_PROJECTILE)
 				.add(AbysmDamageTypes.HARPOON);
 
@@ -820,12 +820,12 @@ public class AbysmTagProviders {
 
 	private static class SoundEventTagProvider extends FabricTagProvider<SoundEvent> {
 
-		public SoundEventTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-			super(output, RegistryKeys.SOUND_EVENT, registriesFuture);
+		public SoundEventTagProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+			super(output, Registries.SOUND_EVENT, registriesFuture);
 		}
 
 		@Override
-		protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+		protected void addTags(HolderLookup.Provider wrapperLookup) {
 			builder(AbysmSoundEventTags.UNEFFECTED_BY_WATER);
 		}
 	}

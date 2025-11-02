@@ -3,43 +3,43 @@ package dev.spiritstudios.abysm.entity.ruins;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.core.Holder;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class AbysmFishEnchantments {
-	public static final RegistryKey<FishEnchantment> NONE = ofKey("none");
-	public static final RegistryKey<FishEnchantment> JAW = ofKey("jaw");
-	public static final RegistryKey<FishEnchantment> SHELL = ofKey("shell");
-	public static final RegistryKey<FishEnchantment> JET = ofKey("jet");
-	public static final RegistryKey<FishEnchantment> OBFUSCATED = ofKey("obfuscated");
+	public static final ResourceKey<FishEnchantment> NONE = ofKey("none");
+	public static final ResourceKey<FishEnchantment> JAW = ofKey("jaw");
+	public static final ResourceKey<FishEnchantment> SHELL = ofKey("shell");
+	public static final ResourceKey<FishEnchantment> JET = ofKey("jet");
+	public static final ResourceKey<FishEnchantment> OBFUSCATED = ofKey("obfuscated");
 
-	private static RegistryKey<FishEnchantment> ofKey(String key) {
-		return RegistryKey.of(AbysmRegistryKeys.FISH_ENCHANTMENT, Abysm.id(key));
+	private static ResourceKey<FishEnchantment> ofKey(String key) {
+		return ResourceKey.create(AbysmRegistryKeys.FISH_ENCHANTMENT, Abysm.id(key));
 	}
 
-	private static void register(Registerable<FishEnchantment> registerable, RegistryKey<FishEnchantment> key,RegistryEntry<EntityAttribute> attribute, double value) {
+	private static void register(BootstrapContext<FishEnchantment> registerable, ResourceKey<FishEnchantment> key,Holder<Attribute> attribute, double value) {
 		registerable.register(key, FishEnchantment.builder()
-			.id(key.getValue())
+			.id(key.location())
 			.add(
 				attribute,
-				new EntityAttributeModifier(
-					key.getValue(),
+				new AttributeModifier(
+					key.location(),
 					value,
-					EntityAttributeModifier.Operation.ADD_VALUE
+					AttributeModifier.Operation.ADD_VALUE
 				)
 			).build());
 	}
 
-	public static void bootstrap(Registerable<FishEnchantment> registerable) {
-		registerable.register(NONE, FishEnchantment.builder().id(NONE.getValue()).build());
+	public static void bootstrap(BootstrapContext<FishEnchantment> registerable) {
+		registerable.register(NONE, FishEnchantment.builder().id(NONE.location()).build());
 
-		register(registerable, JAW, EntityAttributes.ATTACK_DAMAGE, 2);
-		register(registerable, SHELL, EntityAttributes.ARMOR, 10);
-		register(registerable, JET, EntityAttributes.MOVEMENT_SPEED, 0.4);
-		register(registerable, OBFUSCATED, EntityAttributes.LUCK, 1);
+		register(registerable, JAW, Attributes.ATTACK_DAMAGE, 2);
+		register(registerable, SHELL, Attributes.ARMOR, 10);
+		register(registerable, JET, Attributes.MOVEMENT_SPEED, 0.4);
+		register(registerable, OBFUSCATED, Attributes.LUCK, 1);
 	}
 }

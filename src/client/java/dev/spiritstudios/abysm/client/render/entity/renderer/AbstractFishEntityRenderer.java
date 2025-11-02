@@ -1,12 +1,12 @@
 package dev.spiritstudios.abysm.client.render.entity.renderer;
 
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.render.entity.state.TropicalFishEntityRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RotationAxis;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.entity.state.TropicalFishRenderState;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -19,21 +19,21 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
  */
 @SuppressWarnings("JavadocReference")
 public abstract class AbstractFishEntityRenderer<T extends Entity & GeoAnimatable, R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<T, R> {
-	public AbstractFishEntityRenderer(EntityRendererFactory.Context context, GeoModel<T> model) {
+	public AbstractFishEntityRenderer(EntityRendererProvider.Context context, GeoModel<T> model) {
 		super(context, model);
 	}
 
 	/**
-	 * Applies magic numbers pulled from {@link net.minecraft.client.render.entity.TropicalFishEntityRenderer#setupTransforms(TropicalFishEntityRenderState, MatrixStack, float, float)}, which include rotations as part of(but not fully!) the swimming animation, and the floundering/flopping animation when on land.
+	 * Applies magic numbers pulled from {@link net.minecraft.client.renderer.entity.TropicalFishRenderer#setupRotations(TropicalFishRenderState, PoseStack, float, float)}, which include rotations as part of(but not fully!) the swimming animation, and the floundering/flopping animation when on land.
 	 */
 	@Override
-	protected void applyRotations(R renderState, MatrixStack matrixStack, float nativeScale) {
+	protected void applyRotations(R renderState, PoseStack matrixStack, float nativeScale) {
 		super.applyRotations(renderState, matrixStack, nativeScale);
-		float rotation = 4.3F * MathHelper.sin(0.6F * renderState.age);
-		matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
-		if(!renderState.touchingWater && this.shouldApplyFishLandTransforms()) {
+		float rotation = 4.3F * Mth.sin(0.6F * renderState.ageInTicks);
+		matrixStack.mulPose(Axis.YP.rotationDegrees(rotation));
+		if(!renderState.isInWater && this.shouldApplyFishLandTransforms()) {
 			matrixStack.translate(0.2F, 0.1F, 0.0F);
-			matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90.0F));
+			matrixStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
 		}
 	}
 

@@ -29,10 +29,10 @@ import dev.spiritstudios.specter.api.registry.AutomaticDynamicRegistryProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.JsonKeySortOrderCallback;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryBuilder;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 
 public class AbysmDatagen implements DataGeneratorEntrypoint {
 	@Override
@@ -47,19 +47,19 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 
 		// region data
 		// worldgen registries
-		addProvider(pack, RegistryKeys.NOISE_PARAMETERS);
-		addProvider(pack, RegistryKeys.DENSITY_FUNCTION);
-		addProvider(pack, RegistryKeys.BIOME);
-		addProvider(pack, RegistryKeys.CONFIGURED_FEATURE);
-		addProvider(pack, RegistryKeys.PLACED_FEATURE);
-		addProvider(pack, RegistryKeys.STRUCTURE_SET);
-		addProvider(pack, RegistryKeys.PROCESSOR_LIST);
-		addProvider(pack, RegistryKeys.STRUCTURE);
-		addProvider(pack, RegistryKeys.TEMPLATE_POOL);
+		addProvider(pack, Registries.NOISE);
+		addProvider(pack, Registries.DENSITY_FUNCTION);
+		addProvider(pack, Registries.BIOME);
+		addProvider(pack, Registries.CONFIGURED_FEATURE);
+		addProvider(pack, Registries.PLACED_FEATURE);
+		addProvider(pack, Registries.STRUCTURE_SET);
+		addProvider(pack, Registries.PROCESSOR_LIST);
+		addProvider(pack, Registries.STRUCTURE);
+		addProvider(pack, Registries.TEMPLATE_POOL);
 
 		// misc registries
-		addProvider(pack, RegistryKeys.DAMAGE_TYPE);
-		addProvider(pack, RegistryKeys.ENCHANTMENT);
+		addProvider(pack, Registries.DAMAGE_TYPE);
+		addProvider(pack, Registries.ENCHANTMENT);
 
 		// abysm registries
 		addProvider(pack, AbysmRegistryKeys.ENTITY_PATTERN);
@@ -86,7 +86,7 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 		// endregion
 	}
 
-	private <T> AutomaticDynamicRegistryProvider<T> addProvider(FabricDataGenerator.Pack pack, RegistryKey<Registry<T>> registryKey) {
+	private <T> AutomaticDynamicRegistryProvider<T> addProvider(FabricDataGenerator.Pack pack, ResourceKey<Registry<T>> registryKey) {
 		return pack.addProvider(AutomaticDynamicRegistryProvider.factory(registryKey, Abysm.MODID));
 	}
 
@@ -114,32 +114,32 @@ public class AbysmDatagen implements DataGeneratorEntrypoint {
 	}
 
 	@Override
-	public void buildRegistry(RegistryBuilder registryBuilder) {
+	public void buildRegistry(RegistrySetBuilder registryBuilder) {
 		registryBuilder
 			// worldgen
-			.addRegistry(RegistryKeys.NOISE_PARAMETERS, AbysmNoiseParameters::bootstrap)
-			.addRegistry(RegistryKeys.DENSITY_FUNCTION, AbysmDensityFunctions::bootstrap)
-			.addRegistry(RegistryKeys.BIOME, AbysmBiomes::bootstrap)
-			.addRegistry(RegistryKeys.CONFIGURED_FEATURE, AbysmConfiguredFeatures::bootstrap)
-			.addRegistry(RegistryKeys.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap)
-			.addRegistry(RegistryKeys.STRUCTURE_SET, AbysmStructureSets::bootstrap)
-			.addRegistry(RegistryKeys.PROCESSOR_LIST, AbysmStructureProcessorLists::bootstrap)
-			.addRegistry(RegistryKeys.STRUCTURE, AbysmStructures::bootstrap)
-			.addRegistry(RegistryKeys.TEMPLATE_POOL, AbysmStructurePools::bootstrap)
+			.add(Registries.NOISE, AbysmNoiseParameters::bootstrap)
+			.add(Registries.DENSITY_FUNCTION, AbysmDensityFunctions::bootstrap)
+			.add(Registries.BIOME, AbysmBiomes::bootstrap)
+			.add(Registries.CONFIGURED_FEATURE, AbysmConfiguredFeatures::bootstrap)
+			.add(Registries.PLACED_FEATURE, AbysmPlacedFeatures::bootstrap)
+			.add(Registries.STRUCTURE_SET, AbysmStructureSets::bootstrap)
+			.add(Registries.PROCESSOR_LIST, AbysmStructureProcessorLists::bootstrap)
+			.add(Registries.STRUCTURE, AbysmStructures::bootstrap)
+			.add(Registries.TEMPLATE_POOL, AbysmStructurePools::bootstrap)
 
 			// misc
-			.addRegistry(RegistryKeys.DAMAGE_TYPE, AbysmDamageTypes::bootstrap)
-			.addRegistry(RegistryKeys.ENCHANTMENT, AbysmEnchantments::bootstrap)
-			.addRegistry(SpecterItemRegistryKeys.ITEM_GROUP, AbysmItemGroups::bootstrap)
+			.add(Registries.DAMAGE_TYPE, AbysmDamageTypes::bootstrap)
+			.add(Registries.ENCHANTMENT, AbysmEnchantments::bootstrap)
+			.add(SpecterItemRegistryKeys.ITEM_GROUP, AbysmItemGroups::bootstrap)
 
 			// abysm
-			.addRegistry(AbysmRegistryKeys.ENTITY_PATTERN, AbysmEntityPatternVariants::bootstrap)
+			.add(AbysmRegistryKeys.ENTITY_PATTERN, AbysmEntityPatternVariants::bootstrap)
 
-			.addRegistry(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT, AbysmEntityVariants::bloomrayBootstrap)
-			.addRegistry(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT, AbysmEntityVariants::ooglyBooglyBootstrap)
-			.addRegistry(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT, AbysmEntityVariants::gupGupBootstrap)
-			.addRegistry(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT, AbysmEntityVariants::snapperBootstrap)
+			.add(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT, AbysmEntityVariants::bloomrayBootstrap)
+			.add(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT, AbysmEntityVariants::ooglyBooglyBootstrap)
+			.add(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT, AbysmEntityVariants::gupGupBootstrap)
+			.add(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT, AbysmEntityVariants::snapperBootstrap)
 
-			.addRegistry(AbysmRegistryKeys.FISH_ENCHANTMENT, AbysmFishEnchantments::bootstrap);
+			.add(AbysmRegistryKeys.FISH_ENCHANTMENT, AbysmFishEnchantments::bootstrap);
 	}
 }

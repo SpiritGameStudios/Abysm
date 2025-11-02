@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.worldgen.tree;
 
-import net.minecraft.world.gen.foliage.FoliagePlacerType;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
 
 public final class AbysmFoliagePlacerTypes {
 	/**

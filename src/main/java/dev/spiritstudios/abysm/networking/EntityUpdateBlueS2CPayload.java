@@ -1,25 +1,25 @@
 package dev.spiritstudios.abysm.networking;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record EntityUpdateBlueS2CPayload(int entityId, boolean isBlue) implements AutoSendPayload {
-	public static final PacketCodec<PacketByteBuf, EntityUpdateBlueS2CPayload> PACKET_CODEC = CustomPayload.codecOf(EntityUpdateBlueS2CPayload::write, EntityUpdateBlueS2CPayload::new);
-	public static final Id<EntityUpdateBlueS2CPayload> ID = new Id<>(Abysm.id("entity_update_blue_s2c"));
+	public static final StreamCodec<FriendlyByteBuf, EntityUpdateBlueS2CPayload> PACKET_CODEC = CustomPacketPayload.codec(EntityUpdateBlueS2CPayload::write, EntityUpdateBlueS2CPayload::new);
+	public static final Type<EntityUpdateBlueS2CPayload> ID = new Type<>(Abysm.id("entity_update_blue_s2c"));
 
-	private EntityUpdateBlueS2CPayload(PacketByteBuf buf) {
+	private EntityUpdateBlueS2CPayload(FriendlyByteBuf buf) {
 		this(buf.readInt(), buf.readBoolean());
 	}
 
-	private void write(PacketByteBuf buf) {
+	private void write(FriendlyByteBuf buf) {
 		buf.writeInt(this.entityId);
 		buf.writeBoolean(this.isBlue);
 	}
 
 	@Override
-	public Id<? extends CustomPayload> getId() {
+	public Type<? extends CustomPacketPayload> type() {
 		return ID;
 	}
 }

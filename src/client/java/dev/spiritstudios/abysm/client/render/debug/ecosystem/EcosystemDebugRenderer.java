@@ -1,6 +1,7 @@
 package dev.spiritstudios.abysm.client.render.debug.ecosystem;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea.PopInfo;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaManager;
@@ -8,24 +9,23 @@ import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaPos;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.VertexRendering;
-import net.minecraft.client.render.debug.DebugRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.item.Items;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.server.integrated.IntegratedServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.Colors;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.ChunkSectionPos;
-import net.minecraft.world.World;
+import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShapeRenderer;
+import net.minecraft.client.renderer.debug.DebugRenderer;
+import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.core.SectionPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.CommonColors;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -46,23 +46,23 @@ import java.util.concurrent.CompletableFuture;
  * Hold a Spyglass to have text rendering stay a few blocks beneath sea level instead of following your y level.<br>
  * Hold a Heart of The Sea to see only the chunks of the EcosystemType's search radius, as your current chunk in the center.
  */
-public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
+public class EcosystemDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
 	private static final int DARK_RED = 0xFF640000;
 	private static final int DARK_GREEN = 0xFF006400;
 
-	public final MinecraftClient client;
+	public final Minecraft client;
 	private double lastUpdateTime = Double.MIN_VALUE;
 	@Nullable
 	private EcosystemDebugRenderer.EcosystemLoadingStatus loadingStatus;
 
-	public EcosystemDebugRenderer(MinecraftClient client) {
+	public EcosystemDebugRenderer(Minecraft client) {
 		this.client = client;
 	}
 
 	@Override
-	public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, double cameraX, double cameraY, double cameraZ) {
+	public void render(PoseStack matrices, MultiBufferSource vertexConsumers, double cameraX, double cameraY, double cameraZ) {
 		// Strange updating system ~~stolen~~ borrowed from ChunkLoadingDebugRenderer
-		double time = Util.getMeasuringTimeNano();
+		double time = Util.getNanos();
 		if (time - this.lastUpdateTime > 3.0E9) {
 			this.lastUpdateTime = time;
 			this.updateStatus();
@@ -73,13 +73,13 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 		List<EcosystemArea> ecosystemAreas = this.loadingStatus.serverStates.getNow(null);
 		if (ecosystemAreas == null) return;
 
-		ClientPlayerEntity player = this.client.player;
-		ClientWorld world = player.clientWorld;
+		LocalPlayer player = this.client.player;
+		ClientLevel world = player.clientLevel;
 		boolean renderPositions = player.isHolding(Items.COMPASS);
-		double initY = this.client.gameRenderer.getCamera().getPos().y * 0.95;
+		double initY = this.client.gameRenderer.getMainCamera().getPosition().y * 0.95;
 
 		if (player.isHolding(Items.SPYGLASS)) {
-			initY = player.getWorld().getSeaLevel() - 3;
+			initY = player.level().getSeaLevel() - 3;
 		}
 
 //		ChunkPos playerChunk = player.getChunkPos();
@@ -92,29 +92,29 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 
 			// Outlines
 			int offsetAmount = 16;
-			double centerMinX = ChunkSectionPos.getOffsetPos(areaCenterPos.x, 0) - cameraX;
-			double centerMinZ = ChunkSectionPos.getOffsetPos(areaCenterPos.z, 0) - cameraZ;
-			double centerMaxX = ChunkSectionPos.getOffsetPos(areaCenterPos.x, offsetAmount) - cameraX;
-			double centerMaxZ = ChunkSectionPos.getOffsetPos(areaCenterPos.z, offsetAmount) - cameraZ;
+			double centerMinX = SectionPos.sectionToBlockCoord(areaCenterPos.x, 0) - cameraX;
+			double centerMinZ = SectionPos.sectionToBlockCoord(areaCenterPos.z, 0) - cameraZ;
+			double centerMaxX = SectionPos.sectionToBlockCoord(areaCenterPos.x, offsetAmount) - cameraX;
+			double centerMaxZ = SectionPos.sectionToBlockCoord(areaCenterPos.z, offsetAmount) - cameraZ;
 			double minY = -30;
 			double maxY = 20;
 			if(player.isHolding(Items.SPYGLASS)) {
 				minY = -60 - cameraY;
 				maxY = world.getSeaLevel() + 10 - cameraY;
 			}
-			VertexRendering.drawBox(matrices, vertexConsumers.getBuffer(RenderLayer.getLines()), centerMinX, minY, centerMinZ, centerMaxX, maxY, centerMaxZ, 1f, 1f, 1f, 1f);
-			VertexRendering.drawBox(matrices, vertexConsumers.getBuffer(RenderLayer.getLines()), centerMinX - offsetAmount, minY, centerMinZ - offsetAmount, centerMaxX + offsetAmount, maxY, centerMaxZ + offsetAmount, 1f, 0f, 0f, 1f);
+			ShapeRenderer.renderLineBox(matrices, vertexConsumers.getBuffer(RenderType.lines()), centerMinX, minY, centerMinZ, centerMaxX, maxY, centerMaxZ, 1f, 1f, 1f, 1f);
+			ShapeRenderer.renderLineBox(matrices, vertexConsumers.getBuffer(RenderType.lines()), centerMinX - offsetAmount, minY, centerMinZ - offsetAmount, centerMaxX + offsetAmount, maxY, centerMaxZ + offsetAmount, 1f, 0f, 0f, 1f);
 
 			// EcosystemAreaPos position
 			if(renderPositions) {
 				String areaPosString = ecosystemAreaPos.toString();
-				drawString(matrices, vertexConsumers, areaPosString, areaCenterPos, initY, 1, Colors.WHITE);
+				drawString(matrices, vertexConsumers, areaPosString, areaCenterPos, initY, 1, CommonColors.WHITE);
 			}
 
 			// Populations
 			if (ecosystemArea instanceof EmptyEcosystemArea || ecosystemArea.populations.isEmpty()) {
 				String empty = "Empty!";
-				int color = Colors.LIGHT_GRAY;
+				int color = CommonColors.LIGHT_GRAY;
 				drawString(matrices, vertexConsumers, empty, areaCenterPos, initY, yOffset, color);
 				continue;
 			}
@@ -122,7 +122,7 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 			for (Map.Entry<EcosystemType<?>, PopInfo> popEntry : ecosystemArea.populations.entrySet()) {
 				EcosystemType<?> ecosystemType = popEntry.getKey();
 				PopInfo popInfo = popEntry.getValue();
-				Text typeName = ecosystemType.entityType().getName();
+				Component typeName = ecosystemType.entityType().getDescription();
 
 				int areaPopulation = popInfo.getEntityCount();
 				int nearbyPopulation = ecosystemArea.getNearbyPopulationSize(ecosystemType);
@@ -134,9 +134,9 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 				if(nearbyPopulation <= 0) {
 					color = DARK_RED;
 				} else if (nearbyPopulation < ecosystemType.targetPopulation()) {
-					color = Colors.LIGHT_RED;
+					color = CommonColors.SOFT_RED;
 				} else {
-					color = Colors.GREEN;
+					color = CommonColors.GREEN;
 				}
 				drawString(matrices, vertexConsumers, stringedInfo, areaCenterPos, initY, yOffset, color);
 				yOffset -= 1;
@@ -145,14 +145,14 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 		}
 	}
 
-	private void drawString(MatrixStack matrices, VertexConsumerProvider vertexConsumers, String string, ChunkPos chunkPos, double initY, int yOffset, int color) {
-		double x = ChunkSectionPos.getOffsetPos(chunkPos.x, 8);
+	private void drawString(PoseStack matrices, MultiBufferSource vertexConsumers, String string, ChunkPos chunkPos, double initY, int yOffset, int color) {
+		double x = SectionPos.sectionToBlockCoord(chunkPos.x, 8);
 		double y = initY + yOffset;
-		double z = ChunkSectionPos.getOffsetPos(chunkPos.z, 8);
+		double z = SectionPos.sectionToBlockCoord(chunkPos.z, 8);
 
 		float size = 0.05f;
 		float offset = 0;
-		DebugRenderer.drawString(
+		DebugRenderer.renderFloatingText(
 			matrices, vertexConsumers, string,
 			x, y, z,
 			color, size, true,
@@ -161,19 +161,19 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 	}
 
 	private void updateStatus() {
-		IntegratedServer integratedServer = this.client.getServer();
+		IntegratedServer integratedServer = this.client.getSingleplayerServer();
 		if (integratedServer == null) {
 			this.loadingStatus = null;
 			return;
 		}
 
-		int searchRadius = this.client.player.isHolding(Items.ENDER_EYE) ? this.client.options.getClampedViewDistance() : 1;
+		int searchRadius = this.client.player.isHolding(Items.ENDER_EYE) ? this.client.options.getEffectiveRenderDistance() : 1;
 		this.loadingStatus = new EcosystemLoadingStatus(integratedServer, getPlayerChunkPos(), searchRadius);
 	}
 
 	private ChunkPos getPlayerChunkPos() {
 		assert this.client.player != null;
-		return this.client.player.getChunkPos();
+		return this.client.player.chunkPosition();
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -182,17 +182,17 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 
 		@SuppressWarnings("UnstableApiUsage")
 		EcosystemLoadingStatus(IntegratedServer server, ChunkPos playerChunkPos, int searchRadius) {
-			ClientWorld clientWorld = EcosystemDebugRenderer.this.client.world; // how???
+			ClientLevel clientWorld = EcosystemDebugRenderer.this.client.level; // how???
 			// you can do that because this class isn't static
 			// - echo
 			// Huh, makes sense but looks very goofy xD ~ kat
 
 			assert clientWorld != null;
-			RegistryKey<World> worldKey = clientWorld.getRegistryKey();
+			ResourceKey<Level> worldKey = clientWorld.dimension();
 
 			// This is beyond cursed, but it's what Minecraft does ¯\_(ツ)_/¯
 			this.serverStates = server.submit(() -> {
-				ServerWorld serverWorld = server.getWorld(worldKey);
+				ServerLevel serverWorld = server.getLevel(worldKey);
 				if (serverWorld == null) return ImmutableList.of();
 
 				ImmutableList.Builder<EcosystemArea> areaBuilder = ImmutableList.builder();
@@ -211,7 +211,7 @@ public class EcosystemDebugRenderer implements DebugRenderer.Renderer {
 
 	// Used to define a chunk doesn't have any attached EcosystemChunk
 	private static class EmptyEcosystemArea extends EcosystemArea {
-		public EmptyEcosystemArea(ServerWorld world, EcosystemAreaPos pos) {
+		public EmptyEcosystemArea(ServerLevel world, EcosystemAreaPos pos) {
 			super(world, pos);
 		}
 	}

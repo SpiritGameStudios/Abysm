@@ -5,11 +5,11 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -18,14 +18,14 @@ import software.bernie.geckolib.animation.RawAnimation;
 public class PaddlefishEntity extends SimpleEcoSchoolingFishEntity {
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.paddlefish.idle");
 
-	public PaddlefishEntity(EntityType<PaddlefishEntity> entityType, World world) {
+	public PaddlefishEntity(EntityType<PaddlefishEntity> entityType, Level world) {
 		super(entityType, world);
 	}
 
 	@Override
-	protected void initGoals() {
-		super.initGoals();
-		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this, 1.0F));
+	protected void registerGoals() {
+		super.registerGoals();
+		this.goalSelector.addGoal(4, new SwimToRandomPlaceGoal(this, 1.0F));
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class PaddlefishEntity extends SimpleEcoSchoolingFishEntity {
 	}
 
 	@Override
-	public ItemStack getBucketItem() {
+	public ItemStack getBucketItemStack() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 }

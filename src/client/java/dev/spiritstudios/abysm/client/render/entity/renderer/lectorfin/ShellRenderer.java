@@ -7,6 +7,6 @@ public class ShellRenderer extends FishEnchantmentRenderer {
 	public static final ShellRenderer INSTANCE = new ShellRenderer();
 
 	protected ShellRenderer() {
-		super(new ExtraModel(AbysmFishEnchantments.SHELL.getValue()));
+		super(new ExtraModel(AbysmFishEnchantments.SHELL.location()));
 	}
 }

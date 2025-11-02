@@ -3,8 +3,8 @@ package dev.spiritstudios.abysm.worldgen.densityfunction;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.dynamic.CodecHolder;
-import net.minecraft.util.math.Box;
+import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.world.phys.AABB;
 
 public record DensitySphere(double innerRadius, double outerRadius, double valueInsideShell) implements DensityBlob {
 	public static final MapCodec<DensitySphere> CODEC = RecordCodecBuilder.mapCodec(
@@ -15,7 +15,7 @@ public record DensitySphere(double innerRadius, double outerRadius, double value
 			)
 			.apply(instance, DensitySphere::new)
 	);
-	public static final CodecHolder<DensitySphere> CODEC_HOLDER = CodecHolder.of(CODEC);
+	public static final KeyDispatchDataCodec<DensitySphere> CODEC_HOLDER = KeyDispatchDataCodec.of(CODEC);
 
 	@Override
 	public MapCodec<? extends DensityBlob> getCodec() {
@@ -52,7 +52,7 @@ public record DensitySphere(double innerRadius, double outerRadius, double value
 	}
 
 	@Override
-	public Box getBoundingBox() {
-		return new Box(-this.outerRadius, -this.outerRadius, -this.outerRadius, this.outerRadius, this.outerRadius, this.outerRadius);
+	public AABB getBoundingBox() {
+		return new AABB(-this.outerRadius, -this.outerRadius, -this.outerRadius, this.outerRadius, this.outerRadius, this.outerRadius);
 	}
 }

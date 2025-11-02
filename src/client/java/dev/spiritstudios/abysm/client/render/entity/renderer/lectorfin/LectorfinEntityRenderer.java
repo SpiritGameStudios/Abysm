@@ -1,20 +1,20 @@
 package dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.renderer.RecursiveRenderer;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
 import dev.spiritstudios.abysm.entity.ruins.LectorfinEntity;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
+import net.minecraft.Util;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
@@ -28,16 +28,16 @@ import java.util.Map;
 public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<LectorfinEntity, R> {
 
 	public static final DataTicket<FishEnchantment> FISH_ENCHANTMENT = DataTicket.create("fish_enchantment", FishEnchantment.class);
-	public static final Map<Identifier, FishEnchantmentRenderer> ENCHANTMENT_RENDERERS = Util.make(
+	public static final Map<ResourceLocation, FishEnchantmentRenderer> ENCHANTMENT_RENDERERS = Util.make(
 		new Object2ObjectOpenHashMap<>(),
 		map -> {
-			map.put(AbysmFishEnchantments.JAW.getValue(), JawRenderer.INSTANCE);
-			map.put(AbysmFishEnchantments.SHELL.getValue(), ShellRenderer.INSTANCE);
-			map.put(AbysmFishEnchantments.JET.getValue(), JetRenderer.INSTANCE);
+			map.put(AbysmFishEnchantments.JAW.location(), JawRenderer.INSTANCE);
+			map.put(AbysmFishEnchantments.SHELL.location(), ShellRenderer.INSTANCE);
+			map.put(AbysmFishEnchantments.JET.location(), JetRenderer.INSTANCE);
 		}
 	);
 
-	public LectorfinEntityRenderer(EntityRendererFactory.Context context) {
+	public LectorfinEntityRenderer(EntityRendererProvider.Context context) {
 		super(context, new LectorfinEntityModel());
 		this.addRenderLayer(new AutoGlowingGeoLayer<>(this) {
 			@Override
@@ -48,7 +48,7 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 	}
 
 	@Override
-	public void actuallyRender(R state, MatrixStack matrices, BakedGeoModel model, @Nullable RenderLayer renderLayer, VertexConsumerProvider vertexConsumers, @Nullable VertexConsumer vertexConsumer, boolean isReRender, int light, int overlay, int color) {
+	public void actuallyRender(R state, PoseStack matrices, BakedGeoModel model, @Nullable RenderType renderLayer, MultiBufferSource vertexConsumers, @Nullable VertexConsumer vertexConsumer, boolean isReRender, int light, int overlay, int color) {
 		super.actuallyRender(state, matrices, model, renderLayer, vertexConsumers, vertexConsumer, isReRender, light, overlay, color);
 
 		FishEnchantment fishEnchantment = state.getGeckolibData(FISH_ENCHANTMENT);
@@ -66,18 +66,18 @@ public class LectorfinEntityRenderer<R extends LivingEntityRenderState & GeoRend
 			this(Abysm.id("lectorfin"));
 		}
 
-		protected LectorfinEntityModel(Identifier id) {
+		protected LectorfinEntityModel(ResourceLocation id) {
 			this(id, false);
 		}
 
-		protected LectorfinEntityModel(Identifier id, boolean animateBodyAndTail) {
+		protected LectorfinEntityModel(ResourceLocation id, boolean animateBodyAndTail) {
 			super(id, animateBodyAndTail);
 		}
 
 		@Override
 		public void addAdditionalStateData(LectorfinEntity lectorfin, GeoRenderState renderState) {
 			super.addAdditionalStateData(lectorfin, renderState);
-			RegistryEntry<FishEnchantment> fishEnchantment = lectorfin.getEnchantment();
+			Holder<FishEnchantment> fishEnchantment = lectorfin.getEnchantment();
 			if (fishEnchantment != null) {
 				renderState.addGeckolibData(FISH_ENCHANTMENT, fishEnchantment.value());
 			}

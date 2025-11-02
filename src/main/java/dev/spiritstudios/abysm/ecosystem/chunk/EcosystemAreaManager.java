@@ -1,16 +1,15 @@
 package dev.spiritstudios.abysm.ecosystem.chunk;
 
-import dev.spiritstudios.abysm.duck.EcosystemManagedWorld;
+import dev.spiritstudios.abysm.duck.EcosystemManagedLevel;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.server.world.ServerWorld;
-
 import java.util.Map;
+import net.minecraft.server.level.ServerLevel;
 
 public class EcosystemAreaManager {
-	public final ServerWorld world;
+	public final ServerLevel world;
 	public final Map<EcosystemAreaPos, EcosystemArea> areas = new Object2ObjectOpenHashMap<>();
 
-	public EcosystemAreaManager(ServerWorld world) {
+	public EcosystemAreaManager(ServerLevel world) {
 		this.world = world;
 	}
 
@@ -32,8 +31,8 @@ public class EcosystemAreaManager {
 		return this.areas.getOrDefault(pos, null);
 	}
 
-	public static EcosystemAreaManager getEcosystemAreaManagerForWorld(ServerWorld world) {
-		EcosystemManagedWorld ecosystemManagedWorld = (EcosystemManagedWorld) world;
-		return ecosystemManagedWorld.abysm$getEcosystemAreaManager();
+	public static EcosystemAreaManager getEcosystemAreaManagerForWorld(ServerLevel world) {
+		EcosystemManagedLevel ecosystemManagedLevel = (EcosystemManagedLevel) world;
+		return ecosystemManagedLevel.abysm$getEcosystemAreaManager();
 	}
 }

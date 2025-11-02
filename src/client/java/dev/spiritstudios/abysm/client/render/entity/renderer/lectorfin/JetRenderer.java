@@ -6,6 +6,6 @@ public class JetRenderer extends FishEnchantmentRenderer {
 	public static final JetRenderer INSTANCE = new JetRenderer();
 
 	protected JetRenderer() {
-		super(new ExtraModel(AbysmFishEnchantments.JET.getValue()));
+		super(new ExtraModel(AbysmFishEnchantments.JET.location()));
 	}
 }

@@ -4,23 +4,23 @@ import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricEntityLootTableProvider;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.condition.RandomChanceLootCondition;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.function.SetCountLootFunction;
-import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class AbysmEntityLootTableProvider extends FabricEntityLootTableProvider {
-	public AbysmEntityLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+	public AbysmEntityLootTableProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registryLookup) {
 		super(dataOutput, registryLookup);
 	}
 
@@ -36,25 +36,25 @@ public class AbysmEntityLootTableProvider extends FabricEntityLootTableProvider 
 	}
 
 	public <T extends Entity> void registerBasicFishDrops(EntityType<T> entityType, float bonemealDropChance, @Nullable Item fishItem) {
-		LootTable.Builder builder = LootTable.builder();
+		LootTable.Builder builder = LootTable.lootTable();
 
 		if (fishItem != null) {
-			builder.pool(
-				LootPool.builder()
-					.rolls(ConstantLootNumberProvider.create(1.0F))
-					.with(ItemEntry.builder(fishItem)
-						.apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1.0F))))
+			builder.withPool(
+				LootPool.lootPool()
+					.setRolls(ConstantValue.exactly(1.0F))
+					.add(LootItem.lootTableItem(fishItem)
+						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F))))
 			);
 		}
 
-		builder.pool(
-			LootPool.builder()
-				.rolls(ConstantLootNumberProvider.create(1.0F))
-				.with(ItemEntry.builder(Items.BONE_MEAL))
-				.conditionally(RandomChanceLootCondition.builder(bonemealDropChance))
+		builder.withPool(
+			LootPool.lootPool()
+				.setRolls(ConstantValue.exactly(1.0F))
+				.add(LootItem.lootTableItem(Items.BONE_MEAL))
+				.when(LootItemRandomChanceCondition.randomChance(bonemealDropChance))
 		);
 
-		register(
+		add(
 			entityType,
 			builder
 		);

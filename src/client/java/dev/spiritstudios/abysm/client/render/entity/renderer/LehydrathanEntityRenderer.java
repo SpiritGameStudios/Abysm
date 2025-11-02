@@ -2,8 +2,8 @@ package dev.spiritstudios.abysm.client.render.entity.renderer;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.leviathan.test.Lehydrathan;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.base.GeoRenderState;
@@ -12,7 +12,7 @@ import static dev.spiritstudios.abysm.client.render.entity.renderer.SkeletonShar
 
 public class LehydrathanEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<Lehydrathan, R> {
 
-	public LehydrathanEntityRenderer(EntityRendererFactory.Context context) {
+	public LehydrathanEntityRenderer(EntityRendererProvider.Context context) {
 		super(context, new Model());
 	}
 

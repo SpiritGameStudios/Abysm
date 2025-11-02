@@ -4,16 +4,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
-import net.minecraft.entity.spawn.SpawnConditionSelectors;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryFixedCodec;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.variant.SpawnPrioritySelectors;
 
 public class SnapperEntityVariant extends AbstractEntityVariant {
 
@@ -21,19 +21,19 @@ public class SnapperEntityVariant extends AbstractEntityVariant {
 		instance -> fillFields(instance).apply(instance, SnapperEntityVariant::new)
 	);
 
-	public static final Codec<RegistryEntry<SnapperEntityVariant>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT);
+	public static final Codec<Holder<SnapperEntityVariant>> ENTRY_CODEC = RegistryFixedCodec.create(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT);
 
-	public static final PacketCodec<RegistryByteBuf, RegistryEntry<SnapperEntityVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<SnapperEntityVariant>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT);
 
-	public static RegistryEntry<SnapperEntityVariant> getDefaultEntry(DynamicRegistryManager registryManager) {
-		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT));
+	public static Holder<SnapperEntityVariant> getDefaultEntry(RegistryAccess registryManager) {
+		return getDefaultEntry(registryManager.lookupOrThrow(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT));
 	}
 
-	public static RegistryEntry<SnapperEntityVariant> getDefaultEntry(RegistryEntryLookup<SnapperEntityVariant> lookup) {
+	public static Holder<SnapperEntityVariant> getDefaultEntry(HolderGetter<SnapperEntityVariant> lookup) {
 		return lookup.getOrThrow(AbysmEntityVariants.CHROMATIC);
 	}
 
-	public SnapperEntityVariant(Text name, Identifier texture, SpawnConditionSelectors spawnConditions) {
+	public SnapperEntityVariant(Component name, ResourceLocation texture, SpawnPrioritySelectors spawnConditions) {
 		super(name, texture, spawnConditions);
 	}
 }

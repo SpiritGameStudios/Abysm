@@ -3,10 +3,11 @@ package dev.spiritstudios.abysm.client.sound;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.AbysmConfig;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
-import net.minecraft.client.sound.Source;
 
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.ALC10.*;
+
+import com.mojang.blaze3d.audio.Channel;
 
 public class AbysmAL {
 	private static boolean enabled = false;
@@ -14,7 +15,7 @@ public class AbysmAL {
 	private static AuxiliaryEffectSlot underwaterEffectSlot;
 	private static LowPassFilter underwaterLowPass;
 
-	public static void applyUnderwater(Source source) {
+	public static void applyUnderwater(Channel source) {
 		if (!enabled) return;
 
 		underwaterEffectSlot.apply(source);

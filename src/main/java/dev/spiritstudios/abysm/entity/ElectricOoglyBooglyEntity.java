@@ -8,35 +8,35 @@ import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.VariantSelectorProvider;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.spawn.SpawnContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.List;
+import net.minecraft.core.Holder;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.variant.PriorityProvider;
+import net.minecraft.world.entity.variant.SpawnContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 // TODO - (datagen'd?) tags
 // TODO - proper health
@@ -45,30 +45,30 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 	public static final RawAnimation BONK_ANIM = RawAnimation.begin().thenPlay("animation.ooglyboogly.bonk");
 	public static final RawAnimation BLOWING_UP_WITH_MIND_ANIM = RawAnimation.begin().thenLoop("animation.ooglyboogly.blowingupwithmind");
 
-	public static final TrackedData<RegistryEntry<ElectricOoglyBooglyVariant>> VARIANT = DataTracker.registerData(ElectricOoglyBooglyEntity.class, AbysmTrackedDataHandlers.ELECTRIC_OOGLY_BOOGLY_VARIANT);
-	public static final TrackedData<Boolean> BLOWING_UP_WITH_MIND = DataTracker.registerData(ElectricOoglyBooglyEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+	public static final EntityDataAccessor<Holder<ElectricOoglyBooglyVariant>> VARIANT = SynchedEntityData.defineId(ElectricOoglyBooglyEntity.class, AbysmTrackedDataHandlers.ELECTRIC_OOGLY_BOOGLY_VARIANT);
+	public static final EntityDataAccessor<Boolean> BLOWING_UP_WITH_MIND = SynchedEntityData.defineId(ElectricOoglyBooglyEntity.class, EntityDataSerializers.BOOLEAN);
 	public int ticksSinceBlowingUp = 0;
 
-	public ElectricOoglyBooglyEntity(EntityType<? extends SimpleFishEntity> entityType, World world) {
+	public ElectricOoglyBooglyEntity(EntityType<? extends SimpleFishEntity> entityType, Level world) {
 		super(entityType, world);
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		VariantSelectorProvider.select(
-			this.getRegistryManager().getOrThrow(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT).streamEntries(),
-			RegistryEntry::value, random,
-			SpawnContext.of(world, this.getBlockPos())
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
+		PriorityProvider.pick(
+			this.registryAccess().lookupOrThrow(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT).listElements(),
+			Holder::value, random,
+			SpawnContext.create(world, this.blockPosition())
 		).ifPresent(this::setVariant);
 
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 	}
 
 	@Override
-	protected void initDataTracker(DataTracker.Builder builder) {
-		super.initDataTracker(builder);
-		builder.add(BLOWING_UP_WITH_MIND, false);
-		builder.add(VARIANT, ElectricOoglyBooglyVariant.getDefaultEntry(this.getRegistryManager()));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BLOWING_UP_WITH_MIND, false);
+		builder.define(VARIANT, ElectricOoglyBooglyVariant.getDefaultEntry(this.registryAccess()));
 	}
 
 	@Override
@@ -81,64 +81,64 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 			if (this.ticksSinceBlowingUp % 10 == 0) {
 				this.spawnElectricitySpiralParticles();
 				this.spawnElectricitySpeckParticles();
-				if (!this.getWorld().isClient) {
-					ServerWorld serverWorld = (ServerWorld) this.getWorld();
-					serverWorld.playSoundFromEntity(this, this, SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.HOSTILE, 1f, 0.2f + (this.ticksSinceBlowingUp / 60f));
+				if (!this.level().isClientSide) {
+					ServerLevel serverWorld = (ServerLevel) this.level();
+					serverWorld.playSound(this, this, SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 1f, 0.2f + (this.ticksSinceBlowingUp / 60f));
 				}
 			}
 			if (this.ticksSinceBlowingUp >= 200) {
-				if (!this.getWorld().isClient) {
-					ServerWorld serverWorld = (ServerWorld) this.getWorld();
-					serverWorld.createExplosion(this, this.getX(), this.getY(), this.getZ(), getVariant().explosionPower, World.ExplosionSourceType.MOB);
+				if (!this.level().isClientSide) {
+					ServerLevel serverWorld = (ServerLevel) this.level();
+					serverWorld.explode(this, this.getX(), this.getY(), this.getZ(), getVariant().explosionPower, Level.ExplosionInteraction.MOB);
 					this.discard();
 				}
 			}
 		}
 
-		if (this.getWorld().isClient) return;
-		if (this.age % 2 != 0) return;
+		if (this.level().isClientSide) return;
+		if (this.tickCount % 2 != 0) return;
 		this.checkForBonk();
 	}
 
 	public void checkForBonk() {
-		List<Entity> nearbyPlayers = this.getWorld().getOtherEntities(this, this.getBoundingBox().expand(0.2f, -0.01f, 0.2f), this::canHit);
+		List<Entity> nearbyPlayers = this.level().getEntities(this, this.getBoundingBox().inflate(0.2f, -0.01f, 0.2f), this::canHit);
 		if (nearbyPlayers.isEmpty()) return;
 
-		this.getLookControl().lookAt(nearbyPlayers.getFirst());
+		this.getLookControl().setLookAt(nearbyPlayers.getFirst());
 		if (!this.isBlowingUpWithMind()) {
 			for (Entity nearbyPlayer : nearbyPlayers) {
 				double deltaX = (nearbyPlayer.getX() - this.getX()) * 1.25;
 				double deltaY = (nearbyPlayer.getY() - this.getY()) * 1.5;
 				double deltaZ = (nearbyPlayer.getZ() - this.getZ()) * 1.25;
 
-				nearbyPlayer.addVelocity(deltaX, deltaY, deltaZ);
-				nearbyPlayer.velocityModified = true;
+				nearbyPlayer.push(deltaX, deltaY, deltaZ);
+				nearbyPlayer.hurtMarked = true;
 			}
 			this.blowUpWithMind();
 		}
 	}
 
 	protected boolean canHit(Entity entity) {
-		return entity.isPlayer() && entity.canBeHitByProjectile() && !entity.isSpectator();
+		return entity.isAlwaysTicking() && entity.canBeHitByProjectile() && !entity.isSpectator();
 	}
 
 	public void blowUpWithMind() {
 		this.setIsBlowingUpWithMind(true);
-		ServerWorld serverWorld = (ServerWorld) this.getWorld();
-		serverWorld.spawnParticles(AbysmParticleTypes.OOGLY_BOOGLY_SPARKLE, this.getX(), this.getEyeY(), this.getZ(), 1, 0, 0, 0, 0);
-		serverWorld.playSoundFromEntity(this, this, SoundEvents.ITEM_TRIDENT_THUNDER.value(), SoundCategory.NEUTRAL, 0.75f, 2f);
-		serverWorld.playSoundFromEntity(this, this, SoundEvents.ENTITY_ALLAY_HURT, SoundCategory.NEUTRAL, 1f, 2f);
-		this.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20 * 20, 50, false, false));
+		ServerLevel serverWorld = (ServerLevel) this.level();
+		serverWorld.sendParticles(AbysmParticleTypes.OOGLY_BOOGLY_SPARKLE, this.getX(), this.getEyeY(), this.getZ(), 1, 0, 0, 0, 0);
+		serverWorld.playSound(this, this, SoundEvents.TRIDENT_THUNDER.value(), SoundSource.NEUTRAL, 0.75f, 2f);
+		serverWorld.playSound(this, this, SoundEvents.ALLAY_HURT, SoundSource.NEUTRAL, 1f, 2f);
+		this.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 20 * 20, 50, false, false));
 		this.triggerAnim("default", animString(BONK_ANIM));
 	}
 
 	@Override
-	public boolean canMoveVoluntarily() {
-		return !this.isBlowingUpWithMind() && super.canMoveVoluntarily();
+	public boolean canSimulateMovement() {
+		return !this.isBlowingUpWithMind() && super.canSimulateMovement();
 	}
 
 	private void spawnElectricityParticle() {
-		this.getWorld().addParticleClient(
+		this.level().addParticle(
 			AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY,
 			this.getX() + this.random.nextGaussian() / 2f,
 			this.getEyeY() + this.random.nextGaussian() / 2f,
@@ -148,7 +148,7 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 	}
 
 	private void spawnFumesParticle() {
-		this.getWorld().addParticleClient(
+		this.level().addParticle(
 			getVariant().fumesParticle,
 			this.getX(),
 			this.getY() - 0.35f,
@@ -158,7 +158,7 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 	}
 
 	private void spawnElectricitySpiralParticles() {
-		this.getWorld().addParticleClient(
+		this.level().addParticle(
 			AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY_SPIRAL,
 			this.getX(),
 			this.getEyeY() + this.random.nextGaussian() / 2f,
@@ -168,7 +168,7 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 	}
 
 	private void spawnElectricitySpeckParticles() {
-		this.getWorld().addParticleClient(
+		this.level().addParticle(
 			AbysmParticleTypes.OOGLY_BOOGLY_ELECTRICITY_SPECK,
 			this.getX(),
 			this.getEyeY() + this.random.nextGaussian() / 2f,
@@ -191,41 +191,41 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 	}
 
 	@Override
-	public void writeCustomData(WriteView view) {
-		super.writeCustomData(view);
+	public void addAdditionalSaveData(ValueOutput view) {
+		super.addAdditionalSaveData(view);
 
-		view.put("variant", ElectricOoglyBooglyVariant.ENTRY_CODEC, this.dataTracker.get(VARIANT));
+		view.store("variant", ElectricOoglyBooglyVariant.ENTRY_CODEC, this.entityData.get(VARIANT));
 
 		view.putBoolean("blowingUpWithMind", this.isBlowingUpWithMind());
 		view.putInt("ticksSinceBlowingUp", this.ticksSinceBlowingUp);
 	}
 
 	@Override
-	public void readCustomData(ReadView view) {
-		super.readCustomData(view);
+	public void readAdditionalSaveData(ValueInput view) {
+		super.readAdditionalSaveData(view);
 
 		view.read("variant", ElectricOoglyBooglyVariant.ENTRY_CODEC).ifPresent(this::setVariant);
 
-		this.setIsBlowingUpWithMind(view.getBoolean("blowingUpWithMind", this.isBlowingUpWithMind()));
-		this.ticksSinceBlowingUp = view.getInt("ticksSinceBlowingUp", this.ticksSinceBlowingUp);
+		this.setIsBlowingUpWithMind(view.getBooleanOr("blowingUpWithMind", this.isBlowingUpWithMind()));
+		this.ticksSinceBlowingUp = view.getIntOr("ticksSinceBlowingUp", this.ticksSinceBlowingUp);
 	}
 
 	public boolean isBlowingUpWithMind() {
-		return this.dataTracker.get(BLOWING_UP_WITH_MIND);
+		return this.entityData.get(BLOWING_UP_WITH_MIND);
 	}
 
 	public void setIsBlowingUpWithMind(boolean isBlowingUpWithMind) {
-		this.dataTracker.set(BLOWING_UP_WITH_MIND, isBlowingUpWithMind);
+		this.entityData.set(BLOWING_UP_WITH_MIND, isBlowingUpWithMind);
 	}
 
 	@Override
 	public ElectricOoglyBooglyVariant getVariant() {
-		return this.dataTracker.get(VARIANT).value();
+		return this.entityData.get(VARIANT).value();
 	}
 
 	@Override
-	public void setVariant(RegistryEntry<ElectricOoglyBooglyVariant> variant) {
-		this.dataTracker.set(VARIANT, variant);
+	public void setVariant(Holder<ElectricOoglyBooglyVariant> variant) {
+		this.entityData.set(VARIANT, variant);
 	}
 
 	private static String animString(RawAnimation anim) {
@@ -249,7 +249,7 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 	}
 
 	@Override
-	public ItemStack getBucketItem() {
+	public ItemStack getBucketItemStack() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 

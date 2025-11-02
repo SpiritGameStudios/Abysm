@@ -3,16 +3,15 @@ package dev.spiritstudios.abysm.particle;
 import com.mojang.serialization.MapCodec;
 import dev.spiritstudios.abysm.Abysm;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
 import java.util.function.Function;
 
 public final class AbysmParticleTypes {
@@ -40,29 +39,29 @@ public final class AbysmParticleTypes {
 		// NO-OP
 	}
 
-	private static RegistryKey<ParticleType<?>> keyOf(String id) {
-		return RegistryKey.of(RegistryKeys.PARTICLE_TYPE, Abysm.id(id));
+	private static ResourceKey<ParticleType<?>> keyOf(String id) {
+		return ResourceKey.create(Registries.PARTICLE_TYPE, Abysm.id(id));
 	}
 
 	@SuppressWarnings("SameParameterValue")
 	private static SimpleParticleType registerSimple(String name, boolean alwaysShow) {
-		return Registry.register(Registries.PARTICLE_TYPE, keyOf(name), FabricParticleTypes.simple(alwaysShow));
+		return Registry.register(BuiltInRegistries.PARTICLE_TYPE, keyOf(name), FabricParticleTypes.simple(alwaysShow));
 	}
 
-	private static <T extends ParticleEffect> ParticleType<T> register(
+	private static <T extends ParticleOptions> ParticleType<T> register(
 		String name,
 		boolean alwaysShow,
 		Function<ParticleType<T>, MapCodec<T>> codecGetter,
-		Function<ParticleType<T>, PacketCodec<? super RegistryByteBuf, T>> packetCodecGetter
+		Function<ParticleType<T>, StreamCodec<? super RegistryFriendlyByteBuf, T>> packetCodecGetter
 	) {
-		return Registry.register(Registries.PARTICLE_TYPE, keyOf(name), new ParticleType<T>(alwaysShow) {
+		return Registry.register(BuiltInRegistries.PARTICLE_TYPE, keyOf(name), new ParticleType<T>(alwaysShow) {
 			@Override
-			public MapCodec<T> getCodec() {
+			public MapCodec<T> codec() {
 				return codecGetter.apply(this);
 			}
 
 			@Override
-			public PacketCodec<? super RegistryByteBuf, T> getPacketCodec() {
+			public StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec() {
 				return packetCodecGetter.apply(this);
 			}
 		});

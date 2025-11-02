@@ -3,47 +3,47 @@ package dev.spiritstudios.abysm.item;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.block.OozingDregloamBlock;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class OozeballItem extends Item {
 
-	public OozeballItem(Settings settings) {
+	public OozeballItem(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	public ActionResult useOnBlock(ItemUsageContext context) {
-		World world = context.getWorld();
-		PlayerEntity player = context.getPlayer();
-		BlockPos pos = context.getBlockPos();
+	public InteractionResult useOn(UseOnContext context) {
+		Level world = context.getLevel();
+		Player player = context.getPlayer();
+		BlockPos pos = context.getClickedPos();
 		BlockState state = world.getBlockState(pos);
-		ItemStack stack = context.getStack();
+		ItemStack stack = context.getItemInHand();
 
-		BlockState newState = AbysmBlocks.OOZING_DREGLOAM.getDefaultState();
-		if (context.getSide() != Direction.DOWN && state.isOf(AbysmBlocks.DREGLOAM) && OozingDregloamBlock.stayAlive(newState, world, pos)) {
-			stack.decrement(1);
+		BlockState newState = AbysmBlocks.OOZING_DREGLOAM.defaultBlockState();
+		if (context.getClickedFace() != Direction.DOWN && state.is(AbysmBlocks.DREGLOAM) && OozingDregloamBlock.stayAlive(newState, world, pos)) {
+			stack.shrink(1);
 			if (player != null) {
-				player.incrementStat(Stats.USED.getOrCreateStat(stack.getItem()));
+				player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
 			}
-			world.setBlockState(pos, newState);
+			world.setBlockAndUpdate(pos, newState);
 
-			world.emitGameEvent(null, GameEvent.FLUID_PLACE, pos);
-			world.playSound(null, pos, AbysmSoundEvents.ITEM_OOZEBALL_APPLY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			world.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+			world.playSound(null, pos, AbysmSoundEvents.ITEM_OOZEBALL_APPLY, SoundSource.BLOCKS, 1.0F, 1.0F);
 
-			return ActionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		} else {
-			return ActionResult.PASS;
+			return InteractionResult.PASS;
 		}
 	}
 }

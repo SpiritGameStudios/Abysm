@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.accessors;
 
-import net.minecraft.item.equipment.ArmorMaterials;
-import net.minecraft.item.equipment.EquipmentType;
+import net.minecraft.world.item.equipment.ArmorMaterials;
+import net.minecraft.world.item.equipment.ArmorType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 @Mixin(ArmorMaterials.class)
 public interface ArmorMaterialsAccessor {
 	@Invoker
-	static Map<EquipmentType, Integer> invokeCreateDefenseMap(
+	static Map<ArmorType, Integer> invokeMakeDefense(
 			final int boots,
 			final int leggings,
 			final int chestplate,

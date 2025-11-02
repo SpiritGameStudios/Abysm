@@ -3,11 +3,11 @@ package dev.spiritstudios.abysm.mixin.harpoon;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonDrag;
 import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements HarpoonDrag {
 	@Shadow
-	public abstract boolean isInCreativeMode();
+	public abstract boolean hasInfiniteMaterials();
 
 	@Unique
 	protected HarpoonEntity abysm$harpoon;
@@ -26,7 +26,7 @@ public abstract class LivingEntityMixin extends Entity implements HarpoonDrag {
 	@Unique
 	protected int abysm$dragTicks = 0;
 
-	public LivingEntityMixin(EntityType<?> type, World world) {
+	public LivingEntityMixin(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 
@@ -38,20 +38,20 @@ public abstract class LivingEntityMixin extends Entity implements HarpoonDrag {
 		if (this.abysm$harpoon == null) {
 			return;
 		}
-		if (!this.abysm$harpoon.isAlive() || this.isInvulnerable() || this.noClip || this.isInCreativeMode() || this.isSpectator() || this.getType().isIn(AbysmEntityTypeTags.HARPOON_UNHAULABLE)) {
+		if (!this.abysm$harpoon.isAlive() || this.isInvulnerable() || this.noPhysics || this.hasInfiniteMaterials() || this.isSpectator() || this.getType().is(AbysmEntityTypeTags.HARPOON_UNHAULABLE)) {
 			this.abysm$harpoon = null;
 			return;
 		}
 		Entity harpoonOwner = this.abysm$harpoon.getOwner();
-		if (harpoonOwner == null || !harpoonOwner.isAlive() || this.hasVehicle()) {
+		if (harpoonOwner == null || !harpoonOwner.isAlive() || this.isPassenger()) {
 			this.abysm$harpoon = null;
 			return;
 		}
-		this.setVelocity(this.abysm$harpoon.getVelocity());
-		this.velocityDirty = true;
-		this.setPosition(this.abysm$harpoon.getPos());
+		this.setDeltaMovement(this.abysm$harpoon.getDeltaMovement());
+		this.hasImpulse = true;
+		this.setPos(this.abysm$harpoon.position());
 
-		if ((Object) this instanceof PathAwareEntity pathAwareEntity) {
+		if ((Object) this instanceof PathfinderMob pathAwareEntity) {
 			pathAwareEntity.getNavigation().stop();
 		}
 	}

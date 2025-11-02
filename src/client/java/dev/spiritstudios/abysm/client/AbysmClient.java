@@ -40,20 +40,20 @@ import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.BlockRenderLayer;
-import net.minecraft.client.render.item.property.bool.BooleanProperties;
-import net.minecraft.entity.Entity;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 
 public class AbysmClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		BooleanProperties.ID_MAPPER.put(Abysm.id("harpoon_loaded"), HarpoonLoadedProperty.CODEC);
+		ConditionalItemModelProperties.ID_MAPPER.put(Abysm.id("harpoon_loaded"), HarpoonLoadedProperty.CODEC);
 
 		EntityRendererRegistry.register(AbysmEntityTypes.SMALL_FLORAL_FISH, SmallFloralFishEntityRenderer::new);
 		EntityRendererRegistry.register(AbysmEntityTypes.BIG_FLORAL_FISH, BigFloralFishEntityRenderer::new);
@@ -81,24 +81,24 @@ public class AbysmClient implements ClientModInitializer {
 		AbysmDebugRenderers.init();
 
 		ClientPlayNetworking.registerGlobalReceiver(HappyEntityParticlesS2CPayload.ID, (payload, context) -> {
-			World world = context.player().getWorld();
-			Entity entity = world.getEntityById(payload.entityId());
+			Level level = context.player().level();
+			Entity entity = level.getEntity(payload.entityId());
 			if (entity == null) {
 				return;
 			}
-			ParticleEffect parameters = payload.particleEffect();
-			Random random = entity.getRandom();
+			ParticleOptions options = payload.particleEffect();
+			RandomSource random = entity.getRandom();
 			for (int i = 0; i < 5; i++) {
 				double velocityX = random.nextGaussian() * 0.02;
 				double velocityY = random.nextGaussian() * 0.02;
 				double velocityZ = random.nextGaussian() * 0.02;
-				world.addParticleClient(parameters, entity.getParticleX(1.0), entity.getRandomBodyY() + 0.5, entity.getParticleZ(1.0), velocityX, velocityY, velocityZ);
+				level.addParticle(options, entity.getRandomX(1.0), entity.getRandomY() + 0.5, entity.getRandomZ(1.0), velocityX, velocityY, velocityZ);
 			}
 		});
 
 		ClientPlayNetworking.registerGlobalReceiver(EntityUpdateBlueS2CPayload.ID, (payload, context) -> {
-			World world = context.player().getWorld();
-			Entity entity = world.getEntityById(payload.entityId());
+			Level level = context.player().level();
+			Entity entity = level.getEntity(payload.entityId());
 			if (entity == null) {
 				return;
 			}
@@ -108,8 +108,8 @@ public class AbysmClient implements ClientModInitializer {
 		});
 
 		ClientPlayNetworking.registerGlobalReceiver(NowHuntingS2CPayload.ID, (payload, context) -> {
-			World world = context.player().getWorld();
-			Entity entity = world.getEntityById(payload.entityId());
+			Level level = context.player().level();
+			Entity entity = level.getEntity(payload.entityId());
 			if (!(entity instanceof EcologicalEntity ecologicalEntity)) {
 				return;
 			}
@@ -119,17 +119,17 @@ public class AbysmClient implements ClientModInitializer {
 		});
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			ClientPlayerEntity player = client.player;
+			LocalPlayer player = client.player;
 			if (player == null) return;
 
-			if (player.isSubmergedIn(FluidTags.WATER)) AbysmAL.enable();
+			if (player.isEyeInFluid(FluidTags.WATER)) AbysmAL.enable();
 			else AbysmAL.disable();
 		});
 
 		ModMenuHelper.addConfig(Abysm.MODID, AbysmConfig.HOLDER.id());
 
 		BlockRenderLayerMap.putBlocks(
-			BlockRenderLayer.CUTOUT,
+			ChunkSectionLayer.CUTOUT,
 			AbysmBlocks.ROSY_SPRIGS,
 			AbysmBlocks.POTTED_ROSY_SPRIGS,
 			AbysmBlocks.SUNNY_SPRIGS,
@@ -183,7 +183,7 @@ public class AbysmClient implements ClientModInitializer {
 		);
 
 		BlockRenderLayerMap.putBlocks(
-			BlockRenderLayer.CUTOUT_MIPPED,
+			ChunkSectionLayer.CUTOUT_MIPPED,
 			AbysmBlocks.ROSEBLOOM_PETALEAVES,
 			AbysmBlocks.SUNBLOOM_PETALEAVES,
 			AbysmBlocks.MALLOWBLOOM_PETALEAVES,
@@ -192,12 +192,12 @@ public class AbysmClient implements ClientModInitializer {
 		);
 
 		BlockRenderLayerMap.putBlocks(
-			BlockRenderLayer.TRANSLUCENT,
+			ChunkSectionLayer.TRANSLUCENT,
 			AbysmBlocks.SWEET_NECTARSAP,
 			AbysmBlocks.SOUR_NECTARSAP,
 			AbysmBlocks.BITTER_NECTARSAP
 		);
 
-		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> OozetrickleLanternBlock.getColor(state.get(OozetrickleLanternBlock.LIGHT)), AbysmBlocks.OOZETRICKLE_LANTERN);
+		ColorProviderRegistry.BLOCK.register((state, view, pos, tintIndex) -> OozetrickleLanternBlock.getColor(state.getValue(OozetrickleLanternBlock.LIGHT)), AbysmBlocks.OOZETRICKLE_LANTERN);
 	}
 }

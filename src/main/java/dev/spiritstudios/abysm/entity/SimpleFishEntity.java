@@ -4,36 +4,36 @@ import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.FleeEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.passive.FishEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class SimpleFishEntity extends FishEntity implements EcologicalEntity, GeoEntity {
+public abstract class SimpleFishEntity extends AbstractFish implements EcologicalEntity, GeoEntity {
 	protected EcosystemLogic ecosystemLogic;
 	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-	public SimpleFishEntity(EntityType<? extends SimpleFishEntity> entityType, World world) {
+	public SimpleFishEntity(EntityType<? extends SimpleFishEntity> entityType, Level world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
 		this.alertEcosystemOfSpawn();
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 	}
 
 	@Override
@@ -43,18 +43,18 @@ public abstract class SimpleFishEntity extends FishEntity implements EcologicalE
 	}
 
 	@Override
-	public void onRemove(RemovalReason reason) {
+	public void onRemoval(RemovalReason reason) {
 		this.alertEcosystemOfDeath();
-		super.onRemove(reason);
+		super.onRemoval(reason);
 	}
 
 	@Override
-	protected void initGoals() {
-		this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25));
-		this.goalSelector.add(2, new FleeEntityGoal<>(this, PlayerEntity.class, 8.0F, 1.6, 1.4, EntityPredicates.EXCEPT_SPECTATOR::test));
-		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
-		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
-		this.targetSelector.add(1, new HuntPreyGoal(this, false));
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new PanicGoal(this, 1.25));
+		this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 8.0F, 1.6, 1.4, EntitySelector.NO_SPECTATORS::test));
+		this.goalSelector.addGoal(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, false));
+		this.targetSelector.addGoal(1, new HuntPreyGoal(this, false));
 	}
 
 	@Override

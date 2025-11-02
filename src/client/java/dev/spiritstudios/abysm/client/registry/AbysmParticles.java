@@ -9,11 +9,10 @@ import dev.spiritstudios.abysm.client.particle.PoggdrygllSporesParticle;
 import dev.spiritstudios.abysm.client.particle.SpiralingParticle;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.SpriteBillboardParticle;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 
 public class AbysmParticles {
 
@@ -39,26 +38,11 @@ public class AbysmParticles {
 		register(AbysmParticleTypes.POGGDRYGLL_SPORES, PoggdrygllSporesParticle.Factory::new);
 	}
 
-	public static <T extends ParticleEffect> void register(ParticleType<T> type, ParticleFactory<T> provider) {
+	public static <T extends ParticleOptions> void register(ParticleType<T> type, ParticleProvider<T> provider) {
 		getParticleFactoryRegistry().register(type, provider);
 	}
 
-	public static <T extends ParticleEffect> void register(ParticleType<T> type, ParticleFactory.BlockLeakParticleFactory<T> provider) {
-		getParticleFactoryRegistry().register(
-			type,
-			prov -> (options, level, d, e, f, g, h, i) -> {
-				SpriteBillboardParticle particle = provider.createParticle(
-					options, level, d, e, f, g, h, i
-				);
-				if (particle != null) {
-					particle.setSprite(prov);
-				}
-
-				return particle;
-			});
-	}
-
-	public static <T extends ParticleEffect> void register(ParticleType<T> type, ParticleRegistration<T> registration) {
+	public static <T extends ParticleOptions> void register(ParticleType<T> type, ParticleRegistration<T> registration) {
 		getParticleFactoryRegistry().register(type, registration::create);
 	}
 
@@ -67,7 +51,7 @@ public class AbysmParticles {
 	}
 
 	@FunctionalInterface
-	public interface ParticleRegistration<T extends ParticleEffect> {
-		ParticleFactory<T> create(SpriteProvider sprites);
+	public interface ParticleRegistration<T extends ParticleOptions> {
+		ParticleProvider<T> create(SpriteSet sprites);
 	}
 }

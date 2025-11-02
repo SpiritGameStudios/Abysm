@@ -3,13 +3,13 @@ package dev.spiritstudios.abysm.mixin.swimmingspeed;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.world.World;
+import net.minecraft.core.Holder;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
 	@Shadow
-	public abstract double getAttributeValue(RegistryEntry<EntityAttribute> attribute);
+	public abstract double getAttributeValue(Holder<Attribute> attribute);
 
-	public LivingEntityMixin(EntityType<?> type, World world) {
+	public LivingEntityMixin(EntityType<?> type, Level world) {
 		super(type, world);
 	}
 
@@ -30,7 +30,7 @@ public abstract class LivingEntityMixin extends Entity {
 	}
 
 	@ModifyReturnValue(method = "createLivingAttributes", at = @At("RETURN"))
-	private static DefaultAttributeContainer.Builder addSwimmingSpeedToDefault(DefaultAttributeContainer.Builder original) {
+	private static AttributeSupplier.Builder addSwimmingSpeedToDefault(AttributeSupplier.Builder original) {
 		return original.add(AbysmEntityAttributes.SWIMMING_SPEED, 0.9F);
 	}
 }

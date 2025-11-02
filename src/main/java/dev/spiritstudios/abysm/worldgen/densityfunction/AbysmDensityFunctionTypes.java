@@ -3,13 +3,12 @@ package dev.spiritstudios.abysm.worldgen.densityfunction;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.CodecHolder;
-import net.minecraft.world.gen.densityfunction.DensityFunction;
-
 import java.util.Arrays;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.world.level.levelgen.DensityFunction;
 
 public class AbysmDensityFunctionTypes {
 
@@ -17,34 +16,34 @@ public class AbysmDensityFunctionTypes {
 		register("density_blobs_sampler", DensityBlobsSamplerFunction.CODEC_HOLDER);
 	}
 
-	private static MapCodec<? extends DensityFunction> register(String id, CodecHolder<? extends DensityFunction> codecHolder) {
-		return Registry.register(Registries.DENSITY_FUNCTION_TYPE, Abysm.id(id), codecHolder.codec());
+	private static MapCodec<? extends DensityFunction> register(String id, KeyDispatchDataCodec<? extends DensityFunction> codecHolder) {
+		return Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, Abysm.id(id), codecHolder.codec());
 	}
 
-	public interface DensityBlobsSamplerFunction extends DensityFunction.Base {
-		CodecHolder<DensityBlobsSamplerFunction> CODEC_HOLDER = CodecHolder.of(RecordCodecBuilder.mapCodec(
+	public interface DensityBlobsSamplerFunction extends DensityFunction.SimpleFunction {
+		KeyDispatchDataCodec<DensityBlobsSamplerFunction> CODEC_HOLDER = KeyDispatchDataCodec.of(RecordCodecBuilder.mapCodec(
 			instance -> instance.group(
-					Identifier.CODEC.fieldOf("identifier").forGetter(DensityBlobsSamplerFunction::identifier)
+					ResourceLocation.CODEC.fieldOf("identifier").forGetter(DensityBlobsSamplerFunction::identifier)
 				)
 				.apply(instance, DummyDensityBlobsSampler::new))
 		);
 
 		@Override
-		default CodecHolder<? extends DensityFunction> getCodecHolder() {
+		default KeyDispatchDataCodec<? extends DensityFunction> codec() {
 			return CODEC_HOLDER;
 		}
 
-		Identifier identifier();
+		ResourceLocation identifier();
 	}
 
-	public record DummyDensityBlobsSampler(Identifier identifier) implements DensityBlobsSamplerFunction {
+	public record DummyDensityBlobsSampler(ResourceLocation identifier) implements DensityBlobsSamplerFunction {
 		@Override
-		public double sample(NoisePos pos) {
+		public double compute(FunctionContext pos) {
 			return 0.0;
 		}
 
 		@Override
-		public void fill(double[] densities, EachApplier applier) {
+		public void fillArray(double[] densities, ContextProvider applier) {
 			Arrays.fill(densities, 0.0);
 		}
 

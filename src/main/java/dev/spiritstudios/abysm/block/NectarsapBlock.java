@@ -2,48 +2,48 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SideShapeType;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SupportType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class NectarsapBlock extends WaterloggableTranslucentBlock {
 	public static final MapCodec<NectarsapBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
-				ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
-				createSettingsCodec()
+				ParticleTypes.CODEC.fieldOf("particle").forGetter(block -> block.particle),
+				propertiesCodec()
 			)
 			.apply(instance, NectarsapBlock::new)
 	);
 
 	@Override
-	protected MapCodec<? extends WaterloggableTranslucentBlock> getCodec() {
+	protected MapCodec<? extends WaterloggableTranslucentBlock> codec() {
 		return CODEC;
 	}
 
-	public final ParticleEffect particle;
+	public final ParticleOptions particle;
 
-	public NectarsapBlock(ParticleEffect particle, Settings settings) {
+	public NectarsapBlock(ParticleOptions particle, Properties settings) {
 		super(settings);
 		this.particle = particle;
 	}
 
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-		super.randomDisplayTick(state, world, pos, random);
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+		super.animateTick(state, world, pos, random);
 
-		boolean waterlogged = state.get(WATERLOGGED, false);
+		boolean waterlogged = state.getValueOrElse(WATERLOGGED, false);
 
-		for (Direction direction : DIRECTIONS) {
-			BlockPos adjPos = pos.offset(direction);
+		for (Direction direction : UPDATE_SHAPE_ORDER) {
+			BlockPos adjPos = pos.relative(direction);
 			BlockState adjState = world.getBlockState(adjPos);
 
-			if (!adjState.isSideSolid(world, adjPos, direction.getOpposite(), SideShapeType.FULL)) {
+			if (!adjState.isFaceSturdy(world, adjPos, direction.getOpposite(), SupportType.FULL)) {
 				if (random.nextInt(waterlogged ? 2 : 4) == 0) {
 					double x = pos.getX() + random.nextFloat();
 					double y = pos.getY() + random.nextFloat();
@@ -53,7 +53,7 @@ public class NectarsapBlock extends WaterloggableTranslucentBlock {
 					double vy = random.nextGaussian() * (waterlogged ? 0.015 : 0.008);
 					double vz = random.nextGaussian() * (waterlogged ? 0.015 : 0.008);
 
-					Vec3i vector = direction.getVector();
+					Vec3i vector = direction.getUnitVec3i();
 					switch (direction.getAxis()) {
 						case X -> {
 							x = pos.getX() + 0.5F + 0.5F * vector.getX();
@@ -72,7 +72,7 @@ public class NectarsapBlock extends WaterloggableTranslucentBlock {
 						}
 					}
 
-					world.addParticleClient(this.particle, x, y, z, vx, vy, vz);
+					world.addParticle(this.particle, x, y, z, vx, vy, vz);
 				}
 			}
 		}

@@ -1,53 +1,53 @@
 package dev.spiritstudios.abysm.entity.ai.goal.ecosystem;
 
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
-import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.TypeFilter;
-import net.minecraft.util.math.Box;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.level.entity.EntityTypeTest;
+import net.minecraft.world.phys.AABB;
 
 public class RepopulateGoal extends Goal {
-	protected final ServerWorld world;
-	protected final MobEntity mob;
+	protected final ServerLevel world;
+	protected final Mob mob;
 	protected final double speed;
 	@Nullable
-	protected MobEntity mate;
+	protected Mob mate;
 	protected int timer;
-	protected TargetPredicate targetPredicate;
+	protected TargetingConditions targetPredicate;
 
-	public RepopulateGoal(MobEntity mob, double speed) {
+	public RepopulateGoal(Mob mob, double speed) {
 		this(mob, speed, (target, world1) -> target instanceof EcologicalEntity ecologicalTarget && ecologicalTarget.canBreed());
 	}
 
 	public RepopulateGoal(
-		MobEntity mob,
+		Mob mob,
 		double speed,
-		@Nullable TargetPredicate.EntityPredicate targetPredicate
+		@Nullable TargetingConditions.Selector targetPredicate
 	) {
 		this.mob = mob;
 		assertIsEcologicalEntity(mob);
-		this.world = getServerWorld(mob);
+		this.world = getServerLevel(mob);
 		this.speed = speed;
 
-		this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
-		this.targetPredicate = TargetPredicate.createAttackable().setBaseMaxDistance(this.getFollowRange()).setPredicate(targetPredicate);
+		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+		this.targetPredicate = TargetingConditions.forCombat().range(this.getFollowRange()).selector(targetPredicate);
 	}
 
-	public static void assertIsEcologicalEntity(MobEntity mob) {
+	public static void assertIsEcologicalEntity(Mob mob) {
 		if (!(mob instanceof EcologicalEntity)) {
 			throw new IllegalArgumentException("MobEntity " + mob + " must be an instance of " + EcologicalEntity.class.getName());
 		}
 	}
 
 	@Override
-	public boolean canStart() {
+	public boolean canUse() {
 		EcologicalEntity ecologicalEntity = (EcologicalEntity) this.mob;
 		if(!ecologicalEntity.canBreedAndRepopulate()) return false;
 
@@ -57,21 +57,21 @@ public class RepopulateGoal extends Goal {
 
 	@Override
 	public void tick() {
-		this.mob.getLookControl().lookAt(this.mate, 10f, this.mob.getMaxLookPitchChange());
-		this.mob.getNavigation().startMovingTo(this.mate, this.speed);
+		this.mob.getLookControl().setLookAt(this.mate, 10f, this.mob.getMaxHeadXRot());
+		this.mob.getNavigation().moveTo(this.mate, this.speed);
 		this.timer++;
-		if (this.mob.age % 5 == 0) {
-			this.world.spawnParticles(ParticleTypes.HEART, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ(), 1, 0, 0, 0, 0);
+		if (this.mob.tickCount % 5 == 0) {
+			this.world.sendParticles(ParticleTypes.HEART, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ(), 1, 0, 0, 0, 0);
 		}
 //		if(this.timer >= this.getTickCount(60) && this.mob.squaredDistanceTo(this.mate) < 9) {
-		if(this.mob.squaredDistanceTo(this.mate) < 9) {
+		if(this.mob.distanceToSqr(this.mate) < 9) {
 			this.breed();
 		}
 	}
 
 	@Override
-	public boolean shouldContinue() {
-		if(this.mate == null || this.timer > 60 || this.mate.isDead()) return false;
+	public boolean canContinueToUse() {
+		if(this.mate == null || this.timer > 60 || this.mate.isDeadOrDying()) return false;
 
 		return ((EcologicalEntity) this.mob).canBreedAndRepopulate();
 	}
@@ -88,8 +88,8 @@ public class RepopulateGoal extends Goal {
 	}
 
 	protected void findClosestMate() {
-		this.mate = this.world.getClosestEntity(
-			this.world.getEntitiesByType(TypeFilter.instanceOf(MobEntity.class),
+		this.mate = this.world.getNearestEntity(
+			this.world.getEntities(EntityTypeTest.forClass(Mob.class),
 				this.getSearchBox(this.getFollowRange()),
 				mobEntity -> {
 					if (!mobEntity.getType().equals(this.mob.getType())) {
@@ -119,14 +119,14 @@ public class RepopulateGoal extends Goal {
 	}
 
 	protected double getFollowRange() {
-		return this.mob.getAttributeValue(EntityAttributes.FOLLOW_RANGE);
+		return this.mob.getAttributeValue(Attributes.FOLLOW_RANGE);
 	}
 
-	protected Box getSearchBox(double distance) {
-		return this.mob.getBoundingBox().expand(distance, distance, distance);
+	protected AABB getSearchBox(double distance) {
+		return this.mob.getBoundingBox().inflate(distance, distance, distance);
 	}
 
-	private TargetPredicate getAndUpdateTargetPredicate() {
-		return this.targetPredicate.setBaseMaxDistance(this.getFollowRange());
+	private TargetingConditions getAndUpdateTargetPredicate() {
+		return this.targetPredicate.range(this.getFollowRange());
 	}
 }

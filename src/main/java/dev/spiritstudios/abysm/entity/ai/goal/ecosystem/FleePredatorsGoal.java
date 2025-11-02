@@ -1,48 +1,48 @@
 package dev.spiritstudios.abysm.entity.ai.goal.ecosystem;
 
 import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.TargetPredicate;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.Path;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.predicate.entity.EntityPredicates;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.level.pathfinder.Path;
 
 import static dev.spiritstudios.abysm.entity.ai.goal.ecosystem.HuntPreyGoal.assertIsEcologicalEntity;
 
 /**
  * If this entity is being hunted, swim away from it
  *
- * @see net.minecraft.entity.ai.goal.FleeEntityGoal
+ * @see net.minecraft.world.entity.ai.goal.AvoidEntityGoal
  */
 public class FleePredatorsGoal extends Goal {
 
-	protected final PathAwareEntity mob;
+	protected final PathfinderMob mob;
 	private final double slowSpeed;
 	private final double fastSpeed;
 	@Nullable
-	protected MobEntity targetEntity;
+	protected Mob targetEntity;
 	protected final float fleeDistance;
 	@Nullable
 	protected Path fleePath;
-	protected final EntityNavigation fleeingEntityNavigation;
+	protected final PathNavigation fleeingEntityNavigation;
 	protected final Predicate<LivingEntity> extraInclusionSelector;
 	protected final Predicate<LivingEntity> inclusionSelector;
-	private final TargetPredicate withinRangePredicate;
+	private final TargetingConditions withinRangePredicate;
 
-	public FleePredatorsGoal(PathAwareEntity mob, float distance, double slowSpeed, double fastSpeed) {
-		this(mob, distance, slowSpeed, fastSpeed, EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR::test);
+	public FleePredatorsGoal(PathfinderMob mob, float distance, double slowSpeed, double fastSpeed) {
+		this(mob, distance, slowSpeed, fastSpeed, EntitySelector.NO_CREATIVE_OR_SPECTATOR::test);
 	}
 
 	public FleePredatorsGoal(
-		PathAwareEntity mob,
+		PathfinderMob mob,
 		Predicate<LivingEntity> extraInclusionSelector,
 		float distance,
 		double slowSpeed,
@@ -57,14 +57,14 @@ public class FleePredatorsGoal extends Goal {
 		this.fastSpeed = fastSpeed;
 		this.inclusionSelector = inclusionSelector;
 		this.fleeingEntityNavigation = mob.getNavigation();
-		this.setControls(EnumSet.of(Goal.Control.MOVE));
-		this.withinRangePredicate = TargetPredicate.createAttackable()
-			.setBaseMaxDistance(distance)
-			.setPredicate((entity, world) -> inclusionSelector.test(entity) && extraInclusionSelector.test(entity));
+		this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+		this.withinRangePredicate = TargetingConditions.forCombat()
+			.range(distance)
+			.selector((entity, world) -> inclusionSelector.test(entity) && extraInclusionSelector.test(entity));
 	}
 
 	public FleePredatorsGoal(
-		PathAwareEntity fleeingEntity,
+		PathfinderMob fleeingEntity,
 		float fleeDistance,
 		double fleeSlowSpeed,
 		double fleeFastSpeed,
@@ -74,7 +74,7 @@ public class FleePredatorsGoal extends Goal {
 	}
 
 	@Override
-	public boolean canStart() {
+	public boolean canUse() {
 		return ((EcologicalEntity) this.mob).isBeingHunted();
 		/*
 		ServerWorld serverWorld = getServerWorld(this.mob);
@@ -107,31 +107,31 @@ public class FleePredatorsGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldContinue() {
+	public boolean canContinueToUse() {
 //		return !this.fleeingEntityNavigation.isIdle();
-		return super.shouldContinue();
+		return super.canContinueToUse();
 	}
 
 	@Override
 	public void start() {
-		this.fleeingEntityNavigation.startMovingAlong(this.fleePath, this.slowSpeed);
+		this.fleeingEntityNavigation.moveTo(this.fleePath, this.slowSpeed);
 //		((EcologicalEntity) this.mob).setFleeing(true);
 	}
 
 	@Override
 	public void stop() {
 		((EcologicalEntity) this.mob).onHuntEnd();
-		getServerWorld(this.mob).spawnParticles(ParticleTypes.HAPPY_VILLAGER, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 3, 0, 0, 0, 0);
+		getServerLevel(this.mob).sendParticles(ParticleTypes.HAPPY_VILLAGER, this.mob.getX(), this.mob.getY(), this.mob.getZ(), 3, 0, 0, 0, 0);
 		this.targetEntity = null;
 	}
 
 	@Override
 	public void tick() {
 		if(this.targetEntity == null) return;
-		if (this.mob.squaredDistanceTo(this.targetEntity) < 49.0) {
-			this.mob.getNavigation().setSpeed(this.fastSpeed);
+		if (this.mob.distanceToSqr(this.targetEntity) < 49.0) {
+			this.mob.getNavigation().setSpeedModifier(this.fastSpeed);
 		} else {
-			this.mob.getNavigation().setSpeed(this.slowSpeed);
+			this.mob.getNavigation().setSpeedModifier(this.slowSpeed);
 		}
 	}
 }

@@ -13,18 +13,18 @@ import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.DyeColor;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -35,15 +35,15 @@ public class BigFloralFishEntity extends AbstractFloralFishEntity implements Eco
 
 	public EcosystemLogic ecosystemLogic;
 
-	public BigFloralFishEntity(EntityType<? extends AbstractFloralFishEntity> entityType, World world) {
+	public BigFloralFishEntity(EntityType<? extends AbstractFloralFishEntity> entityType, Level world) {
 		super(entityType, world);
 		this.ecosystemLogic = this.createEcosystemLogic(this);
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
 		this.alertEcosystemOfSpawn();
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 	}
 
 	@Override
@@ -53,19 +53,19 @@ public class BigFloralFishEntity extends AbstractFloralFishEntity implements Eco
 	}
 
 	@Override
-	public void onRemove(RemovalReason reason) {
+	public void onRemoval(RemovalReason reason) {
 		this.alertEcosystemOfDeath();
-		super.onRemove(reason);
+		super.onRemoval(reason);
 	}
 
 	@Override
-	protected void initGoals() {
-		super.initGoals();
+	protected void registerGoals() {
+		super.registerGoals();
 
-		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
-		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
-		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
-		this.targetSelector.add(1, new HuntPreyGoal(this, false));
+		this.goalSelector.addGoal(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.addGoal(2, new RepopulateGoal(this, 1.25));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, false));
+		this.targetSelector.addGoal(1, new HuntPreyGoal(this, false));
 	}
 
 	@Override
@@ -79,10 +79,10 @@ public class BigFloralFishEntity extends AbstractFloralFishEntity implements Eco
 	}
 
 	@Override
-	public EntityPattern getDefaultPattern(RegistryEntryLookup<EntityPatternVariant> lookup) {
+	public EntityPattern getDefaultPattern(HolderGetter<EntityPatternVariant> lookup) {
 		return new EntityPattern(
 			lookup.getOrThrow(AbysmEntityPatternVariants.FLORAL_FISH_BIG_TERRA),
-			DyeColor.LIGHT_BLUE.getEntityColor(), DyeColor.PINK.getEntityColor()
+			DyeColor.LIGHT_BLUE.getTextureDiffuseColor(), DyeColor.PINK.getTextureDiffuseColor()
 		);
 	}
 
@@ -109,7 +109,7 @@ public class BigFloralFishEntity extends AbstractFloralFishEntity implements Eco
 	}
 
 	@Override
-	public ItemStack getBucketItem() {
+	public ItemStack getBucketItemStack() {
 		return new ItemStack(AbysmItems.BIG_FLORAL_FISH_BUCKET);
 	}
 }

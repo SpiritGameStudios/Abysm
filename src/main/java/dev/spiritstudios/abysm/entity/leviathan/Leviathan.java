@@ -4,33 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import dev.spiritstudios.specter.api.entity.EntityPart;
 import dev.spiritstudios.specter.api.entity.PartHolder;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
-import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.brain.sensor.NearestLivingEntitiesSensor;
-import net.minecraft.entity.ai.control.AquaticMoveControl;
-import net.minecraft.entity.ai.control.YawAdjustingLookControl;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.SwimNavigation;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.boss.BossBar;
-import net.minecraft.entity.boss.ServerBossBar;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.predicate.entity.EntityPredicates;
-import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.storage.ReadView;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,43 +12,70 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.ai.sensing.NearestLivingEntitySensor;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.phys.Vec3;
 
-public abstract class Leviathan extends WaterCreatureEntity implements Monster, PartHolder<Leviathan> {
+public abstract class Leviathan extends WaterAnimal implements Enemy, PartHolder<Leviathan> {
 
-	protected final ServerBossBar bossBar;
+	protected final ServerBossEvent bossBar;
 
-	protected Leviathan(EntityType<? extends WaterCreatureEntity> entityType, World world) {
+	protected Leviathan(EntityType<? extends WaterAnimal> entityType, Level world) {
 		super(entityType, world);
 		this.bossBar = this.createBossBar(entityType, world);
-		this.moveControl = new AquaticMoveControl(this, 85, 10, 0.1F, 0.5F, false);
-		this.lookControl = new YawAdjustingLookControl(this, 20);
+		this.moveControl = new SmoothSwimmingMoveControl(this, 85, 10, 0.1F, 0.5F, false);
+		this.lookControl = new SmoothSwimmingLookControl(this, 20);
 	}
 
 	@Override
-	protected EntityNavigation createNavigation(World world) {
-		return new SwimNavigation(this, world);
+	protected PathNavigation createNavigation(Level world) {
+		return new WaterBoundPathNavigation(this, world);
 	}
 
 	@SuppressWarnings("unused")
-	public boolean damagePart(ServerWorld world, LeviathanPart part, DamageSource source, float amount) {
-		return this.damage(world, source, amount);
+	public boolean damagePart(ServerLevel world, LeviathanPart part, DamageSource source, float amount) {
+		return this.hurtServer(world, source, amount);
 	}
 
 	@Override
-	public boolean damage(ServerWorld world, DamageSource source, float amount) {
-		return super.damage(world, source, source.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY) ? amount : Math.min(this.damageResist(), amount));
+	public boolean hurtServer(ServerLevel world, DamageSource source, float amount) {
+		return super.hurtServer(world, source, source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) ? amount : Math.min(this.damageResist(), amount));
 	}
 
 	public float damageResist() {
 		return 1;
 	}
 
-	public static DefaultAttributeContainer.Builder createLeviathanAttributes() {
-		return MobEntity.createMobAttributes().add(EntityAttributes.MAX_HEALTH, 32768)
-			.add(EntityAttributes.ARMOR, 100)
-			.add(EntityAttributes.ARMOR_TOUGHNESS, 100)
-			.add(EntityAttributes.ATTACK_DAMAGE, 10)
-			.add(EntityAttributes.MOVEMENT_SPEED, 1.1);
+	public static AttributeSupplier.Builder createLeviathanAttributes() {
+		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 32768)
+			.add(Attributes.ARMOR, 100)
+			.add(Attributes.ARMOR_TOUGHNESS, 100)
+			.add(Attributes.ATTACK_DAMAGE, 10)
+			.add(Attributes.MOVEMENT_SPEED, 1.1);
 	}
 
 	@Override
@@ -87,33 +87,33 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 	}
 
 	@Override
-	protected boolean canStartRiding(Entity entity) {
+	protected boolean canRide(Entity entity) {
 		return false;
 	}
 
 	@Override
-	public boolean canUsePortals(boolean allowVehicles) {
+	public boolean canUsePortal(boolean allowVehicles) {
 		return false;
 	}
 
 	@Override
-	public void onSpawnPacket(EntitySpawnS2CPacket packet) {
-		super.onSpawnPacket(packet);
+	public void recreateFromPacket(ClientboundAddEntityPacket packet) {
+		super.recreateFromPacket(packet);
 		var parts = this.getSpecterEntityParts();
 
 		for (int i = 0; i < parts.size(); ++i) {
-			parts.get(i).setId(i + packet.getEntityId() + 1);
+			parts.get(i).setId(i + packet.getId() + 1);
 		}
 	}
 
 	@SuppressWarnings("unused")
-	protected @NotNull ServerBossBar createBossBar(EntityType<? extends WaterCreatureEntity> entityType, World world) {
-		return new ServerBossBar(this.getDisplayName(), BossBar.Color.PURPLE, BossBar.Style.PROGRESS);
+	protected @NotNull ServerBossEvent createBossBar(EntityType<? extends WaterAnimal> entityType, Level world) {
+		return new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.PURPLE, BossEvent.BossBarOverlay.PROGRESS);
 	}
 
 	@Override
-	protected void readCustomData(ReadView view) {
-		super.readCustomData(view);
+	protected void readAdditionalSaveData(ValueInput view) {
+		super.readAdditionalSaveData(view);
 
 		if (this.hasCustomName()) {
 			this.bossBar.setName(this.getDisplayName());
@@ -121,33 +121,33 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 	}
 
 	@Override
-	public void setCustomName(@Nullable Text name) {
+	public void setCustomName(@Nullable Component name) {
 		super.setCustomName(name);
 		this.bossBar.setName(this.getDisplayName());
 	}
 
 	@Override
-	protected void mobTick(ServerWorld world) {
-		super.mobTick(world);
-		this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
+	protected void customServerAiStep(ServerLevel world) {
+		super.customServerAiStep(world);
+		this.bossBar.setProgress(this.getHealth() / this.getMaxHealth());
 	}
 
 	@Override
-	public void onStartedTrackingBy(ServerPlayerEntity player) {
-		super.onStartedTrackingBy(player);
+	public void startSeenByPlayer(ServerPlayer player) {
+		super.startSeenByPlayer(player);
 		this.bossBar.addPlayer(player);
 	}
 
 	@Override
-	public void onStoppedTrackingBy(ServerPlayerEntity player) {
-		super.onStoppedTrackingBy(player);
+	public void stopSeenByPlayer(ServerPlayer player) {
+		super.stopSeenByPlayer(player);
 		this.bossBar.removePlayer(player);
 	}
 
 	@Override
-	public void tickMovement() {
-		super.tickMovement();
-		if (this.isAiDisabled()) {
+	public void aiStep() {
+		super.aiStep();
+		if (this.isNoAi()) {
 			return;
 		}
 		this.tickPartUpdates();
@@ -159,24 +159,24 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 	protected abstract void tickPartUpdates();
 
 	protected void movePart(EntityPart<Leviathan> part, double dx, double dy, double dz) {
-		part.setRelativePos(new Vec3d(dx, dy, dz));
+		part.setRelativePos(new Vec3(dx, dy, dz));
 	}
 
 	protected void updatePartLastPos(EntityPart<Leviathan> part, double x, double y, double z) {
-		part.lastX = x;
-		part.lastY = y;
-		part.lastZ = z;
-		part.lastRenderX = x;
-		part.lastRenderY = y;
-		part.lastRenderZ = z;
+		part.xo = x;
+		part.yo = y;
+		part.zo = z;
+		part.xOld = x;
+		part.yOld = y;
+		part.zOld = z;
 	}
 
 	@Override
-	public void travel(Vec3d movementInput) {
-		if (this.isTouchingWater()) {
-			this.updateVelocity(this.getMovementSpeed(), movementInput);
-			this.move(MovementType.SELF, this.getVelocity());
-			this.setVelocity(this.getVelocity().multiply(0.9));
+	public void travel(Vec3 movementInput) {
+		if (this.isInWater()) {
+			this.moveRelative(this.getSpeed(), movementInput);
+			this.move(MoverType.SELF, this.getDeltaMovement());
+			this.setDeltaMovement(this.getDeltaMovement().scale(0.9));
 		} else {
 			super.travel(movementInput);
 		}
@@ -186,15 +186,15 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 		if (!(entity instanceof LivingEntity living)) {
 			return false;
 		}
-		World world = this.getWorld();
-		return world == living.getWorld() &&
-			EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.test(living) &&
-			!this.isTeammate(living) &&
+		Level world = this.level();
+		return world == living.level() &&
+			EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(living) &&
+			!this.isAlliedTo(living) &&
 			living.getType() != EntityType.ARMOR_STAND &&
 			!(living instanceof Leviathan) &&
 			!living.isInvulnerable() &&
-			!living.isDead() &&
-			world.getWorldBorder().contains(living.getBoundingBox());
+			!living.isDeadOrDying() &&
+			world.getWorldBorder().isWithinBounds(living.getBoundingBox());
 	}
 
 
@@ -204,7 +204,7 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 
 	protected Optional<LivingEntity> findNearestTarget(Predicate<LivingEntity> targetPredicate) {
 		return this.getBrain()
-			.getOptionalRegisteredMemory(MemoryModuleType.MOBS)
+			.getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES)
 			.stream()
 			.flatMap(Collection::stream)
 			.filter(this::isValidTarget)
@@ -217,22 +217,22 @@ public abstract class Leviathan extends WaterCreatureEntity implements Monster, 
 	}
 
 	protected void onTargetFound(LivingEntity living) {
-		this.getBrain().remember(MemoryModuleType.NEAREST_ATTACKABLE, living);
+		this.getBrain().setMemory(MemoryModuleType.NEAREST_ATTACKABLE, living);
 	}
 
-	public static class AttackablesSensor extends NearestLivingEntitiesSensor<Leviathan> {
+	public static class AttackablesSensor extends NearestLivingEntitySensor<Leviathan> {
 		@Override
-		public Set<MemoryModuleType<?>> getOutputMemoryModules() {
-			return ImmutableSet.copyOf(Iterables.concat(super.getOutputMemoryModules(), List.of(MemoryModuleType.NEAREST_ATTACKABLE)));
+		public Set<MemoryModuleType<?>> requires() {
+			return ImmutableSet.copyOf(Iterables.concat(super.requires(), List.of(MemoryModuleType.NEAREST_ATTACKABLE)));
 		}
 
-		protected void sense(ServerWorld serverWorld, Leviathan leviathan) {
-			super.sense(serverWorld, leviathan);
+		protected void sense(ServerLevel serverWorld, Leviathan leviathan) {
+			super.doTick(serverWorld, leviathan);
 			leviathan.findNearestTarget(EntityType.PLAYER)
 				.or(() -> leviathan.findNearestTarget(leviathan::isValidNonPlayerTarget))
 				.ifPresentOrElse(
 					leviathan::onTargetFound,
-					() -> leviathan.getBrain().forget(MemoryModuleType.NEAREST_ATTACKABLE)
+					() -> leviathan.getBrain().eraseMemory(MemoryModuleType.NEAREST_ATTACKABLE)
 				);
 		}
 	}

@@ -4,11 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.util.Formatting;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
+import net.minecraft.ChatFormatting;
 
 public final class AbysmCodecs {
 	public static final Codec<Integer> ARGB = Codec.withAlternative(
@@ -19,12 +18,12 @@ public final class AbysmCodecs {
 		Codec.INT
 	);
 
-	private static final Map<String, Integer> BY_NAME = Stream.of(Formatting.values())
+	private static final Map<String, Integer> BY_NAME = Stream.of(ChatFormatting.values())
 		.filter(Objects::nonNull)
-		.filter(format -> format.getColorValue() != null)
+		.filter(format -> format.getColor() != null)
 		.collect(ImmutableMap.toImmutableMap(
 			format -> Objects.requireNonNull(format).getName(),
-			format -> Objects.requireNonNull(format).getColorValue()
+			format -> Objects.requireNonNull(format).getColor()
 		));
 
 	public static String encodeColor(int color) {

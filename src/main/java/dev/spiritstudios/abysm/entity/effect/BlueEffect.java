@@ -1,37 +1,37 @@
 package dev.spiritstudios.abysm.entity.effect;
 
 import dev.spiritstudios.abysm.duck.LivingEntityDuck;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
-public class BlueEffect extends StatusEffect {
+public class BlueEffect extends MobEffect {
 
-	protected BlueEffect(StatusEffectCategory category, int color) {
+	protected BlueEffect(MobEffectCategory category, int color) {
 		super(category, color);
 	}
 
 	@Override
-	public boolean applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
-		if (entity instanceof PlayerEntity player) {
+	public boolean applyEffectTick(ServerLevel world, LivingEntity entity, int amplifier) {
+		if (entity instanceof Player player) {
 			if (!player.isSpectator()) {
 				player.getAbilities().flying = false;
-				player.sendAbilitiesUpdate();
+				player.onUpdateAbilities();
 			}
 		}
 
-		return super.applyUpdateEffect(world, entity, amplifier);
+		return super.applyEffectTick(world, entity, amplifier);
 	}
 
 	@Override
-	public boolean canApplyUpdateEffect(int duration, int amplifier) {
+	public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
 		return true;
 	}
 
 	public static boolean hasBlueEffect(LivingEntity livingEntity) {
-		return livingEntity.getActiveStatusEffects().containsKey(AbysmStatusEffects.BLUE);
+		return livingEntity.getActiveEffectsMap().containsKey(AbysmStatusEffects.BLUE);
 	}
 
 	public static boolean isBlue(LivingEntity livingEntity) {

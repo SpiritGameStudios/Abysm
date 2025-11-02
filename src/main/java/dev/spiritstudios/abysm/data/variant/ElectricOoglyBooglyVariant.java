@@ -4,43 +4,43 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
-import net.minecraft.entity.spawn.SpawnConditionSelectors;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryFixedCodec;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.variant.SpawnPrioritySelectors;
 
 public class ElectricOoglyBooglyVariant extends AbstractEntityVariant {
 	public static final Codec<ElectricOoglyBooglyVariant> CODEC = RecordCodecBuilder.create(
 		instance -> fillFields(instance).and(instance.group(
-			ParticleTypes.TYPE_CODEC.fieldOf("fumes").forGetter(variant -> variant.fumesParticle),
+			ParticleTypes.CODEC.fieldOf("fumes").forGetter(variant -> variant.fumesParticle),
 			Codec.FLOAT.fieldOf("explosion_power").forGetter(variant -> variant.explosionPower)
 		)).apply(instance, ElectricOoglyBooglyVariant::new)
 	);
 
-	public static final Codec<RegistryEntry<ElectricOoglyBooglyVariant>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
+	public static final Codec<Holder<ElectricOoglyBooglyVariant>> ENTRY_CODEC = RegistryFixedCodec.create(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
 
-	public static final PacketCodec<RegistryByteBuf, RegistryEntry<ElectricOoglyBooglyVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<ElectricOoglyBooglyVariant>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
 
-	public static RegistryEntry<ElectricOoglyBooglyVariant> getDefaultEntry(DynamicRegistryManager registryManager) {
-		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT));
+	public static Holder<ElectricOoglyBooglyVariant> getDefaultEntry(RegistryAccess registryManager) {
+		return getDefaultEntry(registryManager.lookupOrThrow(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT));
 	}
 
-	public static RegistryEntry<ElectricOoglyBooglyVariant> getDefaultEntry(RegistryEntryLookup<ElectricOoglyBooglyVariant> lookup) {
+	public static Holder<ElectricOoglyBooglyVariant> getDefaultEntry(HolderGetter<ElectricOoglyBooglyVariant> lookup) {
 		return lookup.getOrThrow(AbysmEntityVariants.ELECTRIC_OOGLY_BOOGLY);
 	}
 
-	public final ParticleEffect fumesParticle;
+	public final ParticleOptions fumesParticle;
 	public final float explosionPower;
 
-	public ElectricOoglyBooglyVariant(Text name, Identifier texture, SpawnConditionSelectors spawnConditions, ParticleEffect fumesParticle, float explosionPower) {
+	public ElectricOoglyBooglyVariant(Component name, ResourceLocation texture, SpawnPrioritySelectors spawnConditions, ParticleOptions fumesParticle, float explosionPower) {
 		super(name, texture, spawnConditions);
 
 		this.fumesParticle = fumesParticle;

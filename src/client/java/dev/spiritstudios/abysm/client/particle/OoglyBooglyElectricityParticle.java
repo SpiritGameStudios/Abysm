@@ -2,25 +2,25 @@ package dev.spiritstudios.abysm.client.particle;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.particle.SpriteBillboardParticle;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.core.particles.SimpleParticleType;
 
-public class OoglyBooglyElectricityParticle extends SpriteBillboardParticle {
-	protected OoglyBooglyElectricityParticle(ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ, SpriteProvider provider) {
+public class OoglyBooglyElectricityParticle extends TextureSheetParticle {
+	protected OoglyBooglyElectricityParticle(ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ, SpriteSet provider) {
 		super(clientWorld, x, y, z, velX, velY, velZ);
-		this.velocityX = 0;
-		this.velocityY = 0;
-		this.velocityZ = 0;
+		this.xd = 0;
+		this.yd = 0;
+		this.zd = 0;
 
-		this.maxAge = 2;
-		this.scale = 0.01f + this.random.nextFloat();
+		this.lifetime = 2;
+		this.quadSize = 0.01f + this.random.nextFloat();
 
-		this.setSprite(provider);
+		this.pickSprite(provider);
 	}
 
 	@Override
@@ -29,24 +29,24 @@ public class OoglyBooglyElectricityParticle extends SpriteBillboardParticle {
 	}
 
 	@Override
-	public int getBrightness(float tint) {
+	public int getLightColor(float tint) {
 		return 8388752; // LightmapTextureManager.pack(9, 8)
 	}
 
 	@Override
-	public ParticleTextureSheet getType() {
-		return ParticleTextureSheet.PARTICLE_SHEET_TRANSLUCENT;
+	public ParticleRenderType getRenderType() {
+		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static class Factory implements ParticleFactory<SimpleParticleType> {
-		private final SpriteProvider spriteProvider;
+	public static class Factory implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet spriteProvider;
 
-		public Factory(SpriteProvider spriteProvider) {
+		public Factory(SpriteSet spriteProvider) {
 			this.spriteProvider = spriteProvider;
 		}
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double x, double y, double z, double velX, double velY, double velZ) {
+		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ) {
 			return new OoglyBooglyElectricityParticle(clientWorld, x, y, z, velX, velY, velZ, spriteProvider);
 		}
 	}

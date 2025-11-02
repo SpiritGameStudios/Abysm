@@ -11,7 +11,7 @@ import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
 import dev.spiritstudios.abysm.worldgen.densityfunction.DensityBlob;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
 
 public class AbysmRegistries {
 	public static final Registry<EcosystemType<?>> ECOSYSTEM_TYPE = FabricRegistryBuilder.createSimple(AbysmRegistryKeys.ECOSYSTEM_TYPE).buildAndRegister();

@@ -3,39 +3,39 @@ package dev.spiritstudios.abysm.component;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import net.fabricmc.fabric.api.item.v1.ComponentTooltipAppenderRegistry;
-import net.minecraft.component.ComponentType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 
 public class AbysmDataComponentTypes {
 
-	public static final ComponentType<HarpoonComponent> HARPOON = register(
+	public static final DataComponentType<HarpoonComponent> HARPOON = register(
 		"harpoon",
-		ComponentType.<HarpoonComponent>builder()
-			.codec(HarpoonComponent.CODEC)
-			.packetCodec(HarpoonComponent.PACKET_CODEC)
+		DataComponentType.<HarpoonComponent>builder()
+			.persistent(HarpoonComponent.CODEC)
+			.networkSynchronized(HarpoonComponent.PACKET_CODEC)
 	);
 
-	public static final ComponentType<EntityPattern> ENTITY_PATTERN = register(
+	public static final DataComponentType<EntityPattern> ENTITY_PATTERN = register(
 		"entity_pattern",
-		ComponentType.<EntityPattern>builder()
-			.codec(EntityPattern.CODEC)
-			.packetCodec(EntityPattern.PACKET_CODEC)
+		DataComponentType.<EntityPattern>builder()
+			.persistent(EntityPattern.CODEC)
+			.networkSynchronized(EntityPattern.PACKET_CODEC)
 	);
 
-	private static <T> ComponentType<T> register(String path, ComponentType.Builder<T> builder) {
+	private static <T> DataComponentType<T> register(String path, DataComponentType.Builder<T> builder) {
 		return register(Abysm.id(path), builder);
 	}
 
-	private static <T> ComponentType<T> register(Identifier id, ComponentType.Builder<T> builder) {
-		return Registry.register(Registries.DATA_COMPONENT_TYPE, id, builder.build());
+	private static <T> DataComponentType<T> register(ResourceLocation id, DataComponentType.Builder<T> builder) {
+		return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id, builder.build());
 	}
 
 	public static void init() {
 		ComponentTooltipAppenderRegistry.addFirst(HARPOON);
 
 		// Component used to be called blessed in-dev, this is just so we don't break all of our dev worlds.
-		Registries.DATA_COMPONENT_TYPE.addAlias(Abysm.id("blessed"), Abysm.id("harpoon"));
+		BuiltInRegistries.DATA_COMPONENT_TYPE.addAlias(Abysm.id("blessed"), Abysm.id("harpoon"));
 	}
 }

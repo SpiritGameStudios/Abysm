@@ -4,13 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.util.AbysmCodecs;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 
-public record OoglyBooglyFumesParticleEffect(int color, boolean deadly) implements ParticleEffect {
+public record OoglyBooglyFumesParticleEffect(int color, boolean deadly) implements ParticleOptions {
 	public static final MapCodec<OoglyBooglyFumesParticleEffect> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
 			AbysmCodecs.ARGB.fieldOf("color").forGetter(particle -> particle.color),
@@ -18,9 +18,9 @@ public record OoglyBooglyFumesParticleEffect(int color, boolean deadly) implemen
 		).apply(instance, OoglyBooglyFumesParticleEffect::new)
 	);
 
-	public static final PacketCodec<RegistryByteBuf, OoglyBooglyFumesParticleEffect> PACKET_CODEC = PacketCodec.tuple(
-		PacketCodecs.INTEGER, particle -> particle.color,
-		PacketCodecs.BOOLEAN, particle -> particle.deadly,
+	public static final StreamCodec<RegistryFriendlyByteBuf, OoglyBooglyFumesParticleEffect> PACKET_CODEC = StreamCodec.composite(
+		ByteBufCodecs.INT, particle -> particle.color,
+		ByteBufCodecs.BOOL, particle -> particle.deadly,
 		OoglyBooglyFumesParticleEffect::new
 	);
 

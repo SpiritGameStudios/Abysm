@@ -1,12 +1,13 @@
 package dev.spiritstudios.abysm.client.sound;
 
-import dev.spiritstudios.abysm.client.mixin.sound.SourceAccessor;
-import net.minecraft.client.sound.Source;
+import dev.spiritstudios.abysm.client.mixin.sound.ChannelAccessor;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.system.NativeResource;
 
 import static org.lwjgl.openal.AL11.*;
 import static org.lwjgl.openal.EXTEfx.*;
+
+import com.mojang.blaze3d.audio.Channel;
 
 public class AuxiliaryEffectSlot implements NativeResource {
 	private final @Nullable Filter filter;
@@ -32,14 +33,14 @@ public class AuxiliaryEffectSlot implements NativeResource {
 		alAuxiliaryEffectSloti(id, AL_EFFECTSLOT_EFFECT, effect.id);
 	}
 
-	public void apply(Source soundSource) {
+	public void apply(Channel soundSource) {
 		effect.apply();
 
 
 		if (filter != null) filter.apply();
 
 		alSource3i(
-			((SourceAccessor) soundSource).getPointer(),
+			((ChannelAccessor) soundSource).getSource(),
 			AL_AUXILIARY_SEND_FILTER,
 			id, 0, filter == null ? AL_FILTER_NULL : filter.id
 		);

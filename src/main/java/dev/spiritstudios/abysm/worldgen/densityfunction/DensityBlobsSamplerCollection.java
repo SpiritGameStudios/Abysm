@@ -2,21 +2,21 @@ package dev.spiritstudios.abysm.worldgen.densityfunction;
 
 import dev.spiritstudios.abysm.duck.StructureWeightSamplerDuckInterface;
 import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.densityfunction.DensityFunction;
-import net.minecraft.world.gen.densityfunction.DensityFunctionTypes;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
 
 public class DensityBlobsSamplerCollection {
 
-	private final Map<Identifier, DensityBlobsSampler> samplerMap;
+	private final Map<ResourceLocation, DensityBlobsSampler> samplerMap;
 
-	public DensityBlobsSamplerCollection(Map<Identifier, DensityBlobsSampler> samplerMap) {
+	public DensityBlobsSamplerCollection(Map<ResourceLocation, DensityBlobsSampler> samplerMap) {
 		this.samplerMap = samplerMap;
 	}
 
@@ -25,25 +25,25 @@ public class DensityBlobsSamplerCollection {
 	}
 
 	@Nullable
-	public DensityFunction getDensityFunction(Identifier identifier) {
+	public DensityFunction getDensityFunction(ResourceLocation identifier) {
 		return this.samplerMap.getOrDefault(identifier, null);
 	}
 
-	public static DensityBlobsSamplerCollection create(StructureAccessor world, ChunkPos chunkPos) {
-		Map<Identifier, DensityBlobsSampler> samplerMap = new HashMap<>();
+	public static DensityBlobsSamplerCollection create(StructureManager world, ChunkPos chunkPos) {
+		Map<ResourceLocation, DensityBlobsSampler> samplerMap = new HashMap<>();
 
-		world.getStructureStarts(
+		world.startsForStructure(
 			chunkPos,
 			// filter for deep sea ruins
-			structure -> structure.getType().equals(AbysmStructureTypes.DEEP_SEA_RUINS)
-		).forEach(structureStart -> structureStart.getChildren().forEach(piece -> {
+			structure -> structure.type().equals(AbysmStructureTypes.DEEP_SEA_RUINS)
+		).forEach(structureStart -> structureStart.getPieces().forEach(piece -> {
 			// check piece contains a density blob and affects this chunk
 			if (piece instanceof DensityBlobHolder densityBlobHolder) {
-				if (piece.getBoundingBox().intersectsXZ(
-					chunkPos.getStartX(),
-					chunkPos.getStartZ(),
-					chunkPos.getEndX(),
-					chunkPos.getEndZ()
+				if (piece.getBoundingBox().intersects(
+					chunkPos.getMinBlockX(),
+					chunkPos.getMinBlockZ(),
+					chunkPos.getMaxBlockX(),
+					chunkPos.getMaxBlockZ()
 				)) {
 					// add blob to sampler
 					DensityBlobsSampler blobsSampler = samplerMap.computeIfAbsent(densityBlobHolder.getIdentifier(), DensityBlobsSampler::new);
@@ -56,7 +56,7 @@ public class DensityBlobsSamplerCollection {
 	}
 
 	@Nullable
-	public static DensityBlobsSamplerCollection get(DensityFunctionTypes.Beardifying beardifying) {
+	public static DensityBlobsSamplerCollection get(DensityFunctions.BeardifierOrMarker beardifying) {
 		if (beardifying instanceof StructureWeightSamplerDuckInterface duck) {
 			return duck.abysm$getSamplerCollection();
 		} else {

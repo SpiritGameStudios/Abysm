@@ -12,21 +12,20 @@ import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -38,7 +37,7 @@ public class ReticulatedFliprayEntity extends SimpleFishEntity implements Ecolog
 
 	protected EcosystemLogic ecosystemLogic;
 
-	public ReticulatedFliprayEntity(EntityType<? extends SimpleFishEntity> entityType, World world) {
+	public ReticulatedFliprayEntity(EntityType<? extends SimpleFishEntity> entityType, Level world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
 		this.moveControl = new GracefulMoveControl(this, 90, 5, 0.02F, 0.1F, true);
@@ -53,9 +52,9 @@ public class ReticulatedFliprayEntity extends SimpleFishEntity implements Ecolog
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
 		this.alertEcosystemOfSpawn();
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 	}
 
 	@Override
@@ -69,9 +68,9 @@ public class ReticulatedFliprayEntity extends SimpleFishEntity implements Ecolog
 	}
 
 	@Override
-	public void onRemove(RemovalReason reason) {
+	public void onRemoval(RemovalReason reason) {
 		this.alertEcosystemOfDeath();
-		super.onRemove(reason);
+		super.onRemoval(reason);
 	}
 
 	@Override
@@ -80,24 +79,24 @@ public class ReticulatedFliprayEntity extends SimpleFishEntity implements Ecolog
 		this.tickEcosystemLogic();
 	}
 
-	public static DefaultAttributeContainer.Builder createRayAttributes() {
+	public static AttributeSupplier.Builder createRayAttributes() {
 		return BloomrayEntity.createRayAttributes()
-			.add(EntityAttributes.MAX_HEALTH, 40);
+			.add(Attributes.MAX_HEALTH, 40);
 	}
 
 	@Override
-	public int getMaxLookPitchChange() {
+	public int getMaxHeadXRot() {
 		return 1;
 	}
 
 	@Override
-	protected void initGoals() {
-		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
-		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
-		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
-		this.goalSelector.add(4, new SwimAroundGoal(this, 0.5F, 10));
-		this.goalSelector.add(4, new LookAroundGoal(this));
-		this.targetSelector.add(1, new HuntPreyGoal(this, false));
+	protected void registerGoals() {
+		this.goalSelector.addGoal(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.addGoal(2, new RepopulateGoal(this, 1.25));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, false));
+		this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 0.5F, 10));
+		this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+		this.targetSelector.addGoal(1, new HuntPreyGoal(this, false));
 	}
 
 	@Override
@@ -117,16 +116,16 @@ public class ReticulatedFliprayEntity extends SimpleFishEntity implements Ecolog
 
 	// TODO: Bucket
 	@Override
-	public ItemStack getBucketItem() {
+	public ItemStack getBucketItemStack() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 
 	@Override
-	public int getLimitPerChunk() {
+	public int getMaxSpawnClusterSize() {
 		return 1;
 	}
 
 	@Override
-	public void onBubbleColumnCollision(boolean drag) {
+	public void onInsideBubbleColumn(boolean drag) {
 	}
 }

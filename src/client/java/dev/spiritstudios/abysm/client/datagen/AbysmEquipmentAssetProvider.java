@@ -2,13 +2,12 @@ package dev.spiritstudios.abysm.client.datagen;
 
 import dev.spiritstudios.abysm.item.AbysmEquipmentAssetKeys;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.client.render.entity.equipment.EquipmentModel;
-import net.minecraft.data.DataOutput;
+import net.minecraft.client.resources.model.EquipmentClientInfo;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.DataWriter;
-import net.minecraft.item.equipment.EquipmentAsset;
-import net.minecraft.registry.RegistryKey;
-
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.equipment.EquipmentAsset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -18,26 +17,26 @@ import java.util.function.BiConsumer;
  * @author Ampflower
  **/
 public final class AbysmEquipmentAssetProvider implements DataProvider {
-	private final DataOutput.PathResolver pathResolver;
+	private final PackOutput.PathProvider pathResolver;
 
 	public AbysmEquipmentAssetProvider(FabricDataOutput output) {
-		this.pathResolver = output.getResolver(DataOutput.OutputType.RESOURCE_PACK, "equipment");
+		this.pathResolver = output.createPathProvider(PackOutput.Target.RESOURCE_PACK, "equipment");
 	}
 
 	@Override
-	public CompletableFuture<?> run(DataWriter writer) {
-		final Map<RegistryKey<EquipmentAsset>, EquipmentModel> map = new HashMap<>();
+	public CompletableFuture<?> run(CachedOutput writer) {
+		final Map<ResourceKey<EquipmentAsset>, EquipmentClientInfo> map = new HashMap<>();
 
 		registerHumanoidSet(map::put, AbysmEquipmentAssetKeys.DIVING_SUIT);
 
-		return DataProvider.writeAllToPath(writer, EquipmentModel.CODEC, this.pathResolver::resolveJson, map);
+		return DataProvider.saveAll(writer, EquipmentClientInfo.CODEC, this.pathResolver::json, map);
 	}
 
 	public static void registerHumanoidSet(
-			final BiConsumer<RegistryKey<EquipmentAsset>, EquipmentModel> consumer,
-			final RegistryKey<EquipmentAsset> asset
+			final BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer,
+			final ResourceKey<EquipmentAsset> asset
 	) {
-		final var model = EquipmentModel.builder().addHumanoidLayers(asset.getValue()).build();
+		final var model = EquipmentClientInfo.builder().addHumanoidLayers(asset.location()).build();
 
 		consumer.accept(asset, model);
 	}

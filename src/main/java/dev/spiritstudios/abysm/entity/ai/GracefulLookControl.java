@@ -1,31 +1,31 @@
 package dev.spiritstudios.abysm.entity.ai;
 
-import net.minecraft.entity.ai.control.LookControl;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.control.LookControl;
 
 public class GracefulLookControl extends LookControl {
 	private final int yawAdjustThreshold;
 	private static final int ADDED_PITCH = 10;
 	private static final int ADDED_YAW = 20;
 
-	public GracefulLookControl(MobEntity entity, int yawAdjustThreshold) {
+	public GracefulLookControl(Mob entity, int yawAdjustThreshold) {
 		super(entity);
 		this.yawAdjustThreshold = yawAdjustThreshold;
 	}
 
 	@Override
 	public void tick() {
-		if (this.lookAtTimer > 0) {
-			this.lookAtTimer--;
-			this.getTargetYaw().ifPresent(yaw -> this.entity.headYaw = this.changeAngle(this.entity.headYaw, yaw, this.maxYawChange));
-			this.getTargetPitch().ifPresent(pitch -> this.entity.setPitch(this.changeAngle(this.entity.getPitch(), pitch, this.maxPitchChange)));
+		if (this.lookAtCooldown > 0) {
+			this.lookAtCooldown--;
+			this.getYRotD().ifPresent(yaw -> this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, yaw, this.yMaxRotSpeed));
+			this.getXRotD().ifPresent(pitch -> this.mob.setXRot(this.rotateTowards(this.mob.getXRot(), pitch, this.xMaxRotAngle)));
 		} else {
-			if (this.entity.getNavigation().isIdle()) {
-				this.entity.setPitch(this.changeAngle(this.entity.getPitch(), 0.0F, 5.0F));
+			if (this.mob.getNavigation().isDone()) {
+				this.mob.setXRot(this.rotateTowards(this.mob.getXRot(), 0.0F, 5.0F));
 			}
 
-			this.entity.headYaw = this.changeAngle(this.entity.headYaw, this.entity.bodyYaw, this.maxYawChange);
+			this.mob.yHeadRot = this.rotateTowards(this.mob.yHeadRot, this.mob.yBodyRot, this.yMaxRotSpeed);
 		}
 
 //		float f = MathHelper.wrapDegrees(this.entity.headYaw - this.entity.bodyYaw);
@@ -37,7 +37,7 @@ public class GracefulLookControl extends LookControl {
 	}
 
 	@Override
-	public float changeAngle(float start, float end, float maxChange) {
-		return MathHelper.lerpAngleDegrees(1/20F, start, end);
+	public float rotateTowards(float start, float end, float maxChange) {
+		return Mth.rotLerp(1/20F, start, end);
 	}
 }

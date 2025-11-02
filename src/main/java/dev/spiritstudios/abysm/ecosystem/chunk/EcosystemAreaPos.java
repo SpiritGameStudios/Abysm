@@ -1,8 +1,6 @@
 package dev.spiritstudios.abysm.ecosystem.chunk;
 
 import com.google.common.base.MoreObjects;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,14 +9,16 @@ import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 
 public record EcosystemAreaPos(int x, int z) {
 	public static final int CHUNK_DISTANCE = 3;
 
 	public EcosystemAreaPos(ChunkPos chunkPos) {
 		this(
-			MathHelper.floor((float) chunkPos.x / CHUNK_DISTANCE), // is using floorDiv better here? - Maybe?
-			MathHelper.floor((float) chunkPos.z / CHUNK_DISTANCE)
+			Mth.floor((float) chunkPos.x / CHUNK_DISTANCE), // is using floorDiv better here? - Maybe?
+			Mth.floor((float) chunkPos.z / CHUNK_DISTANCE)
 		);
 	}
 
@@ -34,7 +34,7 @@ public record EcosystemAreaPos(int x, int z) {
 	}
 
 	/**
-	 * @see ChunkPos#stream(ChunkPos, ChunkPos)
+	 * @see ChunkPos#rangeClosed(ChunkPos, ChunkPos)
 	 */
 	public static Stream<EcosystemAreaPos> stream(EcosystemAreaPos pos1, EcosystemAreaPos pos2) {
 		int xDiff = Math.abs(pos1.x - pos2.x) + 1;
@@ -68,7 +68,7 @@ public record EcosystemAreaPos(int x, int z) {
 
 	@Override
 	public int hashCode() {
-		return ChunkPos.hashCode(this.x, this.z);
+		return ChunkPos.hash(this.x, this.z);
 	}
 
 	@Override

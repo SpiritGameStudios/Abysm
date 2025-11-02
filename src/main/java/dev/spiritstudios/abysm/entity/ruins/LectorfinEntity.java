@@ -9,37 +9,6 @@ import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.FindPlantsGoal;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.FleeEntityGoal;
-import net.minecraft.entity.ai.goal.FollowGroupLeaderGoal;
-import net.minecraft.entity.ai.goal.RevengeGoal;
-import net.minecraft.entity.attribute.AttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageType;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.passive.SchoolingFishEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -48,71 +17,102 @@ import software.bernie.geckolib.animation.RawAnimation;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.FollowFlockLeaderGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements PlantEater {
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.lectorfin.idle");
 
-	protected static final TrackedData<Integer> ENCHANTMENT_LEVEL = DataTracker.registerData(LectorfinEntity.class, TrackedDataHandlerRegistry.INTEGER);
-	protected static final TrackedData<RegistryEntry<FishEnchantment>> ENCHANTMENT = DataTracker.registerData(LectorfinEntity.class, AbysmTrackedDataHandlers.FISH_ENCHANTMENT);
+	protected static final EntityDataAccessor<Integer> ENCHANTMENT_LEVEL = SynchedEntityData.defineId(LectorfinEntity.class, EntityDataSerializers.INT);
+	protected static final EntityDataAccessor<Holder<FishEnchantment>> ENCHANTMENT = SynchedEntityData.defineId(LectorfinEntity.class, AbysmTrackedDataHandlers.FISH_ENCHANTMENT);
 
-	protected @Nullable RegistryEntry<FishEnchantment> previousEnchantment = null;
+	protected @Nullable Holder<FishEnchantment> previousEnchantment = null;
 
 	@Nullable
 	protected BlockPos plantPos;
 	protected FindPlantsGoal plantsGoal;
 	protected int ticksUntilHunger = 0;
 
-	public LectorfinEntity(EntityType<? extends SchoolingFishEntity> entityType, World world) {
+	public LectorfinEntity(EntityType<? extends AbstractSchoolingFish> entityType, Level world) {
 		super(entityType, world);
 	}
 
 	@Override
-	protected void initDataTracker(DataTracker.Builder builder) {
-		super.initDataTracker(builder);
-		builder.add(ENCHANTMENT_LEVEL, 0);
-		builder.add(ENCHANTMENT, FishEnchantment.getDefaultEntry(this.getRegistryManager()));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(ENCHANTMENT_LEVEL, 0);
+		builder.define(ENCHANTMENT, FishEnchantment.getDefaultEntry(this.registryAccess()));
 	}
 
 
 	@Override
-	protected void readCustomData(ReadView view) {
-		super.readCustomData(view);
+	protected void readAdditionalSaveData(ValueInput view) {
+		super.readAdditionalSaveData(view);
 
-		this.dataTracker.set(
+		this.entityData.set(
 			ENCHANTMENT,
 			view.read("fishEnchantment", FishEnchantment.ENTRY_CODEC)
-				.orElse(FishEnchantment.getDefaultEntry(this.getRegistryManager()))
+				.orElse(FishEnchantment.getDefaultEntry(this.registryAccess()))
 		);
 
-		this.dataTracker.set(ENCHANTMENT_LEVEL, view.getInt("enchantmentLevel", 0));
+		this.entityData.set(ENCHANTMENT_LEVEL, view.getIntOr("enchantmentLevel", 0));
 
-		this.ticksUntilHunger = view.getInt("ticksUntilHunger", 0);
+		this.ticksUntilHunger = view.getIntOr("ticksUntilHunger", 0);
 	}
 
 
 	@Override
-	protected void writeCustomData(WriteView view) {
-		super.writeCustomData(view);
+	protected void addAdditionalSaveData(ValueOutput view) {
+		super.addAdditionalSaveData(view);
 
-		view.put("fishEnchantment", FishEnchantment.ENTRY_CODEC, this.getEnchantment());
+		view.store("fishEnchantment", FishEnchantment.ENTRY_CODEC, this.getEnchantment());
 		view.putInt("enchantmentLevel", this.getEnchantmentLevel());
 		view.putInt("ticksUntilHunger", this.ticksUntilHunger);
 	}
 
 	public int getEnchantmentLevel() {
-		return this.dataTracker.get(ENCHANTMENT_LEVEL);
+		return this.entityData.get(ENCHANTMENT_LEVEL);
 	}
 
-	public @Nullable RegistryEntry<FishEnchantment> getEnchantment() {
-		return this.dataTracker.get(ENCHANTMENT);
+	public @Nullable Holder<FishEnchantment> getEnchantment() {
+		return this.entityData.get(ENCHANTMENT);
 	}
 
-	public void setEnchantment(RegistryEntry<FishEnchantment> enchantment, int level) {
+	public void setEnchantment(Holder<FishEnchantment> enchantment, int level) {
 		if (!Objects.equals(enchantment, this.getEnchantment())) {
-			this.dataTracker.set(ENCHANTMENT, enchantment);
+			this.entityData.set(ENCHANTMENT, enchantment);
 		}
 		if (level != this.getEnchantmentLevel()) {
-			this.dataTracker.set(ENCHANTMENT_LEVEL, level);
+			this.entityData.set(ENCHANTMENT_LEVEL, level);
 		}
 	}
 
@@ -124,9 +124,9 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.getWorld().isClient) {
+		if (!this.level().isClientSide) {
 			this.tickEnchantment();
-			if (this.age % 200 == 0) {
+			if (this.tickCount % 200 == 0) {
 				this.heal(0.34F * this.getMaxHealth());
 			}
 		}
@@ -138,28 +138,28 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 	}
 
 	@Override
-	protected void initGoals() {
-		super.initGoals();
-		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this, 1.0F));
+	protected void registerGoals() {
+		super.registerGoals();
+		this.goalSelector.addGoal(4, new SwimToRandomPlaceGoal(this, 1.0F));
 		this.plantsGoal = new FindPlantsGoal(this);
-		this.plantsGoal.setRangeSupplier(() -> (int) Math.floor(this.getAttributeValue(EntityAttributes.FOLLOW_RANGE) * 0.8));
-		this.goalSelector.add(4, this.plantsGoal);
-		this.targetSelector.add(2, new LectorfinRevengeGoal(this));
+		this.plantsGoal.setRangeSupplier(() -> (int) Math.floor(this.getAttributeValue(Attributes.FOLLOW_RANGE) * 0.8));
+		this.goalSelector.addGoal(4, this.plantsGoal);
+		this.targetSelector.addGoal(2, new LectorfinRevengeGoal(this));
 	}
 
 	@Override
-	public boolean damage(ServerWorld world, DamageSource source, float amount) {
+	public boolean hurtServer(ServerLevel world, DamageSource source, float amount) {
 		if (this.isInvulnerableTo(world, source)) {
 			return false;
 		}
 		this.plantsGoal.cancel();
-		return super.damage(world, source, amount);
+		return super.hurtServer(world, source, amount);
 	}
 
 	@Override
-	public void tickMovement() {
-		super.tickMovement();
-		if (!this.getWorld().isClient) {
+	public void aiStep() {
+		super.aiStep();
+		if (!this.level().isClientSide) {
 			if (this.ticksUntilHunger > 0) {
 				this.ticksUntilHunger--;
 			}
@@ -178,7 +178,7 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 	@Override
 	public void clearPlantPos() {
 		this.plantPos = null;
-		this.ticksUntilHunger = MathHelper.nextInt(this.random, 20, 60);
+		this.ticksUntilHunger = Mth.nextInt(this.random, 20, 60);
 	}
 
 	@Override
@@ -207,14 +207,14 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 	}
 
 	public void tickEnchantment() {
-		final RegistryEntry<FishEnchantment> enchantment = this.getEnchantment();
+		final Holder<FishEnchantment> enchantment = this.getEnchantment();
 		if (Objects.equals(this.previousEnchantment, enchantment)) {
 			return;
 		}
-		final AttributeContainer attributes = this.getAttributes();
+		final AttributeMap attributes = this.getAttributes();
 		if (this.previousEnchantment != null) {
 			this.previousEnchantment.value().applyModifiers((attribute, modifier) -> {
-				EntityAttributeInstance entityAttributeInstance = attributes.getCustomInstance(attribute);
+				AttributeInstance entityAttributeInstance = attributes.getInstance(attribute);
 				if (entityAttributeInstance != null) {
 					entityAttributeInstance.removeModifier(modifier);
 				}
@@ -222,15 +222,15 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 		}
 		if (enchantment != null) {
 			enchantment.value().applyModifiers((attribute, modifier) -> {
-				EntityAttributeInstance entityAttributeInstance = attributes.getCustomInstance(attribute);
+				AttributeInstance entityAttributeInstance = attributes.getInstance(attribute);
 				if (entityAttributeInstance != null) {
 					entityAttributeInstance.removeModifier(modifier.id());
-					entityAttributeInstance.addTemporaryModifier(modifier);
+					entityAttributeInstance.addTransientModifier(modifier);
 				}
 			});
 			if (this.previousEnchantment == null) {
-				this.clearGoalsAndTasks();
-				this.initGoals();
+				this.removeFreeWill();
+				this.registerGoals();
 			}
 		}
 		this.previousEnchantment = enchantment;
@@ -253,33 +253,33 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 
 	// TODO: Bucket
 	@Override
-	public ItemStack getBucketItem() {
+	public ItemStack getBucketItemStack() {
 		return new ItemStack(AbysmItems.PADDLEFISH_BUCKET);
 	}
 
-	public static boolean canSpawn(EntityType<Entity> entityEntityType, ServerWorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
-		return pos.getY() <= world.getSeaLevel() - 33 && world.getBlockState(pos).isOf(Blocks.WATER);
+	public static boolean canSpawn(EntityType<Entity> entityEntityType, ServerLevelAccessor world, EntitySpawnReason spawnReason, BlockPos pos, RandomSource random) {
+		return pos.getY() <= world.getSeaLevel() - 33 && world.getBlockState(pos).is(Blocks.WATER);
 	}
 
-	public static class LectorfinRevengeGoal extends RevengeGoal {
+	public static class LectorfinRevengeGoal extends HurtByTargetGoal {
 
 		public LectorfinRevengeGoal(LectorfinEntity mob, Class<?>... noRevengeTypes) {
 			super(mob, noRevengeTypes);
 		}
 
 		@Override
-		public boolean canStart() {
-			return ((LectorfinEntity) this.mob).isAggressive() && super.canStart();
+		public boolean canUse() {
+			return ((LectorfinEntity) this.mob).isAggressive() && super.canUse();
 		}
 
 		@Override
-		public boolean shouldContinue() {
-			return ((LectorfinEntity) this.mob).isAggressive() && super.shouldContinue();
+		public boolean canContinueToUse() {
+			return ((LectorfinEntity) this.mob).isAggressive() && super.canContinueToUse();
 		}
 	}
 
 	@SuppressWarnings("unused")
-	public static class EscapeWhenNearDeathGoal extends EscapeDangerGoal {
+	public static class EscapeWhenNearDeathGoal extends PanicGoal {
 
 		public EscapeWhenNearDeathGoal(LectorfinEntity mob, double speed) {
 			super(mob, speed);
@@ -289,23 +289,23 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 			super(mob, speed, dangerousDamageTypes);
 		}
 
-		public EscapeWhenNearDeathGoal(LectorfinEntity mob, double speed, Function<PathAwareEntity, TagKey<DamageType>> entityToDangerousDamageTypes) {
+		public EscapeWhenNearDeathGoal(LectorfinEntity mob, double speed, Function<PathfinderMob, TagKey<DamageType>> entityToDangerousDamageTypes) {
 			super(mob, speed, entityToDangerousDamageTypes);
 		}
 
 		@Override
-		public boolean canStart() {
-			return !((LectorfinEntity) this.mob).isAggressive() && super.canStart();
+		public boolean canUse() {
+			return !((LectorfinEntity) this.mob).isAggressive() && super.canUse();
 		}
 
 		@Override
-		public boolean shouldContinue() {
-			return !((LectorfinEntity) this.mob).isAggressive() && super.shouldContinue();
+		public boolean canContinueToUse() {
+			return !((LectorfinEntity) this.mob).isAggressive() && super.canContinueToUse();
 		}
 	}
 
 	@SuppressWarnings("unused")
-	public static class FleeWhenWeakGoal<T extends LivingEntity> extends FleeEntityGoal<T> {
+	public static class FleeWhenWeakGoal<T extends LivingEntity> extends AvoidEntityGoal<T> {
 
 		public FleeWhenWeakGoal(LectorfinEntity mob, Class<T> fleeFromType, float distance, double slowSpeed, double fastSpeed) {
 			super(mob, fleeFromType, distance, slowSpeed, fastSpeed);
@@ -320,17 +320,17 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 		}
 
 		@Override
-		public boolean canStart() {
-			return !((LectorfinEntity) this.mob).isAggressive() && super.canStart();
+		public boolean canUse() {
+			return !((LectorfinEntity) this.mob).isAggressive() && super.canUse();
 		}
 
 		@Override
-		public boolean shouldContinue() {
-			return !((LectorfinEntity) this.mob).isAggressive() && super.shouldContinue();
+		public boolean canContinueToUse() {
+			return !((LectorfinEntity) this.mob).isAggressive() && super.canContinueToUse();
 		}
 	}
 
-	public static class FollowGroupWhenWeakGoal extends FollowGroupLeaderGoal {
+	public static class FollowGroupWhenWeakGoal extends FollowFlockLeaderGoal {
 
 		protected final LectorfinEntity lectorfin;
 
@@ -340,13 +340,13 @@ public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements Pla
 		}
 
 		@Override
-		public boolean canStart() {
-			return !this.lectorfin.isAggressive() && super.canStart();
+		public boolean canUse() {
+			return !this.lectorfin.isAggressive() && super.canUse();
 		}
 
 		@Override
-		public boolean shouldContinue() {
-			return !this.lectorfin.isAggressive() && super.shouldContinue();
+		public boolean canContinueToUse() {
+			return !this.lectorfin.isAggressive() && super.canContinueToUse();
 		}
 	}
 }

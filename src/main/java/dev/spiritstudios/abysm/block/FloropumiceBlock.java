@@ -2,100 +2,99 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Fertilizable;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class FloropumiceBlock extends Block implements Fertilizable {
-	public static final MapCodec<FloropumiceBlock> CODEC = createCodec(FloropumiceBlock::new);
+public class FloropumiceBlock extends Block implements BonemealableBlock {
+	public static final MapCodec<FloropumiceBlock> CODEC = simpleCodec(FloropumiceBlock::new);
 
 	@Override
-	public MapCodec<FloropumiceBlock> getCodec() {
+	public MapCodec<FloropumiceBlock> codec() {
 		return CODEC;
 	}
 
-	public FloropumiceBlock(Settings settings) {
+	public FloropumiceBlock(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	public FertilizableType getFertilizableType() {
-		return FertilizableType.NEIGHBOR_SPREADER;
+	public Type getType() {
+		return Type.NEIGHBOR_SPREADER;
 	}
 
 	@Override
-	public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
-		BlockPos upPos = pos.up();
+	public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
+		BlockPos upPos = pos.above();
 		BlockState upState = world.getBlockState(upPos);
-		return upState.isTransparent() || (!upState.isOpaque() && world.getFluidState(upPos).isIn(FluidTags.WATER));
+		return upState.propagatesSkylightDown() || (!upState.canOcclude() && world.getFluidState(upPos).is(FluidTags.WATER));
 	}
 
 	@Override
-	public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
 		return true;
 	}
 
 	@Override
-	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-		BlockState startState = getRandomAdjacentBloomedFloropumice(world, pos, random).orElseGet(() -> getRandomBloomedFloropumice(random).getDefaultState());
-		world.setBlockState(pos, startState);
+	public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+		BlockState startState = getRandomAdjacentBloomedFloropumice(world, pos, random).orElseGet(() -> getRandomBloomedFloropumice(random).defaultBlockState());
+		world.setBlockAndUpdate(pos, startState);
 
-		BlockPos.Mutable targetPos = new BlockPos.Mutable();
+		BlockPos.MutableBlockPos targetPos = new BlockPos.MutableBlockPos();
 		for (int i = 0; i < 20; i++) {
 			int dx = random.nextInt(5) - 2;
 			int dy = random.nextInt(3) - 1;
 			int dz = random.nextInt(5) - 2;
-			targetPos.set(pos, dx, dy, dz);
+			targetPos.setWithOffset(pos, dx, dy, dz);
 
 			BlockState targetState = world.getBlockState(targetPos);
-			if (targetState.isOf(AbysmBlocks.FLOROPUMICE) && isFertilizable(world, targetPos, targetState)) {
+			if (targetState.is(AbysmBlocks.FLOROPUMICE) && isValidBonemealTarget(world, targetPos, targetState)) {
 				BlockState newState = getRandomAdjacentBloomedFloropumice(world, targetPos, random).orElse(startState);
-				world.setBlockState(targetPos, newState);
+				world.setBlockAndUpdate(targetPos, newState);
 			}
 		}
 	}
 
-	public Optional<BlockState> getRandomAdjacentBloomedFloropumice(ServerWorld world, BlockPos pos, Random random) {
+	public Optional<BlockState> getRandomAdjacentBloomedFloropumice(ServerLevel world, BlockPos pos, RandomSource random) {
 		boolean foundRosy = false;
 		boolean foundSunny = false;
 		boolean foundMauve = false;
 
-		BlockPos.Mutable adjPos = new BlockPos.Mutable();
+		BlockPos.MutableBlockPos adjPos = new BlockPos.MutableBlockPos();
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				if (i == 0 && j == 0) continue;
 
-				adjPos.set(pos, i, 0, j);
+				adjPos.setWithOffset(pos, i, 0, j);
 				BlockState adjState = world.getBlockState(adjPos);
 
-				if (adjState.isIn(AbysmBlockTags.BLOOMED_FLOROPUMICE)) {
-					if (adjState.isOf(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE)) {
+				if (adjState.is(AbysmBlockTags.BLOOMED_FLOROPUMICE)) {
+					if (adjState.is(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE)) {
 						foundRosy = true;
-					} else if (adjState.isOf(AbysmBlocks.SUNBLOOMED_FLOROPUMICE)) {
+					} else if (adjState.is(AbysmBlocks.SUNBLOOMED_FLOROPUMICE)) {
 						foundSunny = true;
-					} else if (adjState.isOf(AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE)) {
+					} else if (adjState.is(AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE)) {
 						foundMauve = true;
 					}
 				} else {
-					adjPos.move(0, adjState.isOpaque() ? 1 : -1, 0);
+					adjPos.move(0, adjState.canOcclude() ? 1 : -1, 0);
 					adjState = world.getBlockState(adjPos);
-					if (adjState.isIn(AbysmBlockTags.BLOOMED_FLOROPUMICE)) {
-						if (adjState.isOf(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE)) {
+					if (adjState.is(AbysmBlockTags.BLOOMED_FLOROPUMICE)) {
+						if (adjState.is(AbysmBlocks.ROSEBLOOMED_FLOROPUMICE)) {
 							foundRosy = true;
-						} else if (adjState.isOf(AbysmBlocks.SUNBLOOMED_FLOROPUMICE)) {
+						} else if (adjState.is(AbysmBlocks.SUNBLOOMED_FLOROPUMICE)) {
 							foundSunny = true;
-						} else if (adjState.isOf(AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE)) {
+						} else if (adjState.is(AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE)) {
 							foundMauve = true;
 						}
 					}
@@ -114,13 +113,13 @@ public class FloropumiceBlock extends Block implements Fertilizable {
 			if (foundMauve) potentialBlocks.add(AbysmBlocks.MALLOWBLOOMED_FLOROPUMICE);
 
 			Block block = Util.getRandom(potentialBlocks, random);
-			return Optional.of(block.getDefaultState());
+			return Optional.of(block.defaultBlockState());
 		} else {
 			return Optional.empty();
 		}
 	}
 
-	public Block getRandomBloomedFloropumice(Random random) {
+	public Block getRandomBloomedFloropumice(RandomSource random) {
 		int i = random.nextInt(3);
 		return switch (i) {
 			case 0 -> AbysmBlocks.ROSEBLOOMED_FLOROPUMICE;

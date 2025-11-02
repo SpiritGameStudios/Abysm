@@ -1,49 +1,49 @@
 package dev.spiritstudios.abysm.client.particle;
 
-import net.minecraft.client.particle.AscendingParticle;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.BaseAshSmokeParticle;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleFactory;
-import net.minecraft.client.particle.SpriteProvider;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-public class BloomGlimmerParticle extends AscendingParticle {
+public class BloomGlimmerParticle extends BaseAshSmokeParticle {
 	public float rotationSpeed = 0;
 
 	protected BloomGlimmerParticle(
-		ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, float scaleMultiplier, SpriteProvider spriteProvider, int baseMaxAge, float gravityStrength, float velocityMultiplier
+		ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, float scaleMultiplier, SpriteSet spriteProvider, int baseMaxAge, float gravityStrength, float velocityMultiplier
 	) {
 		super(world, x, y, z, 0F, 0F, 0F, velocityX, velocityY, velocityZ, scaleMultiplier, spriteProvider, 0.0F, baseMaxAge, gravityStrength, false);
-		this.velocityMultiplier = velocityMultiplier;
+		this.friction = velocityMultiplier;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
 
-		if (!this.dead) {
-			this.lastAngle = this.angle;
-			this.angle = this.angle + MathHelper.TAU * this.rotationSpeed;
+		if (!this.removed) {
+			this.oRoll = this.roll;
+			this.roll = this.roll + Mth.TWO_PI * this.rotationSpeed;
 
 			this.rotationSpeed *= 0.99F;
 		}
 	}
 
 	@Override
-	public float getSize(float tickProgress) {
-		float lifeProgress = MathHelper.clamp((this.age + tickProgress) / this.maxAge, 0F, 1F);
-		float multiplier = MathHelper.clamp(lifeProgress * 10.0F, 0.0F, 1.0F) * MathHelper.clamp((1 - lifeProgress) * 2.0F, 0.0F, 1.0F);
-		return this.scale * multiplier;
+	public float getQuadSize(float tickProgress) {
+		float lifeProgress = Mth.clamp((this.age + tickProgress) / this.lifetime, 0F, 1F);
+		float multiplier = Mth.clamp(lifeProgress * 10.0F, 0.0F, 1.0F) * Mth.clamp((1 - lifeProgress) * 2.0F, 0.0F, 1.0F);
+		return this.quadSize * multiplier;
 	}
 
 	@Override
-	protected int getBrightness(float tickProgress) {
-		float relativeAge = MathHelper.clamp((this.age + tickProgress) / this.maxAge, 0F, 1F);
+	protected int getLightColor(float tickProgress) {
+		float relativeAge = Mth.clamp((this.age + tickProgress) / this.lifetime, 0F, 1F);
 
-		int baseBrightness = super.getBrightness(tickProgress);
+		int baseBrightness = super.getLightColor(tickProgress);
 
 		int blockLight = baseBrightness & 0xFF;
 		blockLight += (int) (relativeAge * 3.0F * 16.0F);
@@ -56,10 +56,10 @@ public class BloomGlimmerParticle extends AscendingParticle {
 		return blockLight | (skyLight << 16);
 	}
 
-	public abstract static class Factory implements ParticleFactory<SimpleParticleType> {
-		private final SpriteProvider spriteProvider;
+	public abstract static class Factory implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet spriteProvider;
 
-		public Factory(SpriteProvider spriteProvider) {
+		public Factory(SpriteSet spriteProvider) {
 			this.spriteProvider = spriteProvider;
 		}
 
@@ -67,15 +67,15 @@ public class BloomGlimmerParticle extends AscendingParticle {
 
 		public abstract int getColorEnd();
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			Random random = clientWorld.getRandom();
+		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			RandomSource random = clientWorld.getRandom();
 
 			BloomGlimmerParticle particle = new BloomGlimmerParticle(clientWorld, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider, 40, 0.0125F, 0.96F);
 
-			int color = ColorHelper.lerp(random.nextFloat(), getColorStart(), getColorEnd());
-			float red = ColorHelper.getRedFloat(color);
-			float green = ColorHelper.getGreenFloat(color);
-			float blue = ColorHelper.getBlueFloat(color);
+			int color = ARGB.lerp(random.nextFloat(), getColorStart(), getColorEnd());
+			float red = ARGB.redFloat(color);
+			float green = ARGB.greenFloat(color);
+			float blue = ARGB.blueFloat(color);
 			particle.setColor(red, green, blue);
 
 			particle.scale(0.6F + 1.8F * random.nextFloat());
@@ -87,7 +87,7 @@ public class BloomGlimmerParticle extends AscendingParticle {
 	}
 
 	public static class RosyFactory extends Factory {
-		public RosyFactory(SpriteProvider spriteProvider) {
+		public RosyFactory(SpriteSet spriteProvider) {
 			super(spriteProvider);
 		}
 
@@ -103,7 +103,7 @@ public class BloomGlimmerParticle extends AscendingParticle {
 	}
 
 	public static class SunnyFactory extends Factory {
-		public SunnyFactory(SpriteProvider spriteProvider) {
+		public SunnyFactory(SpriteSet spriteProvider) {
 			super(spriteProvider);
 		}
 
@@ -119,7 +119,7 @@ public class BloomGlimmerParticle extends AscendingParticle {
 	}
 
 	public static class MauveFactory extends Factory {
-		public MauveFactory(SpriteProvider spriteProvider) {
+		public MauveFactory(SpriteSet spriteProvider) {
 			super(spriteProvider);
 		}
 
@@ -134,15 +134,15 @@ public class BloomGlimmerParticle extends AscendingParticle {
 		}
 	}
 
-	public static class ThornFactory implements ParticleFactory<SimpleParticleType> {
-		private final SpriteProvider spriteProvider;
+	public static class ThornFactory implements ParticleProvider<SimpleParticleType> {
+		private final SpriteSet spriteProvider;
 
-		public ThornFactory(SpriteProvider spriteProvider) {
+		public ThornFactory(SpriteSet spriteProvider) {
 			this.spriteProvider = spriteProvider;
 		}
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientWorld clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			Random random = clientWorld.getRandom();
+		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+			RandomSource random = clientWorld.getRandom();
 
 			BloomGlimmerParticle particle = new BloomGlimmerParticle(clientWorld, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider, 25, 0.005F, 0.98F);
 

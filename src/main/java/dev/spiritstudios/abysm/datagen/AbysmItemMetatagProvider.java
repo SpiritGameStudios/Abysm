@@ -3,12 +3,11 @@ package dev.spiritstudios.abysm.datagen;
 import dev.spiritstudios.specter.api.item.ItemMetatags;
 import dev.spiritstudios.specter.api.registry.metatag.datagen.MetatagProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.block.Block;
-import net.minecraft.data.DataOutput;
-import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -57,8 +56,8 @@ import static dev.spiritstudios.abysm.block.AbysmBlocks.WHITE_SCABIOSA;
 import static dev.spiritstudios.abysm.block.AbysmBlocks.YELLOW_SCABIOSA;
 
 public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
-	public AbysmItemMetatagProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-		super(dataOutput, RegistryKeys.ITEM, registriesFuture, DataOutput.OutputType.DATA_PACK);
+	public AbysmItemMetatagProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+		super(dataOutput, Registries.ITEM, registriesFuture, PackOutput.Target.DATA_PACK);
 	}
 
 	private void putBlocks(MetatagProvider<Item>.MetatagBuilder<Float> builder, float value, Block... blocks) {
@@ -72,7 +71,7 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 	}
 
 	@Override
-	protected void configure(Consumer<MetatagProvider<Item>.MetatagBuilder<?>> consumer, RegistryWrapper.WrapperLookup wrapperLookup) {
+	protected void configure(Consumer<MetatagProvider<Item>.MetatagBuilder<?>> consumer, HolderLookup.Provider wrapperLookup) {
 		MetatagProvider<Item>.MetatagBuilder<Float> compostingChance = create(ItemMetatags.COMPOSTING_CHANCE);
 
 		putBlocks(compostingChance, 0.3F,

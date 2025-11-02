@@ -5,40 +5,40 @@ import com.mojang.datafixers.util.Pair;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.worldgen.structure.processor.AbysmStructureProcessorLists;
 import dev.spiritstudios.specter.api.worldgen.SpecterStructurePoolElements;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.structure.pool.StructurePool;
-import net.minecraft.structure.pool.StructurePools;
-import net.minecraft.structure.processor.StructureProcessorList;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.Pools;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
 public class AbysmStructurePools {
-	public static final RegistryKey<StructurePool> BASIC_RUIN = of("deep_sea_ruins/basic_ruin");
+	public static final ResourceKey<StructureTemplatePool> BASIC_RUIN = of("deep_sea_ruins/basic_ruin");
 
-	public static void bootstrap(Registerable<StructurePool> registerable) {
-		RegistryEntryLookup<StructureProcessorList> processorListLookup = registerable.getRegistryLookup(RegistryKeys.PROCESSOR_LIST);
-		RegistryEntryLookup<StructurePool> templatePoolLookup = registerable.getRegistryLookup(RegistryKeys.TEMPLATE_POOL);
+	public static void bootstrap(BootstrapContext<StructureTemplatePool> registerable) {
+		HolderGetter<StructureProcessorList> processorListLookup = registerable.lookup(Registries.PROCESSOR_LIST);
+		HolderGetter<StructureTemplatePool> templatePoolLookup = registerable.lookup(Registries.TEMPLATE_POOL);
 
-		RegistryEntry<StructurePool> emptyPool = templatePoolLookup.getOrThrow(StructurePools.EMPTY);
+		Holder<StructureTemplatePool> emptyPool = templatePoolLookup.getOrThrow(Pools.EMPTY);
 
-		RegistryEntry<StructureProcessorList> ruinsDegradation = processorListLookup.getOrThrow(AbysmStructureProcessorLists.DEEP_SEA_RUINS_DEGRADATION);
+		Holder<StructureProcessorList> ruinsDegradation = processorListLookup.getOrThrow(AbysmStructureProcessorLists.DEEP_SEA_RUINS_DEGRADATION);
 
 		registerable.register(
 			BASIC_RUIN,
-			new StructurePool(
+			new StructureTemplatePool(
 				emptyPool,
 				ImmutableList.of(Pair.of(
 					SpecterStructurePoolElements.ofProcessedSingle(Abysm.id("deep_sea_ruins/basic_ruin"), ruinsDegradation),
 					1
 				)),
-				StructurePool.Projection.RIGID
+				StructureTemplatePool.Projection.RIGID
 			)
 		);
 	}
 
-	protected static RegistryKey<StructurePool> of(String id) {
-		return RegistryKey.of(RegistryKeys.TEMPLATE_POOL, Abysm.id(id));
+	protected static ResourceKey<StructureTemplatePool> of(String id) {
+		return ResourceKey.create(Registries.TEMPLATE_POOL, Abysm.id(id));
 	}
 }

@@ -7,23 +7,22 @@ import dev.spiritstudios.abysm.worldgen.biome.custom.GlowingCavesBiome;
 import dev.spiritstudios.abysm.worldgen.biome.custom.InkdepthRealmBiome;
 import dev.spiritstudios.abysm.worldgen.biome.custom.PearlescentSeaBiome;
 import dev.spiritstudios.abysm.worldgen.biome.custom.TheEntwinedBiome;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.carver.ConfiguredCarver;
-import net.minecraft.world.gen.feature.PlacedFeature;
-
 import java.util.List;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
 public final class AbysmBiomes {
-	public static final RegistryKey<Biome> FLORAL_REEF = ofKey("floral_reef");
-	public static final RegistryKey<Biome> DEEP_SEA_RUINS = ofKey("deep_sea_ruins");
-	public static final RegistryKey<Biome> THE_ENTWINED = ofKey("the_entwined");
-	public static final RegistryKey<Biome> PEARLESCENT_SEA = ofKey("pearlescent_sea");
-	public static final RegistryKey<Biome> INKDEPTH_REALM = ofKey("inkdepth_realm");
-	public static final RegistryKey<Biome> GLOWING_CAVES = ofKey("glowing_caves");
+	public static final ResourceKey<Biome> FLORAL_REEF = ofKey("floral_reef");
+	public static final ResourceKey<Biome> DEEP_SEA_RUINS = ofKey("deep_sea_ruins");
+	public static final ResourceKey<Biome> THE_ENTWINED = ofKey("the_entwined");
+	public static final ResourceKey<Biome> PEARLESCENT_SEA = ofKey("pearlescent_sea");
+	public static final ResourceKey<Biome> INKDEPTH_REALM = ofKey("inkdepth_realm");
+	public static final ResourceKey<Biome> GLOWING_CAVES = ofKey("glowing_caves");
 
 	public static final List<AbysmBiome> BIOMES = List.of(
 		new FloralReefBiome(),
@@ -34,15 +33,15 @@ public final class AbysmBiomes {
 		//new GlowingCavesBiome
 	);
 
-	public static void bootstrap(Registerable<Biome> registerable) {
-		RegistryEntryLookup<PlacedFeature> featureLookup = registerable.getRegistryLookup(RegistryKeys.PLACED_FEATURE);
-		RegistryEntryLookup<ConfiguredCarver<?>> carverLookup = registerable.getRegistryLookup(RegistryKeys.CONFIGURED_CARVER);
+	public static void bootstrap(BootstrapContext<Biome> registerable) {
+		HolderGetter<PlacedFeature> featureLookup = registerable.lookup(Registries.PLACED_FEATURE);
+		HolderGetter<ConfiguredWorldCarver<?>> carverLookup = registerable.lookup(Registries.CONFIGURED_CARVER);
 
 		for (AbysmBiome biome : BIOMES) biome.bootstrap(registerable, featureLookup, carverLookup);
 	}
 
-	private static RegistryKey<Biome> ofKey(String path) {
-		return RegistryKey.of(RegistryKeys.BIOME, Abysm.id(path));
+	private static ResourceKey<Biome> ofKey(String path) {
+		return ResourceKey.create(Registries.BIOME, Abysm.id(path));
 	}
 
 	public static void addAllToGenerator() {

@@ -1,30 +1,30 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class DregloamOozeBlock extends Block {
-	public static final MapCodec<DregloamOozeBlock> CODEC = createCodec(DregloamOozeBlock::new);
+	public static final MapCodec<DregloamOozeBlock> CODEC = simpleCodec(DregloamOozeBlock::new);
 
 	@Override
-	public MapCodec<DregloamOozeBlock> getCodec() {
+	public MapCodec<DregloamOozeBlock> codec() {
 		return CODEC;
 	}
 
-	public DregloamOozeBlock(Settings settings) {
+	public DregloamOozeBlock(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-		BlockPos downPos = pos.down();
+	protected void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+		BlockPos downPos = pos.below();
 		BlockState downState = world.getBlockState(downPos);
-		if (downState.isOf(AbysmBlocks.DREGLOAM)) {
-			world.setBlockState(downPos, AbysmBlocks.OOZING_DREGLOAM.getDefaultState());
+		if (downState.is(AbysmBlocks.DREGLOAM)) {
+			world.setBlockAndUpdate(downPos, AbysmBlocks.OOZING_DREGLOAM.defaultBlockState());
 		}
 	}
 }

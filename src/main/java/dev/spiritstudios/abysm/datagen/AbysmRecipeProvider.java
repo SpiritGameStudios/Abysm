@@ -5,20 +5,19 @@ import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.family.BlockFamily;
-import net.minecraft.data.recipe.CookingRecipeJsonBuilder;
-import net.minecraft.data.recipe.RecipeExporter;
-import net.minecraft.data.recipe.RecipeGenerator;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.resource.featuretoggle.FeatureFlags;
-import net.minecraft.resource.featuretoggle.FeatureSet;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.BlockFamily;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import java.util.concurrent.CompletableFuture;
 
 public class AbysmRecipeProvider extends FabricRecipeProvider {
@@ -27,30 +26,30 @@ public class AbysmRecipeProvider extends FabricRecipeProvider {
 		return "Recipes";
 	}
 
-	public AbysmRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+	public AbysmRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
 		super(output, registriesFuture);
 	}
 
 	@Override
-	protected RecipeGenerator getRecipeGenerator(RegistryWrapper.WrapperLookup wrapperLookup, RecipeExporter exporter) {
-		return new RecipeGenerator(wrapperLookup, exporter) {
+	protected RecipeProvider createRecipeProvider(HolderLookup.Provider wrapperLookup, RecipeOutput exporter) {
+		return new RecipeProvider(wrapperLookup, exporter) {
 			@Override
-			public void generate() {
+			public void buildRecipes() {
 				// region crafting
 				AbysmBlockFamilies
 					.getAllAbysmBlockFamilies()
-					.filter(BlockFamily::shouldGenerateRecipes)
-					.forEach(blockFamily -> generateFamily(blockFamily, FeatureSet.of(FeatureFlags.VANILLA)));
+					.filter(BlockFamily::shouldGenerateRecipe)
+					.forEach(blockFamily -> generateRecipes(blockFamily, FeatureFlagSet.of(FeatureFlags.VANILLA)));
 
 				// 1 prismarine crystal, 4 sandstone, 4 basalt -> 8 floropumice
-				this.createShapeless(RecipeCategory.BUILDING_BLOCKS, AbysmBlocks.FLOROPUMICE, 8)
-					.input(Items.PRISMARINE_CRYSTALS)
-					.input(Blocks.SANDSTONE, 4)
-					.input(Blocks.BASALT, 4)
-					.criterion("has_prismarine", this.conditionsFromItem(Items.PRISMARINE_CRYSTALS))
-					.criterion("has_sandstone", this.conditionsFromItem(Blocks.SANDSTONE))
-					.criterion("has_basalt", this.conditionsFromItem(Blocks.BASALT))
-					.offerTo(this.exporter);
+				this.shapeless(RecipeCategory.BUILDING_BLOCKS, AbysmBlocks.FLOROPUMICE, 8)
+					.requires(Items.PRISMARINE_CRYSTALS)
+					.requires(Blocks.SANDSTONE, 4)
+					.requires(Blocks.BASALT, 4)
+					.unlockedBy("has_prismarine", this.has(Items.PRISMARINE_CRYSTALS))
+					.unlockedBy("has_sandstone", this.has(Blocks.SANDSTONE))
+					.unlockedBy("has_basalt", this.has(Blocks.BASALT))
+					.save(this.output);
 
 				// floropumice recipes not covered by block families
 				offerBricklikeRecipe(AbysmBlocks.FLOROPUMICE_BRICKS, AbysmBlocks.POLISHED_FLOROPUMICE);
@@ -58,41 +57,41 @@ public class AbysmRecipeProvider extends FabricRecipeProvider {
 				offerPillarRecipe(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, AbysmBlocks.SMOOTH_FLOROPUMICE);
 
 				// bloomshroom bark recipes
-				offerBarkBlockRecipe(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE, AbysmBlocks.ROSY_BLOOMSHROOM_STEM);
-				offerBarkBlockRecipe(AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE, AbysmBlocks.SUNNY_BLOOMSHROOM_STEM);
-				offerBarkBlockRecipe(AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE, AbysmBlocks.MAUVE_BLOOMSHROOM_STEM);
+				woodFromLogs(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE, AbysmBlocks.ROSY_BLOOMSHROOM_STEM);
+				woodFromLogs(AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE, AbysmBlocks.SUNNY_BLOOMSHROOM_STEM);
+				woodFromLogs(AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE, AbysmBlocks.MAUVE_BLOOMSHROOM_STEM);
 
 				// petaleaves recipes
-				offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, AbysmBlocks.ROSEBLOOM_PETALEAVES, AbysmBlocks.ROSEBLOOM_PETALS);
-				offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, AbysmBlocks.SUNBLOOM_PETALEAVES, AbysmBlocks.SUNBLOOM_PETALS);
-				offer2x2CompactingRecipe(RecipeCategory.DECORATIONS, AbysmBlocks.MALLOWBLOOM_PETALEAVES, AbysmBlocks.MALLOWBLOOM_PETALS);
+				twoByTwoPacker(RecipeCategory.DECORATIONS, AbysmBlocks.ROSEBLOOM_PETALEAVES, AbysmBlocks.ROSEBLOOM_PETALS);
+				twoByTwoPacker(RecipeCategory.DECORATIONS, AbysmBlocks.SUNBLOOM_PETALEAVES, AbysmBlocks.SUNBLOOM_PETALS);
+				twoByTwoPacker(RecipeCategory.DECORATIONS, AbysmBlocks.MALLOWBLOOM_PETALEAVES, AbysmBlocks.MALLOWBLOOM_PETALS);
 
 				// dregloam recipes
-				offer2x2CompactingRecipe(RecipeCategory.BUILDING_BLOCKS, AbysmBlocks.DREGLOAM_OOZE, AbysmItems.DREGLOAM_OOZEBALL);
+				twoByTwoPacker(RecipeCategory.BUILDING_BLOCKS, AbysmBlocks.DREGLOAM_OOZE, AbysmItems.DREGLOAM_OOZEBALL);
 
-				this.createShapeless(RecipeCategory.BUILDING_BLOCKS, AbysmItems.DREGLOAM_OOZEBALL, 4)
-					.input(AbysmBlocks.DREGLOAM_OOZE)
-					.criterion("has_ooze", this.conditionsFromItem(AbysmBlocks.DREGLOAM_OOZE))
-					.offerTo(this.exporter);
+				this.shapeless(RecipeCategory.BUILDING_BLOCKS, AbysmItems.DREGLOAM_OOZEBALL, 4)
+					.requires(AbysmBlocks.DREGLOAM_OOZE)
+					.unlockedBy("has_ooze", this.has(AbysmBlocks.DREGLOAM_OOZE))
+					.save(this.output);
 
-				this.createShapeless(RecipeCategory.BUILDING_BLOCKS, AbysmBlocks.OOZING_DREGLOAM)
-					.input(AbysmItems.DREGLOAM_OOZEBALL)
-					.input(AbysmBlocks.DREGLOAM)
-					.criterion("has_oozeball", this.conditionsFromItem(AbysmItems.DREGLOAM_OOZEBALL))
-					.criterion("has_dregloam", this.conditionsFromItem(AbysmBlocks.DREGLOAM))
-					.offerTo(this.exporter);
+				this.shapeless(RecipeCategory.BUILDING_BLOCKS, AbysmBlocks.OOZING_DREGLOAM)
+					.requires(AbysmItems.DREGLOAM_OOZEBALL)
+					.requires(AbysmBlocks.DREGLOAM)
+					.unlockedBy("has_oozeball", this.has(AbysmItems.DREGLOAM_OOZEBALL))
+					.unlockedBy("has_dregloam", this.has(AbysmBlocks.DREGLOAM))
+					.save(this.output);
 
 				// harpoon
-				this.createShaped(RecipeCategory.COMBAT, AbysmItems.HARPOON)
-					.input('c', AbysmBlocks.OOZETRICKLE_CORD)
-					.input('h', Items.HEART_OF_THE_SEA)
-					.input('g', Items.GOLD_INGOT)
-					.input('f', AbysmBlocks.SMOOTH_FLOROPUMICE)
+				this.shaped(RecipeCategory.COMBAT, AbysmItems.HARPOON)
+					.define('c', AbysmBlocks.OOZETRICKLE_CORD)
+					.define('h', Items.HEART_OF_THE_SEA)
+					.define('g', Items.GOLD_INGOT)
+					.define('f', AbysmBlocks.SMOOTH_FLOROPUMICE)
 					.pattern("ff ")
 					.pattern("hcg")
 					.pattern("f  ")
-					.criterion("has_cord", this.conditionsFromItem(AbysmBlocks.OOZETRICKLE_CORD))
-					.offerTo(this.exporter);
+					.unlockedBy("has_cord", this.has(AbysmBlocks.OOZETRICKLE_CORD))
+					.save(this.output);
 				// endregion crafting
 
 				// region smelting etc
@@ -117,79 +116,79 @@ public class AbysmRecipeProvider extends FabricRecipeProvider {
 				// endregion stonecutter
 			}
 
-			private void offerSmelting(ItemConvertible input, RecipeCategory category, ItemConvertible output, float experience, int cookingTime) {
-				CookingRecipeJsonBuilder.createSmelting(Ingredient.ofItem(input), category, output, experience, cookingTime)
-					.criterion("has_input", this.conditionsFromItem(input))
-					.offerTo(this.exporter);
+			private void offerSmelting(ItemLike input, RecipeCategory category, ItemLike output, float experience, int cookingTime) {
+				SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), category, output, experience, cookingTime)
+					.unlockedBy("has_input", this.has(input))
+					.save(this.output);
 			}
 
-			private void offerBricklikeRecipe(ItemConvertible out, ItemConvertible in) {
-				this.createShaped(RecipeCategory.BUILDING_BLOCKS, out, 4)
-					.input('#', in)
+			private void offerBricklikeRecipe(ItemLike out, ItemLike in) {
+				this.shaped(RecipeCategory.BUILDING_BLOCKS, out, 4)
+					.define('#', in)
 					.pattern("##")
 					.pattern("##")
-					.criterion("has_input", this.conditionsFromItem(in))
-					.offerTo(this.exporter);
+					.unlockedBy("has_input", this.has(in))
+					.save(this.output);
 			}
 
-			private void offerPillarRecipe(ItemConvertible pillar, ItemConvertible in) {
-				this.createShaped(RecipeCategory.BUILDING_BLOCKS, pillar, 2)
-					.input('#', in)
+			private void offerPillarRecipe(ItemLike pillar, ItemLike in) {
+				this.shaped(RecipeCategory.BUILDING_BLOCKS, pillar, 2)
+					.define('#', in)
 					.pattern("#")
 					.pattern("#")
-					.criterion("has_input", this.conditionsFromItem(in))
-					.offerTo(this.exporter);
+					.unlockedBy("has_input", this.has(in))
+					.save(this.output);
 			}
 
-			private void scFamily(BlockFamily family, int multiplier, ItemConvertible... materials) {
-				Block stairs = family.getVariant(BlockFamily.Variant.STAIRS);
+			private void scFamily(BlockFamily family, int multiplier, ItemLike... materials) {
+				Block stairs = family.get(BlockFamily.Variant.STAIRS);
 				if (stairs != null) {
 					scBlocks(stairs, multiplier, materials);
 				}
-				Block slab = family.getVariant(BlockFamily.Variant.SLAB);
+				Block slab = family.get(BlockFamily.Variant.SLAB);
 				if (slab != null) {
 					scBlocks(slab, 2 * multiplier, materials);
 				}
-				Block wall = family.getVariant(BlockFamily.Variant.WALL);
+				Block wall = family.get(BlockFamily.Variant.WALL);
 				if (wall != null) {
 					scWalls(wall, multiplier, materials);
 				}
-				Block polished = family.getVariant(BlockFamily.Variant.POLISHED);
+				Block polished = family.get(BlockFamily.Variant.POLISHED);
 				if (polished != null) {
 					scBlocks(polished, multiplier, materials);
 				}
-				Block cut = family.getVariant(BlockFamily.Variant.CUT);
+				Block cut = family.get(BlockFamily.Variant.CUT);
 				if (cut != null) {
 					scBlocks(cut, multiplier, materials);
 				}
-				Block chiseled = family.getVariant(BlockFamily.Variant.CHISELED);
+				Block chiseled = family.get(BlockFamily.Variant.CHISELED);
 				if (chiseled != null) {
 					scBlocks(chiseled, multiplier, materials);
 				}
 			}
 
-			private void scBlocks(ItemConvertible result, int amount, ItemConvertible... materials) {
+			private void scBlocks(ItemLike result, int amount, ItemLike... materials) {
 				// use this for non-walls
-				for (ItemConvertible material : materials) {
+				for (ItemLike material : materials) {
 					scBuildingBlock(result, material, amount);
 				}
 			}
 
-			private void scWalls(ItemConvertible result, int amount, ItemConvertible... materials) {
+			private void scWalls(ItemLike result, int amount, ItemLike... materials) {
 				// use this for walls
-				for (ItemConvertible material : materials) {
+				for (ItemLike material : materials) {
 					scDecoration(result, material, amount);
 				}
 			}
 
-			private void scBuildingBlock(ItemConvertible result, ItemConvertible material, int amount) {
+			private void scBuildingBlock(ItemLike result, ItemLike material, int amount) {
 				// use this for non-walls
-				this.offerStonecuttingRecipe(RecipeCategory.BUILDING_BLOCKS, result, material, amount);
+				this.stonecutterResultFromBase(RecipeCategory.BUILDING_BLOCKS, result, material, amount);
 			}
 
-			private void scDecoration(ItemConvertible result, ItemConvertible material, int amount) {
+			private void scDecoration(ItemLike result, ItemLike material, int amount) {
 				// use this for walls
-				this.offerStonecuttingRecipe(RecipeCategory.DECORATIONS, result, material, amount);
+				this.stonecutterResultFromBase(RecipeCategory.DECORATIONS, result, material, amount);
 			}
 		};
 	}

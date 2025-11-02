@@ -1,18 +1,18 @@
 package dev.spiritstudios.abysm.worldgen.noise;
 
-import dev.spiritstudios.abysm.duck.NoiseConfigDuckInterface;
+import dev.spiritstudios.abysm.duck.RandomStateDuckInterface;
 import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctions;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
-import net.minecraft.world.gen.densityfunction.DensityFunction;
-import net.minecraft.world.gen.noise.NoiseConfig;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 public class NoiseConfigAttachment {
 	private @Nullable DensityFunction ruinsSediment = null;
@@ -20,8 +20,8 @@ public class NoiseConfigAttachment {
 	private @Nullable DensityFunction ruinsShellCaveWithPillars = null;
 	private @Nullable DensityFunction beardifierAddition = null;
 
-	public void attachBonusFunctions(ServerWorld world, SamplerFunction samplerFunction) {
-		Registry<DensityFunction> dfRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.DENSITY_FUNCTION);
+	public void attachBonusFunctions(ServerLevel world, SamplerFunction samplerFunction) {
+		Registry<DensityFunction> dfRegistry = world.registryAccess().lookupOrThrow(Registries.DENSITY_FUNCTION);
 
 		this.ruinsSediment = getDensityFunction(AbysmDensityFunctions.RUINS_SEDIMENT, dfRegistry, samplerFunction);
 		this.ruinsShellCave = getDensityFunction(AbysmDensityFunctions.RUINS_SHELL_CAVE, dfRegistry, samplerFunction);
@@ -29,18 +29,18 @@ public class NoiseConfigAttachment {
 		this.beardifierAddition = getDensityFunction(AbysmDensityFunctions.BEARDIFIER_ADDITION, dfRegistry, samplerFunction);
 	}
 
-	private @Nullable DensityFunction getDensityFunction(RegistryKey<DensityFunction> key, Registry<DensityFunction> densityFunctionRegistry, SamplerFunction samplerFunction) {
-		Optional<DensityFunction> function = densityFunctionRegistry.getEntry(key.getValue()).map(RegistryEntry.Reference::value);
+	private @Nullable DensityFunction getDensityFunction(ResourceKey<DensityFunction> key, Registry<DensityFunction> densityFunctionRegistry, SamplerFunction samplerFunction) {
+		Optional<DensityFunction> function = densityFunctionRegistry.get(key.location()).map(Holder.Reference::value);
 
-		Optional<DensityFunction> appliedFunction = function.map(df -> df.apply(new DensityFunction.DensityFunctionVisitor() {
+		Optional<DensityFunction> appliedFunction = function.map(df -> df.mapAll(new DensityFunction.Visitor() {
 			@Override
-			public DensityFunction.Noise apply(DensityFunction.Noise noiseDensityFunction) {
-				RegistryEntry<DoublePerlinNoiseSampler.NoiseParameters> registryEntry = noiseDensityFunction.noiseData();
+			public DensityFunction.NoiseHolder visitNoise(DensityFunction.NoiseHolder noiseDensityFunction) {
+				Holder<NormalNoise.NoiseParameters> registryEntry = noiseDensityFunction.noiseData();
 				// assume that legacy_random_source is false or irrelevant
-				DoublePerlinNoiseSampler doublePerlinNoiseSampler = samplerFunction.getOrCreateSampler(
-					registryEntry.getKey().orElseThrow()
+				NormalNoise doublePerlinNoiseSampler = samplerFunction.getOrCreateSampler(
+					registryEntry.unwrapKey().orElseThrow()
 				);
-				return new DensityFunction.Noise(registryEntry, doublePerlinNoiseSampler);
+				return new DensityFunction.NoiseHolder(registryEntry, doublePerlinNoiseSampler);
 			}
 
 			@Override
@@ -69,7 +69,7 @@ public class NoiseConfigAttachment {
 		return beardifierAddition;
 	}
 
-	public NoiseConfigAttachment apply(DensityFunction.DensityFunctionVisitor visitor) {
+	public NoiseConfigAttachment apply(DensityFunction.Visitor visitor) {
 		NoiseConfigAttachment newNCA = new NoiseConfigAttachment();
 
 		newNCA.ruinsSediment = apply(visitor, this.ruinsSediment);
@@ -80,20 +80,20 @@ public class NoiseConfigAttachment {
 		return newNCA;
 	}
 
-	private DensityFunction apply(DensityFunction.DensityFunctionVisitor visitor, @Nullable DensityFunction densityFunction) {
+	private DensityFunction apply(DensityFunction.Visitor visitor, @Nullable DensityFunction densityFunction) {
 		if (densityFunction == null) {
 			return null;
 		} else {
-			return densityFunction.apply(visitor);
+			return densityFunction.mapAll(visitor);
 		}
 	}
 
-	public static NoiseConfigAttachment get(NoiseConfig noiseConfig) {
-		return ((NoiseConfigDuckInterface) (Object) noiseConfig).abysm$getAttachment();
+	public static NoiseConfigAttachment get(RandomState noiseConfig) {
+		return ((RandomStateDuckInterface) (Object) noiseConfig).abysm$getAttachment();
 	}
 
 	@FunctionalInterface
 	public interface SamplerFunction {
-		DoublePerlinNoiseSampler getOrCreateSampler(RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> noiseParametersKey);
+		NormalNoise getOrCreateSampler(ResourceKey<NormalNoise.NoiseParameters> noiseParametersKey);
 	}
 }

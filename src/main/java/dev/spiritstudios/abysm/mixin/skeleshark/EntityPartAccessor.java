@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.skeleshark;
 
 import dev.spiritstudios.specter.api.entity.EntityPart;
-import net.minecraft.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityDimensions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;

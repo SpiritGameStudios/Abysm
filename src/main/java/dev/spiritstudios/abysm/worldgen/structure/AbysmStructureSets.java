@@ -1,27 +1,27 @@
 package dev.spiritstudios.abysm.worldgen.structure;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.structure.StructureSet;
-import net.minecraft.structure.StructureSetKeys;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.chunk.placement.RandomSpreadStructurePlacement;
-import net.minecraft.world.gen.chunk.placement.SpreadType;
-import net.minecraft.world.gen.chunk.placement.StructurePlacement;
-import net.minecraft.world.gen.structure.Structure;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.structure.BuiltinStructureSets;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 
 public class AbysmStructureSets {
-	public static RegistryKey<StructureSet> DEEP_SEA_RUINS = keyOf("deep_sea_ruins");
+	public static ResourceKey<StructureSet> DEEP_SEA_RUINS = keyOf("deep_sea_ruins");
 
 	@SuppressWarnings("deprecation")
-	public static void bootstrap(Registerable<StructureSet> registry) {
-		RegistryEntryLookup<Structure> structureLookup = registry.getRegistryLookup(RegistryKeys.STRUCTURE);
-		RegistryEntryLookup<StructureSet> structureSetLookup = registry.getRegistryLookup(RegistryKeys.STRUCTURE_SET);
-		RegistryEntryLookup<Biome> biomeLookup = registry.getRegistryLookup(RegistryKeys.BIOME);
+	public static void bootstrap(BootstrapContext<StructureSet> registry) {
+		HolderGetter<Structure> structureLookup = registry.lookup(Registries.STRUCTURE);
+		HolderGetter<StructureSet> structureSetLookup = registry.lookup(Registries.STRUCTURE_SET);
+		HolderGetter<Biome> biomeLookup = registry.lookup(Registries.BIOME);
 
 		registry.register(
 			DEEP_SEA_RUINS,
@@ -33,17 +33,17 @@ public class AbysmStructureSets {
 					1.0F,
 					4, // chosen by fair dice roll
 						   // guaranteed to be random
-					structureSetLookup.getOptional(StructureSetKeys.OCEAN_MONUMENTS)
+					structureSetLookup.get(BuiltinStructureSets.OCEAN_MONUMENTS)
 						.map(monument -> new StructurePlacement.ExclusionZone(monument, 10)),
 					28,
 					8,
-					SpreadType.TRIANGULAR
+					RandomSpreadType.TRIANGULAR
 				)
 			)
 		);
 	}
 
-	private static RegistryKey<StructureSet> keyOf(String id) {
-		return RegistryKey.of(RegistryKeys.STRUCTURE_SET, Abysm.id(id));
+	private static ResourceKey<StructureSet> keyOf(String id) {
+		return ResourceKey.create(Registries.STRUCTURE_SET, Abysm.id(id));
 	}
 }

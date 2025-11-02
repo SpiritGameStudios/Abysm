@@ -2,55 +2,55 @@ package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BloomshroomSprigsBlock extends UnderwaterPlantBlock {
 	public static final MapCodec<BloomshroomSprigsBlock> CODEC = RecordCodecBuilder.mapCodec(
 		instance -> instance.group(
-			ParticleTypes.TYPE_CODEC.fieldOf("particle").forGetter(block -> block.particle),
-			createSettingsCodec()
+			ParticleTypes.CODEC.fieldOf("particle").forGetter(block -> block.particle),
+			propertiesCodec()
 		).apply(instance, BloomshroomSprigsBlock::new)
 	);
-	private static final VoxelShape SHAPE = Block.createColumnShape(10.0, 0.0, 11.0);
-	private static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+	private static final VoxelShape SHAPE = Block.column(10.0, 0.0, 11.0);
+	private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public final ParticleEffect particle;
+	public final ParticleOptions particle;
 
 	@Override
-	public MapCodec<BloomshroomSprigsBlock> getCodec() {
+	public MapCodec<BloomshroomSprigsBlock> codec() {
 		return CODEC;
 	}
 
-	public BloomshroomSprigsBlock(ParticleEffect particle, Settings settings) {
+	public BloomshroomSprigsBlock(ParticleOptions particle, Properties settings) {
 		super(settings);
 		this.particle = particle;
 	}
 
 	@Override
-	protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return SHAPE.offset(state.getModelOffset(pos));
+	protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		return SHAPE.move(state.getOffset(pos));
 	}
 
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-		super.randomDisplayTick(state, world, pos, random);
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+		super.animateTick(state, world, pos, random);
 
-		boolean waterlogged = state.get(WATERLOGGED, false);
+		boolean waterlogged = state.getValueOrElse(WATERLOGGED, false);
 
 		if (random.nextInt(waterlogged ? 2 : 5) == 0) {
-			Vec3d offset = state.getModelOffset(pos);
+			Vec3 offset = state.getOffset(pos);
 			double x = pos.getX() + offset.x + 0.1 + 0.8 * random.nextFloat();
 			double y = pos.getY() + offset.y + 0.15 + 0.25 * random.nextFloat();
 			double z = pos.getZ() + offset.z + 0.1 + 0.8 * random.nextFloat();
@@ -59,7 +59,7 @@ public class BloomshroomSprigsBlock extends UnderwaterPlantBlock {
 			double vy = (waterlogged ? 0.02 : 0.01) + random.nextFloat() * (waterlogged ? 0.1F : 0.04F);
 			double vz = random.nextGaussian() * (waterlogged ? 0.015 : 0.008);
 
-			world.addParticleClient(this.particle, x, y, z, vx, vy, vz);
+			world.addParticle(this.particle, x, y, z, vx, vy, vz);
 		}
 	}
 }

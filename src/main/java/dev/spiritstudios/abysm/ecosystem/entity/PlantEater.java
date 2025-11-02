@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.ecosystem.entity;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
 public interface PlantEater extends EcologicalEntity {

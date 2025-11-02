@@ -1,15 +1,15 @@
 package dev.spiritstudios.abysm.worldgen.feature;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class SprigsFeature extends Feature<StateProviderFeatureConfig> {
 	public SprigsFeature() {
@@ -17,24 +17,24 @@ public class SprigsFeature extends Feature<StateProviderFeatureConfig> {
 	}
 
 	@Override
-	public boolean generate(FeatureContext<StateProviderFeatureConfig> context) {
+	public boolean place(FeaturePlaceContext<StateProviderFeatureConfig> context) {
 		boolean placedBlock = false;
-		Random random = context.getRandom();
-		StructureWorldAccess world = context.getWorld();
-		BlockPos origin = context.getOrigin();
-		StateProviderFeatureConfig config = context.getConfig();
+		RandomSource random = context.random();
+		WorldGenLevel world = context.level();
+		BlockPos origin = context.origin();
+		StateProviderFeatureConfig config = context.config();
 
 		int xOffset = random.nextInt(8) - random.nextInt(8);
 		int zOffset = random.nextInt(8) - random.nextInt(8);
 
-		int y = world.getTopY(Heightmap.Type.OCEAN_FLOOR, origin.getX() + xOffset, origin.getZ() + zOffset);
+		int y = world.getHeight(Heightmap.Types.OCEAN_FLOOR, origin.getX() + xOffset, origin.getZ() + zOffset);
 
 		BlockPos pos = new BlockPos(origin.getX() + xOffset, y, origin.getZ() + zOffset);
-		if (world.getBlockState(pos).isOf(Blocks.WATER)) {
-			BlockState state = config.stateProvider().get(random, pos)
-				.withIfExists(Properties.WATERLOGGED, true);
-			if (state.canPlaceAt(world, pos)) {
-				world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
+		if (world.getBlockState(pos).is(Blocks.WATER)) {
+			BlockState state = config.stateProvider().getState(random, pos)
+				.trySetValue(BlockStateProperties.WATERLOGGED, true);
+			if (state.canSurvive(world, pos)) {
+				world.setBlock(pos, state, Block.UPDATE_CLIENTS);
 				placedBlock = true;
 			}
 		}

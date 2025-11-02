@@ -1,23 +1,23 @@
 package dev.spiritstudios.abysm.entity.attribute;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.entity.attribute.ClampedEntityAttribute;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
 public final class AbysmEntityAttributes {
-	public static final RegistryEntry<EntityAttribute> SWIMMING_SPEED = register(
+	public static final Holder<Attribute> SWIMMING_SPEED = register(
 		"swimming_speed",
-		new ClampedEntityAttribute(
+		new RangedAttribute(
 			"attribute.name.abysm.swimming_speed",
 			0.9, 0.0, 1.0
-		).setTracked(true)
+		).setSyncable(true)
 	);
 
-	private static RegistryEntry<EntityAttribute> register(String id, EntityAttribute attribute) {
-		return Registry.registerReference(Registries.ATTRIBUTE, Abysm.id(id), attribute);
+	private static Holder<Attribute> register(String id, Attribute attribute) {
+		return Registry.registerForHolder(BuiltInRegistries.ATTRIBUTE, Abysm.id(id), attribute);
 	}
 
 	public static void init() {

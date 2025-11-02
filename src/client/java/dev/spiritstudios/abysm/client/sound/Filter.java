@@ -1,11 +1,12 @@
 package dev.spiritstudios.abysm.client.sound;
 
-import dev.spiritstudios.abysm.client.mixin.sound.SourceAccessor;
-import net.minecraft.client.sound.Source;
+import dev.spiritstudios.abysm.client.mixin.sound.ChannelAccessor;
 import org.lwjgl.system.NativeResource;
 
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.EXTEfx.*;
+
+import com.mojang.blaze3d.audio.Channel;
 
 public abstract class Filter implements NativeResource {
 	protected final int id;
@@ -22,10 +23,10 @@ public abstract class Filter implements NativeResource {
 
 	public abstract void apply();
 
-	public void applyDirect(Source source) {
+	public void applyDirect(Channel source) {
 		this.apply();
 
-		alSourcei(((SourceAccessor) source).getPointer(), AL_DIRECT_FILTER, id);
+		alSourcei(((ChannelAccessor) source).getSource(), AL_DIRECT_FILTER, id);
 		ALException.assertOk();
 	}
 

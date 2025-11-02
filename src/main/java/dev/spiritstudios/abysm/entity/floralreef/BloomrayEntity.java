@@ -15,33 +15,33 @@ import dev.spiritstudios.abysm.entity.ai.goal.ecosystem.RepopulateGoal;
 import dev.spiritstudios.abysm.entity.variant.Variantable;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.VariantSelectorProvider;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.ai.pathing.EntityNavigation;
-import net.minecraft.entity.ai.pathing.SwimNavigation;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.mob.WaterCreatureEntity;
-import net.minecraft.entity.spawn.SpawnContext;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.variant.PriorityProvider;
+import net.minecraft.world.entity.variant.SpawnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -50,16 +50,16 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Variantable<BloomrayEntityVariant>, EcologicalEntity {
+public class BloomrayEntity extends WaterAnimal implements GeoEntity, Variantable<BloomrayEntityVariant>, EcologicalEntity {
 	public static final String ANIM_CONTROLLER_STRING = "default";
 	public final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-	public static final TrackedData<RegistryEntry<BloomrayEntityVariant>> VARIANT = DataTracker.registerData(BloomrayEntity.class, AbysmTrackedDataHandlers.BLOOMRAY_VARIANT);
+	public static final EntityDataAccessor<Holder<BloomrayEntityVariant>> VARIANT = SynchedEntityData.defineId(BloomrayEntity.class, AbysmTrackedDataHandlers.BLOOMRAY_VARIANT);
 
 	protected EcosystemLogic ecosystemLogic;
 
 	// TODO - Custom AI for hiding in Bloomshroom crowns when scared(player nearby? Bigger bloomray/TBD enemy nearby?)
-	public BloomrayEntity(EntityType<? extends WaterCreatureEntity> entityType, World world) {
+	public BloomrayEntity(EntityType<? extends WaterAnimal> entityType, Level world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
 		this.moveControl = new GracefulMoveControl(this, 85, 10, 0.02F, 0.1F, true);
@@ -72,58 +72,58 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	}
 
 	@Override
-	protected void initDataTracker(DataTracker.Builder builder) {
-		super.initDataTracker(builder);
-		builder.add(VARIANT, BloomrayEntityVariant.getDefaultEntry(this.getRegistryManager()));
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, BloomrayEntityVariant.getDefaultEntry(this.registryAccess()));
 	}
 
 	@Override
-	protected void writeCustomData(WriteView view) {
-		super.writeCustomData(view);
-		view.put("variant", BloomrayEntityVariant.ENTRY_CODEC, this.dataTracker.get(VARIANT));
+	protected void addAdditionalSaveData(ValueOutput view) {
+		super.addAdditionalSaveData(view);
+		view.store("variant", BloomrayEntityVariant.ENTRY_CODEC, this.entityData.get(VARIANT));
 	}
 
 	@Override
-	protected void readCustomData(ReadView view) {
-		super.readCustomData(view);
+	protected void readAdditionalSaveData(ValueInput view) {
+		super.readAdditionalSaveData(view);
 		view.read("variant", BloomrayEntityVariant.ENTRY_CODEC).ifPresent(this::setVariant);
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		VariantSelectorProvider.select(
-			this.getRegistryManager().getOrThrow(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT).streamEntries(),
-			RegistryEntry::value, random,
-			SpawnContext.of(world, this.getBlockPos())
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
+		PriorityProvider.pick(
+			this.registryAccess().lookupOrThrow(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT).listElements(),
+			Holder::value, random,
+			SpawnContext.create(world, this.blockPosition())
 		).ifPresent(this::setVariant);
 
 		this.alertEcosystemOfSpawn();
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 	}
 
-	public static DefaultAttributeContainer.Builder createRayAttributes() {
+	public static AttributeSupplier.Builder createRayAttributes() {
 		return SimpleEcoSchoolingFishEntity.createPredatoryFishAttributes()
-			.add(EntityAttributes.MOVEMENT_SPEED, 1.0F)
-			.add(EntityAttributes.MAX_HEALTH, 14)
-			.add(EntityAttributes.ATTACK_DAMAGE, 5);
+			.add(Attributes.MOVEMENT_SPEED, 1.0F)
+			.add(Attributes.MAX_HEALTH, 14)
+			.add(Attributes.ATTACK_DAMAGE, 5);
 	}
 
 	@Override
-	protected void initGoals() {
-		this.goalSelector.add(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
-		this.goalSelector.add(2, new RepopulateGoal(this, 1.25));
-		this.goalSelector.add(3, new MeleeAttackGoal(this, 1.0, false));
-		this.goalSelector.add(4, new SwimAroundGoal(this, 1.0, 10));
-		this.goalSelector.add(4, new LookAroundGoal(this));
-		this.targetSelector.add(1, new HuntPreyGoal(this, false));
+	protected void registerGoals() {
+		this.goalSelector.addGoal(1, new FleePredatorsGoal(this, 10.0F, 1.1, 1.2));
+		this.goalSelector.addGoal(2, new RepopulateGoal(this, 1.25));
+		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0, false));
+		this.goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0, 10));
+		this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+		this.targetSelector.addGoal(1, new HuntPreyGoal(this, false));
 	}
 
 	@Override
-	protected void pushAway(Entity entity) {
+	protected void doPush(Entity entity) {
 		if (entity instanceof BloomrayEntity) {
 			return;
 		}
-		super.pushAway(entity);
+		super.doPush(entity);
 	}
 
 	@Override
@@ -133,9 +133,9 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	}
 
 	@Override
-	public void onRemove(RemovalReason reason) {
+	public void onRemoval(RemovalReason reason) {
 		this.alertEcosystemOfDeath();
-		super.onRemove(reason);
+		super.onRemoval(reason);
 	}
 
 	@Override
@@ -169,18 +169,18 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 	}
 
 	@Override
-	protected EntityNavigation createNavigation(World world) {
-		return new SwimNavigation(this, world);
+	protected PathNavigation createNavigation(Level world) {
+		return new WaterBoundPathNavigation(this, world);
 	}
 
 	@Override
-	public void tickMovement() {
-		super.tickMovement();
+	public void aiStep() {
+		super.aiStep();
 
-		World world = this.getWorld();
-		if (world.isClient() && this.random.nextFloat() < 0.15) {
-			Vec3d facing = Vec3d.fromPolar(this.getPitch(), this.bodyYaw).multiply(0.5);
-			Vec3d pos = this.getPos().add(facing);
+		Level world = this.level();
+		if (world.isClientSide() && this.random.nextFloat() < 0.15) {
+			Vec3 facing = Vec3.directionFromRotation(this.getXRot(), this.yBodyRot).scale(0.5);
+			Vec3 pos = this.position().add(facing);
 
 			BloomrayEntityVariant variant = this.getVariant();
 
@@ -196,19 +196,19 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 		}
 	}
 
-	protected void spawnParticles(World world, Vec3d pos, Random random, ParticleEffect particle, float width, float orthogonalVelocityMultiplier, float normalVelocityMultiplier) {
-		double x = pos.getX() + width * (random.nextFloat() - 0.5);
-		double y = pos.getY() + 0.5F - 0.45F;
-		double z = pos.getZ() + width * (random.nextFloat() - 0.5);
+	protected void spawnParticles(Level world, Vec3 pos, RandomSource random, ParticleOptions particle, float width, float orthogonalVelocityMultiplier, float normalVelocityMultiplier) {
+		double x = pos.x() + width * (random.nextFloat() - 0.5);
+		double y = pos.y() + 0.5F - 0.45F;
+		double z = pos.z() + width * (random.nextFloat() - 0.5);
 
-		double vx = random.nextGaussian() * (0.015) * orthogonalVelocityMultiplier + getVelocity().x;
+		double vx = random.nextGaussian() * (0.015) * orthogonalVelocityMultiplier + getDeltaMovement().x;
 		double vy = random.nextGaussian() * (0.015) * orthogonalVelocityMultiplier;
-		double vz = random.nextGaussian() * (0.015) * orthogonalVelocityMultiplier + getVelocity().z;
+		double vz = random.nextGaussian() * (0.015) * orthogonalVelocityMultiplier + getDeltaMovement().z;
 
 		vy *= 0.1F;
 		vy += random.nextFloat() * 0.12F * normalVelocityMultiplier;
 
-		world.addParticleClient(particle, x, y, z, vx, vy, vz);
+		world.addParticle(particle, x, y, z, vx, vy, vz);
 	}
 
 	@Override
@@ -220,16 +220,16 @@ public class BloomrayEntity extends WaterCreatureEntity implements GeoEntity, Va
 
 	@Override
 	public BloomrayEntityVariant getVariant() {
-		return this.dataTracker.get(VARIANT).value();
+		return this.entityData.get(VARIANT).value();
 	}
 
 	@Override
-	public void setVariant(RegistryEntry<BloomrayEntityVariant> variant) {
-		this.dataTracker.set(VARIANT, variant);
+	public void setVariant(Holder<BloomrayEntityVariant> variant) {
+		this.entityData.set(VARIANT, variant);
 	}
 
 	@Override
-	public int getMaxLookPitchChange() {
+	public int getMaxHeadXRot() {
 		return 1;
 	}
 }

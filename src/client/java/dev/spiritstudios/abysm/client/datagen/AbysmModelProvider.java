@@ -7,76 +7,76 @@ import dev.spiritstudios.abysm.item.AbysmEquipmentAssetKeys;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.block.Block;
-import net.minecraft.client.data.BlockStateModelGenerator;
-import net.minecraft.client.data.BlockStateVariantMap;
-import net.minecraft.client.data.ItemModelGenerator;
-import net.minecraft.client.data.ItemModels;
-import net.minecraft.client.data.Model;
-import net.minecraft.client.data.ModelIds;
-import net.minecraft.client.data.Models;
-import net.minecraft.client.data.TextureKey;
-import net.minecraft.client.data.TextureMap;
-import net.minecraft.client.data.TexturedModel;
-import net.minecraft.client.data.VariantsBlockModelDefinitionCreator;
-import net.minecraft.client.render.model.json.ModelVariantOperator;
-import net.minecraft.client.render.model.json.WeightedVariant;
-import net.minecraft.data.family.BlockFamily;
-import net.minecraft.item.Item;
-import net.minecraft.item.equipment.EquipmentAsset;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Direction;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.BlockModelGenerators.PlantType;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
+import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.core.Direction;
+import net.minecraft.data.BlockFamily;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.equipment.EquipmentAsset;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 
-import static net.minecraft.client.data.BlockStateModelGenerator.CrossType;
-import static net.minecraft.client.data.BlockStateModelGenerator.NO_OP;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_180;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_X_90;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_180;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_270;
-import static net.minecraft.client.data.BlockStateModelGenerator.ROTATE_Y_90;
-import static net.minecraft.client.data.BlockStateModelGenerator.createSingletonBlockState;
-import static net.minecraft.client.data.BlockStateModelGenerator.createWeightedVariant;
+import static net.minecraft.client.data.models.BlockModelGenerators.NOP;
+import static net.minecraft.client.data.models.BlockModelGenerators.X_ROT_180;
+import static net.minecraft.client.data.models.BlockModelGenerators.X_ROT_90;
+import static net.minecraft.client.data.models.BlockModelGenerators.Y_ROT_180;
+import static net.minecraft.client.data.models.BlockModelGenerators.Y_ROT_270;
+import static net.minecraft.client.data.models.BlockModelGenerators.Y_ROT_90;
+import static net.minecraft.client.data.models.BlockModelGenerators.createSimpleBlock;
+import static net.minecraft.client.data.models.BlockModelGenerators.plainVariant;
 
 public class AbysmModelProvider extends FabricModelProvider {
 	// Note - by default, the spore blossom model(used for scabiosa) is upside, which is why this is flipped
-	private static final BlockStateVariantMap<ModelVariantOperator> UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS = BlockStateVariantMap.operations(Properties.FACING)
-		.register(Direction.DOWN, NO_OP)
-		.register(Direction.UP, ROTATE_X_180)
-		.register(Direction.NORTH, ROTATE_X_90.then(ROTATE_Y_180))
-		.register(Direction.SOUTH, ROTATE_X_90)
-		.register(Direction.WEST, ROTATE_X_90.then(ROTATE_Y_90))
-		.register(Direction.EAST, ROTATE_X_90.then(ROTATE_Y_270));
+	private static final PropertyDispatch<VariantMutator> UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS = PropertyDispatch.modify(BlockStateProperties.FACING)
+		.select(Direction.DOWN, NOP)
+		.select(Direction.UP, X_ROT_180)
+		.select(Direction.NORTH, X_ROT_90.then(Y_ROT_180))
+		.select(Direction.SOUTH, X_ROT_90)
+		.select(Direction.WEST, X_ROT_90.then(Y_ROT_90))
+		.select(Direction.EAST, X_ROT_90.then(Y_ROT_270));
 
-	private static final BlockStateVariantMap<ModelVariantOperator> UP_DEFAULT_ROTATION_OPERATIONS = BlockStateVariantMap.operations(Properties.FACING)
-		.register(Direction.DOWN, ROTATE_X_180)
-		.register(Direction.UP, NO_OP)
-		.register(Direction.NORTH, ROTATE_X_90)
-		.register(Direction.SOUTH, ROTATE_X_90.then(ROTATE_Y_180))
-		.register(Direction.WEST, ROTATE_X_90.then(ROTATE_Y_270))
-		.register(Direction.EAST, ROTATE_X_90.then(ROTATE_Y_90));
+	private static final PropertyDispatch<VariantMutator> UP_DEFAULT_ROTATION_OPERATIONS = PropertyDispatch.modify(BlockStateProperties.FACING)
+		.select(Direction.DOWN, X_ROT_180)
+		.select(Direction.UP, NOP)
+		.select(Direction.NORTH, X_ROT_90)
+		.select(Direction.SOUTH, X_ROT_90.then(Y_ROT_180))
+		.select(Direction.WEST, X_ROT_90.then(Y_ROT_270))
+		.select(Direction.EAST, X_ROT_90.then(Y_ROT_90));
 
 	public AbysmModelProvider(FabricDataOutput output) {
 		super(output);
 	}
 
 	@Override
-	public void generateBlockStateModels(BlockStateModelGenerator generator) {
+	public void generateBlockStateModels(BlockModelGenerators generator) {
 		// region block families
 		AbysmBlockFamilies
 			.getAllAbysmBlockFamilies()
-			.filter(BlockFamily::shouldGenerateModels)
-			.forEach(blockFamily -> generator.registerCubeAllModelTexturePool(blockFamily.getBaseBlock()).family(blockFamily));
+			.filter(BlockFamily::shouldGenerateModel)
+			.forEach(blockFamily -> generator.family(blockFamily.getBaseBlock()).generateFor(blockFamily));
 		// endregion
 
 		// region floropumice
-		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_FLOROPUMICE);
-		generator.registerSimpleCubeAll(AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
-		generator.registerAxisRotated(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, TexturedModel.END_FOR_TOP_CUBE_COLUMN, TexturedModel.END_FOR_TOP_CUBE_COLUMN_HORIZONTAL);
+		generator.createTrivialCube(AbysmBlocks.POLISHED_FLOROPUMICE);
+		generator.createTrivialCube(AbysmBlocks.POLISHED_SMOOTH_FLOROPUMICE);
+		generator.createRotatedPillarWithHorizontalVariant(AbysmBlocks.SMOOTH_FLOROPUMICE_PILLAR, TexturedModel.COLUMN_ALT, TexturedModel.COLUMN_HORIZONTAL_ALT);
 		// endregion
 
 		// region bloom-ish blocks
@@ -88,21 +88,21 @@ public class AbysmModelProvider extends FabricModelProvider {
 		registerSprigsWithPot(generator, AbysmBlocks.SUNNY_SPRIGS, AbysmBlocks.POTTED_SUNNY_SPRIGS);
 		registerSprigsWithPot(generator, AbysmBlocks.MAUVE_SPRIGS, AbysmBlocks.POTTED_MAUVE_SPRIGS);
 
-		generator.registerLeafLitter(AbysmBlocks.ROSEBLOOM_PETALS);
-		generator.registerLeafLitter(AbysmBlocks.SUNBLOOM_PETALS);
-		generator.registerLeafLitter(AbysmBlocks.MALLOWBLOOM_PETALS);
+		generator.createLeafLitter(AbysmBlocks.ROSEBLOOM_PETALS);
+		generator.createLeafLitter(AbysmBlocks.SUNBLOOM_PETALS);
+		generator.createLeafLitter(AbysmBlocks.MALLOWBLOOM_PETALS);
 		// endregion
 
 		// region bloomshrooms
-		generator.registerFlowerPotPlantAndItem(AbysmBlocks.ROSY_BLOOMSHROOM, AbysmBlocks.POTTED_ROSY_BLOOMSHROOM, BlockStateModelGenerator.CrossType.NOT_TINTED);
-		generator.registerFlowerPotPlantAndItem(AbysmBlocks.SUNNY_BLOOMSHROOM, AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM, BlockStateModelGenerator.CrossType.NOT_TINTED);
-		generator.registerFlowerPotPlantAndItem(AbysmBlocks.MAUVE_BLOOMSHROOM, AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM, BlockStateModelGenerator.CrossType.NOT_TINTED);
+		generator.createPlantWithDefaultItem(AbysmBlocks.ROSY_BLOOMSHROOM, AbysmBlocks.POTTED_ROSY_BLOOMSHROOM, BlockModelGenerators.PlantType.NOT_TINTED);
+		generator.createPlantWithDefaultItem(AbysmBlocks.SUNNY_BLOOMSHROOM, AbysmBlocks.POTTED_SUNNY_BLOOMSHROOM, BlockModelGenerators.PlantType.NOT_TINTED);
+		generator.createPlantWithDefaultItem(AbysmBlocks.MAUVE_BLOOMSHROOM, AbysmBlocks.POTTED_MAUVE_BLOOMSHROOM, BlockModelGenerators.PlantType.NOT_TINTED);
 
-		generator.createLogTexturePool(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).stem(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).wood(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE);
-		generator.createLogTexturePool(AbysmBlocks.SUNNY_BLOOMSHROOM_STEM).stem(AbysmBlocks.SUNNY_BLOOMSHROOM_STEM).wood(AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE);
-		generator.createLogTexturePool(AbysmBlocks.MAUVE_BLOOMSHROOM_STEM).stem(AbysmBlocks.MAUVE_BLOOMSHROOM_STEM).wood(AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE);
+		generator.woodProvider(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).log(AbysmBlocks.ROSY_BLOOMSHROOM_STEM).wood(AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE);
+		generator.woodProvider(AbysmBlocks.SUNNY_BLOOMSHROOM_STEM).log(AbysmBlocks.SUNNY_BLOOMSHROOM_STEM).wood(AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE);
+		generator.woodProvider(AbysmBlocks.MAUVE_BLOOMSHROOM_STEM).log(AbysmBlocks.MAUVE_BLOOMSHROOM_STEM).wood(AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE);
 
-		doForMany(BlockStateModelGenerator::registerSimpleCubeAll, generator,
+		doForMany(BlockModelGenerators::createTrivialCube, generator,
 			AbysmBlocks.ROSY_BLOOMSHROOM_CAP,
 			AbysmBlocks.SUNNY_BLOOMSHROOM_CAP,
 			AbysmBlocks.MAUVE_BLOOMSHROOM_CAP,
@@ -145,13 +145,13 @@ public class AbysmModelProvider extends FabricModelProvider {
 		// endregion
 
 		// region misc plants
-		generator.registerRoots(AbysmBlocks.ANTENNAE_PLANT, AbysmBlocks.POTTED_ANTENNAE_PLANT);
+		generator.createNetherRoots(AbysmBlocks.ANTENNAE_PLANT, AbysmBlocks.POTTED_ANTENNAE_PLANT);
 		// endregion
 
 		// region dregloam
-		generator.registerRandomHorizontalRotations(TexturedModel.CUBE_ALL, AbysmBlocks.DREGLOAM);
+		generator.createColoredBlockWithRandomRotations(TexturedModel.CUBE, AbysmBlocks.DREGLOAM);
 
-		doForMany(BlockStateModelGenerator::registerSimpleCubeAll, generator,
+		doForMany(BlockModelGenerators::createTrivialCube, generator,
 			AbysmBlocks.DREGLOAM_OOZE,
 			AbysmBlocks.DREGLOAM_GOLDEN_LAZULI_ORE
 		);
@@ -159,106 +159,106 @@ public class AbysmModelProvider extends FabricModelProvider {
 		// endregion
 
 		// region dregloam plants
-		generator.registerPlantPart(AbysmBlocks.GOLDEN_LAZULI_OREFURL, AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, BlockStateModelGenerator.CrossType.NOT_TINTED);
+		generator.createGrowingPlant(AbysmBlocks.GOLDEN_LAZULI_OREFURL, AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT, BlockModelGenerators.PlantType.NOT_TINTED);
 
-		generator.registerRoots(AbysmBlocks.OOZETRICKLE_FILAMENTS, AbysmBlocks.POTTED_OOZETRICKLE_FILAMENTS);
-		generator.registerDoubleBlockAndItem(AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS, CrossType.NOT_TINTED);
+		generator.createNetherRoots(AbysmBlocks.OOZETRICKLE_FILAMENTS, AbysmBlocks.POTTED_OOZETRICKLE_FILAMENTS);
+		generator.createDoublePlantWithDefaultItem(AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS, PlantType.NOT_TINTED);
 		// endregion
 
 		// region oozetrickle deco
-		generator.registerItemModel(AbysmBlocks.OOZETRICKLE_CORD.asItem());
-		generator.registerAxisRotated(AbysmBlocks.OOZETRICKLE_CORD, createWeightedVariant(ModelIds.getBlockModelId(AbysmBlocks.OOZETRICKLE_CORD)));
+		generator.registerSimpleFlatItemModel(AbysmBlocks.OOZETRICKLE_CORD.asItem());
+		generator.createAxisAlignedPillarBlockCustomModel(AbysmBlocks.OOZETRICKLE_CORD, plainVariant(ModelLocationUtils.getModelLocation(AbysmBlocks.OOZETRICKLE_CORD)));
 		this.registerOozetrickleLantern(generator, AbysmBlocks.OOZETRICKLE_LANTERN);
 		// endregion
 
 		// region silt
-		generator.registerSimpleCubeAll(AbysmBlocks.SILT);
-		generator.registerSimpleCubeAll(AbysmBlocks.CHISELED_SILT);
-		generator.registerSimpleCubeAll(AbysmBlocks.CUT_SILT);
+		generator.createTrivialCube(AbysmBlocks.SILT);
+		generator.createTrivialCube(AbysmBlocks.CHISELED_SILT);
+		generator.createTrivialCube(AbysmBlocks.CUT_SILT);
 		// endregion
 
 		// region technical blocks
-		generator.registerSimpleCubeAll(AbysmBlocks.DENSITY_BLOB_BLOCK);
+		generator.createTrivialCube(AbysmBlocks.DENSITY_BLOB_BLOCK);
 		// endregion
 	}
 
-	private void doForMany(BiConsumer<BlockStateModelGenerator, Block> consumer, BlockStateModelGenerator generator, Block... blocks) {
+	private void doForMany(BiConsumer<BlockModelGenerators, Block> consumer, BlockModelGenerators generator, Block... blocks) {
 		for (Block block : blocks) {
 			consumer.accept(generator, block);
 		}
 	}
 
-	private void registerScabiosas(BlockStateModelGenerator generator, Block... blocks) {
+	private void registerScabiosas(BlockModelGenerators generator, Block... blocks) {
 		doForMany(this::registerScabiosa, generator, blocks);
 	}
 
-	private void registerScabiosa(BlockStateModelGenerator generator, Block block) {
-		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(AbysmTexturedModels.BLOSSOM.upload(block, generator.modelCollector));
-		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS));
+	private void registerScabiosa(BlockModelGenerators generator, Block block) {
+		MultiVariant weightedVariant = BlockModelGenerators.plainVariant(AbysmTexturedModels.BLOSSOM.create(block, generator.modelOutput));
+		generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, weightedVariant).with(UP_FLIPPED_DEFAULT_ROTATION_OPERATIONS));
 	}
 
-	private void registerBloomingCrowns(BlockStateModelGenerator generator, Block... blocks) {
+	private void registerBloomingCrowns(BlockModelGenerators generator, Block... blocks) {
 		doForMany(this::registerBloomCrown, generator, blocks);
 	}
 
-	private void registerBloomCrown(BlockStateModelGenerator generator, Block block) {
-		WeightedVariant weightedVariant = BlockStateModelGenerator.createWeightedVariant(AbysmTexturedModels.BLOOMING_CROWN.upload(block, generator.modelCollector));
-		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block, weightedVariant).coordinate(UP_DEFAULT_ROTATION_OPERATIONS));
+	private void registerBloomCrown(BlockModelGenerators generator, Block block) {
+		MultiVariant weightedVariant = BlockModelGenerators.plainVariant(AbysmTexturedModels.BLOOMING_CROWN.create(block, generator.modelOutput));
+		generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(block, weightedVariant).with(UP_DEFAULT_ROTATION_OPERATIONS));
 	}
 
-	private void registerGrassLike(BlockStateModelGenerator generator, Block block, Block baseBlock) {
-		TextureMap textureMapping = new TextureMap()
-			.put(TextureKey.BOTTOM, TextureMap.getId(baseBlock))
-			.put(TextureKey.TOP, TextureMap.getId(block))
-			.put(TextureKey.SIDE, TextureMap.getSubId(block, "_side"));
-		Identifier model = Models.CUBE_BOTTOM_TOP.upload(block, textureMapping, generator.modelCollector);
-		generator.blockStateCollector.accept(BlockStateModelGenerator.createSingletonBlockState(block, BlockStateModelGenerator.modelWithYRotation(BlockStateModelGenerator.createModelVariant(model))));
+	private void registerGrassLike(BlockModelGenerators generator, Block block, Block baseBlock) {
+		TextureMapping textureMapping = new TextureMapping()
+			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(baseBlock))
+			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block))
+			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"));
+		ResourceLocation model = ModelTemplates.CUBE_BOTTOM_TOP.create(block, textureMapping, generator.modelOutput);
+		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, BlockModelGenerators.createRotatedVariants(BlockModelGenerators.plainModel(model))));
 	}
 
-	private void registerSprigsWithPot(BlockStateModelGenerator generator, Block sprigs, Block pottedSprigs) {
+	private void registerSprigsWithPot(BlockModelGenerators generator, Block sprigs, Block pottedSprigs) {
 		registerSprigs(generator, sprigs);
 
-		TextureMap textureMap = TextureMap.plant(TextureMap.getSubId(sprigs, "_pot"));
-		WeightedVariant weightedVariant = createWeightedVariant(
-			BlockStateModelGenerator.CrossType.NOT_TINTED.getFlowerPotCrossModel().upload(pottedSprigs, textureMap, generator.modelCollector)
+		TextureMapping textureMap = TextureMapping.plant(TextureMapping.getBlockTexture(sprigs, "_pot"));
+		MultiVariant weightedVariant = plainVariant(
+			BlockModelGenerators.PlantType.NOT_TINTED.getCrossPot().create(pottedSprigs, textureMap, generator.modelOutput)
 		);
-		generator.blockStateCollector.accept(createSingletonBlockState(pottedSprigs, weightedVariant));
+		generator.blockStateOutput.accept(createSimpleBlock(pottedSprigs, weightedVariant));
 	}
 
-	private void registerSprigs(BlockStateModelGenerator generator, Block block) {
-		generator.registerItemModel(block.asItem(), CrossType.NOT_TINTED.registerItemModel(generator, block));
+	private void registerSprigs(BlockModelGenerators generator, Block block) {
+		generator.registerSimpleItemModel(block.asItem(), PlantType.NOT_TINTED.createItemModel(generator, block));
 		registerSprigsBlockState(generator, block);
 	}
 
-	private void registerSprigsBlockState(BlockStateModelGenerator generator, Block block) {
-		TextureMap textureMap = TextureMap.cross(block);
-		TextureMap swayingTextureMap = TextureMap.of(TextureKey.CROSS, TextureMap.getSubId(block, "_swaying"));
+	private void registerSprigsBlockState(BlockModelGenerators generator, Block block) {
+		TextureMapping textureMap = TextureMapping.cross(block);
+		TextureMapping swayingTextureMap = TextureMapping.singleSlot(TextureSlot.CROSS, TextureMapping.getBlockTexture(block, "_swaying"));
 
-		Model crossModel = CrossType.NOT_TINTED.getCrossModel();
+		ModelTemplate crossModel = PlantType.NOT_TINTED.getCross();
 
-		WeightedVariant surfaceVariant = createWeightedVariant(crossModel.upload(block, textureMap, generator.modelCollector));
-		WeightedVariant waterloggedVariant = createWeightedVariant(crossModel.upload(block, "_swaying", swayingTextureMap, generator.modelCollector));
+		MultiVariant surfaceVariant = plainVariant(crossModel.create(block, textureMap, generator.modelOutput));
+		MultiVariant waterloggedVariant = plainVariant(crossModel.createWithSuffix(block, "_swaying", swayingTextureMap, generator.modelOutput));
 
-		generator.blockStateCollector.accept(VariantsBlockModelDefinitionCreator.of(block)
+		generator.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
 			.with(
-				BlockStateVariantMap.models(Properties.WATERLOGGED)
-					.register(false, surfaceVariant)
-					.register(true, waterloggedVariant)
+				PropertyDispatch.initial(BlockStateProperties.WATERLOGGED)
+					.select(false, surfaceVariant)
+					.select(true, waterloggedVariant)
 			)
 		);
 	}
 
-	public final void registerOozetrickleLantern(BlockStateModelGenerator BMG, Block lantern) {
-		WeightedVariant weightedVariant = createWeightedVariant(AbysmTexturedModels.TEMPLATE_OOZETRICKLE_LANTERN.upload(lantern, BMG.modelCollector));
-		WeightedVariant weightedVariant2 = createWeightedVariant(AbysmTexturedModels.TEMPLATE_OOZETRICKLE_HANGING_LANTERN.upload(lantern, BMG.modelCollector));
-		BMG.registerItemModel(lantern.asItem());
-		BMG.blockStateCollector
-			.accept(VariantsBlockModelDefinitionCreator.of(lantern).with(BlockStateModelGenerator.createBooleanModelMap(Properties.HANGING, weightedVariant2, weightedVariant)));
+	public final void registerOozetrickleLantern(BlockModelGenerators BMG, Block lantern) {
+		MultiVariant weightedVariant = plainVariant(AbysmTexturedModels.TEMPLATE_OOZETRICKLE_LANTERN.create(lantern, BMG.modelOutput));
+		MultiVariant weightedVariant2 = plainVariant(AbysmTexturedModels.TEMPLATE_OOZETRICKLE_HANGING_LANTERN.create(lantern, BMG.modelOutput));
+		BMG.registerSimpleFlatItemModel(lantern.asItem());
+		BMG.blockStateOutput
+			.accept(MultiVariantGenerator.dispatch(lantern).with(BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.HANGING, weightedVariant2, weightedVariant)));
 	}
 
 	@Override
-	public void generateItemModels(ItemModelGenerator generator) {
-		generator.register(AbysmItems.DIVING_HELMET);
+	public void generateItemModels(ItemModelGenerators generator) {
+		generator.declareCustomModelItem(AbysmItems.DIVING_HELMET);
 
 		registerArmorSet(
 				generator,
@@ -301,17 +301,17 @@ public class AbysmModelProvider extends FabricModelProvider {
 			AbysmItems.MUSIC_DISC_RENAISSANCE
 		);
 
-		generator.registerCondition(
+		generator.generateBooleanDispatch(
 			AbysmItems.HARPOON,
 			new HarpoonLoadedProperty(),
-			ItemModels.basic(ModelIds.getItemSubModelId(AbysmItems.HARPOON, "_loaded")),
-			ItemModels.basic(ModelIds.getItemModelId(AbysmItems.HARPOON))
+			ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(AbysmItems.HARPOON, "_loaded")),
+			ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(AbysmItems.HARPOON))
 		);
 	}
 
 	private void registerArmorSet(
-			final ItemModelGenerator generator,
-			final RegistryKey<EquipmentAsset> asset,
+			final ItemModelGenerators generator,
+			final ResourceKey<EquipmentAsset> asset,
 			final boolean dyeable,
 			final @Nullable Item boots,
 			final @Nullable Item leggings,
@@ -319,29 +319,29 @@ public class AbysmModelProvider extends FabricModelProvider {
 			final @Nullable Item helmet
 	) {
 		if (boots != null) {
-			generator.registerArmor(boots, asset, ItemModelGenerator.BOOTS_TRIM_ID_PREFIX, dyeable);
+			generator.generateTrimmableItem(boots, asset, ItemModelGenerators.TRIM_PREFIX_BOOTS, dyeable);
 		}
 
 		if (leggings != null) {
-			generator.registerArmor(leggings, asset, ItemModelGenerator.LEGGINGS_TRIM_ID_PREFIX, dyeable);
+			generator.generateTrimmableItem(leggings, asset, ItemModelGenerators.TRIM_PREFIX_LEGGINGS, dyeable);
 		}
 
 		if (chestplate != null) {
-			generator.registerArmor(chestplate, asset, ItemModelGenerator.CHESTPLATE_TRIM_ID_PREFIX, dyeable);
+			generator.generateTrimmableItem(chestplate, asset, ItemModelGenerators.TRIM_PREFIX_CHESTPLATE, dyeable);
 		}
 
 		if (helmet != null) {
-			generator.registerArmor(helmet, asset, ItemModelGenerator.HELMET_TRIM_ID_PREFIX, dyeable);
+			generator.generateTrimmableItem(helmet, asset, ItemModelGenerators.TRIM_PREFIX_HELMET, dyeable);
 		}
 	}
 
-	private void registerGenerated(ItemModelGenerator generator, Item... items) {
+	private void registerGenerated(ItemModelGenerators generator, Item... items) {
 		for (Item item : items) {
 			registerGenerated(generator, item);
 		}
 	}
 
-	private void registerGenerated(ItemModelGenerator generator, Item item) {
-		generator.register(item, Models.GENERATED);
+	private void registerGenerated(ItemModelGenerators generator, Item item) {
+		generator.generateFlatItem(item, ModelTemplates.FLAT_ITEM);
 	}
 }

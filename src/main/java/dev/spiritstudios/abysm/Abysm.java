@@ -41,17 +41,17 @@ import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.foliage.FoliagePlacerType;
-import net.minecraft.world.gen.structure.StructureType;
-import net.minecraft.world.gen.trunk.TrunkPlacerType;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
+import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
+import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,9 +83,9 @@ public final class Abysm implements ModInitializer {
 		EcosystemType.init();
 
 		// manually add item name component here since doing it normally results in it getting overwritten in the Item constructor
-		DefaultItemComponentEvents.MODIFY.register((callback) -> callback.modify(AbysmItems.MYSTERIOUS_BLOB_SPAWN_EGG, builder -> builder.add(
-				DataComponentTypes.ITEM_NAME,
-				Text.translatable("item.abysm.mysterious_blob_spawn_egg.fancy", Text.translatable("entity.abysm.mysterious_blob").formatted(Formatting.OBFUSCATED))
+		DefaultItemComponentEvents.MODIFY.register((callback) -> callback.modify(AbysmItems.MYSTERIOUS_BLOB_SPAWN_EGG, builder -> builder.set(
+				DataComponents.ITEM_NAME,
+				Component.translatable("item.abysm.mysterious_blob_spawn_egg.fancy", Component.translatable("entity.abysm.mysterious_blob").withStyle(ChatFormatting.OBFUSCATED))
 			)
 		));
 	}
@@ -99,8 +99,8 @@ public final class Abysm implements ModInitializer {
 		AbysmItems.init();
 		RegistryHelper.registerBlockEntityTypes(AbysmBlockEntityTypes.class, MODID);
 
-		ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS)
-			.register(content -> content.add(AbysmItems.MUSIC_DISC_RENAISSANCE));
+		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
+			.register(content -> content.accept(AbysmItems.MUSIC_DISC_RENAISSANCE));
 
 		// register entities & related
 		AbysmEntityAttributes.init();
@@ -116,12 +116,12 @@ public final class Abysm implements ModInitializer {
 		// region worldgen
 		// structures
 		AbysmStructurePieceTypes.init();
-		registerFields(Registries.STRUCTURE_TYPE, StructureType.class, AbysmStructureTypes.class);
+		registerFields(BuiltInRegistries.STRUCTURE_TYPE, StructureType.class, AbysmStructureTypes.class);
 
 		// features
-		registerFields(Registries.FEATURE, Feature.class, AbysmFeatures.class);
-		registerFields(Registries.TRUNK_PLACER_TYPE, TrunkPlacerType.class, AbysmTrunkPlacerTypes.class);
-		registerFields(Registries.FOLIAGE_PLACER_TYPE, FoliagePlacerType.class, AbysmFoliagePlacerTypes.class);
+		registerFields(BuiltInRegistries.FEATURE, Feature.class, AbysmFeatures.class);
+		registerFields(BuiltInRegistries.TRUNK_PLACER_TYPE, TrunkPlacerType.class, AbysmTrunkPlacerTypes.class);
+		registerFields(BuiltInRegistries.FOLIAGE_PLACER_TYPE, FoliagePlacerType.class, AbysmFoliagePlacerTypes.class);
 
 		AbysmDensityFunctionTypes.init();
 		AbysmDensityBlobTypes.init();
@@ -154,7 +154,7 @@ public final class Abysm implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload::receive);
 	}
 
-	public static Identifier id(String path) {
-		return Identifier.of(MODID, path);
+	public static ResourceLocation id(String path) {
+		return ResourceLocation.fromNamespaceAndPath(MODID, path);
 	}
 }

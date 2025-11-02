@@ -2,57 +2,56 @@ package dev.spiritstudios.abysm.loot;
 
 import com.google.common.collect.ImmutableList;
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.mixin.loottable.ItemEntryAccessor;
-import dev.spiritstudios.abysm.mixin.loottable.LootPoolBuilderAccessor;
+import dev.spiritstudios.abysm.mixin.loottable.LootItemAccessor;
+import dev.spiritstudios.abysm.mixin.loottable.LootPool$BuilderAccessor;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.LootTables;
-import net.minecraft.loot.condition.LocationCheckLootCondition;
-import net.minecraft.loot.condition.LootCondition;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.entry.LootPoolEntry;
-import net.minecraft.loot.entry.LootTableEntry;
-import net.minecraft.predicate.entity.LocationPredicate;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.Biome;
-
+import net.minecraft.advancements.critereon.LocationPredicate;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import java.util.List;
 
 public class AbysmLootTableModifications {
 
-	public static final RegistryKey<LootTable> FISHING_JUNK_GAMEPLAY = LootTables.FISHING_JUNK_GAMEPLAY;
-	public static final RegistryKey<LootTable> FISHING_TREASURE_GAMEPLAY = LootTables.FISHING_TREASURE_GAMEPLAY;
-	public static final RegistryKey<LootTable> FISHING_FISH_GAMEPLAY = LootTables.FISHING_FISH_GAMEPLAY;
+	public static final ResourceKey<LootTable> FISHING_JUNK_GAMEPLAY = BuiltInLootTables.FISHING_JUNK;
+	public static final ResourceKey<LootTable> FISHING_TREASURE_GAMEPLAY = BuiltInLootTables.FISHING_TREASURE;
+	public static final ResourceKey<LootTable> FISHING_FISH_GAMEPLAY = BuiltInLootTables.FISHING_FISH;
 
-	public static final RegistryKey<LootTable> FLORAL_REEF_JUNK = keyOf("gameplay/fishing/junk/floral_reef");
-	public static final RegistryKey<LootTable> FLORAL_REEF_FISH = keyOf("gameplay/fishing/fish/floral_reef");
+	public static final ResourceKey<LootTable> FLORAL_REEF_JUNK = keyOf("gameplay/fishing/junk/floral_reef");
+	public static final ResourceKey<LootTable> FLORAL_REEF_FISH = keyOf("gameplay/fishing/fish/floral_reef");
 
 	public static void init() {
 		registerModify(FISHING_JUNK_GAMEPLAY, ((builder, source, wrapperLookup) -> {
-			RegistryWrapper<Biome> biomeLookup = wrapperLookup.getOrThrow(RegistryKeys.BIOME);
+			HolderLookup<Biome> biomeLookup = wrapperLookup.lookupOrThrow(Registries.BIOME);
 
 			builder.modifyPools(pool -> {
 				// find the pool containing lily pads (by default this is the only pool, but check anyway just in case other mods add bonus pools)
 				if (poolContainsItemAsDirectChild(pool, Items.LILY_PAD)) {
 					// add items to pool
-					pool.with(biomeDependantLootTable(biomeLookup, FLORAL_REEF_JUNK, 50, AbysmBiomes.FLORAL_REEF));
+					pool.add(biomeDependantLootTable(biomeLookup, FLORAL_REEF_JUNK, 50, AbysmBiomes.FLORAL_REEF));
 				}
 			});
 		}));
 
 		registerModify(FISHING_FISH_GAMEPLAY, (builder, lootTableSource, wrapperLookup) -> {
-			RegistryWrapper<Biome> biomeLookup = wrapperLookup.getOrThrow(RegistryKeys.BIOME);
+			HolderLookup<Biome> biomeLookup = wrapperLookup.lookupOrThrow(Registries.BIOME);
 
 			builder.modifyPools(pool -> {
 				if (poolContainsItemAsDirectChild(pool, Items.COD)) {
@@ -61,8 +60,8 @@ public class AbysmLootTableModifications {
 			});
 
 			builder.pool(
-				LootPool.builder()
-					.with(LootTableEntry.builder(FLORAL_REEF_FISH))
+				LootPool.lootPool()
+					.add(NestedLootTable.lootTableReference(FLORAL_REEF_FISH))
 					.conditionally(biomeCondition(biomeLookup.getOrThrow(AbysmBiomes.FLORAL_REEF)).build())
 					.build()
 			);
@@ -70,39 +69,39 @@ public class AbysmLootTableModifications {
 	}
 
 	@SafeVarargs
-	public static LootTableEntry.Builder<?> biomeDependantLootTable(RegistryWrapper<Biome> impl, RegistryKey<LootTable> lootTableKey, int weight, RegistryKey<Biome>... biomeKeys) {
-		ImmutableList.Builder<RegistryEntry.Reference<Biome>> biomes = ImmutableList.builder();
-		for (RegistryKey<Biome> biomeKey : biomeKeys) {
-			impl.getOptional(biomeKey).ifPresent(biomes::add);
+	public static NestedLootTable.Builder<?> biomeDependantLootTable(HolderLookup<Biome> impl, ResourceKey<LootTable> lootTableKey, int weight, ResourceKey<Biome>... biomeKeys) {
+		ImmutableList.Builder<Holder.Reference<Biome>> biomes = ImmutableList.builder();
+		for (ResourceKey<Biome> biomeKey : biomeKeys) {
+			impl.get(biomeKey).ifPresent(biomes::add);
 		}
 
-		RegistryEntryList<Biome> entryList = RegistryEntryList.of(biomes.build());
+		HolderSet<Biome> entryList = HolderSet.direct(biomes.build());
 
-		return LootTableEntry.builder(lootTableKey)
-			.conditionally(
-				LocationCheckLootCondition.builder(
-					LocationPredicate.Builder.create()
-						.biome(entryList)
+		return NestedLootTable.lootTableReference(lootTableKey)
+			.when(
+				LocationCheck.checkLocation(
+					LocationPredicate.Builder.location()
+						.setBiomes(entryList)
 				)
 			)
-			.weight(weight);
+			.setWeight(weight);
 	}
 
-	public static LootCondition.Builder biomeCondition(RegistryEntry<Biome> biome) {
-		return LocationCheckLootCondition.builder(
-			LocationPredicate.Builder.createBiome(biome)
+	public static LootItemCondition.Builder biomeCondition(Holder<Biome> biome) {
+		return LocationCheck.checkLocation(
+			LocationPredicate.Builder.inBiome(biome)
 		);
 	}
 
 	public static boolean poolContainsItemAsDirectChild(LootPool.Builder pool, Item item) {
-		List<LootPoolEntry> currentEntries = ((LootPoolBuilderAccessor) pool).abysm$getEntries().build();
-		Identifier id = Registries.ITEM.getId(item);
+		List<LootPoolEntryContainer> currentEntries = ((LootPool$BuilderAccessor) pool).getEntries().build();
+		ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
 
-		for (LootPoolEntry entry : currentEntries) {
-			if (entry instanceof ItemEntry itemEntry) {
-				RegistryEntry<Item> ire = ((ItemEntryAccessor) itemEntry).abysm$getItem();
+		for (LootPoolEntryContainer entry : currentEntries) {
+			if (entry instanceof LootItem itemEntry) {
+				Holder<Item> ire = ((LootItemAccessor) itemEntry).getItem();
 
-				if (ire.matchesId(id)) {
+				if (ire.is(id)) {
 					return true;
 				}
 			}
@@ -111,7 +110,7 @@ public class AbysmLootTableModifications {
 		return false;
 	}
 
-	public static void registerModify(RegistryKey<LootTable> registryKey, ModifyNoKey modifyNoKey) {
+	public static void registerModify(ResourceKey<LootTable> registryKey, ModifyNoKey modifyNoKey) {
 		registerModify((key, builder, source, wrapperLookup) -> {
 			if (registryKey.equals(key)) {
 				modifyNoKey.modify(builder, source, wrapperLookup);
@@ -123,12 +122,12 @@ public class AbysmLootTableModifications {
 		LootTableEvents.MODIFY.register(modify);
 	}
 
-	private static RegistryKey<LootTable> keyOf(String id) {
-		return RegistryKey.of(RegistryKeys.LOOT_TABLE, Abysm.id(id));
+	private static ResourceKey<LootTable> keyOf(String id) {
+		return ResourceKey.create(Registries.LOOT_TABLE, Abysm.id(id));
 	}
 
 	@FunctionalInterface
 	public interface ModifyNoKey {
-		void modify(LootTable.Builder builder, LootTableSource lootTableSource, RegistryWrapper.WrapperLookup wrapperLookup);
+		void modify(LootTable.Builder builder, LootTableSource lootTableSource, HolderLookup.Provider wrapperLookup);
 	}
 }

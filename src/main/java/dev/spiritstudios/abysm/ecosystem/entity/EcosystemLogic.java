@@ -4,21 +4,21 @@ import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemArea;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaManager;
 import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaPos;
 import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 
 // The actual implementations for handling & signaling most Entity-related Ecosystem code & calls,
 // such as finding food, repopulating, or signaling the Entity's goals/brain to avoid or actively flee from a predator
 public class EcosystemLogic {
-	public final MobEntity entity;
+	public final Mob entity;
 	public final EcosystemType<?> type;
-	public final World world;
+	public final Level world;
 
-	public ChunkPos currentChunkPos = ChunkPos.ORIGIN;
-	public ChunkPos prevChunkPos = ChunkPos.ORIGIN;
-	public EcosystemAreaPos currentEcosystemAreaPos = new EcosystemAreaPos(ChunkPos.ORIGIN);
+	public ChunkPos currentChunkPos = ChunkPos.ZERO;
+	public ChunkPos prevChunkPos = ChunkPos.ZERO;
+	public EcosystemAreaPos currentEcosystemAreaPos = new EcosystemAreaPos(ChunkPos.ZERO);
 
 	public boolean shouldHunt = false;
 	public boolean shouldScavenge = false;
@@ -31,21 +31,21 @@ public class EcosystemLogic {
 
 	public int breedTicks = 0;
 
-	public EcosystemLogic(MobEntity entity, EcosystemType<?> type) {
+	public EcosystemLogic(Mob entity, EcosystemType<?> type) {
 		this.entity = entity;
 		this.type = type;
-		this.world = entity.getWorld();
+		this.world = entity.level();
 	}
 
 	public void onSpawn() {
-		EcosystemAreaPos ecosystemAreaPos = new EcosystemAreaPos(this.entity.getChunkPos());
+		EcosystemAreaPos ecosystemAreaPos = new EcosystemAreaPos(this.entity.chunkPosition());
 		this.onEcosystemAreaEnter(ecosystemAreaPos);
 	}
 
 	public void tick() {
 		// Handle moving into new EcosystemArea
 		this.prevChunkPos = this.currentChunkPos;
-		this.currentChunkPos = this.entity.getChunkPos();
+		this.currentChunkPos = this.entity.chunkPosition();
 		if (this.currentChunkPos != this.prevChunkPos) {
 			// Not creating EcosystemAreaPos every tick to save (probably only fractions of) performance
 			EcosystemAreaPos newEcosystemAreaPos = new EcosystemAreaPos(this.currentChunkPos);
@@ -78,23 +78,23 @@ public class EcosystemLogic {
 	}
 
 	public void onDeath() {
-		EcosystemAreaPos ecosystemAreaPos = new EcosystemAreaPos(this.entity.getChunkPos());
+		EcosystemAreaPos ecosystemAreaPos = new EcosystemAreaPos(this.entity.chunkPosition());
 		this.onEcosystemAreaLeave(ecosystemAreaPos);
 	}
 
 	public void onEcosystemAreaEnter(EcosystemAreaPos pos) {
-		if (this.world.isClient()) return;
+		if (this.world.isClientSide()) return;
 		this.getEcosystemArea(pos).addEntity(this.entity);
 	}
 
 	public void onEcosystemAreaLeave(EcosystemAreaPos pos) {
-		if (this.world.isClient()) return;
+		if (this.world.isClientSide()) return;
 		this.getEcosystemArea(pos).removeEntity(this.entity);
 	}
 
 	public EcosystemArea getEcosystemArea(EcosystemAreaPos pos) {
-		if (this.world.isClient()) return null;
-		EcosystemAreaManager ecosystemAreaManager = EcosystemAreaManager.getEcosystemAreaManagerForWorld((ServerWorld) this.world);
+		if (this.world.isClientSide()) return null;
+		EcosystemAreaManager ecosystemAreaManager = EcosystemAreaManager.getEcosystemAreaManagerForWorld((ServerLevel) this.world);
 		return ecosystemAreaManager.getEcosystemArea(pos, true);
 	}
 

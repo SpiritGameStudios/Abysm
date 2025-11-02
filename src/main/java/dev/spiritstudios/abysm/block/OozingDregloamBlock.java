@@ -3,92 +3,91 @@ package dev.spiritstudios.abysm.block;
 import com.mojang.serialization.MapCodec;
 import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
 import dev.spiritstudios.abysm.worldgen.feature.AbysmConfiguredFeatures;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Fertilizable;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldView;
-import net.minecraft.world.chunk.light.ChunkLightProvider;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-
 import java.util.Optional;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.lighting.LightEngine;
+import net.minecraft.world.level.material.FluidState;
 
-public class OozingDregloamBlock extends Block implements Fertilizable {
-	public static final MapCodec<OozingDregloamBlock> CODEC = createCodec(OozingDregloamBlock::new);
+public class OozingDregloamBlock extends Block implements BonemealableBlock {
+	public static final MapCodec<OozingDregloamBlock> CODEC = simpleCodec(OozingDregloamBlock::new);
 
 	@Override
-	public MapCodec<OozingDregloamBlock> getCodec() {
+	public MapCodec<OozingDregloamBlock> codec() {
 		return CODEC;
 	}
 
-	public OozingDregloamBlock(Settings settings) {
+	public OozingDregloamBlock(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	public Fertilizable.FertilizableType getFertilizableType() {
-		return Fertilizable.FertilizableType.NEIGHBOR_SPREADER;
+	public BonemealableBlock.Type getType() {
+		return BonemealableBlock.Type.NEIGHBOR_SPREADER;
 	}
 
 	@Override
-	protected void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+	protected void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
 		if (!stayAlive(state, world, pos)) {
-			world.setBlockState(pos, AbysmBlocks.DREGLOAM.getDefaultState());
+			world.setBlockAndUpdate(pos, AbysmBlocks.DREGLOAM.defaultBlockState());
 		}
 	}
 
-	public static boolean stayAlive(BlockState state, WorldView world, BlockPos pos) {
-		BlockPos upPos = pos.up();
+	public static boolean stayAlive(BlockState state, LevelReader world, BlockPos pos) {
+		BlockPos upPos = pos.above();
 		FluidState fluidState = world.getFluidState(upPos);
-		if (fluidState.isIn(FluidTags.WATER)) {
+		if (fluidState.is(FluidTags.WATER)) {
 			return true;
 		} else {
 			BlockState blockState = world.getBlockState(upPos);
-			if (blockState.isOf(AbysmBlocks.DREGLOAM_OOZE)) {
+			if (blockState.is(AbysmBlocks.DREGLOAM_OOZE)) {
 				return true;
 			} else {
-				int i = ChunkLightProvider.getRealisticOpacity(state, blockState, Direction.UP, blockState.getOpacity());
+				int i = LightEngine.getLightBlockInto(state, blockState, Direction.UP, blockState.getLightBlock());
 				return i < 15;
 			}
 		}
 	}
 
 	@Override
-	public boolean isFertilizable(WorldView world, BlockPos pos, BlockState state) {
-		BlockPos upPos = pos.up();
+	public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
+		BlockPos upPos = pos.above();
 		BlockState upState = world.getBlockState(upPos);
-		return upState.isAir() || (upState.isReplaceable() && world.getFluidState(upPos).isIn(FluidTags.WATER));
+		return upState.isAir() || (upState.canBeReplaced() && world.getFluidState(upPos).is(FluidTags.WATER));
 	}
 
 	@Override
-	public boolean canGrow(World world, Random random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
 		return true;
 	}
 
-	private Optional<? extends RegistryEntry<ConfiguredFeature<?, ?>>> getFeatureEntry(WorldView world) {
-		return world.getRegistryManager().getOrThrow(RegistryKeys.CONFIGURED_FEATURE).getOptional(AbysmConfiguredFeatures.PATCH_OOZE_VEGETATION);
+	private Optional<? extends Holder<ConfiguredFeature<?, ?>>> getFeatureEntry(LevelReader world) {
+		return world.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(AbysmConfiguredFeatures.PATCH_OOZE_VEGETATION);
 	}
 
 	@Override
-	public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
-		BlockPos upPos = pos.up();
-		ChunkGenerator chunkGenerator = world.getChunkManager().getChunkGenerator();
+	public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+		BlockPos upPos = pos.above();
+		ChunkGenerator chunkGenerator = world.getChunkSource().getGenerator();
 		this.getFeatureEntry(world)
-			.ifPresent(featureEntry -> featureEntry.value().generate(world, chunkGenerator, random, upPos));
+			.ifPresent(featureEntry -> featureEntry.value().place(world, chunkGenerator, random, upPos));
 	}
 
 	@Override
-	public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
-		super.randomDisplayTick(state, world, pos, random);
-		world.addParticleClient(AbysmParticleTypes.POGGDRYGLL_SPORES, pos.getX() + random.nextDouble(), pos.getY() + 1.1, pos.getZ() + random.nextDouble(), 0.0, 0.0, 0.0);
+	public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+		super.animateTick(state, world, pos, random);
+		world.addParticle(AbysmParticleTypes.POGGDRYGLL_SPORES, pos.getX() + random.nextDouble(), pos.getY() + 1.1, pos.getZ() + random.nextDouble(), 0.0, 0.0, 0.0);
 	}
 }

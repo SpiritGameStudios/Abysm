@@ -1,24 +1,24 @@
 package dev.spiritstudios.abysm.item;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class PlaceableOnWaterOrBlockItem extends BlockItem {
-	public PlaceableOnWaterOrBlockItem(Block block, Settings settings) {
+	public PlaceableOnWaterOrBlockItem(Block block, Properties settings) {
 		super(block, settings);
 	}
 
 	@Override
-	public ActionResult use(World world, PlayerEntity user, Hand hand) {
-		BlockHitResult raycastResult = raycast(world, user, RaycastContext.FluidHandling.SOURCE_ONLY);
-		BlockHitResult blockAboveRaycastResult = raycastResult.withBlockPos(raycastResult.getBlockPos().up());
-		return super.useOnBlock(new ItemUsageContext(user, hand, blockAboveRaycastResult));
+	public InteractionResult use(Level world, Player user, InteractionHand hand) {
+		BlockHitResult raycastResult = getPlayerPOVHitResult(world, user, ClipContext.Fluid.SOURCE_ONLY);
+		BlockHitResult blockAboveRaycastResult = raycastResult.withPosition(raycastResult.getBlockPos().above());
+		return super.useOn(new UseOnContext(user, hand, blockAboveRaycastResult));
 	}
 }

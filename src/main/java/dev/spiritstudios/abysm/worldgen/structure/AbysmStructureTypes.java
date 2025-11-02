@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.worldgen.structure;
 
 import dev.spiritstudios.abysm.worldgen.structure.ruins.DeepSeaRuinsStructure;
-import net.minecraft.world.gen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.StructureType;
 
 public class AbysmStructureTypes {
 	/**

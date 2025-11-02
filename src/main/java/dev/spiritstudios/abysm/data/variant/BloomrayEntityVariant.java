@@ -5,48 +5,48 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.block.AbysmBlocks;
 import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
-import net.minecraft.block.Block;
-import net.minecraft.entity.spawn.SpawnConditionSelectors;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.codec.PacketCodecs;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryFixedCodec;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.StringIdentifiable;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.variant.SpawnPrioritySelectors;
+import net.minecraft.world.level.block.Block;
 
 public class BloomrayEntityVariant extends AbstractEntityVariant {
 	public static final Codec<BloomrayEntityVariant> CODEC = RecordCodecBuilder.create(
 		instance -> fillFields(instance).and(instance.group(
 				HideableCrownType.CODEC.fieldOf("crown").forGetter(variant -> variant.hideableCrownType),
-				ParticleTypes.TYPE_CODEC.fieldOf("glimmer").forGetter(variant -> variant.glimmerParticle),
-				ParticleTypes.TYPE_CODEC.fieldOf("thorns").forGetter(variant -> variant.thornsParticle)
+				ParticleTypes.CODEC.fieldOf("glimmer").forGetter(variant -> variant.glimmerParticle),
+				ParticleTypes.CODEC.fieldOf("thorns").forGetter(variant -> variant.thornsParticle)
 			)
 		).apply(instance, BloomrayEntityVariant::new)
 	);
 
-	public static final Codec<RegistryEntry<BloomrayEntityVariant>> ENTRY_CODEC = RegistryFixedCodec.of(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
+	public static final Codec<Holder<BloomrayEntityVariant>> ENTRY_CODEC = RegistryFixedCodec.create(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
 
-	public static final PacketCodec<RegistryByteBuf, RegistryEntry<BloomrayEntityVariant>> ENTRY_PACKET_CODEC = PacketCodecs.registryEntry(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<BloomrayEntityVariant>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
 
-	public static RegistryEntry<BloomrayEntityVariant> getDefaultEntry(DynamicRegistryManager registryManager) {
-		return getDefaultEntry(registryManager.getOrThrow(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT));
+	public static Holder<BloomrayEntityVariant> getDefaultEntry(RegistryAccess registryManager) {
+		return getDefaultEntry(registryManager.lookupOrThrow(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT));
 	}
 
-	public static RegistryEntry<BloomrayEntityVariant> getDefaultEntry(RegistryEntryLookup<BloomrayEntityVariant> lookup) {
+	public static Holder<BloomrayEntityVariant> getDefaultEntry(HolderGetter<BloomrayEntityVariant> lookup) {
 		return lookup.getOrThrow(AbysmEntityVariants.ROSY_BLOOMRAY);
 	}
 
 	public final HideableCrownType hideableCrownType;
-	public final ParticleEffect glimmerParticle;
-	public final ParticleEffect thornsParticle;
+	public final ParticleOptions glimmerParticle;
+	public final ParticleOptions thornsParticle;
 
-	public BloomrayEntityVariant(Text name, Identifier texture, SpawnConditionSelectors spawnConditions, HideableCrownType hideableCrownType, ParticleEffect glimmerParticle, ParticleEffect thornsParticle) {
+	public BloomrayEntityVariant(Component name, ResourceLocation texture, SpawnPrioritySelectors spawnConditions, HideableCrownType hideableCrownType, ParticleOptions glimmerParticle, ParticleOptions thornsParticle) {
 		super(name, texture, spawnConditions);
 		this.hideableCrownType = hideableCrownType;
 		this.glimmerParticle = glimmerParticle;
@@ -55,12 +55,12 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 
 	// Hiding crown type
 	// Uses this hard-coded enum instead of a block codec to hopefully reduce lag with the block finding AI
-	public enum HideableCrownType implements StringIdentifiable {
+	public enum HideableCrownType implements StringRepresentable {
 		SODALITE_CROWN(AbysmBlocks.BLOOMING_SODALITE_CROWN, "sodalite"),
 		ANYOLITE_CROWN(AbysmBlocks.BLOOMING_ANYOLITE_CROWN, "anyolite"),
 		MELILITE_CROWN(AbysmBlocks.BLOOMING_MELILITE_CROWN, "melilite");
 
-		public static final Codec<BloomrayEntityVariant.HideableCrownType> CODEC = StringIdentifiable.createCodec(BloomrayEntityVariant.HideableCrownType::values);
+		public static final Codec<BloomrayEntityVariant.HideableCrownType> CODEC = StringRepresentable.fromEnum(BloomrayEntityVariant.HideableCrownType::values);
 		private final Block crown;
 		private final String id;
 
@@ -78,7 +78,7 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 		}
 
 		@Override
-		public String asString() {
+		public String getSerializedName() {
 			return this.getId();
 		}
 	}

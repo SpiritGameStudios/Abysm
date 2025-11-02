@@ -4,18 +4,15 @@ plugins {
 	alias(libs.plugins.minotaur)
 }
 
-class ModInfo {
-	val id = property("mod.id").toString()
-	val group = property("mod.group").toString()
-	val version = property("mod.version").toString()
+val modId: String by project
+val modVersion: String by project
+
+version = "$modVersion+${libs.versions.minecraft.get()}"
+base.archivesName = modId
+
+loom {
+	splitEnvironmentSourceSets()
 }
-
-val mod = ModInfo()
-
-version = "${mod.version}+${libs.versions.minecraft.get()}"
-group = mod.group
-
-base.archivesName = mod.id
 
 fabricApi {
 	configureDataGeneration {
@@ -23,18 +20,29 @@ fabricApi {
 	}
 }
 
-loom {
-	splitEnvironmentSourceSets()
-
-	mods.create(mod.id) {
-		sourceSet(sourceSets.getByName("main"))
-		sourceSet(sourceSets.getByName("client"))
-	}
-}
-
 repositories {
 	mavenCentral()
-	maven("https://maven.spiritstudios.dev/releases/")
+
+	maven {
+		name = "Spirit Studios Releases"
+		url = uri("https://maven.spiritstudios.dev/releases/")
+
+		content {
+			@Suppress("UnstableApiUsage")
+			includeGroupAndSubgroups("dev.spiritstudios")
+		}
+	}
+
+	maven {
+		name = "ParchmentMC"
+		url = uri("https://maven.parchmentmc.org")
+
+		content {
+			@Suppress("UnstableApiUsage")
+			includeGroupAndSubgroups("org.parchmentmc")
+		}
+	}
+
 	maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
 	maven("https://maven.terraformersmc.com/")
 	maven("https://jitpack.io/")
@@ -43,7 +51,14 @@ repositories {
 
 dependencies {
 	minecraft(libs.minecraft)
-	mappings(variantOf(libs.yarn) { classifier("v2") })
+	@Suppress("UnstableApiUsage")
+	mappings(
+		loom.layered {
+			officialMojangMappings()
+			parchment(libs.parchment)
+		}
+	)
+
 	modImplementation(libs.fabric.loader)
 
 	include(libs.bundles.specter)
@@ -63,10 +78,11 @@ dependencies {
 
 tasks.processResources {
 	val map = mapOf(
-		"mod_version" to mod.version
+		"version" to modVersion
 	)
 
 	inputs.properties(map)
+
 	filesMatching("fabric.mod.json") { expand(map) }
 }
 
@@ -88,8 +104,8 @@ tasks.jar {
 
 modrinth {
 	token.set(System.getenv("MODRINTH_TOKEN"))
-	projectId.set(mod.id)
-	versionNumber.set(mod.version)
+	projectId.set("abysm")
+	versionNumber.set("$modVersion+${libs.versions.minecraft.get()}")
 	uploadFile.set(tasks.remapJar)
 	versionType = "alpha"
 	gameVersions.addAll(libs.versions.minecraft.get())

@@ -1,20 +1,19 @@
 package dev.spiritstudios.abysm.entity.ai.goal;
 
-import net.minecraft.command.argument.EntityAnchorArgumentType;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-
 import java.util.List;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.Vec3;
 
 // I got this idea from looking at @Tomate0613's mod, I also referenced their code a bit
 public class SwimAroundBoidGoal extends Goal {
 	private static final float NEARBY_RANGE = 6.0F;
 
-	protected final PathAwareEntity entity;
+	protected final PathfinderMob entity;
 
-	private List<? extends PathAwareEntity> nearby;
+	private List<? extends PathfinderMob> nearby;
 
 	private final float separationRange;
 
@@ -30,12 +29,12 @@ public class SwimAroundBoidGoal extends Goal {
 	private final float minSpeed;
 	private final float maxSpeed;
 
-	public SwimAroundBoidGoal(PathAwareEntity entity, float separationRange, float alignmentAngle, float cohesionAngle, float separationCoefficient, float alignmentCoefficient, float cohesionCoefficient, float randomCoefficient, float avoidAirCoefficient, float minSpeed, float maxSpeed) {
+	public SwimAroundBoidGoal(PathfinderMob entity, float separationRange, float alignmentAngle, float cohesionAngle, float separationCoefficient, float alignmentCoefficient, float cohesionCoefficient, float randomCoefficient, float avoidAirCoefficient, float minSpeed, float maxSpeed) {
 		this.entity = entity;
 
 		this.separationRange = separationRange;
-		this.cosAlignmentAngle = MathHelper.cos(alignmentAngle);
-		this.cosCohesionAngle = MathHelper.cos(cohesionAngle);
+		this.cosAlignmentAngle = Mth.cos(alignmentAngle);
+		this.cosCohesionAngle = Mth.cos(cohesionAngle);
 		this.separationCoefficient = separationCoefficient;
 		this.alignmentCoefficient = alignmentCoefficient;
 		this.cohesionCoefficient = cohesionCoefficient;
@@ -46,12 +45,12 @@ public class SwimAroundBoidGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldRunEveryTick() {
+	public boolean requiresUpdateEveryTick() {
 		return true;
 	}
 
 	@Override
-	public boolean canStart() {
+	public boolean canUse() {
 		return true;
 	}
 
@@ -59,81 +58,81 @@ public class SwimAroundBoidGoal extends Goal {
 	public void tick() {
 		super.tick();
 
-		if (entity.getWorld().random.nextInt(200) == 1 || nearby == null) {
-			nearby = entity.getWorld().getNonSpectatingEntities(
+		if (entity.level().random.nextInt(200) == 1 || nearby == null) {
+			nearby = entity.level().getEntitiesOfClass(
 				entity.getClass(),
-				entity.getBoundingBox().expand(NEARBY_RANGE)
+				entity.getBoundingBox().inflate(NEARBY_RANGE)
 			);
 
 			nearby.remove(entity);
 		}
 
-		nearby.removeIf(entity -> entity.isDead() || entity.isRemoved());
+		nearby.removeIf(entity -> entity.isDeadOrDying() || entity.isRemoved());
 
 		// why does Vec3d not have divide
 
-		Vec3d separation = Vec3d.ZERO;
-		Vec3d alignment = Vec3d.ZERO;
-		Vec3d cohesion = Vec3d.ZERO;
+		Vec3 separation = Vec3.ZERO;
+		Vec3 alignment = Vec3.ZERO;
+		Vec3 cohesion = Vec3.ZERO;
 
 		int alignmentIterations = 0;
 		int cohesionIterations = 0;
 
-		for (PathAwareEntity other : nearby) {
-			Vec3d delta = other.getPos().subtract(entity.getPos());
+		for (PathfinderMob other : nearby) {
+			Vec3 delta = other.position().subtract(entity.position());
 
 			float distance = (float) delta.length();
-			float distanceReciprocal = 1.0F / Math.max(MathHelper.EPSILON, distance);
-			float cosAngle = (float) entity.getRotationVector().dotProduct(delta.normalize());
+			float distanceReciprocal = 1.0F / Math.max(Mth.EPSILON, distance);
+			float cosAngle = (float) entity.getLookAngle().dot(delta.normalize());
 
 			if (separationRange > distance) {
-				separation = separation.add(delta.multiply(-(distanceReciprocal - (1.0 / separationRange))));
+				separation = separation.add(delta.scale(-(distanceReciprocal - (1.0 / separationRange))));
 			}
 
 			if (cosAngle >= cosAlignmentAngle) {
-				alignment = alignment.add(other.getVelocity().normalize());
+				alignment = alignment.add(other.getDeltaMovement().normalize());
 				alignmentIterations++;
 			}
 
 			if (cosAngle >= cosCohesionAngle) {
-				cohesion = cohesion.add(other.getPos());
+				cohesion = cohesion.add(other.position());
 				cohesionIterations++;
 			}
 		}
 
-		separation = separation.multiply(separationCoefficient);
+		separation = separation.scale(separationCoefficient);
 
 		alignment = alignmentIterations == 0 ?
-			Vec3d.ZERO :
-			alignment.multiply(1.0F / alignmentIterations).multiply(alignmentCoefficient);
+			Vec3.ZERO :
+			alignment.scale(1.0F / alignmentIterations).scale(alignmentCoefficient);
 
 		cohesion = cohesionIterations == 0 ?
-			Vec3d.ZERO :
-			cohesion.multiply(1.0 / cohesionIterations).subtract(entity.getPos()).multiply(cohesionCoefficient);
+			Vec3.ZERO :
+			cohesion.scale(1.0 / cohesionIterations).subtract(entity.position()).scale(cohesionCoefficient);
 
-		Vec3d random = new Vec3d(
+		Vec3 random = new Vec3(
 			entity.getRandom().nextFloat() * randomCoefficient,
 			entity.getRandom().nextFloat() * randomCoefficient,
 			entity.getRandom().nextFloat() * randomCoefficient
 		).subtract(randomCoefficient / 2.0F);
 
 
-		Vec3d avoidAir = Vec3d.ZERO;
+		Vec3 avoidAir = Vec3.ZERO;
 
 		if (avoidAirCoefficient > 0.0F) {
-			if (!entity.getWorld().isWater(entity.getBlockPos().up()))
+			if (!entity.level().isWaterAt(entity.blockPosition().above()))
 				avoidAir = avoidAir.add(0.0, -avoidAirCoefficient, 0.0);
 		}
 
-		entity.addVelocity(separation.add(alignment).add(cohesion).add(random).add(avoidAir));
+		entity.push(separation.add(alignment).add(cohesion).add(random).add(avoidAir));
 
-		Vec3d velocity = entity.getVelocity();
+		Vec3 velocity = entity.getDeltaMovement();
 		float speed = (float) velocity.length();
 
-		if (speed < minSpeed) velocity = velocity.normalize().multiply(minSpeed);
-		if (speed > maxSpeed) velocity = velocity.normalize().multiply(maxSpeed);
+		if (speed < minSpeed) velocity = velocity.normalize().scale(minSpeed);
+		if (speed > maxSpeed) velocity = velocity.normalize().scale(maxSpeed);
 
-		entity.setVelocity(velocity);
-		entity.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, entity.getEyePos().add(velocity.multiply(5.0)));
+		entity.setDeltaMovement(velocity);
+		entity.lookAt(EntityAnchorArgument.Anchor.EYES, entity.getEyePosition().add(velocity.scale(5.0)));
 	}
 }

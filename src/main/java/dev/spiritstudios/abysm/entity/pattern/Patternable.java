@@ -3,24 +3,24 @@ package dev.spiritstudios.abysm.entity.pattern;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.pattern.EntityPatternVariant;
 import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryOps;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Util;
-import net.minecraft.world.ServerWorldAccess;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Range;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import net.minecraft.Util;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * To create an entity with overlayable patterns:
@@ -29,8 +29,8 @@ import java.util.List;
  *     <ul>
  *         <li>Implement this interface and fill in the required methods.</li>
  *         <li>Override the Entity#initDataTracker method to include your DataTracked EntityVariant. This syncs your variant.</li>
- *         <li>Override the Entity#writeCustomDataToNbt and Entity#readCustomDataFromNbt to call {@link Patternable#writeEntityPattern(RegistryOps, NbtCompound)} and {@link Patternable#readEntityPattern(Entity, RegistryOps, NbtCompound)} respectively. These keep your variants persistent on world save.</li>
- *         <li>Override the MobEntity#initialize method to call {@link Patternable#getPatternForInitialize(ServerWorldAccess, Entity, EntityData)}, which sets your entity's variant upon spawning.</li>
+ *         <li>Override the Entity#writeCustomDataToNbt and Entity#readCustomDataFromNbt to call {@link Patternable#writeEntityPattern(RegistryOps, CompoundTag)} and {@link Patternable#readEntityPattern(Entity, RegistryOps, CompoundTag)} respectively. These keep your variants persistent on world save.</li>
+ *         <li>Override the MobEntity#initialize method to call {@link Patternable#getPatternForInitialize(ServerLevelAccessor, Entity, SpawnGroupData)}, which sets your entity's variant upon spawning.</li>
  *     </ul>
  *     <li>For the entity renderer:</li>
  *     <ul>
@@ -50,17 +50,17 @@ import java.util.List;
  * @see AbysmEntityPatternVariants
  */
 public interface Patternable {
-	List<Integer> DEFAULT_DYE_ENTITY_COLORS = Arrays.stream(DyeColor.values()).map(DyeColor::getEntityColor).toList();
+	List<Integer> DEFAULT_DYE_ENTITY_COLORS = Arrays.stream(DyeColor.values()).map(DyeColor::getTextureDiffuseColor).toList();
 
 	/**
-	 * @return This Entity's EntityPattern. Use the {@link net.minecraft.entity.data.DataTracker#get(TrackedData)} method with your EntityPattern Tracked Data key.
+	 * @return This Entity's EntityPattern. Use the {@link net.minecraft.network.syncher.SynchedEntityData#get(EntityDataAccessor)} method with your EntityPattern Tracked Data key.
 	 * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity#ENTITY_PATTERN
 	 * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity#getEntityPattern()
 	 */
 	EntityPattern getEntityPattern();
 
 	/**
-	 * @param pattern Set this Entity's EntityPattern. Use {@link net.minecraft.entity.data.DataTracker#set(TrackedData, Object)} with your EntityPattern Tracked Data key.
+	 * @param pattern Set this Entity's EntityPattern. Use {@link net.minecraft.network.syncher.SynchedEntityData#set(EntityDataAccessor, Object)} with your EntityPattern Tracked Data key.
 	 * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity#ENTITY_PATTERN
 	 * @see dev.spiritstudios.abysm.entity.floralreef.AbstractFloralFishEntity#setEntityPattern(EntityPattern)
 	 */
@@ -73,7 +73,7 @@ public interface Patternable {
 	 * @see Patternable#getFallbackPattern(Entity)
 	 * @see Patternable#getCommonPatterns()
 	 */
-	EntityPattern getDefaultPattern(RegistryEntryLookup<EntityPatternVariant> lookup);
+	EntityPattern getDefaultPattern(HolderGetter<EntityPatternVariant> lookup);
 
 	/**
 	 * @return A list of common patterns that a majority of entities will use. Leave empty for no common patterns. {@link Patternable#commonPatternChance()} determines the chance of this list being used.
@@ -93,13 +93,13 @@ public interface Patternable {
 
 	/**
 	 * A fallback pattern for this entity to use in case of an error. This is used if this entity is being reloaded, but its pattern can't be found.<br><br>
-	 * If a list of common patterns is provided, a random one is chosen from there. Otherwise, the {@link Patternable#getDefaultPattern(RegistryEntryLookup)} pattern is used.
+	 * If a list of common patterns is provided, a random one is chosen from there. Otherwise, the {@link Patternable#getDefaultPattern(HolderGetter)} pattern is used.
 	 *
 	 * @return A fallback pattern.
 	 */
 	default EntityPattern getFallbackPattern(Entity self) {
 		if (this.getCommonPatterns().isEmpty())
-			return this.getDefaultPattern(self.getRegistryManager().getOrThrow(AbysmRegistryKeys.ENTITY_PATTERN));
+			return this.getDefaultPattern(self.registryAccess().lookupOrThrow(AbysmRegistryKeys.ENTITY_PATTERN));
 
 		return Util.getRandom(this.getCommonPatterns(), self.getRandom());
 	}
@@ -107,7 +107,7 @@ public interface Patternable {
 	/**
 	 * @return An EntityPattern for this entity upon initialization.
 	 */
-	default EntityPattern getPatternForInitialize(ServerWorldAccess world, Entity self, @Nullable EntityData entityData) {
+	default EntityPattern getPatternForInitialize(ServerLevelAccessor world, Entity self, @Nullable SpawnGroupData entityData) {
 		if (entityData instanceof PatternedEntityData patternData) {
 			return patternData.getPattern();
 		}
@@ -122,11 +122,11 @@ public interface Patternable {
 
 	/**
 	 * @return A random EntityPattern. Note: this does <b>NOT</b> use the {@link Patternable#getCommonPatterns()} list!<br>
-	 * See {@link Patternable#getPatternForInitialize(ServerWorldAccess, Entity, EntityData)} instead for that!
-	 * @see Patternable#getPatternForInitialize(ServerWorldAccess, Entity, EntityData)
+	 * See {@link Patternable#getPatternForInitialize(ServerLevelAccessor, Entity, SpawnGroupData)} instead for that!
+	 * @see Patternable#getPatternForInitialize(ServerLevelAccessor, Entity, SpawnGroupData)
 	 */
-	default EntityPattern getRandomPattern(ServerWorldAccess world, Entity self) {
-		List<? extends RegistryEntry<EntityPatternVariant>> variants = EntityPatternVariant.getVariantsForEntityType(world, self.getType()).toList();
+	default EntityPattern getRandomPattern(ServerLevelAccessor world, Entity self) {
+		List<? extends Holder<EntityPatternVariant>> variants = EntityPatternVariant.getVariantsForEntityType(world, self.getType()).toList();
 
 		return new EntityPattern(
 			Util.getRandom(variants, self.getRandom()),
@@ -138,14 +138,14 @@ public interface Patternable {
 	/**
 	 * Write this entity's pattern to the world's nbt.
 	 */
-	default void writeEntityPattern(WriteView view) {
-		view.put("entity_pattern", EntityPattern.CODEC, getEntityPattern());
+	default void writeEntityPattern(ValueOutput view) {
+		view.store("entity_pattern", EntityPattern.CODEC, getEntityPattern());
 	}
 
 	/**
 	 * Read an entity pattern from the world's nbt.
 	 */
-	default void readEntityPattern(Entity self, ReadView view) {
+	default void readEntityPattern(Entity self, ValueInput view) {
 		view.read("entity_pattern", EntityPattern.CODEC).ifPresentOrElse(
 			this::setEntityPattern,
 			() -> {

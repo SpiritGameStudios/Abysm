@@ -1,19 +1,19 @@
 package dev.spiritstudios.abysm.client.render.entity.renderer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.GeoUtil;
 import dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkEntity;
 import dev.spiritstudios.abysm.entity.leviathan.pseudo.SkeletonSharkPart;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RotationAxis;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.processing.AnimationState;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -36,7 +36,7 @@ public class SkeletonSharkEntityRenderer<R extends LivingEntityRenderState & Geo
 	public static final DataTicket<List> PARTS = DataTicket.create("parts", List.class);
 	public static final DataTicket<Boolean> HACKY_ROTATE_ANYWAY = DataTicket.create("hacky_rotate_anyway", Boolean.class);
 
-	public SkeletonSharkEntityRenderer(EntityRendererFactory.Context context) {
+	public SkeletonSharkEntityRenderer(EntityRendererProvider.Context context) {
 		super(context, new EntityModel());
 		this.addRenderLayer(new AutoGlowingGeoLayer<>(this) {
 			@Override
@@ -45,7 +45,7 @@ public class SkeletonSharkEntityRenderer<R extends LivingEntityRenderState & Geo
 			}
 
 			@Override
-			public void render(R renderState, MatrixStack poseStack, BakedGeoModel bakedModel, @Nullable RenderLayer renderType, VertexConsumerProvider bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
+			public void render(R renderState, PoseStack poseStack, BakedGeoModel bakedModel, @Nullable RenderType renderType, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, int packedLight, int packedOverlay, int renderColor) {
 				if (!GeoUtil.getOrDefaultGeoData(renderState, SANS, false)) {
 					return;
 				}
@@ -63,31 +63,31 @@ public class SkeletonSharkEntityRenderer<R extends LivingEntityRenderState & Geo
 
 	@SuppressWarnings({"DataFlowIssue", "unchecked"})
 	@Override
-	public void actuallyRender(R state, MatrixStack matrices, BakedGeoModel model, @Nullable RenderLayer renderType, VertexConsumerProvider vertexConsumers, @Nullable VertexConsumer buffer, boolean isReRender, int packedLight, int packedOverlay, int renderColor) {
-		matrices.push();
+	public void actuallyRender(R state, PoseStack matrices, BakedGeoModel model, @Nullable RenderType renderType, MultiBufferSource vertexConsumers, @Nullable VertexConsumer buffer, boolean isReRender, int packedLight, int packedOverlay, int renderColor) {
+		matrices.pushPose();
 		if (GeoUtil.getOrDefaultGeoData(state, HACKY_ROTATE_ANYWAY, false)) {
-			applyRotations(state, matrices, state.baseScale);
+			applyRotations(state, matrices, state.scale);
 		}
 		super.actuallyRender(state, matrices, model, renderType, vertexConsumers, buffer, isReRender, packedLight, packedOverlay, renderColor);
-		matrices.pop();
+		matrices.popPose();
 
 		float originalPitch = state.getGeckolibData(DataTickets.ENTITY_PITCH);
 		float originalYaw = state.getGeckolibData(DataTickets.ENTITY_YAW);
 		float bodyYaw = state.getGeckolibData(DataTickets.ENTITY_BODY_YAW);
 
 		float tickProgress = state.getGeckolibData(DataTickets.PARTIAL_TICK);
-		Vec3d skelepos = state.getGeckolibData(DataTickets.POSITION);
+		Vec3 skelepos = state.getGeckolibData(DataTickets.POSITION);
 
 		List<Object> parts = state.getGeckolibData(PARTS);
-		Vec3d prevPos = Vec3d.ZERO;
-		final float inverseScale = 1 / state.baseScale;
+		Vec3 prevPos = Vec3.ZERO;
+		final float inverseScale = 1 / state.scale;
 		for (Object o : parts) {
 			SkeletonSharkPart skeletonSharkPart = (SkeletonSharkPart) o;
 			PitchYawPair pair;
 			if (skeletonSharkPart.name.contains("fin")) {
-				pair = lookAt(prevPos, Vec3d.ZERO);
+				pair = lookAt(prevPos, Vec3.ZERO);
 			} else {
-				Vec3d relativePos = skeletonSharkPart.getRelativePos();
+				Vec3 relativePos = skeletonSharkPart.getRelativePos();
 				pair = lookAt(relativePos, prevPos);
 				prevPos = relativePos;
 			}
@@ -98,17 +98,17 @@ public class SkeletonSharkEntityRenderer<R extends LivingEntityRenderState & Geo
 
 			BodyPartRenderer renderer = BodyPartRenderer.RENDERERS.get(skeletonSharkPart.name);
 			if (renderer != null) {
-				Vec3d pos = skeletonSharkPart.getLerpedPos(tickProgress).subtract(skelepos).multiply(inverseScale);
-				matrices.push();
+				Vec3 pos = skeletonSharkPart.getPosition(tickProgress).subtract(skelepos).scale(inverseScale);
+				matrices.pushPose();
 				matrices.translate(pos.x, pos.y, pos.z);
 
-				matrices.push();
-				applyRotations(state, matrices, state.baseScale);
-				matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-pair.pitch));
+				matrices.pushPose();
+				applyRotations(state, matrices, state.scale);
+				matrices.mulPose(Axis.XP.rotationDegrees(-pair.pitch));
 				renderer.render(state, renderType, matrices, vertexConsumers, packedLight, packedOverlay, renderColor, RecursiveRenderer.create(this));
-				matrices.pop();
+				matrices.popPose();
 
-				matrices.pop();
+				matrices.popPose();
 			}
 		}
 
@@ -157,7 +157,7 @@ public class SkeletonSharkEntityRenderer<R extends LivingEntityRenderState & Geo
 
 		@SuppressWarnings("unused")
 		public <R extends LivingEntityRenderState & GeoRenderState> void render(
-			R state, @Nullable RenderLayer renderLayer, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, int color, RecursiveRenderer<R> recursiveRenderer) {
+			R state, @Nullable RenderType renderLayer, PoseStack matrices, MultiBufferSource vertexConsumers, int light, int overlay, int color, RecursiveRenderer<R> recursiveRenderer) {
 
 			if (renderLayer == null) {
 				renderLayer = this.model.getRenderType(state, this.model.getTextureResource(state));
@@ -197,7 +197,7 @@ public class SkeletonSharkEntityRenderer<R extends LivingEntityRenderState & Geo
 		}
 
 		@Override
-		public Identifier getTextureResource(GeoRenderState renderState) {
+		public ResourceLocation getTextureResource(GeoRenderState renderState) {
 			return super.getTextureResource(renderState).withPath(path -> {
 				int index = path.indexOf(this.subpath);
 				if (index < 0) {
@@ -208,13 +208,13 @@ public class SkeletonSharkEntityRenderer<R extends LivingEntityRenderState & Geo
 		}
 	}
 
-	public static PitchYawPair lookAt(Vec3d vec3d, Vec3d target) {
+	public static PitchYawPair lookAt(Vec3 vec3d, Vec3 target) {
 		double d = target.x - vec3d.x;
 		double e = target.y - vec3d.y;
 		double f = target.z - vec3d.z;
 		double g = Math.sqrt(d * d + f * f);
-		float pitch = MathHelper.wrapDegrees((float)(-(MathHelper.atan2(e, g) * 180.0F / (float)Math.PI)));
-		float yaw = MathHelper.wrapDegrees((float)(MathHelper.atan2(f, d) * 180.0F / (float)Math.PI) - 90.0F);
+		float pitch = Mth.wrapDegrees((float)(-(Mth.atan2(e, g) * 180.0F / (float)Math.PI)));
+		float yaw = Mth.wrapDegrees((float)(Mth.atan2(f, d) * 180.0F / (float)Math.PI) - 90.0F);
 		return new PitchYawPair(pitch, yaw);
 	}
 

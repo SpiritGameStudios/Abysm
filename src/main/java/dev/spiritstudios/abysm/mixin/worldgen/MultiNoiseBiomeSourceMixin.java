@@ -6,10 +6,10 @@ import com.terraformersmc.biolith.impl.biome.BiomeCoordinator;
 import com.terraformersmc.biolith.impl.compat.BiolithCompat;
 import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
 import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -22,13 +22,12 @@ import java.util.stream.Stream;
 
 @Mixin(MultiNoiseBiomeSource.class)
 public abstract class MultiNoiseBiomeSourceMixin {
-
 	@Unique
 	@Nullable
-	private List<RegistryEntry<Biome>> abysm$bonusBiomes = null;
+	private List<Holder<Biome>> abysm$bonusBiomes = null;
 
-	@ModifyReturnValue(method = "biomeStream", at = @At("RETURN"))
-	private Stream<RegistryEntry<Biome>> addBiomesToStream(Stream<RegistryEntry<Biome>> original) {
+	@ModifyReturnValue(method = "collectPossibleBiomes", at = @At("RETURN"))
+	private Stream<Holder<Biome>> addBiomes(Stream<Holder<Biome>> original) {
 		if (BiolithCompat.COMPAT_DATAGEN) {
 			// do not add biomes during datagen
 			return original;
@@ -45,15 +44,15 @@ public abstract class MultiNoiseBiomeSourceMixin {
 					Registry<Biome> biomeLookup = biomeLookupOptional.get();
 
 					// make a list from the stream then remake the stream from that list, to avoid operating upon the same stream twice
-					List<RegistryEntry<Biome>> streamedBiomes = original.toList();
+					List<Holder<Biome>> streamedBiomes = original.toList();
 					original = streamedBiomes.stream();
 
 					// add bonus biomes to list
-					List<RegistryEntry<Biome>> bonusBiomes = new ArrayList<>();
+					List<Holder<Biome>> bonusBiomes = new ArrayList<>();
 					// check if the biome source contains any biomes that can spawn the deep sea ruins, and if so add it to the list
-					boolean canSpawnDeepSeaRuins = streamedBiomes.stream().anyMatch(biome -> biome.isIn(AbysmBiomeTags.DEEP_SEA_RUINS_HAS_STRUCTURE));
+					boolean canSpawnDeepSeaRuins = streamedBiomes.stream().anyMatch(biome -> biome.is(AbysmBiomeTags.DEEP_SEA_RUINS_HAS_STRUCTURE));
 					if (canSpawnDeepSeaRuins) {
-						biomeLookup.getEntry(AbysmBiomes.DEEP_SEA_RUINS.getValue()).ifPresent(bonusBiomes::add);
+						biomeLookup.get(AbysmBiomes.DEEP_SEA_RUINS.location()).ifPresent(bonusBiomes::add);
 					}
 
 					// store bonus biomes

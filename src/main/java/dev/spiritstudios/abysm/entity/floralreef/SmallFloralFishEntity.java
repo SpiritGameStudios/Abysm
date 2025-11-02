@@ -10,17 +10,17 @@ import dev.spiritstudios.abysm.entity.pattern.AbysmEntityPatternVariants;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.DyeColor;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
 import software.bernie.geckolib.animatable.processing.AnimationController;
@@ -30,15 +30,15 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 	public static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("animation.floral_fish_small.idle");
 	protected EcosystemLogic ecosystemLogic;
 
-	public SmallFloralFishEntity(EntityType<? extends AbstractFloralFishEntity> entityType, World world) {
+	public SmallFloralFishEntity(EntityType<? extends AbstractFloralFishEntity> entityType, Level world) {
 		super(entityType, world);
 		this.ecosystemLogic = createEcosystemLogic(this);
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
 		this.alertEcosystemOfSpawn();
-		return super.initialize(world, difficulty, spawnReason, entityData);
+		return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 	}
 
 	@Override
@@ -48,16 +48,16 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 	}
 
 	@Override
-	public void onRemove(RemovalReason reason) {
+	public void onRemoval(RemovalReason reason) {
 		this.alertEcosystemOfDeath();
-		super.onRemove(reason);
+		super.onRemoval(reason);
 	}
 
 	@Override
-	public EntityPattern getDefaultPattern(RegistryEntryLookup<EntityPatternVariant> lookup) {
+	public EntityPattern getDefaultPattern(HolderGetter<EntityPatternVariant> lookup) {
 		return new EntityPattern(
 			lookup.getOrThrow(AbysmEntityPatternVariants.FLORAL_FISH_SMALL_COLORFUL),
-			DyeColor.PINK.getEntityColor(), DyeColor.LIGHT_BLUE.getEntityColor()
+			DyeColor.PINK.getTextureDiffuseColor(), DyeColor.LIGHT_BLUE.getTextureDiffuseColor()
 		);
 	}
 
@@ -94,7 +94,7 @@ public class SmallFloralFishEntity extends AbstractFloralFishEntity implements E
 	}
 
 	@Override
-	public ItemStack getBucketItem() {
+	public ItemStack getBucketItemStack() {
 		return new ItemStack(AbysmItems.SMALL_FLORAL_FISH_BUCKET);
 	}
 }

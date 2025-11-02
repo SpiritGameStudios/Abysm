@@ -1,9 +1,9 @@
 package dev.spiritstudios.abysm.worldgen.densityfunction;
 
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public interface DensityBlobHolder {
 	DensityBlob getDensityBlob();
 
-	Identifier getIdentifier();
+	ResourceLocation getIdentifier();
 }

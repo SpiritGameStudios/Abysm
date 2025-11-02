@@ -1,28 +1,28 @@
 package dev.spiritstudios.abysm.block;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class AntennaePlantBlock extends UnderwaterPlantBlock {
-	public static final MapCodec<AntennaePlantBlock> CODEC = createCodec(AntennaePlantBlock::new);
-	private static final VoxelShape SHAPE = Block.createColumnShape(10.0, 0.0, 10.0);
+	public static final MapCodec<AntennaePlantBlock> CODEC = simpleCodec(AntennaePlantBlock::new);
+	private static final VoxelShape SHAPE = Block.column(10.0, 0.0, 10.0);
 
 	@Override
-	public MapCodec<AntennaePlantBlock> getCodec() {
+	public MapCodec<AntennaePlantBlock> codec() {
 		return CODEC;
 	}
 
-	public AntennaePlantBlock(Settings settings) {
+	public AntennaePlantBlock(Properties settings) {
 		super(settings);
 	}
 
 	@Override
-	protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-		return SHAPE.offset(state.getModelOffset(pos));
+	protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+		return SHAPE.move(state.getOffset(pos));
 	}
 }

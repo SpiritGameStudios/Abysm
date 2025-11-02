@@ -1,9 +1,9 @@
 package dev.spiritstudios.abysm.registry.tags;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.entity.EntityType;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 
 public final class AbysmEntityTypeTags {
 
@@ -13,6 +13,6 @@ public final class AbysmEntityTypeTags {
 	public static final TagKey<EntityType<?>> LEHYDRATHAN_HUNT_TARGETS = of("lehydrathan_hunt_targets");
 
 	private static TagKey<EntityType<?>> of(String id) {
-		return TagKey.of(RegistryKeys.ENTITY_TYPE, Abysm.id(id));
+		return TagKey.create(Registries.ENTITY_TYPE, Abysm.id(id));
 	}
 }

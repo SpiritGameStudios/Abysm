@@ -5,20 +5,6 @@ import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
 import dev.spiritstudios.abysm.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.entity.pattern.Patternable;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.ComponentsAccess;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.item.ItemStack;
-import net.minecraft.storage.ReadView;
-import net.minecraft.storage.WriteView;
-import net.minecraft.util.DyeColor;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.manager.AnimatableManager;
@@ -26,31 +12,45 @@ import software.bernie.geckolib.animatable.processing.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 
 import java.util.List;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public abstract class AbstractFloralFishEntity extends SimpleEcoSchoolingFishEntity implements GeoEntity, Patternable {
 	public static final List<Integer> PATTERN_COLORS = List.of(
-		DyeColor.WHITE.getEntityColor(), DyeColor.BLACK.getEntityColor(),
-		DyeColor.BLUE.getEntityColor(), DyeColor.LIGHT_BLUE.getEntityColor(), DyeColor.CYAN.getEntityColor(),
-		DyeColor.PINK.getEntityColor(), DyeColor.PURPLE.getEntityColor(), DyeColor.MAGENTA.getEntityColor(),
-		DyeColor.RED.getEntityColor(), DyeColor.YELLOW.getEntityColor(), DyeColor.LIME.getEntityColor()
+		DyeColor.WHITE.getTextureDiffuseColor(), DyeColor.BLACK.getTextureDiffuseColor(),
+		DyeColor.BLUE.getTextureDiffuseColor(), DyeColor.LIGHT_BLUE.getTextureDiffuseColor(), DyeColor.CYAN.getTextureDiffuseColor(),
+		DyeColor.PINK.getTextureDiffuseColor(), DyeColor.PURPLE.getTextureDiffuseColor(), DyeColor.MAGENTA.getTextureDiffuseColor(),
+		DyeColor.RED.getTextureDiffuseColor(), DyeColor.YELLOW.getTextureDiffuseColor(), DyeColor.LIME.getTextureDiffuseColor()
 	);
 
-	public static final TrackedData<EntityPattern> ENTITY_PATTERN = DataTracker.registerData(AbstractFloralFishEntity.class, AbysmTrackedDataHandlers.ENTITY_PATTERN);
+	public static final EntityDataAccessor<EntityPattern> ENTITY_PATTERN = SynchedEntityData.defineId(AbstractFloralFishEntity.class, AbysmTrackedDataHandlers.ENTITY_PATTERN);
 
-	public AbstractFloralFishEntity(EntityType<? extends AbstractFloralFishEntity> entityType, World world) {
+	public AbstractFloralFishEntity(EntityType<? extends AbstractFloralFishEntity> entityType, Level world) {
 		super(entityType, world);
 	}
 
 	@Override
-	protected void initDataTracker(DataTracker.Builder builder) {
-		super.initDataTracker(builder);
-		builder.add(ENTITY_PATTERN, EntityPattern.EMPTY_PATTERN);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(ENTITY_PATTERN, EntityPattern.EMPTY_PATTERN);
 	}
 
 	@Override
-	protected void initGoals() {
-		super.initGoals();
-		this.goalSelector.add(4, new SwimToRandomPlaceGoal(this, 1.0F));
+	protected void registerGoals() {
+		super.registerGoals();
+		this.goalSelector.addGoal(4, new SwimToRandomPlaceGoal(this, 1.0F));
 	}
 
 	@Override
@@ -61,63 +61,63 @@ public abstract class AbstractFloralFishEntity extends SimpleEcoSchoolingFishEnt
 	}
 
 	@Override
-	public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData) {
-		entityData = super.initialize(world, difficulty, spawnReason, entityData);
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, EntitySpawnReason spawnReason, @Nullable SpawnGroupData entityData) {
+		entityData = super.finalizeSpawn(world, difficulty, spawnReason, entityData);
 		EntityPattern pattern = this.getPatternForInitialize(world, this, entityData);
 		this.setEntityPattern(pattern);
 		return entityData;
 	}
 
 	@Override
-	public void writeCustomData(WriteView view) {
-		super.writeCustomData(view);
+	public void addAdditionalSaveData(ValueOutput view) {
+		super.addAdditionalSaveData(view);
 		this.writeEntityPattern(view);
 	}
 
 	@Override
-	public void readCustomData(ReadView view) {
-		super.readCustomData(view);
+	public void readAdditionalSaveData(ValueInput view) {
+		super.readAdditionalSaveData(view);
 		this.readEntityPattern(this, view);
 	}
 
 	@Nullable
 	@Override
-	public <T> T get(ComponentType<? extends T> type) {
+	public <T> T get(DataComponentType<? extends T> type) {
 		return type == AbysmDataComponentTypes.ENTITY_PATTERN ?
 			castComponentValue(type, this.getEntityPattern()) :
 			super.get(type);
 	}
 
 	@Override
-	protected void copyComponentsFrom(ComponentsAccess from) {
-		this.copyComponentFrom(from, AbysmDataComponentTypes.ENTITY_PATTERN);
-		super.copyComponentsFrom(from);
+	protected void applyImplicitComponents(DataComponentGetter from) {
+		this.applyImplicitComponentIfPresent(from, AbysmDataComponentTypes.ENTITY_PATTERN);
+		super.applyImplicitComponents(from);
 	}
 
 	@Override
-	protected <T> boolean setApplicableComponent(ComponentType<T> type, T value) {
+	protected <T> boolean applyImplicitComponent(DataComponentType<T> type, T value) {
 		if (type == AbysmDataComponentTypes.ENTITY_PATTERN) {
 			this.setEntityPattern(castComponentValue(AbysmDataComponentTypes.ENTITY_PATTERN, value));
 			return true;
 		} else {
-			return super.setApplicableComponent(type, value);
+			return super.applyImplicitComponent(type, value);
 		}
 	}
 
 	@Override
-	public void copyDataToStack(ItemStack stack) {
-		super.copyDataToStack(stack);
-		stack.copy(AbysmDataComponentTypes.ENTITY_PATTERN, this);
+	public void saveToBucketTag(ItemStack stack) {
+		super.saveToBucketTag(stack);
+		stack.copyFrom(AbysmDataComponentTypes.ENTITY_PATTERN, this);
 	}
 
 	@Override
 	public EntityPattern getEntityPattern() {
-		return this.dataTracker.get(ENTITY_PATTERN);
+		return this.entityData.get(ENTITY_PATTERN);
 	}
 
 	@Override
 	public void setEntityPattern(EntityPattern pattern) {
-		this.dataTracker.set(ENTITY_PATTERN, pattern);
+		this.entityData.set(ENTITY_PATTERN, pattern);
 	}
 
 	@Override

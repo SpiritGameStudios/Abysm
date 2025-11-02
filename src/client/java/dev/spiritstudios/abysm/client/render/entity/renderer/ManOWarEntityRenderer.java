@@ -7,29 +7,30 @@ import dev.spiritstudios.abysm.client.render.entity.renderer.feature.ManOWarTent
 import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import dev.spiritstudios.abysm.client.render.entity.state.ManOWarRenderState;
 import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
-import net.minecraft.client.render.Frustum;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.render.entity.state.EntityHitbox;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Box;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.state.HitboxRenderState;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
 
-public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManOWarRenderState, GarbageBagModel> {
+public class ManOWarEntityRenderer extends MobRenderer<ManOWarEntity, ManOWarRenderState, GarbageBagModel> {
 
-	protected static final Identifier TEXTURE = Abysm.id("textures/entity/man_o_war.png");
+	protected static final ResourceLocation TEXTURE = Abysm.id("textures/entity/man_o_war.png");
 
-	public ManOWarEntityRenderer(EntityRendererFactory.Context ctx) {
-		this(ctx, new GarbageBagModel(ctx.getPart(AbysmEntityLayers.MAN_O_WAR)), 0.4f);
+	public ManOWarEntityRenderer(EntityRendererProvider.Context ctx) {
+		this(ctx, new GarbageBagModel(ctx.bakeLayer(AbysmEntityLayers.MAN_O_WAR)), 0.4f);
 	}
 
-	protected ManOWarEntityRenderer(EntityRendererFactory.Context ctx, GarbageBagModel model, float shadowRadius) {
+	protected ManOWarEntityRenderer(EntityRendererProvider.Context ctx, GarbageBagModel model, float shadowRadius) {
 		super(ctx, model, shadowRadius);
 
-		this.addFeature(new ManOWarTentaclesFeatureRenderer(this));
+		this.addLayer(new ManOWarTentaclesFeatureRenderer(this));
 	}
 
+
 	@Override
-	public Identifier getTexture(ManOWarRenderState state) {
+	public ResourceLocation getTextureLocation(ManOWarRenderState state) {
 		return TEXTURE;
 	}
 
@@ -39,12 +40,12 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 	}
 
 	@Override
-	public void updateRenderState(ManOWarEntity manOWar, ManOWarRenderState state, float tickProgress) {
-		super.updateRenderState(manOWar, state, tickProgress);
-		state.velocity = manOWar.getPrevVelocity().lerp(manOWar.getVelocity(), tickProgress);
+	public void extractRenderState(ManOWarEntity manOWar, ManOWarRenderState state, float tickProgress) {
+		super.extractRenderState(manOWar, state, tickProgress);
+		state.velocity = manOWar.getPrevVelocity().lerp(manOWar.getDeltaMovement(), tickProgress);
 		state.tentacleData = manOWar.tentacleData;
 		state.tentacleBox = manOWar.getTentacleBox();
-		state.centerBoxPos = manOWar.getBoundingBox().getHorizontalCenter();
+		state.centerBoxPos = manOWar.getBoundingBox().getBottomCenter();
 	}
 
 	@Override
@@ -53,12 +54,12 @@ public class ManOWarEntityRenderer extends MobEntityRenderer<ManOWarEntity, ManO
 	}
 
 	@Override
-	protected void appendHitboxes(ManOWarEntity entity, ImmutableList.Builder<EntityHitbox> builder, float f) {
-		super.appendHitboxes(entity, builder, f);
+	protected void extractAdditionalHitboxes(ManOWarEntity entity, ImmutableList.Builder<HitboxRenderState> builder, float f) {
+		super.extractAdditionalHitboxes(entity, builder, f);
 
-		Box tentacleBox = entity.getTentacleBox();
+		AABB tentacleBox = entity.getTentacleBox();
 
-		builder.add(new EntityHitbox(
+		builder.add(new HitboxRenderState(
 			tentacleBox.minX - entity.getX(), tentacleBox.minY - entity.getY(), tentacleBox.minZ - entity.getZ(),
 			tentacleBox.maxX - entity.getX(), tentacleBox.maxY - entity.getY(), tentacleBox.maxZ - entity.getZ(),
 			0, 1, 0

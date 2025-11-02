@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.client.render;
 
-import net.minecraft.client.render.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 public class VertexConsumerOverlay implements VertexConsumer {
 
@@ -17,13 +17,13 @@ public class VertexConsumerOverlay implements VertexConsumer {
 	}
 
 	@Override
-	public VertexConsumer vertex(float x, float y, float z) {
-		return this.parent.vertex(x, y, z);
+	public VertexConsumer addVertex(float x, float y, float z) {
+		return this.parent.addVertex(x, y, z);
 	}
 
 	@Override
-	public VertexConsumer color(int red, int green, int blue, int alpha) {
-		return this.parent.color(
+	public VertexConsumer setColor(int red, int green, int blue, int alpha) {
+		return this.parent.setColor(
 			red * this.multiplyRed / 255,
 			green * this.multiplyGreen / 255,
 			blue * this.multiplyBlue / 255,
@@ -32,22 +32,22 @@ public class VertexConsumerOverlay implements VertexConsumer {
 	}
 
 	@Override
-	public VertexConsumer texture(float u, float v) {
-		return this.parent.texture(u, v);
+	public VertexConsumer setUv(float u, float v) {
+		return this.parent.setUv(u, v);
 	}
 
 	@Override
-	public VertexConsumer overlay(int u, int v) {
-		return this.parent.overlay(u, v);
+	public VertexConsumer setUv1(int u, int v) {
+		return this.parent.setUv1(u, v);
 	}
 
 	@Override
-	public VertexConsumer light(int u, int v) {
-		return this.parent.light(u, v);
+	public VertexConsumer setUv2(int u, int v) {
+		return this.parent.setUv2(u, v);
 	}
 
 	@Override
-	public VertexConsumer normal(float x, float y, float z) {
-		return this.parent.normal(x, y, z);
+	public VertexConsumer setNormal(float x, float y, float z) {
+		return this.parent.setNormal(x, y, z);
 	}
 }

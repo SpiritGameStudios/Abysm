@@ -1,9 +1,9 @@
 package dev.spiritstudios.abysm.registry.tags;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.biome.Biome;
 
 public final class AbysmBiomeTags {
 	public static final TagKey<Biome> DEEP_SEA_RUINS_HAS_STRUCTURE = of("has_structure/deep_sea_ruins");
@@ -12,6 +12,6 @@ public final class AbysmBiomeTags {
 
 
 	private static TagKey<Biome> of(String id) {
-		return TagKey.of(RegistryKeys.BIOME, Abysm.id(id));
+		return TagKey.create(Registries.BIOME, Abysm.id(id));
 	}
 }

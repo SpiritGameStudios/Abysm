@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.worldgen.feature;
 
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 public final class AbysmFeatures {
 	/**

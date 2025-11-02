@@ -5,13 +5,12 @@ import dev.spiritstudios.abysm.item.AbysmItems;
 import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -19,52 +18,52 @@ import java.util.function.BiConsumer;
 
 public class AbysmFishingLootTableProvider extends SimpleFabricLootTableProvider {
 
-	protected final Map<RegistryKey<LootTable>, LootTable.Builder> lootTables;
+	protected final Map<ResourceKey<LootTable>, LootTable.Builder> lootTables;
 
-	public AbysmFishingLootTableProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
-		super(output, registryLookup, LootContextTypes.FISHING);
+	public AbysmFishingLootTableProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
+		super(output, registryLookup, LootContextParamSets.FISHING);
 		this.lootTables = new HashMap<>();
 	}
 
 	public void generate() {
 		addLootTable(
 			AbysmLootTableModifications.FLORAL_REEF_JUNK,
-			LootTable.builder()
-				.pool(
-					LootPool.builder()
-						.with(ItemEntry.builder(AbysmBlocks.ANTENNAE_PLANT).weight(3))
-						.with(ItemEntry.builder(AbysmBlocks.ROSY_BLOOMSHROOM).weight(10))
-						.with(ItemEntry.builder(AbysmBlocks.SUNNY_BLOOMSHROOM).weight(10))
-						.with(ItemEntry.builder(AbysmBlocks.MAUVE_BLOOMSHROOM).weight(10))
-						.with(ItemEntry.builder(AbysmBlocks.ROSEBLOOM_PETALS).weight(15))
-						.with(ItemEntry.builder(AbysmBlocks.SUNBLOOM_PETALS).weight(15))
-						.with(ItemEntry.builder(AbysmBlocks.MALLOWBLOOM_PETALS).weight(15))
+			LootTable.lootTable()
+				.withPool(
+					LootPool.lootPool()
+						.add(LootItem.lootTableItem(AbysmBlocks.ANTENNAE_PLANT).setWeight(3))
+						.add(LootItem.lootTableItem(AbysmBlocks.ROSY_BLOOMSHROOM).setWeight(10))
+						.add(LootItem.lootTableItem(AbysmBlocks.SUNNY_BLOOMSHROOM).setWeight(10))
+						.add(LootItem.lootTableItem(AbysmBlocks.MAUVE_BLOOMSHROOM).setWeight(10))
+						.add(LootItem.lootTableItem(AbysmBlocks.ROSEBLOOM_PETALS).setWeight(15))
+						.add(LootItem.lootTableItem(AbysmBlocks.SUNBLOOM_PETALS).setWeight(15))
+						.add(LootItem.lootTableItem(AbysmBlocks.MALLOWBLOOM_PETALS).setWeight(15))
 				)
 		);
 
 		addLootTable(
 			AbysmLootTableModifications.FLORAL_REEF_FISH,
-			LootTable.builder()
-				.pool(
-					LootPool.builder()
-						.with(ItemEntry.builder(AbysmItems.SMALL_FLORAL_FISH).weight(60))
-						.with(ItemEntry.builder(AbysmItems.BIG_FLORAL_FISH).weight(25))
+			LootTable.lootTable()
+				.withPool(
+					LootPool.lootPool()
+						.add(LootItem.lootTableItem(AbysmItems.SMALL_FLORAL_FISH).setWeight(60))
+						.add(LootItem.lootTableItem(AbysmItems.BIG_FLORAL_FISH).setWeight(25))
 				)
 		);
 	}
 
 	@Override
-	public void accept(BiConsumer<RegistryKey<LootTable>, LootTable.Builder> biConsumer) {
+	public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> biConsumer) {
 		generate();
 
-		for (Map.Entry<RegistryKey<LootTable>, LootTable.Builder> entry : lootTables.entrySet()) {
-			RegistryKey<LootTable> registryKey = entry.getKey();
+		for (Map.Entry<ResourceKey<LootTable>, LootTable.Builder> entry : lootTables.entrySet()) {
+			ResourceKey<LootTable> registryKey = entry.getKey();
 
 			biConsumer.accept(registryKey, entry.getValue());
 		}
 	}
 
-	public void addLootTable(RegistryKey<LootTable> registryKey, LootTable.Builder lootTable) {
+	public void addLootTable(ResourceKey<LootTable> registryKey, LootTable.Builder lootTable) {
 		this.lootTables
 			.put(registryKey, lootTable);
 	}

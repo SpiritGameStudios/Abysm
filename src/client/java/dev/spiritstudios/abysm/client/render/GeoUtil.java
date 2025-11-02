@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.client.render;
 
-import net.minecraft.client.render.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.constant.dataticket.DataTicket;
@@ -28,7 +28,7 @@ public class GeoUtil {
 
 	public static <R extends GeoRenderState> double getAge(R state, double defaultValue) {
 		if (state instanceof EntityRenderState entityRenderState) {
-			return entityRenderState.age;
+			return entityRenderState.ageInTicks;
 		}
 		return getOrDefaultGeoData(state, DataTickets.TICK, defaultValue);
 	}

@@ -2,21 +2,21 @@ package dev.spiritstudios.abysm.worldgen.feature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.intprovider.IntProvider;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.FeatureConfig;
-import net.minecraft.world.gen.feature.util.FeatureContext;
-import net.minecraft.world.gen.stateprovider.BlockStateProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.material.FluidState;
 
 public class HangingLanternFeature extends Feature<HangingLanternFeature.Config> {
 
@@ -25,22 +25,22 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 	}
 
 	@Override
-	public boolean generate(FeatureContext<Config> context) {
-		Config config = context.getConfig();
-		StructureWorldAccess world = context.getWorld();
-		BlockPos pos = context.getOrigin();
-		Random random = context.getRandom();
+	public boolean place(FeaturePlaceContext<Config> context) {
+		Config config = context.config();
+		WorldGenLevel world = context.level();
+		BlockPos pos = context.origin();
+		RandomSource random = context.random();
 
 		// do not place if supporting block cannot actually support
-		if (!stateCanSupportChain(world.getBlockState(pos.up()), world, pos.up())) {
+		if (!stateCanSupportChain(world.getBlockState(pos.above()), world, pos.above())) {
 			return false;
 		}
 
 		// check how far down the lantern can hang
-		int maxLength = config.maxLength.get(random);
+		int maxLength = config.maxLength.sample(random);
 		int length = 0;
 		for (int i = 0; i < maxLength; i++) {
-			BlockPos checkPos = pos.down(i);
+			BlockPos checkPos = pos.below(i);
 			BlockState checkState = world.getBlockState(checkPos);
 			if (canReplaceState(checkState)) {
 				length++;
@@ -50,11 +50,11 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 		}
 
 		int emptySpaceBelowLantern = 0;
-		int requiredSpaceBelowLantern = config.spaceToFloor.get(random);
+		int requiredSpaceBelowLantern = config.spaceToFloor.sample(random);
 		for (int i = 0; i < requiredSpaceBelowLantern; i++) {
-			BlockPos checkPos = pos.down(length + i);
+			BlockPos checkPos = pos.below(length + i);
 			BlockState checkState = world.getBlockState(checkPos);
-			if (!checkState.isSolidBlock(world, checkPos)) {
+			if (!checkState.isRedstoneConductor(world, checkPos)) {
 				emptySpaceBelowLantern++;
 			} else {
 				break;
@@ -69,9 +69,9 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 
 		// place lantern with chain
 		for (int i = 0; i < length; i++) {
-			BlockPos placePos = pos.down(i);
+			BlockPos placePos = pos.below(i);
 			BlockStateProvider provider = (i + 1 == length) ? (config.lanternStateProvider) : (config.chainStateProvider);
-			BlockState placeState = provider.get(context.getRandom(), pos);
+			BlockState placeState = provider.getState(context.random(), pos);
 			placeWithWaterIfPresent(placeState, placePos, world);
 		}
 
@@ -79,27 +79,27 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 	}
 
 	private boolean canReplaceState(BlockState state) {
-		return state.isReplaceable();
+		return state.canBeReplaced();
 	}
 
-	private boolean stateCanSupportChain(BlockState state, BlockView world, BlockPos pos) {
-		return state.isSideSolidFullSquare(world, pos, Direction.DOWN);
+	private boolean stateCanSupportChain(BlockState state, BlockGetter world, BlockPos pos) {
+		return state.isFaceSturdy(world, pos, Direction.DOWN);
 	}
 
-	private void placeWithWaterIfPresent(BlockState state, BlockPos pos, StructureWorldAccess world) {
+	private void placeWithWaterIfPresent(BlockState state, BlockPos pos, WorldGenLevel world) {
 		FluidState fluidState = world.getFluidState(pos);
-		if (fluidState.isIn(FluidTags.WATER)) {
-			state = state.withIfExists(Properties.WATERLOGGED, true);
+		if (fluidState.is(FluidTags.WATER)) {
+			state = state.trySetValue(BlockStateProperties.WATERLOGGED, true);
 		}
-		world.setBlockState(pos, state, Block.NOTIFY_LISTENERS);
+		world.setBlock(pos, state, Block.UPDATE_CLIENTS);
 	}
 
 	public record Config(BlockStateProvider lanternStateProvider, BlockStateProvider chainStateProvider,
-						 IntProvider maxLength, IntProvider spaceToFloor) implements FeatureConfig {
+						 IntProvider maxLength, IntProvider spaceToFloor) implements FeatureConfiguration {
 		public static final Codec<Config> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
-					BlockStateProvider.TYPE_CODEC.fieldOf("lantern_provider").forGetter(Config::lanternStateProvider),
-					BlockStateProvider.TYPE_CODEC.fieldOf("chain_provider").forGetter(Config::chainStateProvider),
+					BlockStateProvider.CODEC.fieldOf("lantern_provider").forGetter(Config::lanternStateProvider),
+					BlockStateProvider.CODEC.fieldOf("chain_provider").forGetter(Config::chainStateProvider),
 					IntProvider.POSITIVE_CODEC.fieldOf("max_length").forGetter(Config::maxLength),
 					IntProvider.POSITIVE_CODEC.fieldOf("space_to_floor").forGetter(Config::spaceToFloor)
 				)

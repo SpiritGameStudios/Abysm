@@ -3,11 +3,11 @@ package dev.spiritstudios.abysm.client.render.entity.renderer;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.entity.floralreef.BloomrayEntity;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.client.texture.MissingSprite;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import software.bernie.geckolib.animatable.processing.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
@@ -19,17 +19,17 @@ import software.bernie.geckolib.renderer.base.GeoRenderState;
 public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRenderState> extends GeoEntityRenderer<BloomrayEntity, R> {
 	public static final DataTicket<BloomrayEntityVariant> VARIANT_TICKET = DataTicket.create("bloomray_variant_ticket", BloomrayEntityVariant.class);
 
-	public BloomrayEntityRenderer(EntityRendererFactory.Context context) {
+	public BloomrayEntityRenderer(EntityRendererProvider.Context context) {
 		super(context, new BloomrayEntityModel());
 		this.withScale(2.0f);
 	}
 
 	@Override
-	public Identifier getTextureLocation(R renderState) {
+	public ResourceLocation getTextureLocation(R renderState) {
 		BloomrayEntityVariant variant = renderState.getGeckolibData(VARIANT_TICKET);
 		if (variant != null && variant.getTexture() != null) return variant.getTexture();
 
-		return MissingSprite.getMissingSpriteId();
+		return MissingTextureAtlasSprite.getLocation();
 	}
 
 	public static class BloomrayEntityModel extends DefaultedEntityGeoModel<BloomrayEntity> {
@@ -69,16 +69,16 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 			GeoBone body = getAnimationProcessor().getBone(BODY);
 			if (body == null) return;
 
-			float theta = renderState.age * 0.33F;
-			float sineTheta = MathHelper.sin(theta);
-			float cosTheta = MathHelper.cos(theta);
+			float theta = renderState.ageInTicks * 0.33F;
+			float sineTheta = Mth.sin(theta);
+			float cosTheta = Mth.cos(theta);
 
 			head.setRotX(-(0.13F * sineTheta) * 1.2F);
 
 			float yaw = animationState.getData(DataTickets.ENTITY_YAW);
 
-			body.setRotX(pitch * MathHelper.RADIANS_PER_DEGREE + 0.05F * sineTheta);
-			body.setRotY(yaw * MathHelper.RADIANS_PER_DEGREE);
+			body.setRotX(pitch * Mth.DEG_TO_RAD + 0.05F * sineTheta);
+			body.setRotY(yaw * Mth.DEG_TO_RAD);
 
 			// animate tail
 			GeoBone tail = getAnimationProcessor().getBone(TAIL);
@@ -122,40 +122,40 @@ public class BloomrayEntityRenderer<R extends LivingEntityRenderState & GeoRende
 
 		private float getTailYaw(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
-			float yawMultiplier = renderState.touchingWater ? 0.15f : 0.35f;
-			return -yawMultiplier * MathHelper.sin(0.2f * renderState.age);
+			float yawMultiplier = renderState.isInWater ? 0.15f : 0.35f;
+			return -yawMultiplier * Mth.sin(0.2f * renderState.ageInTicks);
 		}
 
 		private float getFinRoll(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
-			if (!renderState.touchingWater) return 0f;
-			return 0.25f * MathHelper.sin(0.2f * renderState.age);
+			if (!renderState.isInWater) return 0f;
+			return 0.25f * Mth.sin(0.2f * renderState.ageInTicks);
 		}
 
 		private float getFinPitch(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
-			if (!renderState.touchingWater) return 0f;
-			return 0.05f * MathHelper.sin(0.2f * renderState.age);
+			if (!renderState.isInWater) return 0f;
+			return 0.05f * Mth.sin(0.2f * renderState.ageInTicks);
 		}
 
 		private float getFinYaw(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
-			if (!renderState.touchingWater) return 0f;
-			return 0.05f * MathHelper.sin(0.2f * renderState.age);
+			if (!renderState.isInWater) return 0f;
+			return 0.05f * Mth.sin(0.2f * renderState.ageInTicks);
 		}
 
 		private float getAntennaPitch(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
-			if (!renderState.touchingWater) return 0f;
-			if (renderState.age % 1000 <= 20) return 0.5f + 0.5f * MathHelper.sin(0.5f * renderState.age);
-			return 0.5f + 0.07f * MathHelper.sin(0.3f * renderState.age);
+			if (!renderState.isInWater) return 0f;
+			if (renderState.ageInTicks % 1000 <= 20) return 0.5f + 0.5f * Mth.sin(0.5f * renderState.ageInTicks);
+			return 0.5f + 0.07f * Mth.sin(0.3f * renderState.ageInTicks);
 		}
 
 		private float getCrownSpikeYaw(AnimationState<BloomrayEntity> animationState) {
 			LivingEntityRenderState renderState = (LivingEntityRenderState) animationState.renderState();
-			if (!renderState.touchingWater) return 0f;
-			if ((renderState.age + 200) % 1000 <= 20) return 0.35f + 0.15f * MathHelper.sin(renderState.age);
-			return 0.35f + 0.1f * MathHelper.sin(0.2f * renderState.age);
+			if (!renderState.isInWater) return 0f;
+			if ((renderState.ageInTicks + 200) % 1000 <= 20) return 0.35f + 0.15f * Mth.sin(renderState.ageInTicks);
+			return 0.35f + 0.1f * Mth.sin(0.2f * renderState.ageInTicks);
 		}
 	}
 }

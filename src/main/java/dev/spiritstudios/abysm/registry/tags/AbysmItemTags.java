@@ -1,9 +1,9 @@
 package dev.spiritstudios.abysm.registry.tags;
 
 import dev.spiritstudios.abysm.Abysm;
-import net.minecraft.item.Item;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 
 public final class AbysmItemTags {
 	public static final TagKey<Item> BLOOMED_FLOROPUMICE = of("bloomed_floropumice");
@@ -27,6 +27,6 @@ public final class AbysmItemTags {
 	public static final TagKey<Item> DIVING_SUIT_BOOTS = of("diving_suit/boots");
 
 	private static TagKey<Item> of(String id) {
-		return TagKey.of(RegistryKeys.ITEM, Abysm.id(id));
+		return TagKey.create(Registries.ITEM, Abysm.id(id));
 	}
 }
