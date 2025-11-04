@@ -194,7 +194,7 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 			.add(Attributes.MAX_HEALTH, 2000)
 			.add(Attributes.ATTACK_DAMAGE, 8)
 			.add(Attributes.SCALE, 2.25)
-			.add(Attributes.MOVEMENT_SPEED, 1.25);
+			.add(Attributes.MOVEMENT_SPEED, 1.1);
 	}
 
 	@Override
@@ -225,6 +225,16 @@ public class SkeletonSharkEntity extends GeoChainLeviathan implements Ecological
 
 	@Override
 	public int getHeadRotSpeed() {
-		return 2;
+		return 10;
+	}
+
+	@Override
+	public int getMaxHeadXRot() {
+		return 1;
+	}
+
+	@Override
+	public int getMaxHeadYRot() {
+		return 1;
 	}
 }
