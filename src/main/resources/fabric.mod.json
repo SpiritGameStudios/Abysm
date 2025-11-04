@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "abysm",
-	"version": "${mod_version}",
+	"version": "${version}",
 	"name": "Abysm",
 	"description": "Something stirs in the depths. Its call demands an answer.",
 	"authors": [
