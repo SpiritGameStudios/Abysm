@@ -25,6 +25,7 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 	private final SoundTypeBuilder.EntryBuilder shuniji = ofVanillaFile("music/game/water/shuniji").stream(true).volume(0.4F).weight(1);
 	// GENERAL UNDERWATER
 	private final SoundTypeBuilder.EntryBuilder tilapia = ofFile("music/game/tilapia").stream(true).volume(0.4F);
+	private final SoundTypeBuilder.EntryBuilder wake = ofFile("music/game/wake").stream(true).volume(0.4F).weight(2);
 
 	@Override
 	protected void configure(RegistryWrapper.WrapperLookup wrapperLookup, SoundExporter exporter) {
@@ -51,10 +52,10 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 		exporter.add(
 			AbysmSoundEvents.MUSIC_OVERWORLD_PEARLESCENT_SEA,
 			SoundTypeBuilder.of()
-				.sound(ofFile("music/game/wake").stream(true).volume(0.4F).weight(2)) // Original biome-exclusive song
 				.sound(axolotl)
 				.sound(shuniji)
 				.sound(tilapia)
+				.sound(wake)
 				.category(SoundCategory.MUSIC)
 		);
 
@@ -81,7 +82,16 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 				.sound(axolotl)
 				.sound(shuniji)
 				.sound(tilapia)
+				.sound(wake)
 				.category(SoundCategory.MUSIC)
+		);
+
+		exporter.add(
+			AbysmSoundEvents.MUSIC_OVERWORLD_BRINE,
+			SoundTypeBuilder.of()
+				.sound(wake)
+				.sound(shuniji)
+				.sound(tilapia)
 		);
 
 		exporter.add(

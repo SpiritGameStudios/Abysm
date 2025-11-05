@@ -594,6 +594,27 @@
     ],
     "subtitle": "subtitles.abysm.item.oozeball.apply"
   },
+  "music.overworld.brine": {
+    "category": "neutral",
+    "sounds": [
+      {
+        "stream": true,
+        "volume": 0.4,
+        "weight": 2,
+        "name": "abysm:music/game/wake"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "minecraft:music/game/water/shuniji"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/tilapia"
+      }
+    ]
+  },
   "music.overworld.deep_sea_ruins": {
     "category": "music",
     "sounds": [
@@ -663,6 +684,12 @@
         "stream": true,
         "volume": 0.4,
         "name": "abysm:music/game/tilapia"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "weight": 2,
+        "name": "abysm:music/game/wake"
       }
     ]
   },
@@ -698,12 +725,6 @@
       {
         "stream": true,
         "volume": 0.4,
-        "weight": 2,
-        "name": "abysm:music/game/wake"
-      },
-      {
-        "stream": true,
-        "volume": 0.4,
         "name": "minecraft:music/game/water/axolotl"
       },
       {
@@ -715,6 +736,12 @@
         "stream": true,
         "volume": 0.4,
         "name": "abysm:music/game/tilapia"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "weight": 2,
+        "name": "abysm:music/game/wake"
       }
     ]
   },
