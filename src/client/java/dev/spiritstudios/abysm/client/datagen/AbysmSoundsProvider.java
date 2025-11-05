@@ -40,7 +40,8 @@ public class AbysmSoundsProvider extends FabricSoundsProvider {
 		exporter.add(
 			AbysmSoundEvents.MUSIC_OVERWORLD_DEEP_SEA_RUINS,
 			SoundTypeBuilder.of()
-				.sound(ofFile("music/game/colossal_codecs").stream(true).volume(0.4F).weight(2)) // Original biome-exclusive song
+				.sound(ofFile("music/game/colossal_codecs").stream(true).volume(0.4F).weight(3)) // Original biome-exclusive song
+				.sound(ofFile("music/game/polymetallic_nodules").stream(true).volume(0.4F))
 				.sound(dragonFish)
 				.sound(shuniji)
 				.sound(tilapia)

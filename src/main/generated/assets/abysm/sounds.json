@@ -600,8 +600,13 @@
       {
         "stream": true,
         "volume": 0.4,
-        "weight": 2,
+        "weight": 3,
         "name": "abysm:music/game/colossal_codecs"
+      },
+      {
+        "stream": true,
+        "volume": 0.4,
+        "name": "abysm:music/game/polymetallic_nodules"
       },
       {
         "stream": true,
