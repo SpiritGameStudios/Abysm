@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.pressure;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import dev.spiritstudios.abysm.entity.depths.MysteriousBlobEntity;
+import dev.spiritstudios.abysm.world.entity.depths.MysteriousBlobEntity;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;

@@ -1,13 +1,11 @@
 package dev.spiritstudios.abysm.client.sound;
 
+import com.mojang.blaze3d.audio.Channel;
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.AbysmConfig;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 
 import static org.lwjgl.openal.AL10.*;
 import static org.lwjgl.openal.ALC10.*;
-
-import com.mojang.blaze3d.audio.Channel;
 
 public class AbysmAL {
 	private static boolean enabled = false;
@@ -29,7 +27,7 @@ public class AbysmAL {
 	public static void init() {
 		cleanup();
 
-		if (!AbysmConfig.INSTANCE.underwaterSoundFilters.get()) return;
+//		if (!AbysmConfig.INSTANCE.underwaterSoundFilters.get()) return;
 
 		long contextHandle = alcGetCurrentContext();
 		long deviceHandle = alcGetContextsDevice(contextHandle);

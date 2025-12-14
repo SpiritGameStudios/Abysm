@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.blue;
 
 import dev.spiritstudios.abysm.duck.LivingEntityDuck;
-import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
+import dev.spiritstudios.abysm.network.EntityUpdateBlueS2CPayload;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerPlayer;

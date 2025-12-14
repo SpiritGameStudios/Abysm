@@ -1,15 +1,16 @@
 package dev.spiritstudios.abysm.client.mixin.render;
 
-import dev.spiritstudios.specter.api.core.math.Easing;
+import dev.spiritstudios.spectre.api.core.math.Easing;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SuspendedParticle;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(SuspendedParticle.class)
-public abstract class SuspendedParticleMixin extends TextureSheetParticle {
-	protected SuspendedParticleMixin(ClientLevel clientWorld, double x, double y, double z) {
-		super(clientWorld, x, y, z);
+public abstract class SuspendedParticleMixin extends SingleQuadParticle {
+	protected SuspendedParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+		super(level, x, y, z, sprite);
 	}
 
 	@Override

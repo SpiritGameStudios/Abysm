@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.worldgen;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;

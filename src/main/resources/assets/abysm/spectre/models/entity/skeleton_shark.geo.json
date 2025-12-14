@@ -1,0 +1,78 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.skeleton_shark",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 7,
+				"visible_bounds_height": 3,
+				"visible_bounds_offset": [0, 0.5, 0]
+			},
+			"bones": [
+				{
+					"name": "head",
+					"pivot": [0, 2.5, -21.33333],
+					"cubes": [
+						{"origin": [-3.5, 0, -31], "size": [7, 4, 13], "uv": [-11, -11]},
+						{"origin": [-3.5, 4, -25], "size": [7, 3, 7], "uv": [-5, -5]}
+					]
+				},
+				{
+					"name": "jaw",
+					"parent": "head",
+					"pivot": [0, 0, -18],
+					"cubes": [
+						{"origin": [-3.5, -4, -30], "size": [7, 4, 12], "uv": [-10, -10]}
+					]
+				},
+				{
+					"name": "tail",
+					"pivot": [0, 2, 28.66667],
+					"cubes": [
+						{"origin": [-2, 1, 20], "size": [4, 2, 12], "uv": [-11, -10]},
+						{"origin": [0, -4, 24], "size": [0, 12, 8], "uv": [-5, -6]}
+					]
+				},
+				{
+					"name": "tailfin",
+					"parent": "tail",
+					"pivot": [0, 2, 32],
+					"cubes": [
+						{"origin": [0, 4, 35], "size": [0, 12, 8], "pivot": [0, 8, 38], "rotation": [-67.5, 0, 0], "uv": [-5, -6]},
+						{"origin": [0, -5, 38], "size": [0, 12, 6], "pivot": [0, -1, 39], "rotation": [-112.5, 0, 0], "uv": [-3, -4]}
+					]
+				},
+				{
+					"name": "body",
+					"pivot": [0, 1.98491, -0.16667],
+					"cubes": [
+						{"origin": [0, 1, -6], "size": [0, 11, 18], "uv": [-15, -16]},
+						{"origin": [-2, 1, -14], "size": [4, 2, 30], "uv": [-29, -28]},
+						{"origin": [2, 3, -14], "size": [9, 0, 19], "pivot": [2, 3, 0], "rotation": [0, 0, 57.5], "uv": [-18, -17]},
+						{"origin": [-2, 3, -14], "size": [9, 0, 19], "pivot": [-2, 3, 0], "rotation": [0, 0, 122.5], "uv": [-18, -17]}
+					]
+				},
+				{
+					"name": "RFin",
+					"parent": "body",
+					"pivot": [2, 2.5, 2],
+					"rotation": [0, 0, 35],
+					"cubes": [
+						{"origin": [10, 2.5, -6], "size": [7, 0, 14], "uv": [-12, -12]}
+					]
+				},
+				{
+					"name": "LFin",
+					"parent": "body",
+					"pivot": [-2, 2.5, 2],
+					"rotation": [0, 0, -35],
+					"cubes": [
+						{"origin": [-17, 2.5, -6], "size": [7, 0, 14], "uv": [-12, -12], "mirror": true}
+					]
+				}
+			]
+		}
+	]
+}

@@ -9,6 +9,7 @@ in vec3 Position;
 in vec4 Color;
 in vec3 Normal;
 in ivec2 UV2;
+in float LineWidth;
 
 uniform sampler2D Sampler2;
 

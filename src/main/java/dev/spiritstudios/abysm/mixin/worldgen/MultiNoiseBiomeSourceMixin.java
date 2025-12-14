@@ -4,8 +4,8 @@ import com.google.common.collect.Streams;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.terraformersmc.biolith.impl.biome.BiomeCoordinator;
 import com.terraformersmc.biolith.impl.compat.BiolithCompat;
-import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
-import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
+import dev.spiritstudios.abysm.core.registries.tags.AbysmBiomeTags;
+import dev.spiritstudios.abysm.world.level.levelgen.biome.AbysmBiomes;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
@@ -52,7 +52,7 @@ public abstract class MultiNoiseBiomeSourceMixin {
 					// check if the biome source contains any biomes that can spawn the deep sea ruins, and if so add it to the list
 					boolean canSpawnDeepSeaRuins = streamedBiomes.stream().anyMatch(biome -> biome.is(AbysmBiomeTags.DEEP_SEA_RUINS_HAS_STRUCTURE));
 					if (canSpawnDeepSeaRuins) {
-						biomeLookup.get(AbysmBiomes.DEEP_SEA_RUINS.location()).ifPresent(bonusBiomes::add);
+						biomeLookup.get(AbysmBiomes.DEEP_SEA_RUINS.identifier()).ifPresent(bonusBiomes::add);
 					}
 
 					// store bonus biomes

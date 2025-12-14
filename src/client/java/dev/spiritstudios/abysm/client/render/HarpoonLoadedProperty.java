@@ -1,13 +1,13 @@
 package dev.spiritstudios.abysm.client.render;
 
 import com.mojang.serialization.MapCodec;
-import dev.spiritstudios.abysm.component.HarpoonComponent;
+import dev.spiritstudios.abysm.core.component.HarpoonComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperty;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
+import dev.spiritstudios.abysm.core.component.AbysmDataComponents;
 import org.jetbrains.annotations.Nullable;
 
 public record HarpoonLoadedProperty() implements ConditionalItemModelProperty {
@@ -15,7 +15,7 @@ public record HarpoonLoadedProperty() implements ConditionalItemModelProperty {
 
 	@Override
 	public boolean get(ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity, int seed, ItemDisplayContext displayContext) {
-		HarpoonComponent component = stack.get(AbysmDataComponentTypes.HARPOON);
+		HarpoonComponent component = stack.get(AbysmDataComponents.HARPOON);
 		return component != null && component.loaded();
 	}
 

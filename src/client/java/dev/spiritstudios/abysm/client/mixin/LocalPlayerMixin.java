@@ -1,10 +1,10 @@
 package dev.spiritstudios.abysm.client.mixin;
 
 import com.mojang.authlib.GameProfile;
-import dev.spiritstudios.abysm.block.entity.DensityBlobBlockEntity;
+import dev.spiritstudios.abysm.world.level.block.entity.DensityBlobBlockEntity;
 import dev.spiritstudios.abysm.client.gui.screen.ingame.DensityBlobBlockScreen;
 import dev.spiritstudios.abysm.duck.DensityPlayerEntityDuck;
-import dev.spiritstudios.abysm.entity.effect.BlueEffect;
+import dev.spiritstudios.abysm.world.entity.effect.BlueEffect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;

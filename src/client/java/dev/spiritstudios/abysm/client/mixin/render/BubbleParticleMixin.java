@@ -2,7 +2,8 @@ package dev.spiritstudios.abysm.client.mixin.render;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.BubbleParticle;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BubbleParticle.class)
-public abstract class BubbleParticleMixin extends TextureSheetParticle {
-	protected BubbleParticleMixin(ClientLevel clientWorld, double d, double e, double f) {
-		super(clientWorld, d, e, f);
+public abstract class BubbleParticleMixin extends SingleQuadParticle {
+	protected BubbleParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+		super(level, x, y, z, sprite);
 	}
 
 	@Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/BubbleParticle;remove()V"))

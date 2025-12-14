@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.mixin.blue;
 
-import dev.spiritstudios.abysm.entity.effect.BlueEffect;
+import dev.spiritstudios.abysm.world.entity.effect.BlueEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.manowar;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
+import dev.spiritstudios.abysm.world.entity.floralreef.ManOWarEntity;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

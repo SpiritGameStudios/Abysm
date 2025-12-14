@@ -1,14 +1,14 @@
 package dev.spiritstudios.abysm.client.gui.screen.ingame;
 
-import dev.spiritstudios.abysm.block.entity.DensityBlobBlockEntity;
-import dev.spiritstudios.abysm.networking.UpdateDensityBlobBlockC2SPayload;
+import dev.spiritstudios.abysm.network.UpdateDensityBlobBlockC2SPayload;
+import dev.spiritstudios.abysm.world.level.block.entity.DensityBlobBlockEntity;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.GameNarrator;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
@@ -89,20 +89,21 @@ public class DensityBlobBlockScreen extends Screen {
 		this.doneButton.active = active;
 	}
 
+
 	@Override
-	public void resize(Minecraft client, int width, int height) {
+	public void resize(int width, int height) {
 		String finalState = this.finalStateField.getValue();
 		String blobSamplerIdentifier = this.blobSamplerIdentifierField.getValue();
-		this.init(client, width, height);
+		this.init(width, height);
 		this.finalStateField.setValue(finalState);
 		this.blobSamplerIdentifierField.setValue(blobSamplerIdentifier);
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (super.keyPressed(keyCode, scanCode, modifiers)) {
+	public boolean keyPressed(KeyEvent event) {
+		if (super.keyPressed(event)) {
 			return true;
-		} else if (!this.doneButton.active || keyCode != GLFW.GLFW_KEY_ENTER && keyCode != GLFW.GLFW_KEY_KP_ENTER) {
+		} else if (!this.doneButton.active || event.key() != GLFW.GLFW_KEY_ENTER && event.key() != GLFW.GLFW_KEY_KP_ENTER) {
 			return false;
 		} else {
 			this.onDone();
@@ -114,10 +115,10 @@ public class DensityBlobBlockScreen extends Screen {
 	public void render(GuiGraphics context, int mouseX, int mouseY, float deltaTicks) {
 		super.render(context, mouseX, mouseY, deltaTicks);
 
-		context.drawString(this.font, FINAL_STATE_TEXT, this.width / 2 - 153, 115, 10526880);
+		context.drawString(this.font, FINAL_STATE_TEXT, this.width / 2 - 153, 115, 0xa0a0a0);
 		this.finalStateField.render(context, mouseX, mouseY, deltaTicks);
 
-		context.drawString(this.font, BLOB_SAMPLER_IDENTIFIER_TEXT, this.width / 2 - 153, 150, 10526880);
+		context.drawString(this.font, BLOB_SAMPLER_IDENTIFIER_TEXT, this.width / 2 - 153, 150, 0xa0a0a0);
 		this.blobSamplerIdentifierField.render(context, mouseX, mouseY, deltaTicks);
 	}
 }

@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.mixin.harpoon;
 
-import dev.spiritstudios.abysm.entity.harpoon.HarpoonDrag;
+import dev.spiritstudios.abysm.world.entity.harpoon.HarpoonDrag;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;

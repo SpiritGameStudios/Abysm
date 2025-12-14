@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.datagen;
 
-import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.world.item.AbysmItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricEntityLootTableProvider;
 import net.minecraft.core.HolderLookup;

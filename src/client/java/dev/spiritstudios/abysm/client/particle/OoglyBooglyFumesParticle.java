@@ -1,28 +1,30 @@
 package dev.spiritstudios.abysm.client.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.spiritstudios.abysm.particle.OoglyBooglyFumesParticleEffect;
+import dev.spiritstudios.abysm.core.particles.OoglyBooglyFumesParticleEffect;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SimpleAnimatedParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 
-public class OoglyBooglyFumesParticle extends TextureSheetParticle {
+public class OoglyBooglyFumesParticle extends SimpleAnimatedParticle {
 	private final SpriteSet provider;
 	private final boolean deadly;
 	private final Quaternionf rotationStorage = new Quaternionf();
 
-	protected OoglyBooglyFumesParticle(ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ, OoglyBooglyFumesParticleEffect params, SpriteSet provider) {
-		super(clientWorld, x, y, z, velX, velY, velZ);
-		this.provider = provider;
+	protected OoglyBooglyFumesParticle(ClientLevel clientWorld, double x, double y, double z, OoglyBooglyFumesParticleEffect params, SpriteSet sprites) {
+		super(clientWorld, x, y, z, sprites, 0.0F);
+		this.provider = sprites;
 		this.deadly = params.deadly();
 		this.xd = 0;
 		this.yd = 0.015f;
@@ -63,12 +65,12 @@ public class OoglyBooglyFumesParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public void render(VertexConsumer vertexConsumer, Camera camera, float tickProgress) {
-		rotationStorage.rotationYXZ(Mth.lerp(tickProgress, this.oRoll, this.roll), -Mth.PI / 4, 0f);
-		this.renderRotatedQuad(vertexConsumer, camera, rotationStorage, tickProgress);
+	public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTick) {
+		rotationStorage.rotationYXZ(Mth.lerp(partialTick, this.oRoll, this.roll), -Mth.PI / 4, 0f);
+		this.extractRotatedQuad(reusedState, camera, rotationStorage, partialTick);
 
 		rotationStorage.rotateY(Mth.PI);
-		this.renderRotatedQuad(vertexConsumer, camera, rotationStorage, tickProgress);
+		this.extractRotatedQuad(reusedState, camera, rotationStorage, partialTick);
 	}
 
 	@Override
@@ -80,8 +82,8 @@ public class OoglyBooglyFumesParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+	public @NotNull Layer getLayer() {
+		return Layer.TRANSLUCENT;
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -92,8 +94,9 @@ public class OoglyBooglyFumesParticle extends TextureSheetParticle {
 			this.spriteProvider = spriteProvider;
 		}
 
-		public Particle createParticle(OoglyBooglyFumesParticleEffect params, ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ) {
-			return new OoglyBooglyFumesParticle(clientWorld, x, y, z, velX, velY, velZ, params, spriteProvider);
+		@Override
+		public @Nullable Particle createParticle(OoglyBooglyFumesParticleEffect particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+			return new OoglyBooglyFumesParticle(level, x, y, z, particleType, spriteProvider);
 		}
 	}
 }

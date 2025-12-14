@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.mixin.block;
 
-import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
+import dev.spiritstudios.abysm.core.registries.tags.AbysmBlockTags;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;

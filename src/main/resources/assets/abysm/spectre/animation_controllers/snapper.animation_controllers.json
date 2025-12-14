@@ -1,0 +1,16 @@
+{
+	"format_version": "1.19.0",
+	"animation_controllers": {
+		"controller.animation.snapper.movement": {
+			"initial_state": "swimming",
+			"states": {
+				"swimming": {
+					"animations": ["swim"],
+					"transitions": [
+					],
+					"blend_transition": 0.25
+				}
+			}
+		}
+	}
+}

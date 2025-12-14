@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.client.datagen;
 
-import dev.spiritstudios.abysm.item.AbysmEquipmentAssetKeys;
+import dev.spiritstudios.abysm.world.item.AbysmEquipmentAssetKeys;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.resources.model.EquipmentClientInfo;
 import net.minecraft.data.CachedOutput;
@@ -36,7 +36,7 @@ public final class AbysmEquipmentAssetProvider implements DataProvider {
 			final BiConsumer<ResourceKey<EquipmentAsset>, EquipmentClientInfo> consumer,
 			final ResourceKey<EquipmentAsset> asset
 	) {
-		final var model = EquipmentClientInfo.builder().addHumanoidLayers(asset.location()).build();
+		final var model = EquipmentClientInfo.builder().addHumanoidLayers(asset.identifier()).build();
 
 		consumer.accept(asset, model);
 	}

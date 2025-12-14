@@ -7,7 +7,7 @@ import dev.spiritstudios.abysm.client.particle.OoglyBooglyFumesParticle;
 import dev.spiritstudios.abysm.client.particle.OoglyBooglySparkleParticle;
 import dev.spiritstudios.abysm.client.particle.PoggdrygllSporesParticle;
 import dev.spiritstudios.abysm.client.particle.SpiralingParticle;
-import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
+import dev.spiritstudios.abysm.core.particles.AbysmParticleTypes;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;

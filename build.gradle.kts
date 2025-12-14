@@ -1,24 +1,21 @@
 plugins {
 	java
+
 	alias(libs.plugins.fabric.loom)
-	alias(libs.plugins.minotaur)
+	alias(libs.plugins.modpublish)
 }
 
-val modId: String by project
-val modVersion: String by project
+val modVersion = "1.0.0"
+val modId = "abysm"
+val modName = "Abysm"
 
-version = "$modVersion+${libs.versions.minecraft.get()}"
+val modrinthProject = "abysm"
+val githubRepository = "SpiritGameStudios/Abysm"
+
+group = "dev.spiritstudios"
 base.archivesName = modId
 
-loom {
-	splitEnvironmentSourceSets()
-}
-
-fabricApi {
-	configureDataGeneration {
-		client = true
-	}
-}
+version = "$modVersion+${libs.versions.minecraft.get()}"
 
 repositories {
 	mavenCentral()
@@ -34,6 +31,17 @@ repositories {
 	}
 
 	maven {
+		name = "Spirit Studios Snapshots"
+		url = uri("https://maven.spiritstudios.dev/snapshots/")
+
+		content {
+			@Suppress("UnstableApiUsage")
+			includeGroupAndSubgroups("dev.spiritstudios")
+		}
+	}
+
+
+	maven {
 		name = "ParchmentMC"
 		url = uri("https://maven.parchmentmc.org")
 
@@ -43,16 +51,35 @@ repositories {
 		}
 	}
 
-	maven("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
+	maven {
+		name = "Cloudsmith (Geckolib)"
+		url = uri("https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/")
+
+		content {
+			@Suppress("UnstableApiUsage")
+			includeGroupAndSubgroups("software.bernie.geckolib")
+		}
+	}
+
 	maven("https://maven.terraformersmc.com/")
 	maven("https://jitpack.io/")
 	maven("https://api.modrinth.com/maven/")
 }
 
+loom {
+	splitEnvironmentSourceSets()
+}
+
+fabricApi {
+	configureDataGeneration {
+		client = true
+	}
+}
+
 dependencies {
 	minecraft(libs.minecraft)
-	@Suppress("UnstableApiUsage")
 	mappings(
+		@Suppress("UnstableApiUsage")
 		loom.layered {
 			officialMojangMappings()
 			parchment(libs.parchment)
@@ -60,25 +87,21 @@ dependencies {
 	)
 
 	modImplementation(libs.fabric.loader)
-
-	include(libs.bundles.specter)
-	modImplementation(libs.bundles.specter)
-	modRuntimeOnly(libs.specter.debug)
-
-	modImplementation(libs.geckolib)
-
-	include(libs.biolith)
-	modImplementation(libs.biolith)
-
-	modRuntimeOnly(libs.sodium)
-	modRuntimeOnly(libs.modmenu)
-
 	modImplementation(libs.fabric.api)
+
+	modImplementation(libs.spectre)
+	include(libs.spectre)
+
+	modImplementation(libs.biolith)
+	include(libs.biolith)
+
+	modRuntimeOnly(libs.modmenu)
 }
 
 tasks.processResources {
 	val map = mapOf(
-		"version" to modVersion
+		"version" to modVersion,
+		"loader_version" to libs.versions.fabric.loader.get()
 	)
 
 	inputs.properties(map)
@@ -99,21 +122,25 @@ tasks.withType<JavaCompile> {
 }
 
 tasks.jar {
-	from("LICENSE") { rename { "${it}_${base.archivesName.get()}" } }
+	from("LICENSE") { rename { "${it}_$modId" } }
 }
 
-modrinth {
-	token.set(System.getenv("MODRINTH_TOKEN"))
-	projectId.set("abysm")
-	versionNumber.set("$modVersion+${libs.versions.minecraft.get()}")
-	uploadFile.set(tasks.remapJar)
-	versionType = "alpha"
-	gameVersions.addAll(libs.versions.minecraft.get())
-	loaders.addAll("fabric", "quilt")
-	syncBodyFrom.set(rootProject.file("README.md").readText())
-	dependencies {
-		required.version("fabric-api", libs.versions.fabric.api.get())
-		required.version("geckolib", libs.versions.geckolib.get())
-		required.version("biolith", libs.versions.biolith.get())
+publishMods {
+	file = tasks.remapJar.get().archiveFile
+	modLoaders.add("fabric")
+
+	version = modVersion
+	type = ALPHA
+	displayName = "$modName $modVersion for Minecraft ${libs.versions.minecraft.get()}"
+
+	modrinth {
+		accessToken = providers.gradleProperty("secrets.modrinth_token")
+		projectId = modrinthProject
+		minecraftVersions.add(libs.versions.minecraft.get())
+
+		projectDescription = providers.fileContents(layout.projectDirectory.file("README.md")).asText
+
+		requires("fabric-api")
+		requires("biolith")
 	}
 }

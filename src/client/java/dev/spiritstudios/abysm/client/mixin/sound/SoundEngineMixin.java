@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.audio.Channel;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
-import dev.spiritstudios.abysm.registry.tags.AbysmSoundEventTags;
+import dev.spiritstudios.abysm.core.registries.tags.AbysmSoundEventTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -32,7 +32,7 @@ public abstract class SoundEngineMixin {
 			instance.getSource() == SoundSource.MUSIC ||
 			instance.getSource() == SoundSource.AMBIENT ||
 			instance.getSource() == SoundSource.UI ||
-			BuiltInRegistries.SOUND_EVENT.get(instance.getLocation())
+			BuiltInRegistries.SOUND_EVENT.get(instance.getIdentifier())
 				.map(entry -> entry.is(AbysmSoundEventTags.UNEFFECTED_BY_WATER))
 				.orElse(false)) {
 			original.call(sourceManager, action);

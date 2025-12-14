@@ -1,47 +1,43 @@
 package dev.spiritstudios.abysm.client;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.AbysmConfig;
-import dev.spiritstudios.abysm.block.AbysmBlocks;
-import dev.spiritstudios.abysm.block.OozetrickleLanternBlock;
 import dev.spiritstudios.abysm.client.registry.AbysmParticles;
 import dev.spiritstudios.abysm.client.render.AbysmDebugRenderers;
 import dev.spiritstudios.abysm.client.render.AbysmRenderPipelines;
 import dev.spiritstudios.abysm.client.render.HarpoonLoadedProperty;
 import dev.spiritstudios.abysm.client.render.entity.AbysmEntityLayers;
-import dev.spiritstudios.abysm.client.render.entity.renderer.BigFloralFishEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.BloomrayEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.ElectricOoglyBooglyRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.FlippersRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.FliprayEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.GupGupEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.HarpoonEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.LehydrathanEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.ManOWarEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.MysteriousBlobEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.SimpleFishRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.SkeletonSharkEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.SmallFloralFishEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.SnapperEntityRenderer;
-import dev.spiritstudios.abysm.client.render.entity.renderer.lectorfin.LectorfinEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
+import dev.spiritstudios.abysm.client.render.entity.EmptyEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.FishEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.FlippersRenderer;
+import dev.spiritstudios.abysm.client.render.entity.FliprayEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.FloralFishRenderer;
+import dev.spiritstudios.abysm.client.render.entity.GupGupEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.HarpoonEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.ManOWarEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.MysteriousBlobEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.SnapperEntityRenderer;
+import dev.spiritstudios.abysm.client.render.entity.lectorfin.LectorfinEntityRenderer;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
 import dev.spiritstudios.abysm.duck.LivingEntityDuck;
-import dev.spiritstudios.abysm.ecosystem.entity.EcologicalEntity;
-import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.item.AbysmItems;
-import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
-import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
-import dev.spiritstudios.abysm.networking.NowHuntingS2CPayload;
-import dev.spiritstudios.specter.api.config.client.ModMenuHelper;
+import dev.spiritstudios.abysm.network.EntityUpdateBlueS2CPayload;
+import dev.spiritstudios.abysm.network.HappyEntityParticlesS2CPayload;
+import dev.spiritstudios.abysm.network.NowHuntingS2CPayload;
+import dev.spiritstudios.abysm.world.ecosystem.entity.EcologicalEntity;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.world.item.AbysmItems;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
+import dev.spiritstudios.abysm.world.level.block.OozetrickleLanternBlock;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.tags.FluidTags;
@@ -55,23 +51,23 @@ public class AbysmClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ConditionalItemModelProperties.ID_MAPPER.put(Abysm.id("harpoon_loaded"), HarpoonLoadedProperty.CODEC);
 
-		EntityRendererRegistry.register(AbysmEntityTypes.SMALL_FLORAL_FISH, SmallFloralFishEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.BIG_FLORAL_FISH, BigFloralFishEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.BLOOMRAY, BloomrayEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.FLYING_HARPOON, HarpoonEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.MAN_O_WAR, ManOWarEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.LECTORFIN, LectorfinEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.MYSTERIOUS_BLOB, MysteriousBlobEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.TEST_LEVIATHAN, LehydrathanEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.PADDLEFISH, SimpleFishRenderer.factory("paddlefish", false));
-		EntityRendererRegistry.register(AbysmEntityTypes.SNAPPER, SnapperEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.GUP_GUP, GupGupEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.AROWANA_MAGICII, SimpleFishRenderer.factory("arowana_magicii", false));
-		EntityRendererRegistry.register(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE, SimpleFishRenderer.factory("synthethic_orniothope", false));
+		EntityRenderers.register(AbysmEntityTypes.SMALL_FLORAL_FISH, FloralFishRenderer.factory("small_floral_fish"));
+		EntityRenderers.register(AbysmEntityTypes.BIG_FLORAL_FISH, FloralFishRenderer.factory("big_floral_fish"));
+		EntityRenderers.register(AbysmEntityTypes.BLOOMRAY, BloomrayEntityRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.ELECTRIC_OOGLY_BOOGLY, ElectricOoglyBooglyRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.FLYING_HARPOON, HarpoonEntityRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.MAN_O_WAR, ManOWarEntityRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.LECTORFIN, LectorfinEntityRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.MYSTERIOUS_BLOB, MysteriousBlobEntityRenderer::new);
+//		EntityRenderers.register(AbysmEntityTypes.TEST_LEVIATHAN, LehydrathanEntityRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.PADDLEFISH, FishEntityRenderer.factory("paddlefish"));
+		EntityRenderers.register(AbysmEntityTypes.SNAPPER, SnapperEntityRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.GUP_GUP, GupGupEntityRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.AROWANA_MAGICII, FishEntityRenderer.factory("arowana_magicii"));
+		EntityRenderers.register(AbysmEntityTypes.SYNTHETHIC_ORNIOTHOPE, FishEntityRenderer.factory("synthethic_orniothope"));
 
-		EntityRendererRegistry.register(AbysmEntityTypes.RETICULATED_FLIPRAY, FliprayEntityRenderer::new);
-		EntityRendererRegistry.register(AbysmEntityTypes.SKELETON_SHARK, SkeletonSharkEntityRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.RETICULATED_FLIPRAY, FliprayEntityRenderer::new);
+		EntityRenderers.register(AbysmEntityTypes.SKELETON_SHARK, EmptyEntityRenderer::new);
 
 		ArmorRenderer.register(new FlippersRenderer(), AbysmItems.FLIPPERS);
 
@@ -126,7 +122,7 @@ public class AbysmClient implements ClientModInitializer {
 			else AbysmAL.disable();
 		});
 
-		ModMenuHelper.addConfig(Abysm.MODID, AbysmConfig.HOLDER.id());
+//		ModMenuHelper.addConfig(Abysm.MODID, AbysmConfig.HOLDER.id());
 
 		BlockRenderLayerMap.putBlocks(
 			ChunkSectionLayer.CUTOUT,
@@ -140,6 +136,10 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.ROSEBLOOM_PETALS,
 			AbysmBlocks.SUNBLOOM_PETALS,
 			AbysmBlocks.MALLOWBLOOM_PETALS,
+
+			AbysmBlocks.ROSEBLOOM_PETALEAVES,
+			AbysmBlocks.SUNBLOOM_PETALEAVES,
+			AbysmBlocks.MALLOWBLOOM_PETALEAVES,
 
 			AbysmBlocks.ROSY_BLOOMSHROOM,
 			AbysmBlocks.POTTED_ROSY_BLOOMSHROOM,
@@ -179,15 +179,7 @@ public class AbysmClient implements ClientModInitializer {
 			AbysmBlocks.GOLDEN_LAZULI_OREFURL,
 			AbysmBlocks.GOLDEN_LAZULI_OREFURL_PLANT,
 
-			AbysmBlocks.OOZETRICKLE_LANTERN
-		);
-
-		BlockRenderLayerMap.putBlocks(
-			ChunkSectionLayer.CUTOUT_MIPPED,
-			AbysmBlocks.ROSEBLOOM_PETALEAVES,
-			AbysmBlocks.SUNBLOOM_PETALEAVES,
-			AbysmBlocks.MALLOWBLOOM_PETALEAVES,
-
+			AbysmBlocks.OOZETRICKLE_LANTERN,
 			AbysmBlocks.OOZETRICKLE_CORD
 		);
 

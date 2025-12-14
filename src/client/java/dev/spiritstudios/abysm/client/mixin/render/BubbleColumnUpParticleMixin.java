@@ -1,9 +1,10 @@
 package dev.spiritstudios.abysm.client.mixin.render;
 
-import dev.spiritstudios.specter.api.core.math.Easing;
+import dev.spiritstudios.spectre.api.core.math.Easing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.BubbleColumnUpParticle;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -13,9 +14,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BubbleColumnUpParticle.class)
-public abstract class BubbleColumnUpParticleMixin extends TextureSheetParticle {
-	protected BubbleColumnUpParticleMixin(ClientLevel clientWorld, double d, double e, double f) {
-		super(clientWorld, d, e, f);
+public abstract class BubbleColumnUpParticleMixin extends SingleQuadParticle {
+	protected BubbleColumnUpParticleMixin(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+		super(level, x, y, z, sprite);
 	}
 
 	@Inject(method = "tick", at = @At("TAIL"))

@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.client.particle;
 
-import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
+import dev.spiritstudios.abysm.core.particles.AbysmParticleTypes;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.ParticleOptions;
@@ -8,8 +8,9 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.Nullable;
 
-public class BloomPetalParticle extends TextureSheetParticle {
+public class BloomPetalParticle extends SingleQuadParticle {
 	private static final float SPEED_SCALE = 0.0025F;
 	private static final int INITIAL_MAX_AGE = 300;
 
@@ -26,16 +27,16 @@ public class BloomPetalParticle extends TextureSheetParticle {
 		double x,
 		double y,
 		double z,
-		SpriteSet spriteProvider,
+		SpriteSet sprites,
 		float gravity,
 		float windStrength,
 		float size,
 		float initialYVelocity,
 		ParticleOptions nextParticle
 	) {
-		super(world, x, y, z);
+		super(world, x, y, z, sprites.first());
 
-		this.setSprite(spriteProvider.get(this.random.nextInt(12), 12));
+		this.setSprite(sprites.get(this.random.nextInt(12), 12));
 
 		this.lifetime = INITIAL_MAX_AGE;
 
@@ -61,11 +62,6 @@ public class BloomPetalParticle extends TextureSheetParticle {
 		this.swirlAngleOffset = this.random.nextFloat() * Mth.PI;
 
 		this.nextParticle = nextParticle;
-	}
-
-	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
 	}
 
 	@Override
@@ -133,6 +129,11 @@ public class BloomPetalParticle extends TextureSheetParticle {
 	}
 
 	@Override
+	protected Layer getLayer() {
+		return Layer.OPAQUE;
+	}
+
+	@Override
 	protected int getLightColor(float tickProgress) {
 		float relativeAge = Mth.clamp((INITIAL_MAX_AGE - this.lifetime + tickProgress) / INITIAL_MAX_AGE, 0F, 1F);
 
@@ -160,13 +161,12 @@ public class BloomPetalParticle extends TextureSheetParticle {
 		public abstract int getColorEnd();
 		public abstract ParticleOptions getNextParticle();
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			RandomSource random = clientWorld.getRandom();
-
+		@Override
+		public @Nullable Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
 			float size = 0.6F + random.nextFloat() * 2.5F;
-			BloomPetalParticle particle = new BloomPetalParticle(clientWorld, x, y, z, this.spriteProvider, 0.7F, 10.0F, size, 0.011F, getNextParticle());
+			BloomPetalParticle particle = new BloomPetalParticle(level, x, y, z, this.spriteProvider, 0.7F, 10.0F, size, 0.011F, getNextParticle());
 
-			int color = ARGB.lerp(random.nextFloat(), getColorStart(), getColorEnd());
+			int color = ARGB.srgbLerp(random.nextFloat(), getColorStart(), getColorEnd());
 			float red = ARGB.redFloat(color);
 			float green = ARGB.greenFloat(color);
 			float blue = ARGB.blueFloat(color);

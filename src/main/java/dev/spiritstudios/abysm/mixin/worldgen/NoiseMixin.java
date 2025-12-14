@@ -4,11 +4,11 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import dev.spiritstudios.abysm.duck.NoiseChunkDuckInterface;
-import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctionTypes;
-import dev.spiritstudios.abysm.worldgen.densityfunction.DensityBlobsSamplerCollection;
-import dev.spiritstudios.abysm.worldgen.densityfunction.ExtraBlockStateSamplers;
-import dev.spiritstudios.abysm.worldgen.noise.NoiseConfigAttachment;
-import net.minecraft.resources.ResourceLocation;
+import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.AbysmDensityFunctionTypes;
+import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.DensityBlobsSamplerCollection;
+import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.ExtraBlockStateSamplers;
+import dev.spiritstudios.abysm.world.level.levelgen.noise.NoiseConfigAttachment;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.levelgen.Aquifer;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
@@ -96,7 +96,7 @@ public abstract class NoiseMixin implements NoiseChunkDuckInterface {
 	@Inject(method = "wrapNew", at = @At("HEAD"), cancellable = true)
 	private void getDensityBlobsSamplerFunction(DensityFunction function, CallbackInfoReturnable<DensityFunction> cir) {
 		// replace the dummy shell cave function with its actual implementation
-		if (function instanceof AbysmDensityFunctionTypes.DummyDensityBlobsSampler(ResourceLocation identifier)) {
+		if (function instanceof AbysmDensityFunctionTypes.DummyDensityBlobsSampler(Identifier identifier)) {
 			DensityBlobsSamplerCollection sampler = DensityBlobsSamplerCollection.get(this.beardifier);
 			if (sampler != null) {
 				DensityFunction samplerFunction = sampler.getDensityFunction(identifier);

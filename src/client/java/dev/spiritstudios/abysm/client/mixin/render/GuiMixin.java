@@ -1,13 +1,13 @@
 package dev.spiritstudios.abysm.client.mixin.render;
 
-import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
+import dev.spiritstudios.abysm.world.entity.effect.AbysmStatusEffects;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
@@ -22,14 +22,13 @@ import java.util.Objects;
 
 @Mixin(Gui.class)
 public abstract class GuiMixin {
-
 	@Shadow
 	@Final
 	private Minecraft minecraft;
 
 	@Shadow
 	@Final
-	public static ResourceLocation NAUSEA_LOCATION;
+	public static Identifier NAUSEA_LOCATION;
 
 	@Inject(method = "renderCameraOverlays", at = @At("RETURN"))
 	private void renderBlueOverlay(GuiGraphics context, DeltaTracker tickCounter, CallbackInfo ci) {

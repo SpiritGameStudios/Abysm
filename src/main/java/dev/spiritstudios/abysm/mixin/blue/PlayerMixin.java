@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.mixin.blue;
 
-import dev.spiritstudios.abysm.entity.effect.BlueEffect;
+import dev.spiritstudios.abysm.world.entity.effect.BlueEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

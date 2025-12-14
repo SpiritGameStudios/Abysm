@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.worldgen;
 
 import dev.spiritstudios.abysm.duck.CarvingContextDuckInterface;
-import dev.spiritstudios.abysm.worldgen.densityfunction.DensityFunctionWrapper;
+import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.DensityFunctionWrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;

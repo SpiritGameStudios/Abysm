@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.worldgen;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.spiritstudios.abysm.duck.StructureWeightSamplerDuckInterface;
-import dev.spiritstudios.abysm.worldgen.densityfunction.DensityBlobsSamplerCollection;
+import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.DensityBlobsSamplerCollection;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.levelgen.Beardifier;

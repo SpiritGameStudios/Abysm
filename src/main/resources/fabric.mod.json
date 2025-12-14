@@ -40,11 +40,10 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.17.2",
-		"minecraft": "1.21.8",
+		"minecraft": "~1.21.11",
 		"fabric-api": "*",
-		"specter-core": "*",
+		"spectre": "*",
 		"biolith": "*",
-		"geckolib": ">=5.2.2",
 		"java": ">=21"
 	},
 	"custom": {

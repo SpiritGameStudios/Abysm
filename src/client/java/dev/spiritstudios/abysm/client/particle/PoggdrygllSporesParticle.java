@@ -1,17 +1,21 @@
 package dev.spiritstudios.abysm.client.particle;
 
-import dev.spiritstudios.specter.api.core.math.Easing;
+import dev.spiritstudios.spectre.api.core.math.Easing;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class PoggdrygllSporesParticle extends TextureSheetParticle {
-	protected PoggdrygllSporesParticle(ClientLevel clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-		super(clientWorld, x, y, z, velocityX, velocityY, velocityZ);
+public class PoggdrygllSporesParticle extends SingleQuadParticle {
+	protected PoggdrygllSporesParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
+		super(level, x, y, z, sprite);
+
 		float color = this.random.nextFloat() * 0.1F + 0.5F;
 		this.rCol = color;
 		this.gCol = color + 0.05F;
@@ -21,8 +25,9 @@ public class PoggdrygllSporesParticle extends TextureSheetParticle {
 		this.xd *= 0.02F;
 		this.yd *= 0.02F;
 		this.zd *= 0.02F;
-		this.lifetime = (int)(20.0 / (Math.random() * 0.8 + 1.0));
+		this.lifetime = (int) (20.0 / (Math.random() * 0.8 + 1.0));
 	}
+
 
 	@Override
 	public float getQuadSize(float tickDelta) {
@@ -30,8 +35,8 @@ public class PoggdrygllSporesParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+	protected @NotNull Layer getLayer() {
+		return Layer.OPAQUE;
 	}
 
 	public static class Factory implements ParticleProvider<SimpleParticleType> {
@@ -41,10 +46,10 @@ public class PoggdrygllSporesParticle extends TextureSheetParticle {
 			this.spriteProvider = spriteProvider;
 		}
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double d, double e, double f, double g, double h, double i) {
-			PoggdrygllSporesParticle particle = new PoggdrygllSporesParticle(clientWorld, d, e, f, g, h, i);
-			particle.pickSprite(this.spriteProvider);
-			return particle;
+
+		@Override
+		public @Nullable Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+			return new PoggdrygllSporesParticle(level, x, y, z, spriteProvider.first());
 		}
 	}
 }

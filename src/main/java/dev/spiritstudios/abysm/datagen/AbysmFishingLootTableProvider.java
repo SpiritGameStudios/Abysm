@@ -1,8 +1,8 @@
 package dev.spiritstudios.abysm.datagen;
 
-import dev.spiritstudios.abysm.block.AbysmBlocks;
-import dev.spiritstudios.abysm.item.AbysmItems;
-import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
+import dev.spiritstudios.abysm.world.item.AbysmItems;
+import dev.spiritstudios.abysm.world.level.storage.loot.AbysmLootTableModifications;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableProvider;
 import net.minecraft.core.HolderLookup;

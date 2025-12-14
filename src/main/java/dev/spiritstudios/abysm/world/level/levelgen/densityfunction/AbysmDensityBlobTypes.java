@@ -1,0 +1,21 @@
+package dev.spiritstudios.abysm.world.level.levelgen.densityfunction;
+
+import com.mojang.serialization.MapCodec;
+import dev.spiritstudios.abysm.Abysm;
+import dev.spiritstudios.abysm.core.registries.AbysmRegistries;
+import net.minecraft.core.Registry;
+import net.minecraft.util.KeyDispatchDataCodec;
+
+public class AbysmDensityBlobTypes {
+
+	public static void init() {
+		register("void", DensityVoid.CODEC_HOLDER);
+		register("sphere", DensitySphere.CODEC_HOLDER);
+		register("layered_sphere", LayeredDensitySphere.CODEC_HOLDER);
+		register("translated_blob", TranslatedDensityBlob.CODEC_HOLDER);
+	}
+
+	private static MapCodec<? extends DensityBlob> register(String id, KeyDispatchDataCodec<? extends DensityBlob> codecHolder) {
+		return Registry.register(AbysmRegistries.DENSITY_BLOB_TYPE, Abysm.id(id), codecHolder.codec());
+	}
+}

@@ -5,22 +5,21 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SimpleAnimatedParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.Nullable;
 
-public class OoglyBooglyElectricityParticle extends TextureSheetParticle {
-	protected OoglyBooglyElectricityParticle(ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ, SpriteSet provider) {
-		super(clientWorld, x, y, z, velX, velY, velZ);
+public class OoglyBooglyElectricityParticle extends SimpleAnimatedParticle {
+	protected OoglyBooglyElectricityParticle(ClientLevel clientWorld, double x, double y, double z, SpriteSet sprites) {
+		super(clientWorld, x, y, z, sprites, 0.0F);
 		this.xd = 0;
 		this.yd = 0;
 		this.zd = 0;
 
 		this.lifetime = 2;
 		this.quadSize = 0.01f + this.random.nextFloat();
-
-		this.pickSprite(provider);
 	}
 
 	@Override
@@ -34,8 +33,8 @@ public class OoglyBooglyElectricityParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+	public Layer getLayer() {
+		return Layer.TRANSLUCENT;
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -46,8 +45,10 @@ public class OoglyBooglyElectricityParticle extends TextureSheetParticle {
 			this.spriteProvider = spriteProvider;
 		}
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ) {
-			return new OoglyBooglyElectricityParticle(clientWorld, x, y, z, velX, velY, velZ, spriteProvider);
+
+		@Override
+		public @Nullable Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+			return new OoglyBooglyElectricityParticle(level, x, y, z, spriteProvider);
 		}
 	}
 }

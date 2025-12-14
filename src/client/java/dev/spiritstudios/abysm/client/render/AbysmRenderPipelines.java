@@ -13,17 +13,17 @@ import static dev.spiritstudios.abysm.Abysm.id;
 import static net.minecraft.client.renderer.RenderPipelines.GLOBALS_SNIPPET;
 import static net.minecraft.client.renderer.RenderPipelines.MATRICES_FOG_SNIPPET;
 
-public class AbysmRenderPipelines {
+public final class AbysmRenderPipelines {
 	public static final RenderPipeline ADJUST_LIGHTMAP = register(
 		RenderPipeline.builder()
 			.withLocation(id("pipeline/adjust_lightmap"))
-			.withVertexShader("core/blit_screen")
+			.withVertexShader("core/screenquad")
 			.withFragmentShader(id("core/adjust_lightmap"))
 			.withSampler("InSampler")
 			.withUniform("LightmapAdjustmentInfo", UniformType.UNIFORM_BUFFER)
 			.withDepthWrite(false)
 			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
-			.withVertexFormat(DefaultVertexFormat.POSITION, VertexFormat.Mode.QUADS)
+			.withVertexFormat(DefaultVertexFormat.EMPTY, VertexFormat.Mode.TRIANGLES)
 			.build()
 	);
 

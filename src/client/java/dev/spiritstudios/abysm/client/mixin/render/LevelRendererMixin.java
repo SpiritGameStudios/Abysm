@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
 	@Inject(method = "addSkyPass", at = @At("HEAD"), cancellable = true)
-	private void doNotRenderSkyUnderwater(FrameGraphBuilder frameGraphBuilder, Camera camera, float tickProgress, GpuBufferSlice fog, CallbackInfo ci) {
+	private void doNotRenderSkyUnderwater(FrameGraphBuilder frameGraphBuilder, Camera camera, GpuBufferSlice shaderFog, CallbackInfo ci) {
 		if (camera.getFluidInCamera() == FogType.WATER) {
 			ci.cancel();
 		}

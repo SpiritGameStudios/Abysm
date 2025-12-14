@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.blue;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import dev.spiritstudios.abysm.entity.effect.BlueEffect;
+import dev.spiritstudios.abysm.world.entity.effect.BlueEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Monster;

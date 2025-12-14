@@ -1,8 +1,8 @@
 package dev.spiritstudios.abysm.mixin.block;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import dev.spiritstudios.abysm.block.AbysmBlocks;
-import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
+import dev.spiritstudios.abysm.world.item.AbysmItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ShovelItem;

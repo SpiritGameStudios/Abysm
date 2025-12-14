@@ -3,8 +3,8 @@ package dev.spiritstudios.abysm.mixin.blue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
 import dev.spiritstudios.abysm.duck.LivingEntityDuck;
-import dev.spiritstudios.abysm.entity.effect.BlueEffect;
-import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
+import dev.spiritstudios.abysm.world.entity.effect.BlueEffect;
+import dev.spiritstudios.abysm.network.EntityUpdateBlueS2CPayload;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Attackable;
@@ -60,8 +60,8 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Li
 		}
 	}
 
-	@Inject(method = "travelInFluid", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 4, shift = At.Shift.AFTER))
-	private void addBonusUnderlavaGravityWhenBlue(Vec3 movementInput, CallbackInfo ci, @Local(ordinal = 1) double effectiveGravity) {
+	@Inject(method = "travelInLava", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V", ordinal = 3, shift = At.Shift.AFTER))
+	private void addBonusUnderlavaGravityWhenBlue(Vec3 vec3, double d, boolean bl, double e, CallbackInfo ci, @Local(ordinal = 1, argsOnly = true) double effectiveGravity) {
 		if (BlueEffect.hasBlueEffect((LivingEntity) (Object) this)) {
 			this.setDeltaMovement(this.getDeltaMovement().add(0.0, effectiveGravity * (-3.0 / 4.0), 0.0));
 		}
@@ -72,6 +72,7 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Li
 		if (BlueEffect.hasBlueEffect((LivingEntity) (Object) this)) {
 			// travel normally instead of using fluid physics
 			this.travelInAir(movementInput);
+
 			// manually apply some extra drag
 			boolean rising = this.getDeltaMovement().y > 0.0;
 			if (this.isInWater()) {

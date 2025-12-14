@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.client.render.entity.state;
 
-import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
+import dev.spiritstudios.abysm.world.entity.floralreef.ManOWarEntity;
 import java.util.List;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.world.phys.AABB;

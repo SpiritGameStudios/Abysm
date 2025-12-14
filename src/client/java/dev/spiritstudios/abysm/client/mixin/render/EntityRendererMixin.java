@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.client.mixin.render;
 
-import dev.spiritstudios.abysm.client.duck.EntityRenderStateDuck;
-import dev.spiritstudios.abysm.entity.effect.BlueEffect;
+import dev.spiritstudios.abysm.client.render.AbysmRenderStateKeys;
+import dev.spiritstudios.abysm.world.entity.effect.BlueEffect;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
@@ -15,10 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin<T extends Entity, S extends EntityRenderState, M extends EntityModel<? super S>> {
 	@Inject(method = "extractRenderState", at = @At("RETURN"))
-	private void updateCustomStateValues(T entity, S entityRenderState, float f, CallbackInfo ci) {
-		if (entity instanceof LivingEntity livingEntity && entityRenderState instanceof EntityRenderStateDuck duck) {
-			boolean blue = BlueEffect.isBlue(livingEntity);
-			duck.abysm$setBlue(blue);
+	private void extractAbysmState(T entity, S state, float f, CallbackInfo ci) {
+		if (entity instanceof LivingEntity livingEntity) {
+			state.setData(AbysmRenderStateKeys.IS_BLUE, BlueEffect.isBlue(livingEntity));
 		}
 	}
 }

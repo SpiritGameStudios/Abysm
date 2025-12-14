@@ -1,0 +1,215 @@
+{
+  "values": {
+    "abysm:arowana_magicii": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": 1,
+      "predators": [
+        "abysm:skeleton_shark"
+      ],
+      "target_population": 4,
+      "unfavored_speed": -0.25
+    },
+    "abysm:bloomray": {
+      "breeding_cooldown": 400,
+      "favor_chance": 0.9,
+      "favored_speed": 0.3,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1000,
+        "min_inclusive": 400
+      },
+      "litter_size": 1,
+      "predators": [
+        "abysm:skeleton_shark"
+      ],
+      "prey": [
+        "abysm:floral_fish_small",
+        "abysm:floral_fish_big"
+      ],
+      "target_population": 3,
+      "unfavored_speed": -0.2
+    },
+    "abysm:electric_oogly_boogly": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": 1,
+      "target_population": 3,
+      "unfavored_speed": -0.25
+    },
+    "abysm:floral_fish_big": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 2,
+        "min_inclusive": 1
+      },
+      "predators": [
+        "abysm:bloomray",
+        "abysm:skeleton_shark"
+      ],
+      "target_population": 5,
+      "unfavored_speed": -0.25
+    },
+    "abysm:floral_fish_small": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 4,
+        "min_inclusive": 1
+      },
+      "plants": [
+        "abysm:purple_scabiosa",
+        "abysm:pink_scabiosa",
+        "abysm:red_scabiosa"
+      ],
+      "predators": [
+        "abysm:bloomray",
+        "abysm:skeleton_shark"
+      ],
+      "unfavored_speed": -0.35
+    },
+    "abysm:gup_gup": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": 1,
+      "predators": [
+        "abysm:skeleton_shark"
+      ],
+      "target_population": 50,
+      "unfavored_speed": -0.25
+    },
+    "abysm:lectorfin": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": 1,
+      "plants": [
+        "abysm:golden_lazuli_orefurl",
+        "abysm:golden_lazuli_orefurl_plant"
+      ],
+      "predators": [
+        "abysm:skeleton_shark"
+      ],
+      "target_population": 10,
+      "unfavored_speed": -0.25
+    },
+    "abysm:paddlefish": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": 1,
+      "plants": [
+        "abysm:rosy_bloomshroom",
+        "abysm:mauve_bloomshroom",
+        "abysm:sunny_bloomshroom"
+      ],
+      "predators": [
+        "abysm:bloomray",
+        "abysm:skeleton_shark"
+      ],
+      "unfavored_speed": -0.25
+    },
+    "abysm:reticulated_flipray": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": 1,
+      "target_population": 2,
+      "unfavored_speed": -0.25
+    },
+    "abysm:skeleton_shark": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": 1,
+      "prey": [
+        "abysm:lectorfin",
+        "abysm:floral_fish_small",
+        "abysm:floral_fish_big",
+        "abysm:arowana_magicii",
+        "abysm:paddlefish",
+        "abysm:gup_gup",
+        "abysm:snapper",
+        "abysm:bloomray",
+        "minecraft:player"
+      ],
+      "target_population": 2,
+      "unfavored_speed": -0.25
+    },
+    "abysm:snapper": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": 1,
+      "predators": [
+        "abysm:bloomray",
+        "abysm:skeleton_shark"
+      ],
+      "target_population": 5,
+      "unfavored_speed": -0.25
+    },
+    "abysm:synthethic_orniothope": {
+      "breeding_cooldown": 300,
+      "favored_speed": 0.5,
+      "hunt_duration": {
+        "type": "minecraft:uniform",
+        "max_inclusive": 1600,
+        "min_inclusive": 1200
+      },
+      "litter_size": 1,
+      "predators": [
+        "abysm:skeleton_shark"
+      ],
+      "target_population": 4,
+      "unfavored_speed": -0.25
+    }
+  }
+}

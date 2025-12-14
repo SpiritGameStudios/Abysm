@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.manowar;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import dev.spiritstudios.abysm.entity.floralreef.ManOWarEntity;
+import dev.spiritstudios.abysm.world.entity.floralreef.ManOWarEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;

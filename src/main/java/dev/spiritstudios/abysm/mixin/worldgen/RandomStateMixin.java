@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.worldgen;
 
 import dev.spiritstudios.abysm.duck.RandomStateDuckInterface;
-import dev.spiritstudios.abysm.worldgen.noise.NoiseConfigAttachment;
+import dev.spiritstudios.abysm.world.level.levelgen.noise.NoiseConfigAttachment;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.RandomState;

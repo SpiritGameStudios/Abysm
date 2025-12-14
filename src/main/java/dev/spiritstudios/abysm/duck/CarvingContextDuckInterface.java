@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.duck;
 
-import dev.spiritstudios.abysm.worldgen.densityfunction.DensityFunctionWrapper;
+import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.DensityFunctionWrapper;
 import org.jetbrains.annotations.Nullable;
 
 public interface CarvingContextDuckInterface {

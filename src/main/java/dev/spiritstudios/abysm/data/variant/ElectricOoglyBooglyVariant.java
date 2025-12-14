@@ -2,8 +2,8 @@ package dev.spiritstudios.abysm.data.variant;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.entity.variant.AbysmEntityVariants;
-import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
+import dev.spiritstudios.abysm.world.entity.variant.AbysmEntityVariants;
+import dev.spiritstudios.abysm.core.registries.AbysmRegistryKeys;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.RegistryAccess;
@@ -14,7 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.variant.SpawnPrioritySelectors;
 
 public class ElectricOoglyBooglyVariant extends AbstractEntityVariant {
@@ -40,7 +40,7 @@ public class ElectricOoglyBooglyVariant extends AbstractEntityVariant {
 	public final ParticleOptions fumesParticle;
 	public final float explosionPower;
 
-	public ElectricOoglyBooglyVariant(Component name, ResourceLocation texture, SpawnPrioritySelectors spawnConditions, ParticleOptions fumesParticle, float explosionPower) {
+	public ElectricOoglyBooglyVariant(Component name, Identifier texture, SpawnPrioritySelectors spawnConditions, ParticleOptions fumesParticle, float explosionPower) {
 		super(name, texture, spawnConditions);
 
 		this.fumesParticle = fumesParticle;

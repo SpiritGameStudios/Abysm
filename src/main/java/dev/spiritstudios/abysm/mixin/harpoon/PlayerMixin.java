@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.harpoon;
 
 import dev.spiritstudios.abysm.duck.HarpoonOwner;
-import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
+import dev.spiritstudios.abysm.world.entity.harpoon.HarpoonEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

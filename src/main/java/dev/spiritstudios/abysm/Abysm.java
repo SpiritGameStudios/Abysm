@@ -1,57 +1,49 @@
 package dev.spiritstudios.abysm;
 
-import dev.spiritstudios.abysm.block.AbysmBlocks;
-import dev.spiritstudios.abysm.block.entity.AbysmBlockEntityTypes;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
+import dev.spiritstudios.abysm.world.level.block.entity.AbysmBlockEntityTypes;
 import dev.spiritstudios.abysm.command.AbysmCommands;
-import dev.spiritstudios.abysm.component.AbysmDataComponentTypes;
-import dev.spiritstudios.abysm.ecosystem.AbysmEcosystemTypes;
-import dev.spiritstudios.abysm.ecosystem.registry.EcosystemType;
-import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.entity.AbysmSpawnRestrictions;
-import dev.spiritstudios.abysm.entity.AbysmTrackedDataHandlers;
-import dev.spiritstudios.abysm.entity.ai.AbysmSensorTypes;
-import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributeModifiers;
-import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
-import dev.spiritstudios.abysm.entity.effect.AbysmStatusEffects;
-import dev.spiritstudios.abysm.item.AbysmItems;
-import dev.spiritstudios.abysm.item.AbysmPotions;
-import dev.spiritstudios.abysm.loot.AbysmLootTableModifications;
-import dev.spiritstudios.abysm.networking.EntityUpdateBlueS2CPayload;
-import dev.spiritstudios.abysm.networking.HappyEntityParticlesS2CPayload;
-import dev.spiritstudios.abysm.networking.NowHuntingS2CPayload;
-import dev.spiritstudios.abysm.networking.UpdateDensityBlobBlockC2SPayload;
-import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
-import dev.spiritstudios.abysm.particle.AbysmParticleTypes;
-import dev.spiritstudios.abysm.recipe.AbysmBrewingRecipes;
-import dev.spiritstudios.abysm.registry.AbysmAttachments;
-import dev.spiritstudios.abysm.registry.AbysmRegistries;
-import dev.spiritstudios.abysm.registry.AbysmSoundEvents;
-import dev.spiritstudios.abysm.worldgen.AbysmBiomeModifications;
-import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
-import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityBlobTypes;
-import dev.spiritstudios.abysm.worldgen.densityfunction.AbysmDensityFunctionTypes;
-import dev.spiritstudios.abysm.worldgen.feature.AbysmFeatures;
-import dev.spiritstudios.abysm.worldgen.structure.AbysmStructurePieceTypes;
-import dev.spiritstudios.abysm.worldgen.structure.AbysmStructureTypes;
-import dev.spiritstudios.abysm.worldgen.tree.AbysmFoliagePlacerTypes;
-import dev.spiritstudios.abysm.worldgen.tree.AbysmTrunkPlacerTypes;
-import dev.spiritstudios.specter.api.registry.RegistryHelper;
+import dev.spiritstudios.abysm.core.component.AbysmDataComponents;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.world.entity.AbysmSpawnRestrictions;
+import dev.spiritstudios.abysm.world.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.world.entity.ai.AbysmSensorTypes;
+import dev.spiritstudios.abysm.world.entity.attribute.AbysmEntityAttributeModifiers;
+import dev.spiritstudios.abysm.world.entity.attribute.AbysmEntityAttributes;
+import dev.spiritstudios.abysm.world.entity.effect.AbysmStatusEffects;
+import dev.spiritstudios.abysm.world.item.AbysmItems;
+import dev.spiritstudios.abysm.world.item.AbysmPotions;
+import dev.spiritstudios.abysm.world.level.storage.loot.AbysmLootTableModifications;
+import dev.spiritstudios.abysm.network.EntityUpdateBlueS2CPayload;
+import dev.spiritstudios.abysm.network.HappyEntityParticlesS2CPayload;
+import dev.spiritstudios.abysm.network.NowHuntingS2CPayload;
+import dev.spiritstudios.abysm.network.UpdateDensityBlobBlockC2SPayload;
+import dev.spiritstudios.abysm.network.UserTypedForbiddenWordC2SPayload;
+import dev.spiritstudios.abysm.core.particles.AbysmParticleTypes;
+import dev.spiritstudios.abysm.world.item.crafting.AbysmBrewingRecipes;
+import dev.spiritstudios.abysm.core.registries.AbysmAttachments;
+import dev.spiritstudios.abysm.core.registries.AbysmMetatags;
+import dev.spiritstudios.abysm.core.registries.AbysmRegistries;
+import dev.spiritstudios.abysm.core.registries.AbysmSoundEvents;
+import dev.spiritstudios.abysm.world.level.levelgen.AbysmBiomeModifications;
+import dev.spiritstudios.abysm.world.level.levelgen.biome.AbysmBiomes;
+import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.AbysmDensityBlobTypes;
+import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.AbysmDensityFunctionTypes;
+import dev.spiritstudios.abysm.world.level.levelgen.feature.AbysmFeatures;
+import dev.spiritstudios.abysm.world.level.levelgen.structure.AbysmStructurePieceTypes;
+import dev.spiritstudios.abysm.world.level.levelgen.structure.AbysmStructureTypes;
+import dev.spiritstudios.abysm.world.level.levelgen.tree.AbysmFoliagePlacerTypes;
+import dev.spiritstudios.abysm.world.level.levelgen.tree.AbysmTrunkPlacerTypes;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacerType;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,7 +53,7 @@ public final class Abysm implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		AbysmConfig.HOLDER.load();
+//		AbysmConfig.HOLDER.load();
 
 		initRegistries();
 
@@ -80,8 +72,6 @@ public final class Abysm implements ModInitializer {
 
 		AbysmBiomeModifications.init();
 
-		EcosystemType.init();
-
 		// manually add item name component here since doing it normally results in it getting overwritten in the Item constructor
 		DefaultItemComponentEvents.MODIFY.register((callback) -> callback.modify(AbysmItems.MYSTERIOUS_BLOB_SPAWN_EGG, builder -> builder.set(
 				DataComponents.ITEM_NAME,
@@ -92,12 +82,13 @@ public final class Abysm implements ModInitializer {
 
 	private void initRegistries() {
 		AbysmRegistries.init();
+		AbysmMetatags.init();
 
 		// register blocks & items
 		AbysmBlocks.init();
-		AbysmDataComponentTypes.init();
+		AbysmBlockEntityTypes.init();
+		AbysmDataComponents.init();
 		AbysmItems.init();
-		RegistryHelper.registerBlockEntityTypes(AbysmBlockEntityTypes.class, MODID);
 
 		ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES)
 			.register(content -> content.accept(AbysmItems.MUSIC_DISC_RENAISSANCE));
@@ -107,7 +98,6 @@ public final class Abysm implements ModInitializer {
 		AbysmEntityAttributeModifiers.init();
 		AbysmEntityTypes.init();
 		AbysmTrackedDataHandlers.init();
-		AbysmEcosystemTypes.init();
 		AbysmSensorTypes.init();
 
 		AbysmStatusEffects.init();
@@ -116,12 +106,12 @@ public final class Abysm implements ModInitializer {
 		// region worldgen
 		// structures
 		AbysmStructurePieceTypes.init();
-		registerFields(BuiltInRegistries.STRUCTURE_TYPE, StructureType.class, AbysmStructureTypes.class);
+		AbysmStructureTypes.init();
 
 		// features
-		registerFields(BuiltInRegistries.FEATURE, Feature.class, AbysmFeatures.class);
-		registerFields(BuiltInRegistries.TRUNK_PLACER_TYPE, TrunkPlacerType.class, AbysmTrunkPlacerTypes.class);
-		registerFields(BuiltInRegistries.FOLIAGE_PLACER_TYPE, FoliagePlacerType.class, AbysmFoliagePlacerTypes.class);
+		AbysmFeatures.init();
+		AbysmTrunkPlacerTypes.init();
+		AbysmFoliagePlacerTypes.init();
 
 		AbysmDensityFunctionTypes.init();
 		AbysmDensityBlobTypes.init();
@@ -131,16 +121,6 @@ public final class Abysm implements ModInitializer {
 		AbysmSoundEvents.init();
 		AbysmParticleTypes.init();
 		AbysmCommands.init();
-		AbysmBiomes.Metatags.init();
-	}
-
-	private <T> void registerFields(Registry<T> registry, Class<?> toRegister, Class<?> clazz) {
-		RegistryHelper.registerFields(
-			registry,
-			RegistryHelper.fixGenerics(toRegister),
-			clazz,
-			MODID
-		);
 	}
 
 	private void registerNetworking() {
@@ -155,7 +135,7 @@ public final class Abysm implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload::receive);
 	}
 
-	public static ResourceLocation id(String path) {
-		return ResourceLocation.fromNamespaceAndPath(MODID, path);
+	public static Identifier id(String path) {
+		return Identifier.fromNamespaceAndPath(MODID, path);
 	}
 }

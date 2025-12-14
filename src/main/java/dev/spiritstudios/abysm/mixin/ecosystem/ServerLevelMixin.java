@@ -1,11 +1,10 @@
 package dev.spiritstudios.abysm.mixin.ecosystem;
 
 import dev.spiritstudios.abysm.duck.EcosystemManagedLevel;
-import dev.spiritstudios.abysm.ecosystem.chunk.EcosystemAreaManager;
+import dev.spiritstudios.abysm.world.ecosystem.chunk.EcosystemAreaManager;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.progress.ChunkProgressListener;
 import net.minecraft.world.RandomSequences;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.storage.LevelStorageSource;
@@ -26,7 +25,7 @@ public abstract class ServerLevelMixin implements EcosystemManagedLevel {
 	public EcosystemAreaManager abysm$ecosystemAreaManager = null;
 
 	@Inject(method = "<init>", at = @At("TAIL"))
-	public void abysm$createEcosystemAreaManager(MinecraftServer server, Executor workerExecutor, LevelStorageSource.LevelStorageAccess session, ServerLevelData properties, ResourceKey<?> worldKey, LevelStem dimensionOptions, ChunkProgressListener worldGenerationProgressListener, boolean debugWorld, long seed, List<?> spawners, boolean shouldTickTime, RandomSequences randomSequencesState, CallbackInfo ci) {
+	public void abysm$createEcosystemAreaManager(MinecraftServer server, Executor dispatcher, LevelStorageSource.LevelStorageAccess storageSource, ServerLevelData levelData, ResourceKey<?> dimension, LevelStem levelStem, boolean isDebug, long biomeZoomSeed, List<?> customSpawners, boolean tickTime, RandomSequences randomSequences, CallbackInfo ci) {
 		ServerLevel world = (ServerLevel) (Object) this;
 		this.abysm$ecosystemAreaManager = new EcosystemAreaManager(world);
 	}

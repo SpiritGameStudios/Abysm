@@ -1,0 +1,63 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.main",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 1.5,
+				"visible_bounds_offset": [0, 0.25, 0]
+			},
+			"bones": [
+				{
+					"name": "body",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [-2, 0, -8],
+							"size": [4, 4, 13],
+							"uv": {
+								"north": {"uv": [13, 13], "uv_size": [4, 4]},
+								"east": {"uv": [0, 13], "uv_size": [13, 4]},
+								"south": {"uv": [30, 13], "uv_size": [4, 4]},
+								"west": {"uv": [17, 13], "uv_size": [13, 4]},
+								"up": {"uv": [13, 0], "uv_size": [4, 13]},
+								"down": {"uv": [17, 13], "uv_size": [4, -13]}
+							}
+						}
+					]
+				},
+				{
+					"name": "tail",
+					"parent": "body",
+					"pivot": [0, 2, 5],
+					"cubes": [
+						{"origin": [0, -1, 5], "size": [0, 6, 4], "uv": [0, 23]}
+					]
+				},
+				{
+					"name": "LFin",
+					"parent": "body",
+					"pivot": [-2, 2.5, -3],
+					"rotation": [0, 0, -45],
+					"cubes": [
+						{"origin": [-8, 2.5, -7], "size": [6, 0, 4], "uv": [1, 17], "mirror": true},
+						{"origin": [-5, 2.5, -2], "size": [3, 0, 3], "uv": [12, 25]}
+					]
+				},
+				{
+					"name": "RFin",
+					"parent": "body",
+					"pivot": [2, 2.5, -3],
+					"rotation": [0, 0, 45],
+					"cubes": [
+						{"origin": [2, 2.5, -2], "size": [3, 0, 3], "uv": [22, 17]},
+						{"origin": [1, 2.5, -7], "size": [7, 0, 4], "uv": [0, 17]}
+					]
+				}
+			]
+		}
+	]
+}

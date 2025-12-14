@@ -9,6 +9,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.Nullable;
 
 public class BloomGlimmerParticle extends BaseAshSmokeParticle {
 	public float rotationSpeed = 0;
@@ -67,12 +68,11 @@ public class BloomGlimmerParticle extends BaseAshSmokeParticle {
 
 		public abstract int getColorEnd();
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			RandomSource random = clientWorld.getRandom();
+		@Override
+		public @Nullable Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+			BloomGlimmerParticle particle = new BloomGlimmerParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider, 40, 0.0125F, 0.96F);
 
-			BloomGlimmerParticle particle = new BloomGlimmerParticle(clientWorld, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider, 40, 0.0125F, 0.96F);
-
-			int color = ARGB.lerp(random.nextFloat(), getColorStart(), getColorEnd());
+			int color = ARGB.srgbLerp(random.nextFloat(), getColorStart(), getColorEnd());
 			float red = ARGB.redFloat(color);
 			float green = ARGB.greenFloat(color);
 			float blue = ARGB.blueFloat(color);
@@ -141,10 +141,9 @@ public class BloomGlimmerParticle extends BaseAshSmokeParticle {
 			this.spriteProvider = spriteProvider;
 		}
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			RandomSource random = clientWorld.getRandom();
-
-			BloomGlimmerParticle particle = new BloomGlimmerParticle(clientWorld, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider, 25, 0.005F, 0.98F);
+		@Override
+		public @Nullable Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
+			BloomGlimmerParticle particle = new BloomGlimmerParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, 1.0F, this.spriteProvider, 25, 0.005F, 0.98F);
 
 			particle.setColor(1F, 1F, 1F);
 

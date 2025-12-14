@@ -5,9 +5,10 @@ import com.mojang.blaze3d.buffers.Std140Builder;
 import com.mojang.blaze3d.buffers.Std140SizeCalculator;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.textures.AddressMode;
+import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.textures.GpuTextureView;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import dev.spiritstudios.abysm.client.duck.LocalPlayerDuckInterface;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MappableRingBuffer;
@@ -43,10 +44,6 @@ public class LightmapAdjustment {
 				Std140Builder.intoBuffer(mappedView.data())
 					.putFloat(brightenSkyFactor);
 			}
-
-			RenderSystem.AutoStorageIndexBuffer shapeIndexBuffer = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
-			GpuBuffer indexBuffer = shapeIndexBuffer.getBuffer(6);
-
 			commandEncoder.copyTextureToTexture(mainTexture, secondaryTexture, 0, 0, 0, 0, 0, mainTexture.getWidth(0), mainTexture.getHeight(0));
 
 			// update main texture
@@ -54,10 +51,16 @@ public class LightmapAdjustment {
 				renderPass.setPipeline(AbysmRenderPipelines.ADJUST_LIGHTMAP);
 				RenderSystem.bindDefaultUniforms(renderPass);
 				renderPass.setUniform("LightmapAdjustmentInfo", uniformBuffer.currentBuffer());
-				renderPass.setVertexBuffer(0, RenderSystem.getQuadVertexBuffer());
-				renderPass.setIndexBuffer(indexBuffer, shapeIndexBuffer.type());
-				renderPass.bindSampler("InSampler", secondaryTextureView);
-				renderPass.drawIndexed(0, 0, 6, 1);
+				renderPass.bindTexture(
+					"InSampler",
+					secondaryTextureView,
+					RenderSystem.getSamplerCache().getSampler(
+						AddressMode.REPEAT, AddressMode.REPEAT,
+						FilterMode.LINEAR, FilterMode.LINEAR,
+						false
+					)
+				);
+				renderPass.draw(0, 3);
 			}
 		}
 	}

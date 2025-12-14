@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.client.mixin;
 
 import dev.spiritstudios.abysm.Abysm;
-import dev.spiritstudios.abysm.networking.UserTypedForbiddenWordC2SPayload;
+import dev.spiritstudios.abysm.network.UserTypedForbiddenWordC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;

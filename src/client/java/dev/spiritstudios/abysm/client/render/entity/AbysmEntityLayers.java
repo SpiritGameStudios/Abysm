@@ -6,6 +6,7 @@ import dev.spiritstudios.abysm.client.render.entity.model.GarbageBagModel;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
+// TODO: spectre model this
 public final class AbysmEntityLayers {
 	public static final ModelLayerLocation FLIPPERS = register("player", "flippers", FlippersModel::getTexturedModelData);
 

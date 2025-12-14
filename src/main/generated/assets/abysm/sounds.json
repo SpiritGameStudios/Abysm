@@ -1,6 +1,5 @@
 {
   "entity.arowana_magicii.death": {
-    "category": "neutral",
     "sounds": [
       {
         "pitch": 0.8,
@@ -22,7 +21,6 @@
     "subtitle": "subtitles.abysm.entity.arowana_magicii.death"
   },
   "entity.arowana_magicii.flop": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.3,
@@ -44,7 +42,6 @@
     "subtitle": "subtitles.abysm.entity.arowana_magicii.flop"
   },
   "entity.arowana_magicii.hurt": {
-    "category": "neutral",
     "sounds": [
       "minecraft:entity/fish/hurt1",
       "minecraft:entity/fish/hurt2",
@@ -54,7 +51,6 @@
     "subtitle": "subtitles.abysm.entity.arowana_magicii.hurt"
   },
   "entity.big_floral_fish.death": {
-    "category": "neutral",
     "sounds": [
       {
         "pitch": 0.8,
@@ -76,7 +72,6 @@
     "subtitle": "subtitles.abysm.entity.big_floral_fish.death"
   },
   "entity.big_floral_fish.flop": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.3,
@@ -98,7 +93,6 @@
     "subtitle": "subtitles.abysm.entity.big_floral_fish.flop"
   },
   "entity.big_floral_fish.hurt": {
-    "category": "neutral",
     "sounds": [
       "minecraft:entity/fish/hurt1",
       "minecraft:entity/fish/hurt2",
@@ -108,7 +102,6 @@
     "subtitle": "subtitles.abysm.entity.big_floral_fish.hurt"
   },
   "entity.bloomray.ambient": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.4,
@@ -126,7 +119,6 @@
     "subtitle": "subtitles.abysm.entity.bloomray.ambient"
   },
   "entity.bloomray.death": {
-    "category": "neutral",
     "sounds": [
       {
         "pitch": 0.8,
@@ -148,7 +140,6 @@
     "subtitle": "subtitles.abysm.entity.bloomray.death"
   },
   "entity.bloomray.hurt": {
-    "category": "neutral",
     "sounds": [
       "minecraft:entity/fish/hurt1",
       "minecraft:entity/fish/hurt2",
@@ -158,7 +149,6 @@
     "subtitle": "subtitles.abysm.entity.bloomray.hurt"
   },
   "entity.gup_gup.death": {
-    "category": "neutral",
     "sounds": [
       {
         "pitch": 0.8,
@@ -180,7 +170,6 @@
     "subtitle": "subtitles.abysm.entity.gup_gup.death"
   },
   "entity.gup_gup.flop": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.3,
@@ -202,7 +191,6 @@
     "subtitle": "subtitles.abysm.entity.gup_gup.flop"
   },
   "entity.gup_gup.hurt": {
-    "category": "neutral",
     "sounds": [
       "minecraft:entity/fish/hurt1",
       "minecraft:entity/fish/hurt2",
@@ -212,7 +200,6 @@
     "subtitle": "subtitles.abysm.entity.gup_gup.hurt"
   },
   "entity.lectorfin.death": {
-    "category": "neutral",
     "sounds": [
       {
         "pitch": 0.8,
@@ -234,7 +221,6 @@
     "subtitle": "subtitles.abysm.entity.lectorfin.death"
   },
   "entity.lectorfin.flop": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.3,
@@ -256,7 +242,6 @@
     "subtitle": "subtitles.abysm.entity.lectorfin.flop"
   },
   "entity.lectorfin.hurt": {
-    "category": "neutral",
     "sounds": [
       "minecraft:entity/fish/hurt1",
       "minecraft:entity/fish/hurt2",
@@ -266,7 +251,6 @@
     "subtitle": "subtitles.abysm.entity.lectorfin.hurt"
   },
   "entity.paddlefish.death": {
-    "category": "neutral",
     "sounds": [
       {
         "pitch": 0.8,
@@ -288,7 +272,6 @@
     "subtitle": "subtitles.abysm.entity.paddlefish.death"
   },
   "entity.paddlefish.flop": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.3,
@@ -310,7 +293,6 @@
     "subtitle": "subtitles.abysm.entity.paddlefish.flop"
   },
   "entity.paddlefish.hurt": {
-    "category": "neutral",
     "sounds": [
       "minecraft:entity/fish/hurt1",
       "minecraft:entity/fish/hurt2",
@@ -320,7 +302,6 @@
     "subtitle": "subtitles.abysm.entity.paddlefish.hurt"
   },
   "entity.reticulated_flipray.death": {
-    "category": "neutral",
     "sounds": [
       {
         "pitch": 0.8,
@@ -342,7 +323,6 @@
     "subtitle": "subtitles.abysm.entity.reticulated_flipray.death"
   },
   "entity.reticulated_flipray.flop": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.3,
@@ -364,7 +344,6 @@
     "subtitle": "subtitles.abysm.entity.reticulated_flipray.flop"
   },
   "entity.reticulated_flipray.hurt": {
-    "category": "neutral",
     "sounds": [
       "minecraft:entity/fish/hurt1",
       "minecraft:entity/fish/hurt2",
@@ -374,7 +353,6 @@
     "subtitle": "subtitles.abysm.entity.reticulated_flipray.hurt"
   },
   "entity.small_floral_fish.death": {
-    "category": "neutral",
     "sounds": [
       {
         "pitch": 0.8,
@@ -396,7 +374,6 @@
     "subtitle": "subtitles.abysm.entity.small_floral_fish.death"
   },
   "entity.small_floral_fish.flop": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.3,
@@ -418,7 +395,6 @@
     "subtitle": "subtitles.abysm.entity.small_floral_fish.flop"
   },
   "entity.small_floral_fish.hurt": {
-    "category": "neutral",
     "sounds": [
       "minecraft:entity/fish/hurt1",
       "minecraft:entity/fish/hurt2",
@@ -428,7 +404,6 @@
     "subtitle": "subtitles.abysm.entity.small_floral_fish.hurt"
   },
   "entity.synthethic_orniothope.death": {
-    "category": "neutral",
     "sounds": [
       {
         "pitch": 0.8,
@@ -450,7 +425,6 @@
     "subtitle": "subtitles.abysm.entity.synthethic_orniothope.death"
   },
   "entity.synthethic_orniothope.flop": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.3,
@@ -472,7 +446,6 @@
     "subtitle": "subtitles.abysm.entity.synthethic_orniothope.flop"
   },
   "entity.synthethic_orniothope.hurt": {
-    "category": "neutral",
     "sounds": [
       "minecraft:entity/fish/hurt1",
       "minecraft:entity/fish/hurt2",
@@ -482,7 +455,6 @@
     "subtitle": "subtitles.abysm.entity.synthethic_orniothope.hurt"
   },
   "item.harpoon.hit": {
-    "category": "neutral",
     "sounds": [
       "minecraft:item/trident/pierce1",
       "minecraft:item/trident/pierce2",
@@ -491,7 +463,6 @@
     "subtitle": "subtitles.abysm.item.harpoon.hit"
   },
   "item.harpoon.hit_ground": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.9,
@@ -513,7 +484,6 @@
     "subtitle": "subtitles.abysm.item.harpoon.hit_ground"
   },
   "item.harpoon.in_air": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.5,
@@ -535,7 +505,6 @@
     "subtitle": "subtitles.abysm.item.harpoon.in_air"
   },
   "item.harpoon.launch": {
-    "category": "neutral",
     "sounds": [
       "minecraft:item/trident/throw1",
       "minecraft:item/trident/throw2"
@@ -543,7 +512,6 @@
     "subtitle": "subtitles.abysm.item.harpoon.launch"
   },
   "item.harpoon.return": {
-    "category": "neutral",
     "sounds": [
       {
         "volume": 0.8,
@@ -586,7 +554,6 @@
     "subtitle": "subtitles.abysm.item.harpoon.return"
   },
   "item.oozeball.apply": {
-    "category": "block",
     "sounds": [
       "abysm:item/oozeball/sticky1",
       "abysm:item/oozeball/sticky2",
@@ -595,7 +562,6 @@
     "subtitle": "subtitles.abysm.item.oozeball.apply"
   },
   "music.overworld.deep_sea_ruins": {
-    "category": "music",
     "sounds": [
       {
         "stream": true,
@@ -626,7 +592,6 @@
     ]
   },
   "music.overworld.floral_reef": {
-    "category": "music",
     "sounds": [
       {
         "stream": true,
@@ -652,7 +617,6 @@
     ]
   },
   "music.overworld.glowing_caves": {
-    "category": "music",
     "sounds": [
       {
         "stream": true,
@@ -672,14 +636,7 @@
     ]
   },
   "music.overworld.inkdepth_realm": {
-    "category": "music",
     "sounds": [
-      {
-        "stream": true,
-        "volume": 0.4,
-        "weight": 2,
-        "name": "abysm:music/game/mare_ad_horizontum"
-      },
       {
         "stream": true,
         "volume": 0.4,
@@ -698,7 +655,6 @@
     ]
   },
   "music.overworld.pearlescent_sea": {
-    "category": "music",
     "sounds": [
       {
         "stream": true,
@@ -724,7 +680,6 @@
     ]
   },
   "music.overworld.seaside": {
-    "category": "music",
     "sounds": [
       {
         "stream": true,
@@ -734,7 +689,6 @@
     ]
   },
   "music.overworld.the_entwined": {
-    "category": "music",
     "sounds": [
       {
         "stream": true,
@@ -744,7 +698,6 @@
     ]
   },
   "records.renaissance": {
-    "category": "record",
     "sounds": [
       {
         "stream": true,

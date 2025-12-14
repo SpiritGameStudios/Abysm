@@ -1,16 +1,16 @@
 package dev.spiritstudios.abysm.datagen;
 
-import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
-import dev.spiritstudios.abysm.block.AbysmBlocks;
-import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
-import dev.spiritstudios.abysm.entity.AbysmEntityTypes;
-import dev.spiritstudios.abysm.item.AbysmItems;
-import dev.spiritstudios.abysm.registry.tags.AbysmBiomeTags;
-import dev.spiritstudios.abysm.registry.tags.AbysmBlockTags;
-import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
-import dev.spiritstudios.abysm.registry.tags.AbysmItemTags;
-import dev.spiritstudios.abysm.registry.tags.AbysmSoundEventTags;
-import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlockFamilies;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
+import dev.spiritstudios.abysm.world.entity.AbysmDamageTypes;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityTypes;
+import dev.spiritstudios.abysm.world.item.AbysmItems;
+import dev.spiritstudios.abysm.core.registries.tags.AbysmBiomeTags;
+import dev.spiritstudios.abysm.core.registries.tags.AbysmBlockTags;
+import dev.spiritstudios.abysm.core.registries.tags.AbysmEntityTypeTags;
+import dev.spiritstudios.abysm.core.registries.tags.AbysmItemTags;
+import dev.spiritstudios.abysm.core.registries.tags.AbysmSoundEventTags;
+import dev.spiritstudios.abysm.world.level.levelgen.biome.AbysmBiomes;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
@@ -707,7 +707,6 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.MAN_O_WAR,
 					AbysmEntityTypes.LECTORFIN,
 					AbysmEntityTypes.MYSTERIOUS_BLOB,
-					AbysmEntityTypes.TEST_LEVIATHAN,
 					AbysmEntityTypes.RETICULATED_FLIPRAY,
 					AbysmEntityTypes.SKELETON_SHARK
 				);
@@ -725,7 +724,6 @@ public class AbysmTagProviders {
 					AbysmEntityTypes.MAN_O_WAR,
 					AbysmEntityTypes.LECTORFIN,
 					AbysmEntityTypes.MYSTERIOUS_BLOB,
-					AbysmEntityTypes.TEST_LEVIATHAN,
 					AbysmEntityTypes.RETICULATED_FLIPRAY,
 					AbysmEntityTypes.SKELETON_SHARK
 				);

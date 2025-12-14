@@ -3,9 +3,9 @@ package dev.spiritstudios.abysm.data.fishenchantment;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import dev.spiritstudios.abysm.entity.attribute.AbysmAttribute;
-import dev.spiritstudios.abysm.entity.ruins.AbysmFishEnchantments;
-import dev.spiritstudios.abysm.registry.AbysmRegistryKeys;
+import dev.spiritstudios.abysm.world.entity.attribute.AbysmAttribute;
+import dev.spiritstudios.abysm.world.entity.ruins.AbysmFishEnchantments;
+import dev.spiritstudios.abysm.core.registries.AbysmRegistryKeys;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -17,16 +17,16 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryFixedCodec;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.level.Level;
 
-public record FishEnchantment(List<AbysmAttribute> modifiers, ResourceLocation rendererId) {
+public record FishEnchantment(List<AbysmAttribute> modifiers, Identifier rendererId) {
 	public static final Codec<FishEnchantment> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
 				AbysmAttribute.CODEC.listOf().fieldOf("modifiers").forGetter(component -> component.modifiers),
-				ResourceLocation.CODEC.fieldOf("renderer_id").forGetter(component -> component.rendererId)
+				Identifier.CODEC.fieldOf("renderer_id").forGetter(component -> component.rendererId)
 			)
 			.apply(instance, FishEnchantment::new)
 	);
@@ -45,12 +45,12 @@ public record FishEnchantment(List<AbysmAttribute> modifiers, ResourceLocation r
 
 	@SuppressWarnings("unused")
 	@Nullable
-	public ResourceLocation getId(Level world) {
+	public Identifier getId(Level world) {
 		return this.getId(world.registryAccess());
 	}
 
 	@Nullable
-	public ResourceLocation getId(RegistryAccess drm) {
+	public Identifier getId(RegistryAccess drm) {
 		return drm.lookup(AbysmRegistryKeys.FISH_ENCHANTMENT)
 			.map(registry ->
 				registry.getKey(this))
@@ -69,13 +69,13 @@ public record FishEnchantment(List<AbysmAttribute> modifiers, ResourceLocation r
 
 	public static class Builder {
 		private final ImmutableList.Builder<AbysmAttribute> entries;
-		private ResourceLocation rendererId = null;
+		private Identifier rendererId = null;
 
 		Builder() {
 			entries = ImmutableList.builder();
 		}
 
-		public Builder id(ResourceLocation rendererId) {
+		public Builder id(Identifier rendererId) {
 			this.rendererId = rendererId;
 			return this;
 		}

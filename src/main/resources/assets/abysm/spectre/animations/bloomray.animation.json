@@ -1,0 +1,123 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.bloomray.swim": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"rotation": {
+						"0.0": {
+							"post": [-5, 0, 0],
+							"lerp_mode": "catmullrom"
+						},
+						"1.0": {
+							"post": [10, 0, 0],
+							"lerp_mode": "catmullrom"
+						},
+						"2.0": {
+							"post": [-5, 0, 0],
+							"lerp_mode": "catmullrom"
+						}
+					},
+					"position": [0, "math.sin(query.anim_time * 360 / 2) * 1", 0]
+				},
+				"tail": {
+					"rotation": ["-math.sin(query.anim_time * 360) * 10", 0, 0]
+				},
+				"crownthing": {
+					"rotation": [0, 0, 0]
+				},
+				"left": {
+					"rotation": {
+						"0.0": {
+							"post": [-2, -16, -30],
+							"lerp_mode": "catmullrom"
+						},
+						"0.7083": {
+							"post": [10.47479, 17.22575, 16.13388],
+							"lerp_mode": "catmullrom"
+						},
+						"2.0": {
+							"post": [-2, -16, -30],
+							"lerp_mode": "catmullrom"
+						}
+					}
+				},
+				"right": {
+					"rotation": {
+						"0.0": {
+							"post": [-2, 16, 30],
+							"lerp_mode": "catmullrom"
+						},
+						"0.7083": {
+							"post": [10.47479, -17.22575, -16.13388],
+							"lerp_mode": "catmullrom"
+						},
+						"2.0": {
+							"post": [-2, 16, 30],
+							"lerp_mode": "catmullrom"
+						}
+					}
+				}
+			}
+		},
+		"animation.bloomray.idle": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"body": {
+					"rotation": ["-math.sin(query.anim_time * 180) * 2", 0, "math.cos(query.anim_time * 180) * 3"],
+					"position": [0, "math.sin(query.anim_time * 180) * 0.25", 0]
+				},
+				"tail": {
+					"rotation": ["-math.sin(query.anim_time * 360) * 2", 0, 0]
+				},
+				"crownthing": {
+					"rotation": [0, 0, 0]
+				},
+				"left": {
+					"rotation": [0, 0, "-math.sin(query.anim_time * 180) * 3"]
+				},
+				"right": {
+					"rotation": [0, 0, "math.sin(query.anim_time * 180) * 3"]
+				}
+			}
+		},
+		"animation.bloomray.crown_sway": {
+			"loop": true,
+			"animation_length": 2,
+			"bones": {
+				"right2": {
+					"rotation": [0, 0, "-math.sin(query.anim_time * 180) * 12 - 5"]
+				},
+				"left3": {
+					"rotation": [0, 0, "math.sin(query.anim_time * 180 * 2) * 12 + 5"]
+				},
+				"right3": {
+					"rotation": [0, 0, "-math.sin(query.anim_time * 180 * 2) * 12 - 5"]
+				},
+				"left2": {
+					"rotation": [0, 0, "math.sin(query.anim_time * 180) * 12 + 5"]
+				}
+			}
+		},
+		"animation.bloomray.crown_wiggle": {
+			"animation_length": 1,
+			"bones": {
+				"left2": {
+					"rotation": [0, 0, "15 * -math.sin(query.anim_time * 360 * 3) "]
+				},
+				"right2": {
+					"rotation": [0, 0, "15 * math.sin(query.anim_time * 360 * 3) "]
+				},
+				"left3": {
+					"rotation": [0, 0, "math.sin(query.anim_time * 180 * 6) * 30 + 5"]
+				},
+				"right3": {
+					"rotation": [0, 0, "-math.sin(query.anim_time * 180 * 6) * 30 - 5"]
+				}
+			}
+		}
+	}
+}

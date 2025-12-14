@@ -1,0 +1,35 @@
+{
+	"format_version": "1.19.0",
+	"animation_controllers": {
+		"controller.animation.bloomray.movement": {
+			"initial_state": "idle",
+			"states": {
+				"idle": {
+					"animations": ["idle"],
+					"transitions": [
+						{"swimming": "q.is_moving"}
+					],
+					"blend_transition": 0.25
+				},
+				"swimming": {
+					"animations": ["swim"],
+					"transitions": [
+						{"idle": "!q.is_moving"}
+					],
+					"blend_transition": 0.25
+				}
+			}
+		},
+		"controller.animation.bloomray.antenna": {
+			"initial_state": "default",
+			"states": {
+				"default": {
+					"animations": ["crown_sway"],
+					"transitions": [
+					],
+					"blend_transition": 0.1
+				}
+			}
+		}
+	}
+}

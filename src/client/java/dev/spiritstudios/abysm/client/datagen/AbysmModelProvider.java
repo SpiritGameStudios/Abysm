@@ -1,10 +1,10 @@
 package dev.spiritstudios.abysm.client.datagen;
 
-import dev.spiritstudios.abysm.block.AbysmBlockFamilies;
-import dev.spiritstudios.abysm.block.AbysmBlocks;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlockFamilies;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
 import dev.spiritstudios.abysm.client.render.HarpoonLoadedProperty;
-import dev.spiritstudios.abysm.item.AbysmEquipmentAssetKeys;
-import dev.spiritstudios.abysm.item.AbysmItems;
+import dev.spiritstudios.abysm.world.item.AbysmEquipmentAssetKeys;
+import dev.spiritstudios.abysm.world.item.AbysmItems;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -24,7 +24,7 @@ import net.minecraft.client.renderer.block.model.VariantMutator;
 import net.minecraft.core.Direction;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.level.block.Block;
@@ -211,7 +211,7 @@ public class AbysmModelProvider extends FabricModelProvider {
 			.put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(baseBlock))
 			.put(TextureSlot.TOP, TextureMapping.getBlockTexture(block))
 			.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(block, "_side"));
-		ResourceLocation model = ModelTemplates.CUBE_BOTTOM_TOP.create(block, textureMapping, generator.modelOutput);
+		Identifier model = ModelTemplates.CUBE_BOTTOM_TOP.create(block, textureMapping, generator.modelOutput);
 		generator.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block, BlockModelGenerators.createRotatedVariants(BlockModelGenerators.plainModel(model))));
 	}
 

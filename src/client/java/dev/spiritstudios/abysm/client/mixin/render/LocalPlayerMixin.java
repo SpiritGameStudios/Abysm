@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.client.mixin.render;
 
 import com.mojang.authlib.GameProfile;
 import dev.spiritstudios.abysm.client.duck.LocalPlayerDuckInterface;
-import dev.spiritstudios.abysm.worldgen.biome.AbysmBiomes;
+import dev.spiritstudios.abysm.world.level.levelgen.biome.AbysmBiomes;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
@@ -29,7 +29,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements L
 
 	@Inject(method = "aiStep", at = @At("RETURN"))
 	private void updateAmbientSkyLight(CallbackInfo ci) {
-		Holder<Biome> biome = this.clientLevel.getBiome(this.blockPosition());
+		Holder<Biome> biome = level().getBiome(this.blockPosition());
 		boolean inFloralReef = biome.is(AbysmBiomes.FLORAL_REEF);
 		float targetAmbientSkyLight = inFloralReef ? 0.18F : 0.0F;
 

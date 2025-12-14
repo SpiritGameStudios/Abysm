@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.mixin.swimmingspeed;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import dev.spiritstudios.abysm.entity.attribute.AbysmEntityAttributes;
+import dev.spiritstudios.abysm.world.entity.attribute.AbysmEntityAttributes;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,7 +23,7 @@ public abstract class LivingEntityMixin extends Entity {
 		super(type, world);
 	}
 
-	@ModifyExpressionValue(method = "travelInFluid", at = @At(value = "CONSTANT", args = "floatValue=0.9"))
+	@ModifyExpressionValue(method = "travelInWater", at = @At(value = "CONSTANT", args = "floatValue=0.9"))
 	private float applySpecialFluidMovingSpeed(float constant) {
 		if (this.isSprinting()) return (float) getAttributeValue(AbysmEntityAttributes.SWIMMING_SPEED);
 		return constant;

@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.mixin.pressure;
 
-import dev.spiritstudios.abysm.entity.AbysmDamageTypes;
-import dev.spiritstudios.abysm.item.AbysmArmorMaterials;
+import dev.spiritstudios.abysm.world.entity.AbysmDamageTypes;
+import dev.spiritstudios.abysm.world.item.AbysmArmorMaterials;
 import dev.spiritstudios.abysm.util.PressureFinder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;

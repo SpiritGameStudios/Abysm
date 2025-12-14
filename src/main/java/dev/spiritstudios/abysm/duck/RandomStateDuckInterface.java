@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.duck;
 
-import dev.spiritstudios.abysm.worldgen.noise.NoiseConfigAttachment;
+import dev.spiritstudios.abysm.world.level.levelgen.noise.NoiseConfigAttachment;
 import net.minecraft.server.level.ServerLevel;
 
 public interface RandomStateDuckInterface {

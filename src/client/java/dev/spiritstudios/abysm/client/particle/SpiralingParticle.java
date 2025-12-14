@@ -1,21 +1,22 @@
 package dev.spiritstudios.abysm.client.particle;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.renderer.state.QuadParticleRenderState;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 
-public class SpiralingParticle extends TextureSheetParticle {
+public class SpiralingParticle extends SingleQuadParticle {
 	private final SpriteSet provider;
 
 	public float maxRadius;
@@ -26,12 +27,14 @@ public class SpiralingParticle extends TextureSheetParticle {
 
 	private final Quaternionf rotationStorage = new Quaternionf();
 
-	public SpiralingParticle(ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ, float maxRadius, float speed, int maxAge, int spiralLeaveAge, boolean billboard, SpriteSet provider) {
-		super(clientWorld, x, y, z, velX, velY, velZ);
-		this.provider = provider;
+	public SpiralingParticle(ClientLevel clientWorld, double x, double y, double z, float maxRadius, float speed, int maxAge, int spiralLeaveAge, boolean billboard, SpriteSet sprites) {
+		super(clientWorld, x, y, z, sprites.first());
+		this.provider = sprites;
+
 		this.xd = 0;
 		this.yd = 0;
 		this.zd = 0;
+
 		this.maxRadius = maxRadius;
 		this.radius = this.maxRadius;
 		this.speed = speed;
@@ -78,18 +81,20 @@ public class SpiralingParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public void render(VertexConsumer vertexConsumer, Camera camera, float tickProgress) {
-		if (this.billboard) {
-			super.render(vertexConsumer, camera, tickProgress);
+	public void extract(QuadParticleRenderState reusedState, Camera camera, float partialTick) {
+		if (billboard) {
+			super.extract(reusedState, camera, partialTick);
 			return;
 		}
 
-		rotationStorage.rotationY(Mth.lerp(tickProgress, this.oRoll, this.roll));
-		this.renderRotatedQuad(vertexConsumer, camera, rotationStorage, tickProgress);
+		rotationStorage.rotationY(Mth.lerp(partialTick, this.oRoll, this.roll));
+		this.extractRotatedQuad(reusedState, camera, rotationStorage, partialTick);
 
 		rotationStorage.rotateY(Mth.PI);
-		this.renderRotatedQuad(vertexConsumer, camera, rotationStorage, tickProgress);
+		this.extractRotatedQuad(reusedState, camera, rotationStorage, partialTick);
+
 	}
+
 
 	@Override
 	public int getLightColor(float tint) {
@@ -97,8 +102,8 @@ public class SpiralingParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
-		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+	protected @NotNull Layer getLayer() {
+		return Layer.TRANSLUCENT;
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -122,16 +127,17 @@ public class SpiralingParticle extends TextureSheetParticle {
 			return true;
 		}
 
-		public Particle createParticle(SimpleParticleType simpleParticleType, ClientLevel clientWorld, double x, double y, double z, double velX, double velY, double velZ) {
-			RandomSource random = clientWorld.getRandom();
+		@Override
+		public @Nullable Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
 			float maxRadius = this.maxRadius(random);
 			float maxSpeed = this.maxSpeed(random);
 			int maxAge = this.maxAge(random);
 			int spiralLeaveAge = this.spiralLeaveAge(random);
 			boolean billboard = this.billboard();
 
-			return new SpiralingParticle(clientWorld, x, y, z, velX, velY, velZ, maxRadius, maxSpeed, maxAge, spiralLeaveAge, billboard, spriteProvider);
+			return new SpiralingParticle(level, x, y, z, maxRadius, maxSpeed, maxAge, spiralLeaveAge, billboard, spriteProvider);
 		}
+
 	}
 
 	@Environment(EnvType.CLIENT)

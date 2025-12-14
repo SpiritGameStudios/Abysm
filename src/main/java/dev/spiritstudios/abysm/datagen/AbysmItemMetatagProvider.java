@@ -1,80 +1,84 @@
 package dev.spiritstudios.abysm.datagen;
 
-import dev.spiritstudios.specter.api.item.ItemMetatags;
-import dev.spiritstudios.specter.api.registry.metatag.datagen.MetatagProvider;
+import dev.spiritstudios.spectre.api.core.registry.metatag.MetatagBuilder;
+import dev.spiritstudios.spectre.api.core.registry.metatag.MetatagsProvider;
+import dev.spiritstudios.spectre.api.core.registry.metatag.SpectreMetatags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
-import static dev.spiritstudios.abysm.block.AbysmBlocks.ANTENNAE_PLANT;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.BLACK_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.BLOOMING_ANYOLITE_CROWN;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.BLOOMING_MELILITE_CROWN;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.BLOOMING_SODALITE_CROWN;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.BLUE_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.BROWN_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.CYAN_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.GREEN_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.GREY_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.LIGHT_BLUE_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.LIGHT_GREY_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.LIME_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.MAGENTA_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.MALLOWBLOOM_PETALEAVES;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.MALLOWBLOOM_PETALS;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.MAUVE_BLOOMSHROOM;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.MAUVE_BLOOMSHROOM_CAP;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.MAUVE_BLOOMSHROOM_STEM;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.MAUVE_SPRIGS;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.OOZETRICKLE_FILAMENTS;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.ORANGE_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.PINK_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.PURPLE_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.RED_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.ROSEBLOOM_PETALEAVES;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.ROSEBLOOM_PETALS;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.ROSY_BLOOMSHROOM;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.ROSY_BLOOMSHROOM_CAP;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.ROSY_BLOOMSHROOM_STEM;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.ROSY_SPRIGS;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.SUNBLOOM_PETALEAVES;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.SUNBLOOM_PETALS;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.SUNNY_BLOOMSHROOM;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.SUNNY_BLOOMSHROOM_CAP;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.SUNNY_BLOOMSHROOM_STEM;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.SUNNY_SPRIGS;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.WHITE_SCABIOSA;
-import static dev.spiritstudios.abysm.block.AbysmBlocks.YELLOW_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.ANTENNAE_PLANT;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.BLACK_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.BLOOMING_ANYOLITE_CROWN;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.BLOOMING_MELILITE_CROWN;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.BLOOMING_SODALITE_CROWN;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.BLUE_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.BROWN_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.CYAN_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.GREEN_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.GREY_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.LIGHT_BLUE_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.LIGHT_GREY_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.LIME_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.MAGENTA_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.MALLOWBLOOM_PETALEAVES;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.MALLOWBLOOM_PETALS;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.MAUVE_BLOOMSHROOM;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.MAUVE_BLOOMSHROOM_CAP;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.MAUVE_BLOOMSHROOM_HYPHAE;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.MAUVE_BLOOMSHROOM_STEM;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.MAUVE_SPRIGS;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.OOZETRICKLE_FILAMENTS;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.ORANGE_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.PINK_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.PURPLE_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.RED_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.ROSEBLOOM_PETALEAVES;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.ROSEBLOOM_PETALS;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.ROSY_BLOOMSHROOM;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.ROSY_BLOOMSHROOM_CAP;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.ROSY_BLOOMSHROOM_HYPHAE;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.ROSY_BLOOMSHROOM_STEM;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.ROSY_SPRIGS;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.SUNBLOOM_PETALEAVES;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.SUNBLOOM_PETALS;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.SUNNY_BLOOMSHROOM;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.SUNNY_BLOOMSHROOM_CAP;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.SUNNY_BLOOMSHROOM_HYPHAE;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.SUNNY_BLOOMSHROOM_STEM;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.SUNNY_SPRIGS;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.TALL_OOZETRICKLE_FILAMENTS;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.WHITE_SCABIOSA;
+import static dev.spiritstudios.abysm.world.level.block.AbysmBlocks.YELLOW_SCABIOSA;
 
-public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
-	public AbysmItemMetatagProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
-		super(dataOutput, Registries.ITEM, registriesFuture, PackOutput.Target.DATA_PACK);
+public class AbysmItemMetatagProvider extends MetatagsProvider.ItemMetatagProvider {
+	public AbysmItemMetatagProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(
+			dataOutput,
+			lookupProvider
+		);
 	}
 
-	private void putBlocks(MetatagProvider<Item>.MetatagBuilder<Float> builder, float value, Block... blocks) {
+	private void putBlocks(MetatagBuilder<Item, Float> builder, float value, Block... blocks) {
 		for (Block block : blocks) {
 			putBlock(builder, block, value);
 		}
 	}
 
-	private void putBlock(MetatagProvider<Item>.MetatagBuilder<Float> builder, Block block, float value) {
+	private void putBlock(MetatagBuilder<Item, Float> builder, Block block, float value) {
 		builder.put(block.asItem(), value);
 	}
 
 	@Override
-	protected void configure(Consumer<MetatagProvider<Item>.MetatagBuilder<?>> consumer, HolderLookup.Provider wrapperLookup) {
-		MetatagProvider<Item>.MetatagBuilder<Float> compostingChance = create(ItemMetatags.COMPOSTING_CHANCE);
-
-		putBlocks(compostingChance, 0.3F,
+	protected void addMetatags(HolderLookup.Provider provider) {
+		var compostingChance = builder(SpectreMetatags.COMPOSTING_CHANCE);
+		putBlocks(
+			compostingChance,
+			0.3F,
 			ROSEBLOOM_PETALS,
 			SUNBLOOM_PETALS,
 			MALLOWBLOOM_PETALS,
@@ -138,7 +142,10 @@ public class AbysmItemMetatagProvider extends MetatagProvider<Item> {
 			BLOOMING_ANYOLITE_CROWN,
 			BLOOMING_MELILITE_CROWN
 		);
+	}
 
-		consumer.accept(compostingChance);
+	@Override
+	public @NotNull String getName() {
+		return "Item Metatags";
 	}
 }

@@ -1,8 +1,8 @@
 package dev.spiritstudios.abysm.mixin.harpoon;
 
-import dev.spiritstudios.abysm.entity.harpoon.HarpoonDrag;
-import dev.spiritstudios.abysm.entity.harpoon.HarpoonEntity;
-import dev.spiritstudios.abysm.registry.tags.AbysmEntityTypeTags;
+import dev.spiritstudios.abysm.world.entity.harpoon.HarpoonDrag;
+import dev.spiritstudios.abysm.world.entity.harpoon.HarpoonEntity;
+import dev.spiritstudios.abysm.core.registries.tags.AbysmEntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,7 +48,7 @@ public abstract class LivingEntityMixin extends Entity implements HarpoonDrag {
 			return;
 		}
 		this.setDeltaMovement(this.abysm$harpoon.getDeltaMovement());
-		this.hasImpulse = true;
+		this.needsSync = true;
 		this.setPos(this.abysm$harpoon.position());
 
 		if ((Object) this instanceof PathfinderMob pathAwareEntity) {
