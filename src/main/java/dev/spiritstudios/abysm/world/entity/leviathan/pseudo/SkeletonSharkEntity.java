@@ -56,21 +56,14 @@ public class SkeletonSharkEntity extends ChainLeviathan implements EcologicalEnt
 	public final List<SkeletonSharkPart> nonFins;
 	public final EcosystemLogic ecosystemLogic = this.createEcosystemLogic(this);
 
-	public final SkeletonSharkPart head;
-	public final SkeletonSharkPart body;
-	public final SkeletonSharkPart tail;
-
 	protected float prevScale = 1;
 
 	public SkeletonSharkEntity(EntityType<? extends WaterAnimal> entityType, Level world) {
 		super(entityType, world);
 		ImmutableList.Builder<SkeletonSharkPart> builder = ImmutableList.builder();
-		head = new SkeletonSharkPart(this, "head", 2F, 1F, -1F);
-		body = new SkeletonSharkPart(this, "body", 2F, 1F, -0.1F);
-		tail = new SkeletonSharkPart(this, "tail", 2F, 1F, 1F);
-		builder.add(head);
-		builder.add(body);
-		builder.add(tail);
+		builder.add(new SkeletonSharkPart(this, "head", 2F, 1F, -1F));
+		builder.add(new SkeletonSharkPart(this, "body", 2F, 1F, -0.1F));
+		builder.add(new SkeletonSharkPart(this, "tail", 2F, 1F, 1F));
 		this.parts = builder.build();
 		this.nonFins = this.parts.stream().filter(part -> !part.name.contains("fin")).toList();
 		this.refreshDimensions();
