@@ -12,6 +12,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
+import java.util.List;
+
 @Mixin(Beardifier.class)
 public abstract class BeardifierMixin implements DensityFunctions.BeardifierOrMarker, StructureWeightSamplerDuckInterface {
 	@Unique
@@ -22,12 +24,17 @@ public abstract class BeardifierMixin implements DensityFunctions.BeardifierOrMa
 	private static Beardifier adjustCreatedBeardifier(Beardifier original, StructureManager world, ChunkPos pos) {
 		DensityBlobsSamplerCollection samplerCollection = DensityBlobsSamplerCollection.create(world, pos);
 
+		Beardifier out = original;
 		// if collection contains any samplers, store it
 		if (!samplerCollection.isEmpty()) {
-			((BeardifierMixin) (Object) original).abysm$samplerCollection = samplerCollection;
+			if (out.equals(Beardifier.EMPTY)) {
+				// if beardifier is the static EMPTY one then we need to create a non-static instance to avoid modifying and referencing EMPTY from multiple worldgen threads
+				out = new Beardifier(List.of(), List.of(), null);
+			}
+			((BeardifierMixin) (Object) out).abysm$samplerCollection = samplerCollection;
 		}
 
-		return original;
+		return out;
 	}
 
 	@Override
