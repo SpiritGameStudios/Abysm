@@ -37,10 +37,12 @@ import net.minecraft.world.entity.animal.fish.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -56,14 +58,21 @@ public class SkeletonSharkEntity extends ChainLeviathan implements EcologicalEnt
 	public final List<SkeletonSharkPart> nonFins;
 	public final EcosystemLogic ecosystemLogic = this.createEcosystemLogic(this);
 
+	public final SkeletonSharkPart rfin;
+	public final SkeletonSharkPart lfin;
+
 	protected float prevScale = 1;
 
 	public SkeletonSharkEntity(EntityType<? extends WaterAnimal> entityType, Level world) {
 		super(entityType, world);
+
 		ImmutableList.Builder<SkeletonSharkPart> builder = ImmutableList.builder();
-		builder.add(new SkeletonSharkPart(this, "head", 2F, 1F, -1F));
 		builder.add(new SkeletonSharkPart(this, "body", 2F, 1F, -0.1F));
+		this.rfin = new SkeletonSharkPart(this, "rfin", 0.5F, 0.5F, 0F);
+		this.lfin = new SkeletonSharkPart(this, "lfin", 0.5F, 0.5F, 0F);
 		builder.add(new SkeletonSharkPart(this, "tail", 2F, 1F, 1F));
+		builder.add(this.rfin);
+		builder.add(this.lfin);
 		this.parts = builder.build();
 		this.nonFins = this.parts.stream().filter(part -> !part.name.contains("fin")).toList();
 		this.refreshDimensions();
@@ -89,6 +98,30 @@ public class SkeletonSharkEntity extends ChainLeviathan implements EcologicalEnt
 	@Override
 	public float getDistanceToMainBody(EntityPart<Leviathan> leviathanPart) {
 		return leviathanPart instanceof SkeletonSharkPart part ? part.originalDistance : super.getDistanceToMainBody(leviathanPart);
+	}
+
+	@Override
+	protected void movePart(EntityPart<Leviathan> part, double dx, double dy, double dz) {
+		super.movePart(part, dx, dy, dz);
+
+		if (part instanceof SkeletonSharkPart skelesharkPart && Objects.equals(skelesharkPart.name, "body")) {
+			Vec3 vec3d = new Vec3(dz, 0 , -dx).normalize().scale(0.7);
+			double finY = dy - 0.3;
+
+			final double rX = this.rfin.getX();
+			final double rY = this.rfin.getY();
+			final double rZ = this.rfin.getZ();
+
+			final double lX = this.lfin.getX();
+			final double lY = this.lfin.getY();
+			final double lZ = this.lfin.getZ();
+
+			this.movePart(this.rfin, dx + vec3d.x, finY, dz + vec3d.z);
+			this.movePart(this.lfin, dx - vec3d.x, finY, dz - vec3d.z);
+
+			this.updatePartLastPos(this.rfin, rX, rY, rZ);
+			this.updatePartLastPos(this.lfin, lX, lY, lZ);
+		}
 	}
 
 	@Override
