@@ -1,0 +1,11 @@
+Abysm 1.21.11
+- Fix DSR worldgen ✅
+- Redo pressure system
+- Fix models
+- Merge brine into main
+- Lectorfin
+  - Obfuscated lectorfin
+  - Enchantment rendering
+  - Fix FindPlantsGoal
+- Readd AbysmConfig
+- Generate package infos?
