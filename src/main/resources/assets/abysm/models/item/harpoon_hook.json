@@ -1,0 +1,37 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench",
+	"parent": "abysm:item/harpoon",
+	"texture_size": [32, 32],
+	"textures": {
+		"1": "abysm:item/harpoon_arrow"
+	},
+	"elements": [
+		{
+			"from": [8, 6.5, -12],
+			"to": [11, 6.5, 1],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 5, 9]},
+			"faces": {
+				"up": {"uv": [8, 0, 0, 2.5], "rotation": 90, "texture": "#1"},
+				"down": {"uv": [16, 0, 8, 2.5], "rotation": 90, "texture": "#1"}
+			}
+		},
+		{
+			"from": [9.5, 5, -12],
+			"to": [9.5, 8, 1],
+			"rotation": {"angle": 45, "axis": "z", "origin": [8, 5, 9]},
+			"faces": {
+				"east": {"uv": [0, 0, 8, 2.5], "texture": "#1"},
+				"west": {"uv": [8, 0, 16, 2.5], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "arrow",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

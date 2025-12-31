@@ -1,10 +1,10 @@
 package dev.spiritstudios.abysm.client.datagen;
 
-import dev.spiritstudios.abysm.world.level.block.AbysmBlockFamilies;
-import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
 import dev.spiritstudios.abysm.client.render.HarpoonLoadedProperty;
 import dev.spiritstudios.abysm.world.item.AbysmEquipmentAssetKeys;
 import dev.spiritstudios.abysm.world.item.AbysmItems;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlockFamilies;
+import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -21,10 +21,11 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.client.renderer.block.model.VariantMutator;
+import net.minecraft.client.renderer.item.EmptyModel;
 import net.minecraft.core.Direction;
 import net.minecraft.data.BlockFamily;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.EquipmentAsset;
 import net.minecraft.world.level.block.Block;
@@ -261,13 +262,13 @@ public class AbysmModelProvider extends FabricModelProvider {
 		generator.declareCustomModelItem(AbysmItems.DIVING_HELMET);
 
 		registerArmorSet(
-				generator,
-				AbysmEquipmentAssetKeys.DIVING_SUIT,
-				false,
-				AbysmItems.DIVING_BOOTS,
-				AbysmItems.DIVING_LEGGINGS,
-				AbysmItems.DIVING_CHESTPLATE,
-				null // special-cased
+			generator,
+			AbysmEquipmentAssetKeys.DIVING_SUIT,
+			false,
+			AbysmItems.DIVING_BOOTS,
+			AbysmItems.DIVING_LEGGINGS,
+			AbysmItems.DIVING_CHESTPLATE,
+			null // special-cased
 		);
 
 		registerGenerated(generator,
@@ -301,22 +302,27 @@ public class AbysmModelProvider extends FabricModelProvider {
 			AbysmItems.MUSIC_DISC_RENAISSANCE
 		);
 
-		generator.generateBooleanDispatch(
+		generator.itemModelOutput.accept(
 			AbysmItems.HARPOON,
-			new HarpoonLoadedProperty(),
-			ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(AbysmItems.HARPOON, "_loaded")),
-			ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(AbysmItems.HARPOON))
+			ItemModelUtils.composite(
+				ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(AbysmItems.HARPOON)),
+				ItemModelUtils.conditional(
+					new HarpoonLoadedProperty(),
+					ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(AbysmItems.HARPOON, "_hook")),
+					new EmptyModel.Unbaked()
+				)
+			)
 		);
 	}
 
 	private void registerArmorSet(
-			final ItemModelGenerators generator,
-			final ResourceKey<EquipmentAsset> asset,
-			final boolean dyeable,
-			final @Nullable Item boots,
-			final @Nullable Item leggings,
-			final @Nullable Item chestplate,
-			final @Nullable Item helmet
+		final ItemModelGenerators generator,
+		final ResourceKey<EquipmentAsset> asset,
+		final boolean dyeable,
+		final @Nullable Item boots,
+		final @Nullable Item leggings,
+		final @Nullable Item chestplate,
+		final @Nullable Item helmet
 	) {
 		if (boots != null) {
 			generator.generateTrimmableItem(boots, asset, ItemModelGenerators.TRIM_PREFIX_BOOTS, dyeable);

@@ -2,9 +2,9 @@ package dev.spiritstudios.abysm.world.item;
 
 import dev.spiritstudios.abysm.core.component.AbysmDataComponents;
 import dev.spiritstudios.abysm.core.component.HarpoonComponent;
-import dev.spiritstudios.abysm.world.entity.harpoon.HarpoonEntity;
 import dev.spiritstudios.abysm.core.registries.AbysmEnchantments;
 import dev.spiritstudios.abysm.core.registries.AbysmSoundEvents;
+import dev.spiritstudios.abysm.world.entity.harpoon.HarpoonEntity;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -22,6 +22,7 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
@@ -154,5 +155,16 @@ public class HarpoonItem extends Item {
 	@Override
 	public boolean canBeEnchantedWith(ItemStack stack, Holder<Enchantment> enchantment, EnchantingContext context) {
 		return super.canBeEnchantedWith(stack, enchantment, context) || enchantment.is(PIERCING);
+	}
+
+	@Override
+	public ItemUseAnimation getUseAnimation(ItemStack stack) {
+		return ItemUseAnimation.CROSSBOW;
+	}
+
+
+	public static boolean isLoaded(ItemStack stack) {
+		HarpoonComponent component = stack.getOrDefault(AbysmDataComponents.HARPOON, HarpoonComponent.EMPTY);
+		return component.loaded();
 	}
 }

@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin.render;
+package dev.spiritstudios.abysm.client.mixin.render.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.BubbleParticle;

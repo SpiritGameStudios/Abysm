@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.mixin.render;
+package dev.spiritstudios.abysm.client.mixin.render.particle;
 
 import dev.spiritstudios.spectre.api.core.math.Easing;
 import net.minecraft.client.multiplayer.ClientLevel;
