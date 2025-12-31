@@ -13,7 +13,7 @@ public record HappyEntityParticlesS2CPayload(int entityId, ParticleOptions parti
 
 	public static final Type<HappyEntityParticlesS2CPayload> ID = new Type<>(Abysm.id("entity_finished_eating_s2c"));
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, HappyEntityParticlesS2CPayload> PACKET_CODEC = StreamCodec.composite(
+	public static final StreamCodec<RegistryFriendlyByteBuf, HappyEntityParticlesS2CPayload> STREAM_CODEC = StreamCodec.composite(
 		ByteBufCodecs.VAR_INT, payload -> payload.entityId,
 		ParticleTypes.STREAM_CODEC, payload -> payload.particleEffect,
 		ByteBufCodecs.VAR_INT, payload -> payload.count,

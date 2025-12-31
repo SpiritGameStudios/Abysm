@@ -26,8 +26,7 @@ public abstract class ServerLevelMixin implements EcosystemManagedLevel {
 
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void abysm$createEcosystemAreaManager(MinecraftServer server, Executor dispatcher, LevelStorageSource.LevelStorageAccess storageSource, ServerLevelData levelData, ResourceKey<?> dimension, LevelStem levelStem, boolean isDebug, long biomeZoomSeed, List<?> customSpawners, boolean tickTime, RandomSequences randomSequences, CallbackInfo ci) {
-		ServerLevel world = (ServerLevel) (Object) this;
-		this.abysm$ecosystemAreaManager = new EcosystemAreaManager(world);
+		this.abysm$ecosystemAreaManager = new EcosystemAreaManager((ServerLevel) (Object) this);
 	}
 
 	// Instead of using a Fabric API event, simply inject into the tick method because we're already here with a mixin

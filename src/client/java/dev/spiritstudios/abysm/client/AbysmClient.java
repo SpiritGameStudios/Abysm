@@ -8,7 +8,6 @@ import dev.spiritstudios.abysm.client.render.HarpoonLoadedProperty;
 import dev.spiritstudios.abysm.client.render.entity.AbysmEntityLayers;
 import dev.spiritstudios.abysm.client.render.entity.BloomrayEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.ElectricOoglyBooglyRenderer;
-import dev.spiritstudios.abysm.client.render.entity.EmptyEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.FishEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.FlippersRenderer;
 import dev.spiritstudios.abysm.client.render.entity.FliprayEntityRenderer;
@@ -47,7 +46,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 public class AbysmClient implements ClientModInitializer {
-
 	@Override
 	public void onInitializeClient() {
 		ConditionalItemModelProperties.ID_MAPPER.put(Abysm.id("harpoon_loaded"), HarpoonLoadedProperty.CODEC);

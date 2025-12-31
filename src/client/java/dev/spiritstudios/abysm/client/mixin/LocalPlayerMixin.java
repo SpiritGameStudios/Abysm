@@ -22,8 +22,8 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements D
 	@Final
 	protected Minecraft minecraft;
 
-	private LocalPlayerMixin(ClientLevel world, GameProfile profile) {
-		super(world, profile);
+	private LocalPlayerMixin(ClientLevel level, GameProfile profile) {
+		super(level, profile);
 	}
 
 	@Override

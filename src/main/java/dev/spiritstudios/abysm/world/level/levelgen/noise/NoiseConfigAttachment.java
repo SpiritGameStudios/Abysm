@@ -2,9 +2,6 @@ package dev.spiritstudios.abysm.world.level.levelgen.noise;
 
 import dev.spiritstudios.abysm.duck.RandomStateDuckInterface;
 import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.AbysmDensityFunctions;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +10,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class NoiseConfigAttachment {
 	private @Nullable DensityFunction ruinsSediment = null;
@@ -20,8 +20,8 @@ public class NoiseConfigAttachment {
 	private @Nullable DensityFunction ruinsShellCaveWithPillars = null;
 	private @Nullable DensityFunction beardifierAddition = null;
 
-	public void attachBonusFunctions(ServerLevel world, SamplerFunction samplerFunction) {
-		Registry<DensityFunction> dfRegistry = world.registryAccess().lookupOrThrow(Registries.DENSITY_FUNCTION);
+	public void attachBonusFunctions(ServerLevel level, SamplerFunction samplerFunction) {
+		Registry<DensityFunction> dfRegistry = level.registryAccess().lookupOrThrow(Registries.DENSITY_FUNCTION);
 
 		this.ruinsSediment = getDensityFunction(AbysmDensityFunctions.RUINS_SEDIMENT, dfRegistry, samplerFunction);
 		this.ruinsShellCave = getDensityFunction(AbysmDensityFunctions.RUINS_SHELL_CAVE, dfRegistry, samplerFunction);

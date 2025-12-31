@@ -108,18 +108,18 @@ public class EcosystemEntityDebugRenderer implements DebugRenderer.SimpleDebugRe
 		final CompletableFuture<List<EntityStatus>> serverStates;
 
 		EntityLoadingStatus(IntegratedServer server, AABB searchBox) {
-			ClientLevel clientWorld = EcosystemEntityDebugRenderer.this.minecraft.level;
-			assert clientWorld != null;
+			ClientLevel level = EcosystemEntityDebugRenderer.this.minecraft.level;
+			assert level != null;
 
-			ResourceKey<Level> worldKey = clientWorld.dimension();
+			ResourceKey<Level> dimension = level.dimension();
 
 			this.serverStates = server.submit(() -> {
-				ServerLevel serverWorld = server.getLevel(worldKey);
-				if (serverWorld == null) return ImmutableList.of();
+				ServerLevel serverLevel = server.getLevel(dimension);
+				if (serverLevel == null) return ImmutableList.of();
 
 				ImmutableList.Builder<EntityStatus> statusBuilder = ImmutableList.builder();
 
-				serverWorld.getEntitiesOfClass(Mob.class, searchBox, LivingEntity::isAlive).forEach(entity -> {
+				serverLevel.getEntitiesOfClass(Mob.class, searchBox, LivingEntity::isAlive).forEach(entity -> {
 					if (!(entity instanceof EcologicalEntity ecologicalEntity)) return;
 
 					// Names are completely useless, but I think it's fun that Minecraft uses them for debug anyways

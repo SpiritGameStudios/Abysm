@@ -24,8 +24,8 @@ public record EntityPattern(Holder<EntityPatternVariant> variant, int baseColor,
 		).apply(instance, EntityPattern::new)
 	);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, EntityPattern> PACKET_CODEC = StreamCodec.composite(
-		EntityPatternVariant.ENTRY_PACKET_CODEC, EntityPattern::variant,
+	public static final StreamCodec<RegistryFriendlyByteBuf, EntityPattern> STREAM_CODEC = StreamCodec.composite(
+		EntityPatternVariant.ENTRY_STREAM_CODEC, EntityPattern::variant,
 		ByteBufCodecs.INT, EntityPattern::baseColor,
 		ByteBufCodecs.INT, EntityPattern::patternColor,
 		EntityPattern::new

@@ -23,14 +23,14 @@ public class OrefurlFeature extends Feature<OrefurlFeature.Config> {
 
 	@Override
 	public boolean place(FeaturePlaceContext<Config> context) {
-		WorldGenLevel world = context.level();
+		WorldGenLevel level = context.level();
 		BlockPos originPos = context.origin();
 		RandomSource random = context.random();
 		Config config = context.config();
 
 		BlockPos targetPos = originPos;
 
-		if (!world.getBlockState(targetPos).is(Blocks.WATER)) {
+		if (!level.getBlockState(targetPos).is(Blocks.WATER)) {
 			return false;
 		}
 
@@ -40,23 +40,23 @@ public class OrefurlFeature extends Feature<OrefurlFeature.Config> {
 			BlockState orefurl = config.orefurlStateProvider.getState(random, originPos);
 			BlockState orefurlPlant = config.orefurlPlantStateProvider.getState(random, originPos);
 
-			if (world.getBlockState(targetPos).is(Blocks.WATER)
-				&& world.getBlockState(targetPos.above()).is(Blocks.WATER)
-				&& orefurlPlant.canSurvive(world, targetPos)) {
+			if (level.getBlockState(targetPos).is(Blocks.WATER)
+				&& level.getBlockState(targetPos.above()).is(Blocks.WATER)
+				&& orefurlPlant.canSurvive(level, targetPos)) {
 				// place block at this y level
 				if (j + 1 == height) {
 					// place tip
-					world.setBlock(targetPos, orefurl.trySetValue(OrefurlBlock.AGE, random.nextInt(4) + 20), Block.UPDATE_CLIENTS);
+					level.setBlock(targetPos, orefurl.trySetValue(OrefurlBlock.AGE, random.nextInt(4) + 20), Block.UPDATE_CLIENTS);
 					placed++;
 				} else {
 					// place body
-					world.setBlock(targetPos, orefurlPlant, Block.UPDATE_CLIENTS);
+					level.setBlock(targetPos, orefurlPlant, Block.UPDATE_CLIENTS);
 				}
 			} else if (j != 0) {
 				// replace block at y level below with a tip
 				BlockPos downPos = targetPos.below();
-				if (orefurl.canSurvive(world, downPos)) {
-					world.setBlock(downPos, orefurl.trySetValue(OrefurlBlock.AGE, random.nextInt(4) + 20), Block.UPDATE_CLIENTS);
+				if (orefurl.canSurvive(level, downPos)) {
+					level.setBlock(downPos, orefurl.trySetValue(OrefurlBlock.AGE, random.nextInt(4) + 20), Block.UPDATE_CLIENTS);
 					placed++;
 				}
 				break;

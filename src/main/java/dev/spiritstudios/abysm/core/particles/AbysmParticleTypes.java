@@ -29,7 +29,7 @@ public final class AbysmParticleTypes {
 
 	public static final SimpleParticleType OOGLY_BOOGLY_SPARKLE = registerSimple("oogly_boogly_sparkle", false);
 	public static final SimpleParticleType OOGLY_BOOGLY_ELECTRICITY = registerSimple("oogly_boogly_electricity", false);
-	public static final ParticleType<OoglyBooglyFumesParticleEffect> OOGLY_BOOGLY_FUMES = register("oogly_boogly_fumes", false, type -> OoglyBooglyFumesParticleEffect.CODEC, type -> OoglyBooglyFumesParticleEffect.PACKET_CODEC);
+	public static final ParticleType<OoglyBooglyFumesParticleEffect> OOGLY_BOOGLY_FUMES = register("oogly_boogly_fumes", false, type -> OoglyBooglyFumesParticleEffect.CODEC, type -> OoglyBooglyFumesParticleEffect.STREAM_CODEC);
 	public static final SimpleParticleType OOGLY_BOOGLY_ELECTRICITY_SPIRAL = registerSimple("oogly_boogly_electricity_spiral", false);
 	public static final SimpleParticleType OOGLY_BOOGLY_ELECTRICITY_SPECK = registerSimple("oogly_boogly_electricity_speck", false);
 

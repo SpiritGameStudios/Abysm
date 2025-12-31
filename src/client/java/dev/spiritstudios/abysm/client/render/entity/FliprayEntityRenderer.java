@@ -1,5 +1,7 @@
 package dev.spiritstudios.abysm.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.world.entity.ReticulatedFliprayEntity;
 import net.minecraft.client.model.EntityModel;
@@ -45,19 +47,17 @@ public class FliprayEntityRenderer extends MobRenderer<ReticulatedFliprayEntity,
 		return TEXTURE;
 	}
 
+	@Override
+	protected void setupRotations(LivingEntityRenderState renderState, PoseStack poseStack, float bodyRot, float scale) {
+		super.setupRotations(renderState, poseStack, bodyRot, scale);
+		poseStack.mulPose(Axis.XP.rotationDegrees(-renderState.xRot));
+	}
+
 	public static class Model extends EntityModel<LivingEntityRenderState> {
 		public Model(
 			ModelPart part
 		) {
 			super(part);
 		}
-
-//		@Override
-//		public void setupAnim(LivingEntityRenderState renderState) {
-//			super.setupAnim(renderState);
-//
-//			body.setRotX(-pitch * Mth.DEG_TO_RAD);
-//			body.setRotY(-yaw * Mth.DEG_TO_RAD);
-//		}
 	}
 }

@@ -4,6 +4,8 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.client.render.entity.state.VariantState;
 import dev.spiritstudios.abysm.data.variant.SnapperEntityVariant;
 import dev.spiritstudios.abysm.world.entity.generic.SnapperEntity;
+import dev.spiritstudios.spectre.api.client.model.animation.AnimationLocation;
+import dev.spiritstudios.spectre.api.client.model.animation.SpectreKeyframeAnimation;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -26,10 +28,23 @@ public class SnapperEntityRenderer extends VariantMobRenderer<SnapperEntity, Sna
 	}
 
 	public static class Model extends EntityModel<VariantState<SnapperEntityVariant>> {
+		private final SpectreKeyframeAnimation swim;
+
 		protected Model(EntityRendererProvider.Context context) {
 			super(
 				context.bakeLayer(new ModelLayerLocation(Abysm.id("snapper"), "main"))
 			);
+
+			this.swim = context.bakeAnimation(new AnimationLocation(Abysm.id("snapper"), "swim"), root());
+		}
+
+		@Override
+		public void setupAnim(VariantState<SnapperEntityVariant> renderState) {
+			super.setupAnim(renderState);
+
+			var query = renderState.query;
+
+			swim.applyWalk(query, renderState.walkAnimationPos, renderState.walkAnimationSpeed, 2F, 2F);
 		}
 	}
 }

@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.world.entity.generic;
 import dev.spiritstudios.abysm.core.registries.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.core.registries.AbysmSoundEvents;
 import dev.spiritstudios.abysm.data.variant.GupGupVariant;
-import dev.spiritstudios.abysm.world.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityDataSerializers;
 import dev.spiritstudios.abysm.world.entity.SimpleFishEntity;
 import dev.spiritstudios.abysm.world.entity.ai.goal.SwimAroundBoidGoal;
 import dev.spiritstudios.abysm.world.entity.ai.goal.ecosystem.FleePredatorsGoal;
@@ -34,7 +34,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 public class GupGupEntity extends SimpleFishEntity implements Variantable<GupGupVariant> {
-	public static final EntityDataAccessor<Holder<GupGupVariant>> VARIANT = SynchedEntityData.defineId(GupGupEntity.class, AbysmTrackedDataHandlers.GUP_GUP_VARIANT);
+	public static final EntityDataAccessor<Holder<GupGupVariant>> VARIANT = SynchedEntityData.defineId(GupGupEntity.class, AbysmEntityDataSerializers.GUP_GUP_VARIANT);
 
 
 	public GupGupEntity(EntityType<GupGupEntity> entityType, Level world) {

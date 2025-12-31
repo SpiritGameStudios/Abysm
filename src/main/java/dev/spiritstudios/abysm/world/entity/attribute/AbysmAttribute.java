@@ -36,7 +36,7 @@ public record AbysmAttribute(
 	/**
 	 * @author SkyNotTheLimit
 	 */
-	public static final StreamCodec<RegistryFriendlyByteBuf, AbysmAttribute> PACKET_CODEC = StreamCodec.composite(
+	public static final StreamCodec<RegistryFriendlyByteBuf, AbysmAttribute> STREAM_CODEC = StreamCodec.composite(
 			Attribute.STREAM_CODEC, AbysmAttribute::attribute,
 			AttributeModifier.STREAM_CODEC, AbysmAttribute::modifier,
 			AbysmAttribute::new

@@ -45,38 +45,38 @@ public class BloomshroomTrunkPlacer extends TrunkPlacer {
 		return AbysmTrunkPlacerTypes.BLOOMSHROOM;
 	}
 
-	protected void getAndSetPetal(LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> replacer, RandomSource random, BlockPos pos) {
-		if (!this.validTreePos(world, pos)) return;
+	protected void getAndSetPetal(LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> replacer, RandomSource random, BlockPos pos) {
+		if (!this.validTreePos(level, pos)) return;
 
 		replacer.accept(
 			pos,
 			petalProvider.getState(random, pos)
 				.trySetValue(BlockStateProperties.WATERLOGGED,
-					world.isFluidAtPosition(pos, fluidState -> fluidState.isSourceOfType(Fluids.WATER)))
+					level.isFluidAtPosition(pos, fluidState -> fluidState.isSourceOfType(Fluids.WATER)))
 		);
 	}
 
 	@Override
 	public List<FoliagePlacer.FoliageAttachment> placeTrunk(
-		LevelSimulatedReader world, BiConsumer<BlockPos, BlockState> replacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration config
+		LevelSimulatedReader level, BiConsumer<BlockPos, BlockState> replacer, RandomSource random, int height, BlockPos startPos, TreeConfiguration config
 	) {
 		// trunk
 		for (int i = 0; i < height; i++) {
-			this.placeLog(world, replacer, random, startPos.above(i), config);
+			this.placeLog(level, replacer, random, startPos.above(i), config);
 		}
 
 		for (Direction direction : SpectreMath.HORIZONTAL_DIRECTIONS) {
 			BlockPos p = startPos.relative(direction);
-			if (this.placeLog(world, replacer, random, p, config)) {
+			if (this.placeLog(level, replacer, random, p, config)) {
 				int downAmount = 1 + random.nextInt(2);
 				for (int i = 1; i <= downAmount; i++) {
-					boolean placed = this.placeLog(world, replacer, random, p.below(i), config);
+					boolean placed = this.placeLog(level, replacer, random, p.below(i), config);
 					if (!placed) break;
 				}
 
 				int upAmount = random.nextInt(2);
 				for (int i = 1; i <= upAmount; i++) {
-					boolean placed = this.placeLog(world, replacer, random, p.above(i), config);
+					boolean placed = this.placeLog(level, replacer, random, p.above(i), config);
 					if (!placed) break;
 				}
 			}
@@ -91,10 +91,10 @@ public class BloomshroomTrunkPlacer extends TrunkPlacer {
 
 				boolean isCorner = dx != 0 && dz != 0;
 				if (!isCorner || random.nextFloat() < 0.4F) {
-					this.getAndSetPetal(world, replacer, random, petalStart.offset(dx, 0, dz));
+					this.getAndSetPetal(level, replacer, random, petalStart.offset(dx, 0, dz));
 				}
 				if (!isCorner && random.nextFloat() < 0.3F) {
-					this.getAndSetPetal(world, replacer, random, petalStart.offset(dx, -1, dz));
+					this.getAndSetPetal(level, replacer, random, petalStart.offset(dx, -1, dz));
 				}
 			}
 		}

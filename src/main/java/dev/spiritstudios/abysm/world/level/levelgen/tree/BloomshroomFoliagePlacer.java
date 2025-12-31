@@ -60,7 +60,7 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 	}
 
 	protected void generateSquareNoCorners(
-		LevelSimulatedReader world, FoliagePlacer.FoliageSetter placer, RandomSource random, TreeConfiguration config, BlockPos centerPos, int radius, int y
+		LevelSimulatedReader level, FoliagePlacer.FoliageSetter setter, RandomSource random, TreeConfiguration config, BlockPos centerPos, int radius, int y
 	) {
 		for (BlockPos offsetPos : BlockPos.betweenClosed(centerPos.offset(-radius, y, -radius), centerPos.offset(radius, y, radius))) {
 			int xDistance = offsetPos.getX() - centerPos.getX();
@@ -69,12 +69,12 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 			int zDistAbs = Mth.abs(zDistance);
 
 			if (xDistAbs == radius && zDistAbs == radius) continue;
-			tryPlaceLeaf(world, placer, random, config, offsetPos);
+			tryPlaceLeaf(level, setter, random, config, offsetPos);
 		}
 	}
 
 	protected void generateSquareNoCornersOrMiddleEnds(
-		LevelSimulatedReader world, FoliagePlacer.FoliageSetter placer, RandomSource random, TreeConfiguration config, BlockPos centerPos, int radius, int y
+		LevelSimulatedReader level, FoliagePlacer.FoliageSetter placer, RandomSource random, TreeConfiguration config, BlockPos centerPos, int radius, int y
 	) {
 		for (BlockPos offsetPos : BlockPos.betweenClosed(centerPos.offset(-radius, y, -radius), centerPos.offset(radius, y, radius))) {
 			int xDistance = offsetPos.getX() - centerPos.getX();
@@ -86,25 +86,25 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 			if (xDistAbs == 0 && zDistAbs == radius) continue;
 			if (xDistAbs == radius && zDistAbs == 0) continue;
 
-			tryPlaceLeaf(world, placer, random, config, offsetPos);
+			tryPlaceLeaf(level, placer, random, config, offsetPos);
 		}
 	}
 
-	protected boolean placeLeavesBlock(LevelSimulatedReader world, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos) {
-		return this.placeBlock(world, placer, random, pos, this.leavesProvider);
+	protected boolean placeLeavesBlock(LevelSimulatedReader level, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos) {
+		return this.placeBlock(level, placer, random, pos, this.leavesProvider);
 	}
 
-	protected boolean placeNectarsapBlock(LevelSimulatedReader world, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos) {
-		return this.placeBlock(world, placer, random, pos, this.nectarsapProvider);
+	protected boolean placeNectarsapBlock(LevelSimulatedReader level, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos) {
+		return this.placeBlock(level, placer, random, pos, this.nectarsapProvider);
 	}
 
-	protected boolean placeCrownBlock(LevelSimulatedReader world, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos) {
-		return this.placeBlock(world, placer, random, pos, this.crownProvider);
+	protected boolean placeCrownBlock(LevelSimulatedReader level, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos) {
+		return this.placeBlock(level, placer, random, pos, this.crownProvider);
 	}
 
-	protected boolean placeBlock(LevelSimulatedReader world, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos, BlockStateProvider provider) {
-		if (world.isStateAtPosition(pos, state -> state.getValueOrElse(BlockStateProperties.PERSISTENT, false)) ||
-			!TreeFeature.validTreePos(world, pos)) {
+	protected boolean placeBlock(LevelSimulatedReader level, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos, BlockStateProvider provider) {
+		if (level.isStateAtPosition(pos, state -> state.getValueOrElse(BlockStateProperties.PERSISTENT, false)) ||
+			!TreeFeature.validTreePos(level, pos)) {
 			return false;
 		}
 
@@ -113,19 +113,19 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 			provider.getState(random, pos)
 				.trySetValue(
 					BlockStateProperties.WATERLOGGED,
-					world.isFluidAtPosition(pos, fluidState -> fluidState.isSourceOfType(Fluids.WATER))
+					level.isFluidAtPosition(pos, fluidState -> fluidState.isSourceOfType(Fluids.WATER))
 				)
 		);
 
 		return true;
 	}
 
-	protected void fillCuboid(LevelSimulatedReader world, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos, BlockStateProvider provider, int dx, int dy, int dz) {
-		BlockPos.betweenClosed(pos, pos.offset(dx, dy, dz)).forEach(p -> placeBlock(world, placer, random, p, provider));
+	protected void fillCuboid(LevelSimulatedReader level, FoliagePlacer.FoliageSetter placer, RandomSource random, BlockPos pos, BlockStateProvider provider, int dx, int dy, int dz) {
+		BlockPos.betweenClosed(pos, pos.offset(dx, dy, dz)).forEach(p -> placeBlock(level, placer, random, p, provider));
 	}
 
 	@Override
-	protected void createFoliage(LevelSimulatedReader world, FoliageSetter placer, RandomSource random, TreeConfiguration config, int trunkHeight, FoliageAttachment treeNode, int foliageHeight, int radius, int offset) {
+	protected void createFoliage(LevelSimulatedReader level, FoliageSetter placer, RandomSource random, TreeConfiguration config, int trunkHeight, FoliageAttachment treeNode, int foliageHeight, int radius, int offset) {
 		// TODO ideally un-hardcode some of these numbers at some point
 
 		BlockPos pos = treeNode.pos().above(offset);
@@ -137,29 +137,29 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 		for (int dx = -1; dx <= 1; dx++) {
 			for (int dz = -1; dz <= 1; dz++) {
 				if (dx == 0 || dz == 0) {
-					fillCuboid(world, placer, random, pos.offset(dx, y - 1, dz), this.nectarsapProvider, 0, -3, 0);
+					fillCuboid(level, placer, random, pos.offset(dx, y - 1, dz), this.nectarsapProvider, 0, -3, 0);
 				}
 			}
 		}
 
 		// place cap
 		generateSquareNoCorners(
-			world, placer, random, config,
+			level, placer, random, config,
 			pos, r - 1, y
 		);
 
 		generateSquareNoCornersOrMiddleEnds(
-			world, placer, random, config,
+			level, placer, random, config,
 			pos, r, y - 1
 		);
 
 		generateSquareNoCornersOrMiddleEnds(
-			world, placer, random, config,
+			level, placer, random, config,
 			pos, r - 1, y - 2
 		);
 
 		// place crown
-		placeCrownBlock(world, placer, random, pos.above(y + 1));
+		placeCrownBlock(level, placer, random, pos.above(y + 1));
 
 		// place lower leaves
 		for (int i = -3; i <= 3; i += 2) {
@@ -170,7 +170,7 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 				if (xDistAbs == 3 && zDistAbs == 3) continue;
 				if (xDistAbs != 3 && zDistAbs != 3) continue;
 
-				placeLeavesBlock(world, placer, random, pos.offset(i, y - 2, j));
+				placeLeavesBlock(level, placer, random, pos.offset(i, y - 2, j));
 			}
 		}
 
@@ -181,13 +181,13 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 
 				if (xDistAbs != 2 && zDistAbs != 2) continue;
 
-				fillCuboid(world, placer, random, pos.offset(i, y - 3, j), this.leavesProvider, 0, 2, 0);
+				fillCuboid(level, placer, random, pos.offset(i, y - 3, j), this.leavesProvider, 0, 2, 0);
 			}
 		}
 
 		for (int i = -1; i <= 1; i += 2) {
 			for (int j = -1; j <= 1; j += 2) {
-				fillCuboid(world, placer, random, pos.offset(i, y - 4, j), this.leavesProvider, 0, 2, 0);
+				fillCuboid(level, placer, random, pos.offset(i, y - 4, j), this.leavesProvider, 0, 2, 0);
 			}
 		}
 
@@ -196,11 +196,11 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 			// horizontal leaves
 			for (Direction direction : SpectreMath.HORIZONTAL_DIRECTIONS) {
 				BlockPos p = pos.offset(0, y - 1, 0).relative(direction, radius);
-				fillCuboid(world, placer, random, p, this.leavesProvider, 0, 2, 0);
+				fillCuboid(level, placer, random, p, this.leavesProvider, 0, 2, 0);
 
 				p = p.above(2);
 				p = p.relative(direction);
-				fillCuboid(world, placer, random, p, this.leavesProvider, 0, 1, 0);
+				fillCuboid(level, placer, random, p, this.leavesProvider, 0, 1, 0);
 			}
 		}
 
@@ -210,11 +210,11 @@ public class BloomshroomFoliagePlacer extends FoliagePlacer {
 				Direction perpDir = direction.getClockWise(Direction.Axis.Y);
 				BlockPos p = pos.offset(0, y, 0).relative(direction, radius - 1).relative(perpDir, radius - 1);
 
-				fillCuboid(world, placer, random, p, this.leavesProvider, 0, 2, 0);
+				fillCuboid(level, placer, random, p, this.leavesProvider, 0, 2, 0);
 
 				boolean tallerSide = random.nextBoolean();
-				fillCuboid(world, placer, random, p.relative(direction), this.leavesProvider, 0, tallerSide ? 1 : 0, 0);
-				fillCuboid(world, placer, random, p.relative(perpDir), this.leavesProvider, 0, tallerSide ? 0 : 1, 0);
+				fillCuboid(level, placer, random, p.relative(direction), this.leavesProvider, 0, tallerSide ? 1 : 0, 0);
+				fillCuboid(level, placer, random, p.relative(perpDir), this.leavesProvider, 0, tallerSide ? 0 : 1, 0);
 			}
 		}
 	}

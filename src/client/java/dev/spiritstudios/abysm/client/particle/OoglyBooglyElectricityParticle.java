@@ -12,8 +12,8 @@ import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
 public class OoglyBooglyElectricityParticle extends SimpleAnimatedParticle {
-	protected OoglyBooglyElectricityParticle(ClientLevel clientWorld, double x, double y, double z, SpriteSet sprites) {
-		super(clientWorld, x, y, z, sprites, 0.0F);
+	protected OoglyBooglyElectricityParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
+		super(level, x, y, z, sprites, 0.0F);
 		this.xd = 0;
 		this.yd = 0;
 		this.zd = 0;

@@ -32,7 +32,7 @@ public class BloomrayEntityVariant extends AbstractEntityVariant {
 
 	public static final Codec<Holder<BloomrayEntityVariant>> ENTRY_CODEC = RegistryFixedCodec.create(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<BloomrayEntityVariant>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<BloomrayEntityVariant>> ENTRY_STREAM_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT);
 
 	public static Holder<BloomrayEntityVariant> getDefaultEntry(RegistryAccess registryManager) {
 		return getDefaultEntry(registryManager.lookupOrThrow(AbysmRegistryKeys.BLOOMRAY_ENTITY_VARIANT));

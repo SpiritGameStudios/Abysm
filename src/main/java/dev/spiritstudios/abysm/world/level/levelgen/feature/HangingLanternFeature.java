@@ -27,12 +27,12 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 	@Override
 	public boolean place(FeaturePlaceContext<Config> context) {
 		Config config = context.config();
-		WorldGenLevel world = context.level();
+		WorldGenLevel level = context.level();
 		BlockPos pos = context.origin();
 		RandomSource random = context.random();
 
 		// do not place if supporting block cannot actually support
-		if (!stateCanSupportChain(world.getBlockState(pos.above()), world, pos.above())) {
+		if (!stateCanSupportChain(level.getBlockState(pos.above()), level, pos.above())) {
 			return false;
 		}
 
@@ -41,7 +41,7 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 		int length = 0;
 		for (int i = 0; i < maxLength; i++) {
 			BlockPos checkPos = pos.below(i);
-			BlockState checkState = world.getBlockState(checkPos);
+			BlockState checkState = level.getBlockState(checkPos);
 			if (canReplaceState(checkState)) {
 				length++;
 			} else {
@@ -53,8 +53,8 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 		int requiredSpaceBelowLantern = config.spaceToFloor.sample(random);
 		for (int i = 0; i < requiredSpaceBelowLantern; i++) {
 			BlockPos checkPos = pos.below(length + i);
-			BlockState checkState = world.getBlockState(checkPos);
-			if (!checkState.isRedstoneConductor(world, checkPos)) {
+			BlockState checkState = level.getBlockState(checkPos);
+			if (!checkState.isRedstoneConductor(level, checkPos)) {
 				emptySpaceBelowLantern++;
 			} else {
 				break;
@@ -72,7 +72,7 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 			BlockPos placePos = pos.below(i);
 			BlockStateProvider provider = (i + 1 == length) ? (config.lanternStateProvider) : (config.chainStateProvider);
 			BlockState placeState = provider.getState(context.random(), pos);
-			placeWithWaterIfPresent(placeState, placePos, world);
+			placeWithWaterIfPresent(placeState, placePos, level);
 		}
 
 		return true;
@@ -82,16 +82,16 @@ public class HangingLanternFeature extends Feature<HangingLanternFeature.Config>
 		return state.canBeReplaced();
 	}
 
-	private boolean stateCanSupportChain(BlockState state, BlockGetter world, BlockPos pos) {
-		return state.isFaceSturdy(world, pos, Direction.DOWN);
+	private boolean stateCanSupportChain(BlockState state, BlockGetter level, BlockPos pos) {
+		return state.isFaceSturdy(level, pos, Direction.DOWN);
 	}
 
-	private void placeWithWaterIfPresent(BlockState state, BlockPos pos, WorldGenLevel world) {
-		FluidState fluidState = world.getFluidState(pos);
+	private void placeWithWaterIfPresent(BlockState state, BlockPos pos, WorldGenLevel level) {
+		FluidState fluidState = level.getFluidState(pos);
 		if (fluidState.is(FluidTags.WATER)) {
 			state = state.trySetValue(BlockStateProperties.WATERLOGGED, true);
 		}
-		world.setBlock(pos, state, Block.UPDATE_CLIENTS);
+		level.setBlock(pos, state, Block.UPDATE_CLIENTS);
 	}
 
 	public record Config(BlockStateProvider lanternStateProvider, BlockStateProvider chainStateProvider,

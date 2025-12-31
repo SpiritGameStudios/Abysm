@@ -27,8 +27,8 @@ public class SpiralingParticle extends SingleQuadParticle {
 
 	private final Quaternionf rotationStorage = new Quaternionf();
 
-	public SpiralingParticle(ClientLevel clientWorld, double x, double y, double z, float maxRadius, float speed, int maxAge, int spiralLeaveAge, boolean billboard, SpriteSet sprites) {
-		super(clientWorld, x, y, z, sprites.first());
+	public SpiralingParticle(ClientLevel level, double x, double y, double z, float maxRadius, float speed, int maxAge, int spiralLeaveAge, boolean billboard, SpriteSet sprites) {
+		super(level, x, y, z, sprites.first());
 		this.provider = sprites;
 
 		this.xd = 0;

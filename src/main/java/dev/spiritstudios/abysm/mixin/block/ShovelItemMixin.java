@@ -23,13 +23,13 @@ public abstract class ShovelItemMixin {
 	private void dropBonusItems(
 		UseOnContext context,
 		CallbackInfoReturnable<InteractionResult> cir,
-		@Local(ordinal = 0) Level world,
+		@Local(ordinal = 0) Level level,
 		@Local(ordinal = 0) BlockPos blockPos,
 		@Local(ordinal = 0) BlockState oldState,
 		@Nullable @Local(ordinal = 2) BlockState newState
 	) {
 		if (newState != null && newState.is(AbysmBlocks.DREGLOAM) && oldState.is(AbysmBlocks.OOZING_DREGLOAM)) {
-			Block.popResource(world, blockPos, AbysmItems.DREGLOAM_OOZEBALL.getDefaultInstance());
+			Block.popResource(level, blockPos, AbysmItems.DREGLOAM_OOZEBALL.getDefaultInstance());
 		}
 	}
 }

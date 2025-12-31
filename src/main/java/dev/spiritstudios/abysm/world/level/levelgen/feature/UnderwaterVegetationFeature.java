@@ -26,9 +26,9 @@ public class UnderwaterVegetationFeature extends Feature<UnderwaterVegetationFea
 
 	@Override
 	public boolean place(FeaturePlaceContext<UnderwaterVegetationFeature.Config> context) {
-		WorldGenLevel world = context.level();
+		WorldGenLevel level = context.level();
 		BlockPos pos = context.origin();
-		BlockState state = world.getBlockState(pos.below());
+		BlockState state = level.getBlockState(pos.below());
 		UnderwaterVegetationFeature.Config config = context.config();
 		RandomSource random = context.random();
 
@@ -36,7 +36,7 @@ public class UnderwaterVegetationFeature extends Feature<UnderwaterVegetationFea
 			return false;
 		} else {
 			int i = pos.getY();
-			if (i >= world.getMinY() + 1 && i + 1 <= world.getMaxY()) {
+			if (i >= level.getMinY() + 1 && i + 1 <= level.getMaxY()) {
 				int placedBlocks = 0;
 
 				for (int k = 0; k < config.spreadWidth * config.spreadWidth; k++) {
@@ -46,7 +46,7 @@ public class UnderwaterVegetationFeature extends Feature<UnderwaterVegetationFea
 						random.nextInt(config.spreadWidth) - random.nextInt(config.spreadWidth)
 					);
 					BlockState newState = config.stateProvider.getState(random, targetPos);
-					if (tryPlaceBlock(targetPos, world, newState)) {
+					if (tryPlaceBlock(targetPos, level, newState)) {
 						placedBlocks++;
 					}
 				}

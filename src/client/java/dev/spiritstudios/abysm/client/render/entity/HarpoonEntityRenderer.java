@@ -207,8 +207,8 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity, Harpoon
 		state.startSkyLight = getSkyLightLevel(harpoon, start);
 
 		BlockPos end = BlockPos.containing(harpoon.getLightProbePosition(partialTick));
-		state.endSkyLight = getBlockLightLevel(harpoon, end);
-		state.startSkyLight = getSkyLightLevel(harpoon, end);
+		state.endBlockLight = getBlockLightLevel(harpoon, end);
+		state.endSkyLight = getSkyLightLevel(harpoon, end);
 
 		state.yRot = harpoon.getYRot(partialTick);
 		state.xRot = harpoon.getXRot(partialTick);

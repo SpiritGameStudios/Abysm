@@ -6,7 +6,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public record NowHuntingS2CPayload(int entityId, boolean hunting) implements AutoSendPayload {
-	public static final StreamCodec<FriendlyByteBuf, NowHuntingS2CPayload> PACKET_CODEC = CustomPacketPayload.codec(NowHuntingS2CPayload::write, NowHuntingS2CPayload::new);
+	public static final StreamCodec<FriendlyByteBuf, NowHuntingS2CPayload> STREAM_CODEC = CustomPacketPayload.codec(NowHuntingS2CPayload::write, NowHuntingS2CPayload::new);
 	public static final Type<NowHuntingS2CPayload> ID = new Type<>(Abysm.id("now_hunting_s2c"));
 
 	private NowHuntingS2CPayload(FriendlyByteBuf buf) {

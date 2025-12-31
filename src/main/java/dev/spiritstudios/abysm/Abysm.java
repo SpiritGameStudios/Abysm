@@ -6,7 +6,7 @@ import dev.spiritstudios.abysm.command.AbysmCommands;
 import dev.spiritstudios.abysm.core.component.AbysmDataComponents;
 import dev.spiritstudios.abysm.world.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.world.entity.AbysmSpawnRestrictions;
-import dev.spiritstudios.abysm.world.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityDataSerializers;
 import dev.spiritstudios.abysm.world.entity.ai.AbysmSensorTypes;
 import dev.spiritstudios.abysm.world.entity.attribute.AbysmEntityAttributeModifiers;
 import dev.spiritstudios.abysm.world.entity.attribute.AbysmEntityAttributes;
@@ -97,7 +97,7 @@ public final class Abysm implements ModInitializer {
 		AbysmEntityAttributes.init();
 		AbysmEntityAttributeModifiers.init();
 		AbysmEntityTypes.init();
-		AbysmTrackedDataHandlers.init();
+		AbysmEntityDataSerializers.init();
 		AbysmSensorTypes.init();
 
 		AbysmStatusEffects.init();
@@ -124,15 +124,15 @@ public final class Abysm implements ModInitializer {
 	}
 
 	private void registerNetworking() {
-		PayloadTypeRegistry.playC2S().register(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload.PACKET_CODEC);
-		PayloadTypeRegistry.playC2S().register(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload.PACKET_CODEC);
-
-		PayloadTypeRegistry.playS2C().register(HappyEntityParticlesS2CPayload.ID, HappyEntityParticlesS2CPayload.PACKET_CODEC);
-		PayloadTypeRegistry.playS2C().register(EntityUpdateBlueS2CPayload.ID, EntityUpdateBlueS2CPayload.PACKET_CODEC);
-		PayloadTypeRegistry.playS2C().register(NowHuntingS2CPayload.ID, NowHuntingS2CPayload.PACKET_CODEC);
-
+		PayloadTypeRegistry.playC2S().register(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload.STREAM_CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(UserTypedForbiddenWordC2SPayload.ID, UserTypedForbiddenWordC2SPayload::receive);
+
+		PayloadTypeRegistry.playC2S().register(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload.STREAM_CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload::receive);
+
+		PayloadTypeRegistry.playS2C().register(HappyEntityParticlesS2CPayload.ID, HappyEntityParticlesS2CPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playS2C().register(EntityUpdateBlueS2CPayload.ID, EntityUpdateBlueS2CPayload.STREAM_CODEC);
+		PayloadTypeRegistry.playS2C().register(NowHuntingS2CPayload.ID, NowHuntingS2CPayload.STREAM_CODEC);
 	}
 
 	public static Identifier id(String path) {

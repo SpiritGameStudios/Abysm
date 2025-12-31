@@ -158,9 +158,9 @@ public class HarpoonEntity extends AbstractArrow {
 			return;
 		}
 
-		Level world = this.level();
+		Level level = this.level();
 
-		if (!world.isClientSide()) {
+		if (!level.isClientSide()) {
 			if (this.inGroundTime <= 0 && this.tickCount % 2 == 0) {
 				this.level().playSound(
 					null,
@@ -248,9 +248,9 @@ public class HarpoonEntity extends AbstractArrow {
 
 	@Override
 	protected void onHitEntity(EntityHitResult hitResult) {
-		Level world = this.level();
+		Level level = this.level();
 
-		if (!(world instanceof ServerLevel serverWorld)) return;
+		if (!(level instanceof ServerLevel serverWorld)) return;
 
 		Entity entity = hitResult.getEntity();
 		float damage = this.isUnderWater() ? 12.0F : 4.5F;
@@ -259,7 +259,7 @@ public class HarpoonEntity extends AbstractArrow {
 
 		ItemStack weapon = this.getWeaponItem();
 
-		Holder<DamageType> damageType = AbysmDamageTypes.getOrThrow(world, AbysmDamageTypes.HARPOON);
+		Holder<DamageType> damageType = AbysmDamageTypes.getOrThrow(level, AbysmDamageTypes.HARPOON);
 		DamageSource damageSource = new DamageSource(damageType, this, owner == null ? this : owner);
 
 		if (weapon != null) {
@@ -269,7 +269,7 @@ public class HarpoonEntity extends AbstractArrow {
 		damage = this.haul ? 0.01f : damage;
 		if (this.blessed && entity instanceof LectorfinEntity lectorfin) {
 			damage = 0.0001f;
-			world.registryAccess().lookupOrThrow(AbysmRegistryKeys.FISH_ENCHANTMENT)
+			level.registryAccess().lookupOrThrow(AbysmRegistryKeys.FISH_ENCHANTMENT)
 				.getRandom(this.random).ifPresent(enchantment ->
 					lectorfin.setEnchantment(enchantment, lectorfin.getEnchantmentLevel())
 				);

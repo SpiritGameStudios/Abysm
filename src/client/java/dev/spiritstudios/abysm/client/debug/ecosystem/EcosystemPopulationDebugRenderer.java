@@ -44,7 +44,7 @@ import java.util.concurrent.CompletableFuture;
  * Light red = Near extinct<br>
  * Dark red = Extinct<br><br>
  * <p>
- * Hold a Spyglass to have text rendering stay a few blocks beneath sea level instead of following your y level.<br>
+ * Hold a Spyglass to have text rendering stay a few blocks beneath sea clientLevel instead of following your y clientLevel.<br>
  * Hold a Heart of The Sea to see only the chunks of the EcosystemType's search radius, as your current chunk in the center.
  */
 public class EcosystemPopulationDebugRenderer implements DebugRenderer.SimpleDebugRenderer {
@@ -192,25 +192,25 @@ public class EcosystemPopulationDebugRenderer implements DebugRenderer.SimpleDeb
 		final CompletableFuture<List<EcosystemArea>> serverStates;
 
 		EcosystemLoadingStatus(IntegratedServer server, ChunkPos playerChunkPos, int searchRadius) {
-			ClientLevel clientWorld = EcosystemPopulationDebugRenderer.this.minecraft.level; // how???
+			ClientLevel clientLevel = EcosystemPopulationDebugRenderer.this.minecraft.level; // how???
 			// you can do that because this class isn't static
 			// - echo
 			// Huh, makes sense but looks very goofy xD ~ kat
 
-			assert clientWorld != null;
-			ResourceKey<Level> worldKey = clientWorld.dimension();
+			assert clientLevel != null;
+			ResourceKey<Level> dimension = clientLevel.dimension();
 
 			// This is beyond cursed, but it's what Minecraft does ¯\_(ツ)_/¯
 			this.serverStates = server.submit(() -> {
-				ServerLevel serverWorld = server.getLevel(worldKey);
-				if (serverWorld == null) return ImmutableList.of();
+				ServerLevel serverLevel = server.getLevel(dimension);
+				if (serverLevel == null) return ImmutableList.of();
 
 				ImmutableList.Builder<EcosystemArea> areaBuilder = ImmutableList.builder();
 
-				EcosystemAreaManager ecosystemAreaManager = EcosystemAreaManager.getEcosystemAreaManagerForWorld(serverWorld);
+				EcosystemAreaManager ecosystemAreaManager = EcosystemAreaManager.getEcosystemAreaManagerForWorld(serverLevel);
 				EcosystemAreaPos playerEcosystemPos = new EcosystemAreaPos(playerChunkPos);
 				for (EcosystemAreaPos areaPos : EcosystemAreaPos.stream(playerEcosystemPos, searchRadius).toList()) {
-					EcosystemArea area = ecosystemAreaManager.areas.getOrDefault(areaPos, new EmptyEcosystemArea(serverWorld, areaPos));
+					EcosystemArea area = ecosystemAreaManager.areas.getOrDefault(areaPos, new EmptyEcosystemArea(serverLevel, areaPos));
 					areaBuilder.add(area);
 				}
 
@@ -221,8 +221,8 @@ public class EcosystemPopulationDebugRenderer implements DebugRenderer.SimpleDeb
 
 	// Used to define a chunk doesn't have any attached EcosystemChunk
 	private static class EmptyEcosystemArea extends EcosystemArea {
-		public EmptyEcosystemArea(ServerLevel world, EcosystemAreaPos pos) {
-			super(world, pos);
+		public EmptyEcosystemArea(ServerLevel level, EcosystemAreaPos pos) {
+			super(level, pos);
 		}
 	}
 }

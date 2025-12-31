@@ -1,7 +1,9 @@
 package dev.spiritstudios.abysm.client.mixin.render;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
-import dev.spiritstudios.abysm.client.duck.LocalPlayerDuckInterface;
+import dev.spiritstudios.abysm.client.pond.LocalPlayerDuckInterface;
+import dev.spiritstudios.abysm.client.render.AbysmWaterFogModifier;
 import dev.spiritstudios.abysm.world.level.levelgen.biome.AbysmBiomes;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -18,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin extends AbstractClientPlayer implements LocalPlayerDuckInterface {
-	private LocalPlayerMixin(ClientLevel world, GameProfile profile) {
-		super(world, profile);
+	private LocalPlayerMixin(ClientLevel level, GameProfile profile) {
+		super(level, profile);
 	}
 
 	@Unique
@@ -39,6 +41,11 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer implements L
 		} else {
 			this.abysm$underwaterAmbientSkyLight = targetAmbientSkyLight;
 		}
+	}
+
+	@ModifyReturnValue(method = "getWaterVision", at = @At("RETURN"))
+	private float updateWaterVision(float original) {
+		return original * AbysmWaterFogModifier.lastWaterVisionMultiplier;
 	}
 
 	@Override

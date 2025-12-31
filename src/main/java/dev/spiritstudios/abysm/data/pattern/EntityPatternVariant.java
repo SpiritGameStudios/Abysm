@@ -3,8 +3,6 @@ package dev.spiritstudios.abysm.data.pattern;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import dev.spiritstudios.abysm.core.registries.AbysmRegistryKeys;
-import java.util.Optional;
-import java.util.stream.Stream;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -16,6 +14,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ServerLevelAccessor;
+
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * The data-drivable record which contains texture path information for Entity Patterns/entity renderers to use.
@@ -38,7 +39,7 @@ public record EntityPatternVariant(EntityType<?> entityType, Component name, Ide
 		).apply(instance, EntityPatternVariant::new)
 	);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<EntityPatternVariant>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.ENTITY_PATTERN);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<EntityPatternVariant>> ENTRY_STREAM_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.ENTITY_PATTERN);
 
 	public EntityPatternVariant(EntityType<?> entityType, Component name, Identifier patternPath) {
 		this(entityType, name, patternPath, Optional.empty(), true);
@@ -52,8 +53,8 @@ public record EntityPatternVariant(EntityType<?> entityType, Component name, Ide
 		this(entityType, name, patternPath, Optional.empty(), colorable);
 	}
 
-	public static Stream<? extends Holder<EntityPatternVariant>> getVariantsForEntityType(ServerLevelAccessor world, EntityType<?> entityType) {
-		RegistryAccess registryManager = world.registryAccess();
+	public static Stream<? extends Holder<EntityPatternVariant>> getVariantsForEntityType(ServerLevelAccessor level, EntityType<?> entityType) {
+		RegistryAccess registryManager = level.registryAccess();
 		Registry<EntityPatternVariant> registry = registryManager.lookupOrThrow(AbysmRegistryKeys.ENTITY_PATTERN);
 		return registry.listElements()
 			.filter(patternVariant -> patternVariant.value().entityType.equals(entityType));

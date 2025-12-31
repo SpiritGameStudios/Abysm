@@ -206,21 +206,21 @@ public interface EcologicalEntity {
 	}
 
 	/**
-	 * Creates and spawns a child entity into the world.
+	 * Creates and spawns a child entity into the level.
 	 *
-	 * @param world The world to spawn the entity into (assumed to be the same world as this entity)
+	 * @param level The level to spawn the entity into (assumed to be the same level as this entity)
 	 * @param other The other entity this entity is breeding with - given to {@link EcologicalEntity#createChildEntity(ServerLevel, LivingEntity, BlockPos)}.
 	 */
-	default void spawnChildEntity(ServerLevel world, LivingEntity other) {
+	default void spawnChildEntity(ServerLevel level, LivingEntity other) {
 		LivingEntity self = (LivingEntity) this;
-		Entity child = this.createChildEntity(world, other, self.blockPosition());
+		Entity child = this.createChildEntity(level, other, self.blockPosition());
 		if (child == null) return;
 
 		// TODO - Should we have any entities that can be bred by the player,
 		//  advancement/statistic credit needs to be given here
 		if (child instanceof Mob mob) mob.setBaby(true);
 		child.snapTo(self.getX(), self.getY(), self.getZ(), 0f, 0f);
-		world.addFreshEntity(child);
+		level.addFreshEntity(child);
 	}
 
 	/**
@@ -228,16 +228,16 @@ public interface EcologicalEntity {
 	 * <p>
 	 * Use the "other" param entity for mixing and matching whatever data wanted(e.g. choosing between one of the two parent's variants)
 	 *
-	 * @param world The world the child is spawning into
+	 * @param level The level the child is spawning into
 	 * @param other The other parent entity - use to mix and match whatever data wanted
 	 * @return The created child entity
 	 */
-	default Entity createChildEntity(ServerLevel world, LivingEntity other, BlockPos spawnPos) {
-		Entity child = ((Mob) this).getType().create(world, EntitySpawnReason.BREEDING);
+	default Entity createChildEntity(ServerLevel level, LivingEntity other, BlockPos spawnPos) {
+		Entity child = ((Mob) this).getType().create(level, EntitySpawnReason.BREEDING);
 		if (child == null) return null;
 		child.snapTo(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0f, 0f);
 		if (child instanceof Mob mob)
-			mob.finalizeSpawn(world, world.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.BREEDING, null);
+			mob.finalizeSpawn(level, level.getCurrentDifficultyAt(spawnPos), EntitySpawnReason.BREEDING, null);
 
 		return child;
 	}

@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public record UpdateDensityBlobBlockC2SPayload(BlockPos pos, String finalState,
 											   String blobsSamplerIdentifier) implements CustomPacketPayload {
-	public static final StreamCodec<FriendlyByteBuf, UpdateDensityBlobBlockC2SPayload> PACKET_CODEC = CustomPacketPayload.codec(UpdateDensityBlobBlockC2SPayload::write, UpdateDensityBlobBlockC2SPayload::new);
+	public static final StreamCodec<FriendlyByteBuf, UpdateDensityBlobBlockC2SPayload> STREAM_CODEC = CustomPacketPayload.codec(UpdateDensityBlobBlockC2SPayload::write, UpdateDensityBlobBlockC2SPayload::new);
 	public static final Type<UpdateDensityBlobBlockC2SPayload> ID = new Type<>(Abysm.id("update_density_blob_block_c2s"));
 
 	private UpdateDensityBlobBlockC2SPayload(FriendlyByteBuf buf) {
@@ -37,15 +37,15 @@ public record UpdateDensityBlobBlockC2SPayload(BlockPos pos, String finalState,
 		if (!player.canUseGameMasterBlocks()) {
 			return;
 		}
-		Level world = player.level();
+		Level level = player.level();
 		BlockPos blockPos = payload.pos;
-		if (!(world.getBlockEntity(blockPos) instanceof DensityBlobBlockEntity blockEntity)) {
+		if (!(level.getBlockEntity(blockPos) instanceof DensityBlobBlockEntity blockEntity)) {
 			return;
 		}
-		BlockState blockState = world.getBlockState(blockPos);
+		BlockState blockState = level.getBlockState(blockPos);
 		blockEntity.setFinalState(payload.finalState);
 		blockEntity.setBlobsSamplerIdentifier(payload.blobsSamplerIdentifier);
 		blockEntity.setChanged();
-		world.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_ALL);
+		level.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_ALL);
 	}
 }

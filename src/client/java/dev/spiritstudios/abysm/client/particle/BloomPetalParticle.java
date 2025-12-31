@@ -23,7 +23,7 @@ public class BloomPetalParticle extends SingleQuadParticle {
 	private final ParticleOptions nextParticle;
 
 	protected BloomPetalParticle(
-		ClientLevel world,
+		ClientLevel level,
 		double x,
 		double y,
 		double z,
@@ -34,7 +34,7 @@ public class BloomPetalParticle extends SingleQuadParticle {
 		float initialYVelocity,
 		ParticleOptions nextParticle
 	) {
-		super(world, x, y, z, sprites.first());
+		super(level, x, y, z, sprites.first());
 
 		this.setSprite(sprites.get(this.random.nextInt(12), 12));
 

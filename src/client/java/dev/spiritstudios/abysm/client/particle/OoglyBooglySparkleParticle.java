@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class OoglyBooglySparkleParticle extends SimpleAnimatedParticle {
 	private final SpriteSet provider;
-	protected OoglyBooglySparkleParticle(ClientLevel clientWorld, double x, double y, double z, SpriteSet sprites) {
-		super(clientWorld, x, y, z, sprites, 0.0F);
+	protected OoglyBooglySparkleParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites) {
+		super(level, x, y, z, sprites, 0.0F);
 		this.provider = sprites;
 		this.xd = 0;
 		this.yd = 0;

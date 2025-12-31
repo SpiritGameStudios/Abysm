@@ -15,9 +15,9 @@ public class BloomGlimmerParticle extends BaseAshSmokeParticle {
 	public float rotationSpeed = 0;
 
 	protected BloomGlimmerParticle(
-		ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ, float scaleMultiplier, SpriteSet spriteProvider, int baseMaxAge, float gravityStrength, float velocityMultiplier
+		ClientLevel level, double x, double y, double z, double velocityX, double velocityY, double velocityZ, float scaleMultiplier, SpriteSet spriteProvider, int baseMaxAge, float gravityStrength, float velocityMultiplier
 	) {
-		super(world, x, y, z, 0F, 0F, 0F, velocityX, velocityY, velocityZ, scaleMultiplier, spriteProvider, 0.0F, baseMaxAge, gravityStrength, false);
+		super(level, x, y, z, 0F, 0F, 0F, velocityX, velocityY, velocityZ, scaleMultiplier, spriteProvider, 0.0F, baseMaxAge, gravityStrength, false);
 		this.friction = velocityMultiplier;
 	}
 

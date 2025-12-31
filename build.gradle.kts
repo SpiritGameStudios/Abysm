@@ -19,6 +19,7 @@ version = "$modVersion+${libs.versions.minecraft.get()}"
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 
 	maven {
 		name = "Spirit Studios Releases"

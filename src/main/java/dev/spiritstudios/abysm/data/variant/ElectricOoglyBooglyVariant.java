@@ -27,7 +27,7 @@ public class ElectricOoglyBooglyVariant extends AbstractEntityVariant {
 
 	public static final Codec<Holder<ElectricOoglyBooglyVariant>> ENTRY_CODEC = RegistryFixedCodec.create(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<ElectricOoglyBooglyVariant>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<ElectricOoglyBooglyVariant>> ENTRY_STREAM_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT);
 
 	public static Holder<ElectricOoglyBooglyVariant> getDefaultEntry(RegistryAccess registryManager) {
 		return getDefaultEntry(registryManager.lookupOrThrow(AbysmRegistryKeys.ELECTRIC_OOGLY_BOOGLY_VARIANT));

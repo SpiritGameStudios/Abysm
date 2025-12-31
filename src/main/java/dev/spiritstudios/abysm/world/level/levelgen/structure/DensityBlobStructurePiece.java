@@ -5,8 +5,6 @@ import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.DensityBlob;
 import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.DensityBlobHolder;
 import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.DensityVoid;
 import dev.spiritstudios.abysm.world.level.levelgen.densityfunction.TranslatedDensityBlob;
-import java.util.Objects;
-import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
@@ -20,6 +18,9 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.phys.AABB;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class DensityBlobStructurePiece extends StructurePiece implements DensityBlobHolder {
 	public static final String KEY_BLOBS_SAMPLER_IDENTIFIER = "bsid";
@@ -104,8 +105,8 @@ public class DensityBlobStructurePiece extends StructurePiece implements Density
 
 	@Override
 	public void postProcess(
-		WorldGenLevel world,
-		StructureManager structureAccessor,
+		WorldGenLevel level,
+		StructureManager structureManager,
 		ChunkGenerator chunkGenerator,
 		RandomSource random,
 		BoundingBox chunkBox,

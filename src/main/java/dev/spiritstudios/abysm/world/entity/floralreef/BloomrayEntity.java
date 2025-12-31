@@ -8,7 +8,7 @@ import dev.spiritstudios.abysm.data.variant.BloomrayEntityVariant;
 import dev.spiritstudios.abysm.world.ecosystem.entity.EcologicalEntity;
 import dev.spiritstudios.abysm.world.ecosystem.entity.EcosystemLogic;
 import dev.spiritstudios.abysm.world.ecosystem.registry.EcosystemData;
-import dev.spiritstudios.abysm.world.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityDataSerializers;
 import dev.spiritstudios.abysm.world.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.world.entity.ai.GracefulLookControl;
 import dev.spiritstudios.abysm.world.entity.ai.GracefulMoveControl;
@@ -52,7 +52,7 @@ public class BloomrayEntity extends WaterAnimal implements Variantable<BloomrayE
 	public final AnimationController antenna;
 
 	private final Query query = new Query();
-	public static final EntityDataAccessor<Holder<BloomrayEntityVariant>> VARIANT = SynchedEntityData.defineId(BloomrayEntity.class, AbysmTrackedDataHandlers.BLOOMRAY_VARIANT);
+	public static final EntityDataAccessor<Holder<BloomrayEntityVariant>> VARIANT = SynchedEntityData.defineId(BloomrayEntity.class, AbysmEntityDataSerializers.BLOOMRAY_VARIANT);
 
 	protected EcosystemLogic ecosystemLogic;
 
@@ -187,8 +187,8 @@ public class BloomrayEntity extends WaterAnimal implements Variantable<BloomrayE
 	public void aiStep() {
 		super.aiStep();
 
-		Level world = this.level();
-		if (world.isClientSide() && this.random.nextFloat() < 0.15) {
+		Level level = this.level();
+		if (level.isClientSide() && this.random.nextFloat() < 0.15) {
 			Vec3 facing = Vec3.directionFromRotation(this.getXRot(), this.yBodyRot).scale(0.5);
 			Vec3 pos = this.position().add(facing);
 
@@ -196,12 +196,12 @@ public class BloomrayEntity extends WaterAnimal implements Variantable<BloomrayE
 
 			int glimmerCount = 1 + this.random.nextInt(3);
 			for (int i = 0; i < glimmerCount; i++) {
-				spawnParticles(world, pos, this.random, variant.glimmerParticle, 0.4F, 1F, 1F);
+				spawnParticles(level, pos, this.random, variant.glimmerParticle, 0.4F, 1F, 1F);
 			}
 
 			int thornsCount = 2 + this.random.nextInt(2);
 			for (int i = 0; i < thornsCount; i++) {
-				spawnParticles(world, pos, random, variant.thornsParticle, 0.9F, 2.6F, 1.4F);
+				spawnParticles(level, pos, random, variant.thornsParticle, 0.9F, 2.6F, 1.4F);
 			}
 		}
 	}

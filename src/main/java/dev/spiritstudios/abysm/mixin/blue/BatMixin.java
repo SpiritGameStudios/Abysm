@@ -41,12 +41,12 @@ public abstract class BatMixin extends AmbientCreature {
 	}
 
 	@Inject(method = "customServerAiStep", at = @At("HEAD"))
-	private void stopRestingIfBlue(ServerLevel world, CallbackInfo ci) {
+	private void stopRestingIfBlue(ServerLevel level, CallbackInfo ci) {
 		if (BlueEffect.isBlue(this) && !this.onGround()) {
 			if (this.isResting()) {
 				this.setResting(false);
 				if (!this.isSilent()) {
-					world.levelEvent(null, LevelEvent.SOUND_BAT_LIFTOFF, this.blockPosition(), 0);
+					level.levelEvent(null, LevelEvent.SOUND_BAT_LIFTOFF, this.blockPosition(), 0);
 				}
 			}
 		}

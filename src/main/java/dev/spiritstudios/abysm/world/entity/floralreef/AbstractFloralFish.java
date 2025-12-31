@@ -1,7 +1,7 @@
 package dev.spiritstudios.abysm.world.entity.floralreef;
 
 import dev.spiritstudios.abysm.core.component.AbysmDataComponents;
-import dev.spiritstudios.abysm.world.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityDataSerializers;
 import dev.spiritstudios.abysm.world.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.world.entity.pattern.EntityPattern;
 import dev.spiritstudios.abysm.world.entity.pattern.Patternable;
@@ -31,7 +31,7 @@ public abstract class AbstractFloralFish extends SimpleEcoSchoolingFishEntity im
 		DyeColor.RED.getTextureDiffuseColor(), DyeColor.YELLOW.getTextureDiffuseColor(), DyeColor.LIME.getTextureDiffuseColor()
 	);
 
-	public static final EntityDataAccessor<EntityPattern> ENTITY_PATTERN = SynchedEntityData.defineId(AbstractFloralFish.class, AbysmTrackedDataHandlers.ENTITY_PATTERN);
+	public static final EntityDataAccessor<EntityPattern> ENTITY_PATTERN = SynchedEntityData.defineId(AbstractFloralFish.class, AbysmEntityDataSerializers.ENTITY_PATTERN);
 
 	public AbstractFloralFish(EntityType<? extends AbstractFloralFish> entityType, Level world) {
 		super(entityType, world);

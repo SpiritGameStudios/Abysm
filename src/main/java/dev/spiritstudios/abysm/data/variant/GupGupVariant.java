@@ -22,7 +22,7 @@ public class GupGupVariant extends AbstractEntityVariant {
 
 	public static final Codec<Holder<GupGupVariant>> ENTRY_CODEC = RegistryFixedCodec.create(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<GupGupVariant>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<GupGupVariant>> ENTRY_STREAM_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT);
 
 	public static Holder<GupGupVariant> getDefaultEntry(RegistryAccess registryManager) {
 		return getDefaultEntry(registryManager.lookupOrThrow(AbysmRegistryKeys.GUP_GUP_ENTITY_VARIANT));

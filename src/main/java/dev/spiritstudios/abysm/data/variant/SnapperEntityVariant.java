@@ -23,7 +23,7 @@ public class SnapperEntityVariant extends AbstractEntityVariant {
 
 	public static final Codec<Holder<SnapperEntityVariant>> ENTRY_CODEC = RegistryFixedCodec.create(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<SnapperEntityVariant>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<SnapperEntityVariant>> ENTRY_STREAM_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT);
 
 	public static Holder<SnapperEntityVariant> getDefaultEntry(RegistryAccess registryManager) {
 		return getDefaultEntry(registryManager.lookupOrThrow(AbysmRegistryKeys.SNAPPER_ENTITY_VARIANT));

@@ -1,9 +1,6 @@
 package dev.spiritstudios.abysm.world.entity.ai.goal.ecosystem;
 
 import dev.spiritstudios.abysm.world.ecosystem.entity.EcologicalEntity;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.EnumSet;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
@@ -12,9 +9,12 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
 
 public class RepopulateGoal extends Goal {
-	protected final ServerLevel world;
+	protected final ServerLevel level;
 	protected final Mob mob;
 	protected final double speed;
 	@Nullable
@@ -33,7 +33,7 @@ public class RepopulateGoal extends Goal {
 	) {
 		this.mob = mob;
 		assertIsEcologicalEntity(mob);
-		this.world = getServerLevel(mob);
+		this.level = getServerLevel(mob);
 		this.speed = speed;
 
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -61,7 +61,7 @@ public class RepopulateGoal extends Goal {
 		this.mob.getNavigation().moveTo(this.mate, this.speed);
 		this.timer++;
 		if (this.mob.tickCount % 5 == 0) {
-			this.world.sendParticles(ParticleTypes.HEART, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ(), 1, 0, 0, 0, 0);
+			this.level.sendParticles(ParticleTypes.HEART, this.mob.getX(), this.mob.getEyeY(), this.mob.getZ(), 1, 0, 0, 0, 0);
 		}
 //		if(this.timer >= this.getTickCount(60) && this.mob.squaredDistanceTo(this.mate) < 9) {
 		if(this.mob.distanceToSqr(this.mate) < 9) {
@@ -78,7 +78,7 @@ public class RepopulateGoal extends Goal {
 
 	public void breed() {
 		EcologicalEntity ecologicalEntity = (EcologicalEntity) this.mob;
-		ecologicalEntity.breed(this.world, this.mate);
+		ecologicalEntity.breed(this.level, this.mate);
 	}
 
 	@Override
@@ -88,8 +88,8 @@ public class RepopulateGoal extends Goal {
 	}
 
 	protected void findClosestMate() {
-		this.mate = this.world.getNearestEntity(
-			this.world.getEntities(EntityTypeTest.forClass(Mob.class),
+		this.mate = this.level.getNearestEntity(
+			this.level.getEntities(EntityTypeTest.forClass(Mob.class),
 				this.getSearchBox(this.getFollowRange()),
 				mobEntity -> {
 					if (!mobEntity.getType().equals(this.mob.getType())) {

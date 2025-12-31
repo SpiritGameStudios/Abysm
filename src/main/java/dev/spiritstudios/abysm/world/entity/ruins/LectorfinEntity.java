@@ -3,7 +3,7 @@ package dev.spiritstudios.abysm.world.entity.ruins;
 import dev.spiritstudios.abysm.core.registries.AbysmSoundEvents;
 import dev.spiritstudios.abysm.data.fishenchantment.FishEnchantment;
 import dev.spiritstudios.abysm.world.ecosystem.entity.PlantEater;
-import dev.spiritstudios.abysm.world.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityDataSerializers;
 import dev.spiritstudios.abysm.world.entity.SimpleEcoSchoolingFishEntity;
 import dev.spiritstudios.abysm.world.entity.ai.goal.ecosystem.FindPlantsGoal;
 import dev.spiritstudios.abysm.world.item.AbysmItems;
@@ -46,7 +46,7 @@ import java.util.function.Predicate;
 
 public class LectorfinEntity extends SimpleEcoSchoolingFishEntity implements PlantEater {
 	protected static final EntityDataAccessor<Integer> ENCHANTMENT_LEVEL = SynchedEntityData.defineId(LectorfinEntity.class, EntityDataSerializers.INT);
-	protected static final EntityDataAccessor<Holder<FishEnchantment>> ENCHANTMENT = SynchedEntityData.defineId(LectorfinEntity.class, AbysmTrackedDataHandlers.FISH_ENCHANTMENT);
+	protected static final EntityDataAccessor<Holder<FishEnchantment>> ENCHANTMENT = SynchedEntityData.defineId(LectorfinEntity.class, AbysmEntityDataSerializers.FISH_ENCHANTMENT);
 
 	protected @Nullable Holder<FishEnchantment> previousEnchantment = null;
 

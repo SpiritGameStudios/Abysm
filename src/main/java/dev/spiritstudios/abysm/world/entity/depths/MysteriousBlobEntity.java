@@ -109,7 +109,7 @@ public class MysteriousBlobEntity extends WaterAnimal {
 	public void tick() {
 		super.tick();
 
-		Level world = this.level();
+		Level level = this.level();
 
 		this.inverseHurtTime = this.hurtDuration - this.hurtTime;
 
@@ -117,9 +117,9 @@ public class MysteriousBlobEntity extends WaterAnimal {
 		if (this.inverseHurtTime < this.hurtDuration) {
 			sin = Mth.sin(this.inverseHurtTime * Mth.TWO_PI * 0.05F) * 0.8F;
 		} else if (this.isHappy()) {
-			sin = Mth.sin(world.getGameTime() * Mth.TWO_PI * 0.005F) * 0.05F;
+			sin = Mth.sin(level.getGameTime() * Mth.TWO_PI * 0.005F) * 0.05F;
 		} else {
-			sin = Mth.sin(world.getGameTime() * Mth.TWO_PI * 0.005F) * 0.15F;
+			sin = Mth.sin(level.getGameTime() * Mth.TWO_PI * 0.005F) * 0.15F;
 		}
 
 		this.targetScaleY = -sin + 1;

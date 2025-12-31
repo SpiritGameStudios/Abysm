@@ -18,7 +18,7 @@ public record OoglyBooglyFumesParticleEffect(int color, boolean deadly) implemen
 		).apply(instance, OoglyBooglyFumesParticleEffect::new)
 	);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, OoglyBooglyFumesParticleEffect> PACKET_CODEC = StreamCodec.composite(
+	public static final StreamCodec<RegistryFriendlyByteBuf, OoglyBooglyFumesParticleEffect> STREAM_CODEC = StreamCodec.composite(
 		ByteBufCodecs.INT, particle -> particle.color,
 		ByteBufCodecs.BOOL, particle -> particle.deadly,
 		OoglyBooglyFumesParticleEffect::new

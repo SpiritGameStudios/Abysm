@@ -9,7 +9,7 @@ import com.mojang.blaze3d.textures.AddressMode;
 import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.textures.GpuTextureView;
-import dev.spiritstudios.abysm.client.duck.LocalPlayerDuckInterface;
+import dev.spiritstudios.abysm.client.pond.LocalPlayerDuckInterface;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MappableRingBuffer;
 import net.minecraft.tags.FluidTags;

@@ -2,7 +2,7 @@ package dev.spiritstudios.abysm.world.item;
 
 import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
-import dev.spiritstudios.abysm.core.component.AbysmFoodComponents;
+import dev.spiritstudios.abysm.core.component.AbysmFoods;
 import dev.spiritstudios.abysm.world.entity.AbysmEntityTypes;
 import dev.spiritstudios.abysm.world.entity.attribute.AbysmAttribute;
 import dev.spiritstudios.abysm.world.entity.attribute.AbysmEntityAttributes;
@@ -107,12 +107,12 @@ public final class AbysmItems {
 
 	public static final Item SMALL_FLORAL_FISH = register(
 		"small_floral_fish",
-		new Item.Properties().food(AbysmFoodComponents.SMALL_FLORAL_FISH)
+		new Item.Properties().food(AbysmFoods.SMALL_FLORAL_FISH)
 	);
 
 	public static final Item BIG_FLORAL_FISH = register(
 		"big_floral_fish",
-		new Item.Properties().food(AbysmFoodComponents.BIG_FLORAL_FISH)
+		new Item.Properties().food(AbysmFoods.BIG_FLORAL_FISH)
 	);
 
 	public static final Item SMALL_FLORAL_FISH_BUCKET = register(

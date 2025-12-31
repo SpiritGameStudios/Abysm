@@ -4,6 +4,7 @@ import com.terraformersmc.biolith.api.surface.SurfaceGeneration;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.biome.OverworldBiomes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.attribute.EnvironmentAttributeMap;
@@ -64,7 +65,7 @@ public abstract class AbysmBiome {
 	public BiomeGenerationSettings.PlainBuilder createGenerationSettings(HolderGetter<PlacedFeature> featureLookup, HolderGetter<ConfiguredWorldCarver<?>> carverLookup) {
 		BiomeGenerationSettings.Builder builder = new BiomeGenerationSettings.Builder(featureLookup, carverLookup);
 
-		addBasicFeatures(builder);
+		OverworldBiomes.globalOverworldGeneration(builder);
 
 		BiomeDefaultFeatures.addDefaultOres(builder);
 		BiomeDefaultFeatures.addDefaultSoftDisks(builder);
@@ -102,15 +103,5 @@ public abstract class AbysmBiome {
 			isBiome(this.key),
 			rules.length == 1 ? rules[0] : sequence(rules)
 		);
-	}
-
-	// This is private in OverworldBiomeCreator for some reason?
-	protected static void addBasicFeatures(BiomeGenerationSettings.Builder generationSettings) {
-		BiomeDefaultFeatures.addDefaultCarversAndLakes(generationSettings);
-		BiomeDefaultFeatures.addDefaultCrystalFormations(generationSettings);
-		BiomeDefaultFeatures.addDefaultMonsterRoom(generationSettings);
-		BiomeDefaultFeatures.addDefaultUndergroundVariety(generationSettings);
-		BiomeDefaultFeatures.addDefaultSprings(generationSettings);
-		BiomeDefaultFeatures.addSurfaceFreezing(generationSettings);
 	}
 }

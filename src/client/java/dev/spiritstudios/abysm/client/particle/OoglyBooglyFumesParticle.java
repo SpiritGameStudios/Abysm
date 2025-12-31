@@ -22,8 +22,8 @@ public class OoglyBooglyFumesParticle extends SimpleAnimatedParticle {
 	private final boolean deadly;
 	private final Quaternionf rotationStorage = new Quaternionf();
 
-	protected OoglyBooglyFumesParticle(ClientLevel clientWorld, double x, double y, double z, OoglyBooglyFumesParticleEffect params, SpriteSet sprites) {
-		super(clientWorld, x, y, z, sprites, 0.0F);
+	protected OoglyBooglyFumesParticle(ClientLevel level, double x, double y, double z, OoglyBooglyFumesParticleEffect params, SpriteSet sprites) {
+		super(level, x, y, z, sprites, 0.0F);
 		this.provider = sprites;
 		this.deadly = params.deadly();
 		this.xd = 0;

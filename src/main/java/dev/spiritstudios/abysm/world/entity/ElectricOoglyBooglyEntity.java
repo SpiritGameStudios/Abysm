@@ -38,7 +38,7 @@ import java.util.List;
 // TODO - proper health
 public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Variantable<ElectricOoglyBooglyVariant> {
 
-	public static final EntityDataAccessor<Holder<ElectricOoglyBooglyVariant>> VARIANT = SynchedEntityData.defineId(ElectricOoglyBooglyEntity.class, AbysmTrackedDataHandlers.ELECTRIC_OOGLY_BOOGLY_VARIANT);
+	public static final EntityDataAccessor<Holder<ElectricOoglyBooglyVariant>> VARIANT = SynchedEntityData.defineId(ElectricOoglyBooglyEntity.class, AbysmEntityDataSerializers.ELECTRIC_OOGLY_BOOGLY_VARIANT);
 	public static final EntityDataAccessor<Boolean> BLOWING_UP_WITH_MIND = SynchedEntityData.defineId(ElectricOoglyBooglyEntity.class, EntityDataSerializers.BOOLEAN);
 	public int ticksSinceBlowingUp = 0;
 
@@ -77,14 +77,14 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 				this.spawnElectricitySpiralParticles();
 				this.spawnElectricitySpeckParticles();
 				if (!this.level().isClientSide()) {
-					ServerLevel serverWorld = (ServerLevel) this.level();
-					serverWorld.playSound(this, this, SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 1f, 0.2f + (this.ticksSinceBlowingUp / 60f));
+					ServerLevel serverLevel = (ServerLevel) this.level();
+					serverLevel.playSound(this, this, SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 1f, 0.2f + (this.ticksSinceBlowingUp / 60f));
 				}
 			}
 			if (this.ticksSinceBlowingUp >= 200) {
 				if (!this.level().isClientSide()) {
-					ServerLevel serverWorld = (ServerLevel) this.level();
-					serverWorld.explode(this, this.getX(), this.getY(), this.getZ(), getVariant().explosionPower, Level.ExplosionInteraction.MOB);
+					ServerLevel serverLevel = (ServerLevel) this.level();
+					serverLevel.explode(this, this.getX(), this.getY(), this.getZ(), getVariant().explosionPower, Level.ExplosionInteraction.MOB);
 					this.discard();
 				}
 			}
@@ -119,10 +119,10 @@ public class ElectricOoglyBooglyEntity extends SimpleFishEntity implements Varia
 
 	public void blowUpWithMind() {
 		this.setIsBlowingUpWithMind(true);
-		ServerLevel serverWorld = (ServerLevel) this.level();
-		serverWorld.sendParticles(AbysmParticleTypes.OOGLY_BOOGLY_SPARKLE, this.getX(), this.getEyeY(), this.getZ(), 1, 0, 0, 0, 0);
-		serverWorld.playSound(this, this, SoundEvents.TRIDENT_THUNDER.value(), SoundSource.NEUTRAL, 0.75f, 2f);
-		serverWorld.playSound(this, this, SoundEvents.ALLAY_HURT, SoundSource.NEUTRAL, 1f, 2f);
+		ServerLevel serverLevel = (ServerLevel) this.level();
+		serverLevel.sendParticles(AbysmParticleTypes.OOGLY_BOOGLY_SPARKLE, this.getX(), this.getEyeY(), this.getZ(), 1, 0, 0, 0, 0);
+		serverLevel.playSound(this, this, SoundEvents.TRIDENT_THUNDER.value(), SoundSource.NEUTRAL, 0.75f, 2f);
+		serverLevel.playSound(this, this, SoundEvents.ALLAY_HURT, SoundSource.NEUTRAL, 1f, 2f);
 		this.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 20 * 20, 50, false, false));
 		bonk.start(tickCount);
 	}

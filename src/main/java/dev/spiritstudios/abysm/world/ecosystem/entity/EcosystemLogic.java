@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 // such as finding food, repopulating, or signaling the Entity's goals/brain to avoid or actively flee from a predator
 public class EcosystemLogic {
 	public final Mob entity;
-	public final Level world;
+	public final Level level;
 
 	public ChunkPos currentChunkPos = ChunkPos.ZERO;
 	public ChunkPos prevChunkPos = ChunkPos.ZERO;
@@ -31,7 +31,7 @@ public class EcosystemLogic {
 
 	public EcosystemLogic(Mob entity) {
 		this.entity = entity;
-		this.world = entity.level();
+		this.level = entity.level();
 	}
 
 	public void onSpawn() {
@@ -80,18 +80,18 @@ public class EcosystemLogic {
 	}
 
 	public void onEcosystemAreaEnter(EcosystemAreaPos pos) {
-		if (this.world.isClientSide()) return;
+		if (this.level.isClientSide()) return;
 		this.getEcosystemArea(pos).addEntity(this.entity);
 	}
 
 	public void onEcosystemAreaLeave(EcosystemAreaPos pos) {
-		if (this.world.isClientSide()) return;
+		if (this.level.isClientSide()) return;
 		this.getEcosystemArea(pos).removeEntity(this.entity);
 	}
 
 	public EcosystemArea getEcosystemArea(EcosystemAreaPos pos) {
-		if (this.world.isClientSide()) return null;
-		EcosystemAreaManager ecosystemAreaManager = EcosystemAreaManager.getEcosystemAreaManagerForWorld((ServerLevel) this.world);
+		if (this.level.isClientSide()) return null;
+		EcosystemAreaManager ecosystemAreaManager = EcosystemAreaManager.getEcosystemAreaManagerForWorld((ServerLevel) this.level);
 		return ecosystemAreaManager.getEcosystemArea(pos, true);
 	}
 

@@ -26,20 +26,20 @@ public final class AbysmEnchantments {
 		return ResourceKey.create(Registries.ENCHANTMENT, Abysm.id(path));
 	}
 
-	public static boolean hasEnchantment(ItemStack stack, Level world, ResourceKey<Enchantment> enchantment) {
-		return getLevel(stack, world, enchantment) > 0;
+	public static boolean hasEnchantment(ItemStack stack, Level level, ResourceKey<Enchantment> enchantment) {
+		return getLevel(stack, level, enchantment) > 0;
 	}
 
-	public static int getLevel(ItemStack stack, Level world, ResourceKey<Enchantment> enchantment) {
-		return EnchantmentHelper.getItemEnchantmentLevel(getFromWorld(world, enchantment), stack);
+	public static int getLevel(ItemStack stack, Level level, ResourceKey<Enchantment> enchantment) {
+		return EnchantmentHelper.getItemEnchantmentLevel(getFromLevel(level, enchantment), stack);
 	}
 
-	public static Holder.Reference<Enchantment> getFromWorld(Level world, ResourceKey<Enchantment> enchantment) {
-		return getFromDRM(world.registryAccess(), enchantment);
+	public static Holder.Reference<Enchantment> getFromLevel(Level level, ResourceKey<Enchantment> enchantment) {
+		return getFromRegistries(level.registryAccess(), enchantment);
 	}
 
-	public static Holder.Reference<Enchantment> getFromDRM(RegistryAccess drm, ResourceKey<Enchantment> enchantment) {
-		return drm.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(enchantment);
+	public static Holder.Reference<Enchantment> getFromRegistries(RegistryAccess registries, ResourceKey<Enchantment> enchantment) {
+		return registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(enchantment);
 	}
 
 	public static ImmutableMap<ResourceKey<Enchantment>, Enchantment> asEnchantments(BootstrapContext<Enchantment> registerable) {

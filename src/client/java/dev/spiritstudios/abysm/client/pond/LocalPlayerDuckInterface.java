@@ -1,4 +1,4 @@
-package dev.spiritstudios.abysm.client.duck;
+package dev.spiritstudios.abysm.client.pond;
 
 public interface LocalPlayerDuckInterface {
 	float abysm$getUnderwaterAmbientSkyLight(float tickDelta);

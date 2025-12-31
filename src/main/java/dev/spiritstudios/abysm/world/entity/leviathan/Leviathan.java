@@ -187,15 +187,15 @@ public abstract class Leviathan extends WaterAnimal implements Enemy, PartHolder
 		if (!(entity instanceof LivingEntity living)) {
 			return false;
 		}
-		Level world = this.level();
-		return world == living.level() &&
+		Level level = this.level();
+		return level == living.level() &&
 			EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(living) &&
 			!this.isAlliedTo(living) &&
 			living.getType() != EntityType.ARMOR_STAND &&
 			!(living instanceof Leviathan) &&
 			!living.isInvulnerable() &&
 			!living.isDeadOrDying() &&
-			world.getWorldBorder().isWithinBounds(living.getBoundingBox());
+			level.getWorldBorder().isWithinBounds(living.getBoundingBox());
 	}
 
 

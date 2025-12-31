@@ -31,7 +31,7 @@ public record FishEnchantment(List<AbysmAttribute> modifiers, Identifier rendere
 			.apply(instance, FishEnchantment::new)
 	);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<FishEnchantment>> ENTRY_PACKET_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.FISH_ENCHANTMENT);
+	public static final StreamCodec<RegistryFriendlyByteBuf, Holder<FishEnchantment>> ENTRY_STREAM_CODEC = ByteBufCodecs.holderRegistry(AbysmRegistryKeys.FISH_ENCHANTMENT);
 
 	public static final Codec<Holder<FishEnchantment>> ENTRY_CODEC = RegistryFixedCodec.create(AbysmRegistryKeys.FISH_ENCHANTMENT);
 

@@ -31,30 +31,30 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 
 	@Override
 	public boolean place(FeaturePlaceContext<Config> context) {
-		WorldGenLevel world = context.level();
+		WorldGenLevel level = context.level();
 		BlockPos pos = context.origin();
 		Config config = context.config();
 		RandomSource random = context.random();
 
-		BlockState currentState = world.getBlockState(pos);
+		BlockState currentState = level.getBlockState(pos);
 		if (!currentState.isAir() && !currentState.is(Blocks.WATER)) return false;
 
-		int oceanFloor = world.getHeight(Heightmap.Types.OCEAN_FLOOR, pos);
+		int oceanFloor = level.getHeight(Heightmap.Types.OCEAN_FLOOR, pos);
 
-		int i = (int) ((world.getSeaLevel() - oceanFloor) * config.maxColumnRadiusToCaveHeightRatio);
+		int i = (int) ((level.getSeaLevel() - oceanFloor) * config.maxColumnRadiusToCaveHeightRatio);
 		int j = Mth.clamp(i, config.columnRadius.getMinValue(), config.columnRadius.getMaxValue());
 		int k = Mth.randomBetweenInclusive(random, config.columnRadius.getMinValue(), j);
 
 		StalagmiteGenerator stalagmite = createGenerator(
 			config.stateProvider,
-			pos.atY(world.getHeight(Heightmap.Types.OCEAN_FLOOR, pos) + 1), random, k, config.bluntness, config.heightScale
+			pos.atY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, pos) + 1), random, k, config.bluntness, config.heightScale
 		);
 		WindModifier windModifier = stalagmite.generateWind(config) ?
 			new WindModifier(pos.getY(), random, config.windSpeed) :
 			WindModifier.create();
 
-		if (stalagmite.canGenerate(world, windModifier))
-			stalagmite.generate(world, random, windModifier, config.maxHeightAboveWorldSurface.sample(random));
+		if (stalagmite.canGenerate(level, windModifier))
+			stalagmite.generate(level, random, windModifier, config.maxHeightAboveWorldSurface.sample(random));
 
 		return true;
 	}
@@ -85,12 +85,12 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 			return this.scale(0.0F);
 		}
 
-		private static boolean canGenerateOrLava(LevelAccessor world, BlockPos pos) {
-			return world.isStateAtPosition(pos, DripstoneUtils::isEmptyOrWaterOrLava);
+		private static boolean canGenerateOrLava(LevelAccessor level, BlockPos pos) {
+			return level.isStateAtPosition(pos, DripstoneUtils::isEmptyOrWaterOrLava);
 		}
 
-		private static boolean canGenerateBase(WorldGenLevel world, BlockPos pos, int height) {
-			if (canGenerateOrLava(world, pos)) {
+		private static boolean canGenerateBase(WorldGenLevel level, BlockPos pos, int height) {
+			if (canGenerateOrLava(level, pos)) {
 				return false;
 			} else {
 				float g = 6.0F / height;
@@ -98,7 +98,7 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 				for (float theta = 0.0F; theta < Mth.PI * 2; theta += g) {
 					int i = (int) (Mth.cos(theta) * height);
 					int j = (int) (Mth.sin(theta) * height);
-					if (canGenerateOrLava(world, pos.offset(i, 0, j))) {
+					if (canGenerateOrLava(level, pos.offset(i, 0, j))) {
 						return false;
 					}
 				}
@@ -107,17 +107,17 @@ public class StalagmiteFeature extends Feature<StalagmiteFeature.Config> {
 			}
 		}
 
-		boolean canGenerate(WorldGenLevel world, WindModifier wind) {
+		boolean canGenerate(WorldGenLevel level, WindModifier wind) {
 			while (this.scale > 1) {
 				BlockPos.MutableBlockPos mutable = this.pos.mutable();
 				int scale = Math.min(10, this.getBaseScale());
 
 				for (int i = 0; i < scale; i++) {
-					if (world.getBlockState(mutable).is(Blocks.LAVA)) {
+					if (level.getBlockState(mutable).is(Blocks.LAVA)) {
 						return false;
 					}
 
-					if (canGenerateBase(world, wind.modify(mutable), this.scale)) {
+					if (canGenerateBase(level, wind.modify(mutable), this.scale)) {
 						this.pos = mutable;
 						return true;
 					}

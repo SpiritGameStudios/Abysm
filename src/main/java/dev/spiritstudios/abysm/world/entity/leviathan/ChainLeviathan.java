@@ -220,13 +220,13 @@ public abstract class ChainLeviathan extends Leviathan {
 		}
 
 		private static boolean canGoToLookTarget(LivingEntity entity) {
-			Level world = entity.level();
+			Level level = entity.level();
 			Optional<PositionTracker> optional = entity.getBrain().getMemory(MemoryModuleType.LOOK_TARGET);
 			if (optional.isEmpty()) {
 				return false;
 			}
 			BlockPos blockPos = optional.get().currentBlockPosition();
-			return world.isWaterAt(blockPos) == entity.isInWater();
+			return level.isWaterAt(blockPos) == entity.isInWater();
 		}
 
 		public static void updateActivities(ChainLeviathan leviathan) {

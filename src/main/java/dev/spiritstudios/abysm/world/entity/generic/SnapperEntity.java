@@ -4,7 +4,7 @@ import dev.spiritstudios.abysm.Abysm;
 import dev.spiritstudios.abysm.core.registries.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.core.registries.AbysmSoundEvents;
 import dev.spiritstudios.abysm.data.variant.SnapperEntityVariant;
-import dev.spiritstudios.abysm.world.entity.AbysmTrackedDataHandlers;
+import dev.spiritstudios.abysm.world.entity.AbysmEntityDataSerializers;
 import dev.spiritstudios.abysm.world.entity.SimpleFishEntity;
 import dev.spiritstudios.abysm.world.entity.ai.goal.ecosystem.FleePredatorsGoal;
 import dev.spiritstudios.abysm.world.entity.ai.goal.ecosystem.HuntPreyGoal;
@@ -39,7 +39,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 public class SnapperEntity extends SimpleFishEntity implements Variantable<SnapperEntityVariant> {
-	public static final EntityDataAccessor<Holder<SnapperEntityVariant>> VARIANT = SynchedEntityData.defineId(SnapperEntity.class, AbysmTrackedDataHandlers.SNAPPER_VARIANT);
+	public static final EntityDataAccessor<Holder<SnapperEntityVariant>> VARIANT = SynchedEntityData.defineId(SnapperEntity.class, AbysmEntityDataSerializers.SNAPPER_VARIANT);
 
 	public final AnimationController movement;
 

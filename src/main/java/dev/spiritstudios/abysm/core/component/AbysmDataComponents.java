@@ -6,30 +6,26 @@ import net.fabricmc.fabric.api.item.v1.ComponentTooltipAppenderRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 
-public class AbysmDataComponents {
+import java.util.function.UnaryOperator;
 
+public final class AbysmDataComponents {
 	public static final DataComponentType<HarpoonComponent> HARPOON = register(
 		"harpoon",
-		DataComponentType.<HarpoonComponent>builder()
+		builder -> builder
 			.persistent(HarpoonComponent.CODEC)
-			.networkSynchronized(HarpoonComponent.PACKET_CODEC)
+			.networkSynchronized(HarpoonComponent.STREAM_CODEC)
 	);
 
 	public static final DataComponentType<EntityPattern> ENTITY_PATTERN = register(
 		"entity_pattern",
-		DataComponentType.<EntityPattern>builder()
+		builder -> builder
 			.persistent(EntityPattern.CODEC)
-			.networkSynchronized(EntityPattern.PACKET_CODEC)
+			.networkSynchronized(EntityPattern.STREAM_CODEC)
 	);
 
-	private static <T> DataComponentType<T> register(String path, DataComponentType.Builder<T> builder) {
-		return register(Abysm.id(path), builder);
-	}
-
-	private static <T> DataComponentType<T> register(Identifier id, DataComponentType.Builder<T> builder) {
-		return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, id, builder.build());
+	private static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
+		return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, Abysm.id(name), (builder.apply(DataComponentType.builder()).build()));
 	}
 
 	public static void init() {

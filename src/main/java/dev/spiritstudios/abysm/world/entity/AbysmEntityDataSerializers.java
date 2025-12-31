@@ -13,15 +13,15 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataSerializer;
 
-public final class AbysmTrackedDataHandlers {
-	public static final EntityDataSerializer<EntityPattern> ENTITY_PATTERN = register("entity_pattern", EntityPattern.PACKET_CODEC);
+public final class AbysmEntityDataSerializers {
+	public static final EntityDataSerializer<EntityPattern> ENTITY_PATTERN = register("entity_pattern", EntityPattern.STREAM_CODEC);
 
-	public static final EntityDataSerializer<Holder<BloomrayEntityVariant>> BLOOMRAY_VARIANT = register("bloomray_variant", BloomrayEntityVariant.ENTRY_PACKET_CODEC);
-	public static final EntityDataSerializer<Holder<ElectricOoglyBooglyVariant>> ELECTRIC_OOGLY_BOOGLY_VARIANT = register("electric_oogly_boogly_variant", ElectricOoglyBooglyVariant.ENTRY_PACKET_CODEC);
-	public static final EntityDataSerializer<Holder<GupGupVariant>> GUP_GUP_VARIANT = register("gup_gup_variant", GupGupVariant.ENTRY_PACKET_CODEC);
-	public static final EntityDataSerializer<Holder<SnapperEntityVariant>> SNAPPER_VARIANT = register("snapper_variant", SnapperEntityVariant.ENTRY_PACKET_CODEC);
+	public static final EntityDataSerializer<Holder<BloomrayEntityVariant>> BLOOMRAY_VARIANT = register("bloomray_variant", BloomrayEntityVariant.ENTRY_STREAM_CODEC);
+	public static final EntityDataSerializer<Holder<ElectricOoglyBooglyVariant>> ELECTRIC_OOGLY_BOOGLY_VARIANT = register("electric_oogly_boogly_variant", ElectricOoglyBooglyVariant.ENTRY_STREAM_CODEC);
+	public static final EntityDataSerializer<Holder<GupGupVariant>> GUP_GUP_VARIANT = register("gup_gup_variant", GupGupVariant.ENTRY_STREAM_CODEC);
+	public static final EntityDataSerializer<Holder<SnapperEntityVariant>> SNAPPER_VARIANT = register("snapper_variant", SnapperEntityVariant.ENTRY_STREAM_CODEC);
 
-	public static final EntityDataSerializer<Holder<FishEnchantment>> FISH_ENCHANTMENT = register("fish_enchantment", FishEnchantment.ENTRY_PACKET_CODEC);
+	public static final EntityDataSerializer<Holder<FishEnchantment>> FISH_ENCHANTMENT = register("fish_enchantment", FishEnchantment.ENTRY_STREAM_CODEC);
 
 	private static <T> EntityDataSerializer<T> register(String path, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
 		EntityDataSerializer<T> handler = EntityDataSerializer.forValueType(codec);

@@ -29,17 +29,17 @@ public record HarpoonComponent(ItemStack stack, boolean loaded, int ticksSinceSh
 
 	public static final Codec<HarpoonComponent> CODEC = RecordCodecBuilder.create(
 		instance -> instance.group(
-				ItemStack.OPTIONAL_CODEC.fieldOf("heart").forGetter(component -> component.stack),
-				Codec.BOOL.optionalFieldOf("loaded", true).forGetter(component -> component.loaded),
-				Codec.INT.optionalFieldOf("ticksSinceShot", 0).forGetter(component -> component.ticksSinceShot)
+				ItemStack.OPTIONAL_CODEC.fieldOf("heart").forGetter(HarpoonComponent::stack),
+				Codec.BOOL.optionalFieldOf("loaded", true).forGetter(HarpoonComponent::loaded),
+				Codec.INT.optionalFieldOf("ticksSinceShot", 0).forGetter(HarpoonComponent::ticksSinceShot)
 			)
 			.apply(instance, HarpoonComponent::new)
 	);
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, HarpoonComponent> PACKET_CODEC = StreamCodec.composite(
-		ItemStack.OPTIONAL_STREAM_CODEC, component -> component.stack,
-		ByteBufCodecs.BOOL, component -> component.loaded,
-		ByteBufCodecs.VAR_INT, component -> component.ticksSinceShot,
+	public static final StreamCodec<RegistryFriendlyByteBuf, HarpoonComponent> STREAM_CODEC = StreamCodec.composite(
+		ItemStack.OPTIONAL_STREAM_CODEC, HarpoonComponent::stack,
+		ByteBufCodecs.BOOL, HarpoonComponent::loaded,
+		ByteBufCodecs.VAR_INT, HarpoonComponent::ticksSinceShot,
 		HarpoonComponent::new
 	);
 

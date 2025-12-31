@@ -14,7 +14,7 @@ public record HarpoonLoadedProperty() implements ConditionalItemModelProperty {
 	public static final MapCodec<HarpoonLoadedProperty> CODEC = MapCodec.unit(new HarpoonLoadedProperty());
 
 	@Override
-	public boolean get(ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity, int seed, ItemDisplayContext displayContext) {
+	public boolean get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed, ItemDisplayContext context) {
 		HarpoonComponent component = stack.get(AbysmDataComponents.HARPOON);
 		return component != null && component.loaded();
 	}
@@ -24,4 +24,3 @@ public record HarpoonLoadedProperty() implements ConditionalItemModelProperty {
 		return CODEC;
 	}
 }
-

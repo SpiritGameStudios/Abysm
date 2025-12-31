@@ -6,9 +6,9 @@ minecraft = "1.21.11"
 parchment = "2025.10.12"
 
 fabric_loader = "0.18.1"
-fabric_api = "0.139.5+1.21.11"
+fabric_api = "0.140.2+1.21.11"
 
-spectre = "0.0.21+1.21.11"
+spectre = "0.0.25+1.21.11"
 
 biolith = "3.5.0-beta.2"
 
