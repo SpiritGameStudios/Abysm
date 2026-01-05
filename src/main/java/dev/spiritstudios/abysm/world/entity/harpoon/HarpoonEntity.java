@@ -39,9 +39,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class HarpoonEntity extends AbstractArrow {
-	public static final float VELOCITY_POWER = 5f;
-	public static final int MAX_RANGE = 128;
-
 	// Range in which to slow down so the harpoon doesn't clip through the player
 	public static final int SLOWDOWN_RANGE = 8;
 
@@ -50,6 +47,8 @@ public class HarpoonEntity extends AbstractArrow {
 	public static final EntityDataAccessor<Boolean> GRAPPLING = SynchedEntityData.defineId(HarpoonEntity.class, EntityDataSerializers.BOOLEAN);
 	public static final EntityDataAccessor<Float> LENGTH = SynchedEntityData.defineId(HarpoonEntity.class, EntityDataSerializers.FLOAT);
 	private static final EntityDataAccessor<Boolean> ENCHANTED = SynchedEntityData.defineId(HarpoonEntity.class, EntityDataSerializers.BOOLEAN);
+
+	protected float maxRangeSq = Mth.square(128F);
 
 	protected int slot = -1;
 	protected int ticksAlive = 0;
@@ -74,7 +73,7 @@ public class HarpoonEntity extends AbstractArrow {
 
 		this.setOwner(owner);
 
-		Vec3 velocity = owner.getViewVector(1.0F).scale(VELOCITY_POWER);
+		Vec3 velocity = owner.getViewVector(1.0F).scale(5);
 		this.setDeltaMovement(velocity);
 		this.setNoGravity(true);
 		this.slot = slot;
@@ -181,7 +180,7 @@ public class HarpoonEntity extends AbstractArrow {
 				this.discard();
 			}
 
-			if (owner.isShiftKeyDown() || this.distanceToSqr(owner) > (MAX_RANGE * MAX_RANGE)) {
+			if (owner.isShiftKeyDown() || this.distanceToSqr(owner) > maxRangeSq) {
 				this.beginReturn(true);
 			} else if ((this.inGroundTime > 4 || this.ticksAlive > 60 && this.inGroundTime < 1) && !isGrappling()) {
 				this.beginReturn(true);
@@ -191,7 +190,7 @@ public class HarpoonEntity extends AbstractArrow {
 		if (this.isReturning()) {
 			boolean closeEnough = this.distanceToSqr(owner) < (SLOWDOWN_RANGE * SLOWDOWN_RANGE);
 			this.setDeltaMovement(owner.getEyePosition().subtract(this.position()).normalize()
-				.scale(closeEnough ? 0.65 : VELOCITY_POWER));
+				.scale(closeEnough ? 0.65 : 5f));
 		}
 
 		super.tick();

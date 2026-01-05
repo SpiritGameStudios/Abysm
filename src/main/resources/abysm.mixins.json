@@ -10,7 +10,6 @@
 		"blue.BatMixin",
 		"blue.BlazeMixin",
 		"blue.EntityMixin",
-		"blue.ServerEntityMixin",
 		"blue.LivingEntityMixin",
 		"blue.PlayerMixin",
 		"ecosystem.ServerLevelMixin",

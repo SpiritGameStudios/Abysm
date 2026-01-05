@@ -2,9 +2,8 @@ package dev.spiritstudios.abysm.mixin.blue;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalDoubleRef;
-import dev.spiritstudios.abysm.duck.LivingEntityDuck;
+import dev.spiritstudios.abysm.data.AbysmDataAttachments;
 import dev.spiritstudios.abysm.world.entity.effect.BlueEffect;
-import dev.spiritstudios.abysm.network.EntityUpdateBlueS2CPayload;
 import net.minecraft.core.Holder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Attackable;
@@ -14,11 +13,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -27,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Collection;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements Attackable, LivingEntityDuck {
+public abstract class LivingEntityMixin extends Entity implements Attackable {
 	@Shadow
 	protected abstract double getEffectiveGravity();
 
@@ -36,11 +33,6 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Li
 
 	@Shadow
 	public abstract double getAttributeValue(Holder<Attribute> attribute);
-
-	@Unique
-	private boolean abysm$isBlue = false;
-	@Unique
-	private boolean abysm$wasBlue = false;
 
 	private LivingEntityMixin(EntityType<?> type, Level world) {
 		super(type, world);
@@ -91,51 +83,12 @@ public abstract class LivingEntityMixin extends Entity implements Attackable, Li
 		}
 	}
 
-	@Override
-	public void abysm$setBlue(boolean isBlue) {
-		this.abysm$isBlue = isBlue;
-	}
-
-	@Override
-	public boolean abysm$isBlue() {
-		return this.abysm$isBlue;
-	}
-
-	@Override
-	public boolean abysm$checkWasBlue() {
-		boolean wasBlue = this.abysm$wasBlue;
-		this.abysm$wasBlue = this.abysm$isBlue;
-		return wasBlue;
-	}
-
-	@Unique
-	private void abysm$tryUpdateIsBlue(boolean isBlue) {
-		if (this.abysm$isBlue != isBlue) {
-			this.abysm$setBlue(isBlue);
-			if (!this.level().isClientSide()) {
-				new EntityUpdateBlueS2CPayload(this.getId(), isBlue).send(this);
-			}
-		}
-	}
-
-	@Inject(method = "readAdditionalSaveData", at = @At("RETURN"))
-	private void checkBlue(ValueInput view, CallbackInfo ci) {
-		this.abysm$tryUpdateIsBlue(BlueEffect.hasBlueEffect((LivingEntity) (Object) this));
-	}
-
 	@Inject(method = "onEffectsRemoved", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;removeAttributeModifiers(Lnet/minecraft/world/entity/ai/attributes/AttributeMap;)V"))
 	private void possiblyRemoveBlue(Collection<MobEffectInstance> effects, CallbackInfo ci, @Local(ordinal = 0) MobEffectInstance instance) {
 		if (instance.getEffect().value() instanceof BlueEffect) {
 			if (!BlueEffect.hasBlueEffect((LivingEntity) (Object) this)) {
-				this.abysm$tryUpdateIsBlue(false);
+				this.setAttached(AbysmDataAttachments.BLUE, false);
 			}
-		}
-	}
-
-	@Inject(method = "onEffectAdded", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;addAttributeModifiers(Lnet/minecraft/world/entity/ai/attributes/AttributeMap;I)V"))
-	private void setBlue(MobEffectInstance effect, Entity source, CallbackInfo ci) {
-		if (effect.getEffect().value() instanceof BlueEffect) {
-			this.abysm$tryUpdateIsBlue(true);
 		}
 	}
 }

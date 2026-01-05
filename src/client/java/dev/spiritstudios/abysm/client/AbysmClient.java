@@ -20,8 +20,6 @@ import dev.spiritstudios.abysm.client.render.entity.SkeletonSharkEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.SnapperEntityRenderer;
 import dev.spiritstudios.abysm.client.render.entity.lectorfin.LectorfinEntityRenderer;
 import dev.spiritstudios.abysm.client.sound.AbysmAL;
-import dev.spiritstudios.abysm.duck.LivingEntityDuck;
-import dev.spiritstudios.abysm.network.EntityUpdateBlueS2CPayload;
 import dev.spiritstudios.abysm.network.HappyEntityParticlesS2CPayload;
 import dev.spiritstudios.abysm.network.NowHuntingS2CPayload;
 import dev.spiritstudios.abysm.world.ecosystem.entity.EcologicalEntity;
@@ -88,17 +86,6 @@ public class AbysmClient implements ClientModInitializer {
 				double velocityY = random.nextGaussian() * 0.02;
 				double velocityZ = random.nextGaussian() * 0.02;
 				level.addParticle(options, entity.getRandomX(1.0), entity.getRandomY() + 0.5, entity.getRandomZ(1.0), velocityX, velocityY, velocityZ);
-			}
-		});
-
-		ClientPlayNetworking.registerGlobalReceiver(EntityUpdateBlueS2CPayload.ID, (payload, context) -> {
-			Level level = context.player().level();
-			Entity entity = level.getEntity(payload.entityId());
-			if (entity == null) {
-				return;
-			}
-			if (entity instanceof LivingEntityDuck duck) {
-				duck.abysm$setBlue(payload.isBlue());
 			}
 		});
 

@@ -14,7 +14,6 @@ import dev.spiritstudios.abysm.world.entity.effect.AbysmStatusEffects;
 import dev.spiritstudios.abysm.world.item.AbysmItems;
 import dev.spiritstudios.abysm.world.item.AbysmPotions;
 import dev.spiritstudios.abysm.world.level.storage.loot.AbysmLootTableModifications;
-import dev.spiritstudios.abysm.network.EntityUpdateBlueS2CPayload;
 import dev.spiritstudios.abysm.network.HappyEntityParticlesS2CPayload;
 import dev.spiritstudios.abysm.network.NowHuntingS2CPayload;
 import dev.spiritstudios.abysm.network.UpdateDensityBlobBlockC2SPayload;
@@ -131,7 +130,6 @@ public final class Abysm implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload::receive);
 
 		PayloadTypeRegistry.playS2C().register(HappyEntityParticlesS2CPayload.ID, HappyEntityParticlesS2CPayload.STREAM_CODEC);
-		PayloadTypeRegistry.playS2C().register(EntityUpdateBlueS2CPayload.ID, EntityUpdateBlueS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(NowHuntingS2CPayload.ID, NowHuntingS2CPayload.STREAM_CODEC);
 	}
 

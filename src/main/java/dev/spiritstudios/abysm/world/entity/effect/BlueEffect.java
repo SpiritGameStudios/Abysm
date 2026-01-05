@@ -1,6 +1,6 @@
 package dev.spiritstudios.abysm.world.entity.effect;
 
-import dev.spiritstudios.abysm.duck.LivingEntityDuck;
+import dev.spiritstudios.abysm.data.AbysmDataAttachments;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -11,6 +11,13 @@ public class BlueEffect extends MobEffect {
 
 	protected BlueEffect(MobEffectCategory category, int color) {
 		super(category, color);
+	}
+
+	@Override
+	public void onEffectAdded(LivingEntity entity, int amplifier) {
+		super.onEffectAdded(entity, amplifier);
+
+		entity.setAttached(AbysmDataAttachments.BLUE, true);
 	}
 
 	@Override
@@ -35,6 +42,6 @@ public class BlueEffect extends MobEffect {
 	}
 
 	public static boolean isBlue(LivingEntity livingEntity) {
-		return hasBlueEffect(livingEntity) || livingEntity instanceof LivingEntityDuck duck && duck.abysm$isBlue();
+		return hasBlueEffect(livingEntity) || livingEntity.getAttachedOrElse(AbysmDataAttachments.BLUE, false);
 	}
 }

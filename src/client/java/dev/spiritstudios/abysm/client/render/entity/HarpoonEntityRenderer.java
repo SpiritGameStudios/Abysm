@@ -17,10 +17,13 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.gizmos.Gizmos;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
@@ -46,134 +49,108 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity, Harpoon
 
 		Vec3 start = state.handPos;
 
-		Vec3 anchorOffset = Vec3.directionFromRotation(state.xRot, 180 - state.yRot).scale(0.7).subtract(0, 0.1, 0);
+//		Vec3 anchorOffset = Vec3.directionFromRotation(state.xRot, 180 - state.yRot).scale(0.7).subtract(0, 0.1, 0);
+		Vec3 end = new Vec3(state.x, state.y, state.z);
 
-		Vec3 end = new Vec3(state.x, state.y, state.z).add(anchorOffset);
+		Vec3 vector = start.subtract(end);
+		float length = (float) vector.length();
+		vector = vector.normalize();
 
-		Vec3 difference = start.subtract(end);
-
-		double distZ = end.z - start.z;
-		double distX = end.x - start.x;
-		float horizontalAngle = (float) Mth.atan2(distZ, distX);
-		horizontalAngle += Mth.ceil(-horizontalAngle / Mth.TWO_PI) * Mth.TWO_PI;
-
-		float verticalAngle = (float) Mth.atan2(difference.y, Math.sqrt(distZ * distZ + distX * distX));
-
-		float length = (float) (start.distanceTo(end) + 0.1);
+		float pitch = (float) Math.acos(vector.y);
+		float yaw = Mth.HALF_PI - (float) Mth.atan2(vector.z, vector.x);
 
 		int startLight = LightTexture.pack(state.startBlockLight, state.startSkyLight);
 		int endLight = LightTexture.pack(state.endBlockLight, state.endSkyLight);
 
+		// lots of finals here to let javac inline stuff
+		final float scale = 0.1F;
+
+		final float x1 = scale * -1; // cos(pi) = -1
+		final float z1 = scale * 0; // sin(pi) = 0
+
+		final float x2 = scale * 1; // cos(0) = 1
+		final float z2 = scale * 0; // sin(0) = 0
+
+		final float x3 = scale * 0; // cos(pi / 2) = 0
+		final float z3 = scale * 1; // sin(pi / 2) = 1
+
+		final float x4 = scale * 0; // cos(pi + (pi / 2))
+		final float z4 = scale * -1; // sin(pi + (pi / 2))
+
+		float ropeAB = length + 1;
+
+		final float textureSize = 16;
+
+		final float firstChainU = 3 / textureSize;
+		final float secondChainU = (3 + 3) / textureSize;
+
 		poseStack.pushPose();
-		poseStack.translate(anchorOffset.x, anchorOffset.y, anchorOffset.z);
 		{
-			poseStack.mulPose(Axis.YP.rotation(-horizontalAngle - Mth.HALF_PI));
-			poseStack.mulPose(Axis.XP.rotation(-verticalAngle));
+			poseStack.mulPose(Axis.YP.rotation(yaw));
+			poseStack.mulPose(Axis.XP.rotation(pitch));
 
-			poseStack.mulPose(Axis.ZP.rotationDegrees(45));
+			for (RenderType renderType : ItemRenderer.getFoilRenderTypes(RenderTypes.entityCutoutNoCull(CHAINS), false, state.isFoil)) {
+				nodeCollector.submitCustomGeometry(poseStack, renderType, (pose, buffer) -> {
+					vertex(buffer, pose, x1, length, z1, 0, 1, 0, firstChainU, ropeAB, startLight);
+					vertex(buffer, pose, x1, 0, z1, 0, 1, 0, firstChainU, 1, endLight);
+					vertex(buffer, pose, x2, 0, z2, 0, 1, 0, 0F, 1, endLight);
+					vertex(buffer, pose, x2, length, z2, 0, 1, 0, 0F, ropeAB, startLight);
 
-
-			for (RenderType renderType : ItemRenderer.getFoilRenderTypes(this.model.renderType(CHAINS), false, state.isFoil)) {
-				nodeCollector.submitCustomGeometry(
-					poseStack,
-					renderType,
-					(pose, buffer) -> {
-						renderPart(startLight, endLight, buffer, pose, length, false);
-
-						pose.translate(0.1875F, 0.1875F, 0F);
-						pose.rotate(Axis.ZP.rotationDegrees(90));
-
-						renderPart(startLight, endLight, buffer, pose, length, true);
-					}
-				);
+					vertex(buffer, pose, x3, length, z3, 1, 0, 0, secondChainU, ropeAB, startLight);
+					vertex(buffer, pose, x3, 0, z3, 1, 0, 0, secondChainU, 1, endLight);
+					vertex(buffer, pose, x4, 0, z4, 1, 0, 0, firstChainU, 1, endLight);
+					vertex(buffer, pose, x4, length, z4, 1, 0, 0, firstChainU, ropeAB, startLight);
+				});
 			}
-		}
-		poseStack.popPose();
 
-		poseStack.pushPose();
-		{
-			poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90.0F));
-			poseStack.mulPose(Axis.ZP.rotationDegrees(state.xRot));
 			this.model.setupAnim(state);
 
 			for (RenderType renderType : ItemRenderer.getFoilRenderTypes(this.model.renderType(TEXTURE), false, state.isFoil)) {
-				nodeCollector.submitModel(
-					model,
-					state,
-					poseStack,
-					renderType,
-					endLight,
-					OverlayTexture.NO_OVERLAY,
-					state.outlineColor,
-					null
-				);
+				nodeCollector.submitModel(model, state, poseStack, renderType, endLight, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 			}
 		}
 		poseStack.popPose();
 	}
 
-
-	private static void renderPart(int startLight, int endLight, VertexConsumer consumer, PoseStack.Pose entry, float length, boolean shift) {
-		float minU = shift ? 0.5F : 0.0F;
-		float maxU = shift ? 1.0F : 0.5F;
-		float minV = 0.0F;
-		float maxV = length / 10.0F;
-
-		consumer.addVertex(entry, 0, 0.25F, 0)
-			.setColor(255, 255, 255, 255)
-			.setUv(minU, minV)
+	private void vertex(VertexConsumer buffer, PoseStack.Pose pose, float x, float y, float z, float normalX, float normalY, float normalZ, float u, float v, int lightCoords) {
+		buffer
+			.addVertex(pose.pose(), x, y, z)
+			.setColor(CommonColors.WHITE)
+			.setUv(u, v)
 			.setOverlay(OverlayTexture.NO_OVERLAY)
-			.setLight(endLight)
-			.setNormal(entry, 0, -1, 0);
-
-		consumer.addVertex(entry, 0, 0.25F, length)
-			.setColor(255, 255, 255, 255)
-			.setUv(minU, maxV)
-			.setOverlay(OverlayTexture.NO_OVERLAY)
-			.setLight(startLight)
-			.setNormal(entry, 0, -1, 0);
-
-		consumer.addVertex(entry, 0, 0.125F, length)
-			.setColor(255, 255, 255, 255)
-			.setUv(maxU, maxV)
-			.setOverlay(OverlayTexture.NO_OVERLAY)
-			.setLight(startLight)
-			.setNormal(entry, 0, -1, 0);
-
-		consumer.addVertex(entry, 0, 0.125F, 0)
-			.setColor(255, 255, 255, 255)
-			.setUv(maxU, minV)
-			.setOverlay(OverlayTexture.NO_OVERLAY)
-			.setLight(endLight)
-			.setNormal(entry, 0, -1, 0);
+			.setLight(lightCoords)
+			.setNormal(pose, normalX, normalY, normalZ);
 	}
 
 	public static HumanoidArm getArmHoldingRod(Player player) {
 		return player.getMainHandItem().getItem() instanceof HarpoonItem ? player.getMainArm() : player.getMainArm().getOpposite();
 	}
 
-	private Vec3 getHandPos(Player player, float angle, float tickProgress) {
+	private Vec3 getHandPos(Player player, float handAngle, float tickProgress) {
 		int arm = getArmHoldingRod(player) == HumanoidArm.RIGHT ? 1 : -1;
-		if (this.entityRenderDispatcher.options.getCameraType().isFirstPerson() &&
-			player == Minecraft.getInstance().player) {
+		if (this.entityRenderDispatcher.options.getCameraType().isFirstPerson() && player == Minecraft.getInstance().player) {
 			return player.getEyePosition(tickProgress)
 				.add(this.entityRenderDispatcher.camera.getNearPlane().getPointOnPlane(arm * 0.525F, -1F)
 					.scale(960.0F / this.entityRenderDispatcher.options.fov().get())
-					.yRot(angle * 0.5F)
-					.xRot(-angle * 0.7F));
+					.yRot(handAngle * 0.5F).xRot(-handAngle * 0.7F));
 		} else {
-			float yaw = (Mth.lerp(tickProgress, player.yBodyRotO, player.yBodyRot) + 10) * Mth.DEG_TO_RAD;
+			float yaw = (Mth.lerp(tickProgress, player.yHeadRotO, player.yHeadRot)) * Mth.DEG_TO_RAD;
+			float pitch = (Mth.lerp(tickProgress, player.xRotO, player.getXRot())) * Mth.DEG_TO_RAD;
 
-			double sinYaw = Mth.sin(yaw);
-			double cosYaw = Mth.cos(yaw);
+			yaw -= 0.2F;
 
-			float scale = player.getScale();
-			float sideOffset = arm * 0.35F * scale;
-			double forwardOffset = 0.3 * scale;
-			float verticalOffset = player.isCrouching() ? -0.1875F : 0.0F;
+			yaw += handAngle * 0.5F;
+			pitch += handAngle * 0.7F;
 
-			return player.getEyePosition(tickProgress)
-				.add(-cosYaw * sideOffset - sinYaw * forwardOffset, verticalOffset - 0.45F * scale, -sinYaw * sideOffset + cosYaw * forwardOffset);
+			Vec3 origin = player.getPosition(tickProgress).add(0.35, player.getBoundingBox().getYsize() - 0.5, 0);
+
+			Vec3 vec = origin.add(
+					new Vec3(0, 0, 1)
+						.xRot(-pitch)
+						.yRot(-yaw)
+				);
+			Gizmos.arrow(origin, vec, 0xFFFFFFFF, 5);
+			return vec;
 		}
 	}
 
@@ -195,11 +172,7 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity, Harpoon
 		if (player == null || harpoon.isRemoved()) {
 			state.handPos = Vec3.ZERO;
 		} else {
-			state.handPos = this.getHandPos(
-				player,
-				Mth.sin(Mth.sqrt(player.getAttackAnim(partialTick)) * Mth.PI),
-				partialTick
-			);
+			state.handPos = this.getHandPos(player, Mth.sin(Mth.sqrt(player.getAttackAnim(partialTick)) * Mth.PI), partialTick);
 		}
 
 		BlockPos start = BlockPos.containing(state.handPos);
