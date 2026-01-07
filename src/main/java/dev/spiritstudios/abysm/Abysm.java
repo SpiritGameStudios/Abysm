@@ -1,5 +1,6 @@
 package dev.spiritstudios.abysm;
 
+import dev.spiritstudios.abysm.network.MouseInputC2SPayload;
 import dev.spiritstudios.abysm.world.level.block.AbysmBlocks;
 import dev.spiritstudios.abysm.world.level.block.entity.AbysmBlockEntityTypes;
 import dev.spiritstudios.abysm.command.AbysmCommands;
@@ -128,6 +129,10 @@ public final class Abysm implements ModInitializer {
 
 		PayloadTypeRegistry.playC2S().register(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload.STREAM_CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(UpdateDensityBlobBlockC2SPayload.ID, UpdateDensityBlobBlockC2SPayload::receive);
+
+		PayloadTypeRegistry.playC2S().register(MouseInputC2SPayload.TYPE, MouseInputC2SPayload.STREAM_CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(MouseInputC2SPayload.TYPE, MouseInputC2SPayload::receive);
+
 
 		PayloadTypeRegistry.playS2C().register(HappyEntityParticlesS2CPayload.ID, HappyEntityParticlesS2CPayload.STREAM_CODEC);
 		PayloadTypeRegistry.playS2C().register(NowHuntingS2CPayload.ID, NowHuntingS2CPayload.STREAM_CODEC);

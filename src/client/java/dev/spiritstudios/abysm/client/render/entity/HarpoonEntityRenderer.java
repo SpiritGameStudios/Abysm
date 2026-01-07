@@ -48,8 +48,6 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity, Harpoon
 		}
 
 		Vec3 start = state.handPos;
-
-//		Vec3 anchorOffset = Vec3.directionFromRotation(state.xRot, 180 - state.yRot).scale(0.7).subtract(0, 0.1, 0);
 		Vec3 end = new Vec3(state.x, state.y, state.z);
 
 		Vec3 vector = start.subtract(end);
@@ -74,8 +72,8 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity, Harpoon
 		final float x3 = scale * 0; // cos(pi / 2) = 0
 		final float z3 = scale * 1; // sin(pi / 2) = 1
 
-		final float x4 = scale * 0; // cos(pi + (pi / 2))
-		final float z4 = scale * -1; // sin(pi + (pi / 2))
+		final float x4 = scale * 0; // cos(pi + (pi / 2)) = 0
+		final float z4 = scale * -1; // sin(pi + (pi / 2)) = -1
 
 		float ropeAB = length + 1;
 
@@ -102,6 +100,11 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity, Harpoon
 					vertex(buffer, pose, x4, length, z4, 1, 0, 0, firstChainU, ropeAB, startLight);
 				});
 			}
+
+			poseStack.mulPose(Axis.XP.rotation(-Mth.HALF_PI));
+			poseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI));
+
+			poseStack.translate(0.6, 0, 0);
 
 			this.model.setupAnim(state);
 

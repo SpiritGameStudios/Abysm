@@ -40,10 +40,10 @@ public class HarpoonItem extends Item {
 
 	@Override
 	public InteractionResult use(Level world, Player user, InteractionHand hand) {
-		if (!world.isClientSide()) {
-			ItemStack stack = user.getItemInHand(hand);
-			HarpoonComponent component = stack.getOrDefault(AbysmDataComponents.HARPOON, HarpoonComponent.EMPTY);
-			if (component.loaded()) {
+		ItemStack stack = user.getItemInHand(hand);
+		HarpoonComponent component = stack.getOrDefault(AbysmDataComponents.HARPOON, HarpoonComponent.EMPTY);
+		if (component.loaded()) {
+			if (!world.isClientSide()) {
 				int slot;
 				if (hand == InteractionHand.OFF_HAND) {
 					slot = Inventory.SLOT_OFFHAND;
@@ -66,10 +66,14 @@ public class HarpoonItem extends Item {
 
 				stack.hurtWithoutBreaking(1, user);
 			} else {
-				user.getCooldowns().addCooldown(stack, 10);
+				return InteractionResult.CONSUME;
 			}
+
+
+			return InteractionResult.PASS;
 		}
-		return InteractionResult.CONSUME;
+
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override

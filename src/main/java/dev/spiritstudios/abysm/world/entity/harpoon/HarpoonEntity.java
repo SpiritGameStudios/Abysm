@@ -7,6 +7,7 @@ import dev.spiritstudios.abysm.core.registries.AbysmEnchantments;
 import dev.spiritstudios.abysm.core.registries.AbysmRegistryKeys;
 import dev.spiritstudios.abysm.core.registries.AbysmSoundEvents;
 import dev.spiritstudios.abysm.duck.HarpoonOwner;
+import dev.spiritstudios.abysm.duck.MouseInputPlayer;
 import dev.spiritstudios.abysm.mixin.harpoon.AbstractArrowAccessor;
 import dev.spiritstudios.abysm.world.entity.AbysmDamageTypes;
 import dev.spiritstudios.abysm.world.entity.AbysmEntityTypes;
@@ -18,6 +19,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -48,7 +50,7 @@ public class HarpoonEntity extends AbstractArrow {
 	public static final EntityDataAccessor<Float> LENGTH = SynchedEntityData.defineId(HarpoonEntity.class, EntityDataSerializers.FLOAT);
 	private static final EntityDataAccessor<Boolean> ENCHANTED = SynchedEntityData.defineId(HarpoonEntity.class, EntityDataSerializers.BOOLEAN);
 
-	protected float maxRangeSq = Mth.square(128F);
+	protected float maxRangeSq = Mth.square(32F);
 
 	protected int slot = -1;
 	protected int ticksAlive = 0;
@@ -159,7 +161,7 @@ public class HarpoonEntity extends AbstractArrow {
 
 		Level level = this.level();
 
-		if (!level.isClientSide()) {
+		if (!level.isClientSide() && owner instanceof ServerPlayer player) {
 			if (this.inGroundTime <= 0 && this.tickCount % 2 == 0) {
 				this.level().playSound(
 					null,
@@ -180,7 +182,7 @@ public class HarpoonEntity extends AbstractArrow {
 				this.discard();
 			}
 
-			if (owner.isShiftKeyDown() || this.distanceToSqr(owner) > maxRangeSq) {
+			if ((((MouseInputPlayer) player).spectre$latestInput().right() && this.ticksAlive > 3) || this.distanceToSqr(owner) > maxRangeSq) {
 				this.beginReturn(true);
 			} else if ((this.inGroundTime > 4 || this.ticksAlive > 60 && this.inGroundTime < 1) && !isGrappling()) {
 				this.beginReturn(true);
